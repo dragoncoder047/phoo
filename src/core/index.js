@@ -9,7 +9,6 @@ import { name, clone as cloneObject, cloneArray, type } from './utils.js';
 import { _PWordDef_ } from './pbase.js';
 import { _PWordMap_ } from './pbase.js';
 import { Namespace, Module } from './namespace.js';
-import { Threadlock } from './threadlocks.js';
 
 /**
  * A Phoo interpreter.
@@ -164,6 +163,7 @@ export class Phoo extends PBase {
      */
     clone(recursive = true) {
         var c = new Phoo({
+            // FIXME HERE
             words: cloneObject(this.words, recursive),
             builders: cloneObject(this.builders, recursive),
             literalizers: cloneObject(this.literalizers, recursive),

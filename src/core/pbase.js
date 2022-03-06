@@ -7,7 +7,7 @@
 import { PhooError, UnknownWordError, StackOverflowError, StackUnderflowError, UnreachableError, TypeMismatchError, DubiousSyntaxError, BadNestingError, UnexpectedEOFError, RaceConditionError, ExternalInterrupt } from './errors.js';
 import { w, name, type } from './utils.js';
 import { Namespace } from './namespace.js';
-import { Threadlock } from './threadlocks.js';
+import { Threadlock } from './locks.js';
 
 /**
  * Base class for Phoo interpreter. Some methods are overridden in {@linkcode Phoo}.
