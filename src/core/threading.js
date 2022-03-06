@@ -195,8 +195,9 @@ export class Thread {
                         default:
                             throw new TypeMismatchError(`Unexpected '${type(source)}' as builder.`);
                     }
-                    code = this.pop('string');
-                    a = this.pop('array');
+                    this.expect('string', 'array');
+                    code = this.pop();
+                    a = this.pop();
                 }
                 else { // try looking up in literals
                     var succeeded = await this.compileLiteral(word, a);
