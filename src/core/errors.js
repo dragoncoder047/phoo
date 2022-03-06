@@ -103,16 +103,16 @@ export class TypeMismatchError extends PhooError { }
 /**
  * Error raised when there is an issue with syntax in a Phoo program.
  */
-export class DubiousSyntaxError extends PhooError { }
+export class BadSyntaxError extends PhooError { }
 
 /**
  * Error raised when there is an issue with brackets.
- * Subclass of {@linkcode DubiousSyntaxError}.
+ * Subclass of {@linkcode BadSyntaxError}.
  */
-export class BadNestingError extends DubiousSyntaxError { }
+export class BadNestingError extends BadSyntaxError { }
 
 /**
  * Error raised when the input stream abruptly ends, but more data was expected.
- * Subclass of {@linkcode DubiousSyntaxError}.
+ * Subclass of {@linkcode BadSyntaxError}.
  */
-export class UnexpectedEOFError extends DubiousSyntaxError { }
+export class UnexpectedEOFError extends BadSyntaxError { }
