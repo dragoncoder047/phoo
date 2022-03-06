@@ -104,15 +104,17 @@ export class Phoo extends PBase {
      * @returns {Promise<boolean>} Whether processing succeeded.
      */
     async compileLiteral(word, a) {
-        for (var [regex, code] in this.literalizers) {
-            var result = regex.exec(word);
-            if (result) {
-                this.push(result);
-                this.lock.release();
-                await this.run(code);
-                await this.lock.acquire();
-                a.push(this.pop());
-                return true;
+        for (var ns of this.namespaceStack.slice().reverse()) {
+            for (var [regex, code] in ns.literalizers) {
+                var result = regex.exec(word);
+                if (result) {
+                    this.push(result);
+                    this.lock.release();
+                    await this.run(code);
+                    await this.lock.acquire();
+                    a.push(this.pop());
+                    return true;
+                }
             }
         }
         return false;

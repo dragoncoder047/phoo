@@ -26,7 +26,7 @@ export class PBase {
     }) {
         /**
          * Mapping of words to code
-         * @type {Namespace}
+         * @type {Namespace[]}
          * @default nothing
          */
         this.namespaceStack = namespaces;
