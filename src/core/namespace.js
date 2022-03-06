@@ -39,7 +39,7 @@ export class SimpleNamespace {
      * @param {string} name The word whose definition to remove.
      * @returns {_PWordDef_} The old definition, if there was one.
      */
-    
+
     forget(name) {
         var a = this.map.get(name) || [];
         var r = a.pop();

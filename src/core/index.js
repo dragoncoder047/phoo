@@ -17,50 +17,25 @@ export class Phoo extends PBase {
     /**
      * @param {Object} [opts={}]
      * @param {Array<any>} [opts.stack=[]] The initial items into the stack.
-     * @param {_PWordMap_} [opts.words={}] The initial words to use,
-     * @param {_PWordMap_} [opts.builders={}] The initial builders to use.
-     * @param {Map<RegExp, _PWordDef_>} [opts.literalizers=new Map] The mapping of regular expression to processor code.
+     * @param {Namespace[]} [opts.namespaces] The initial namespace stack.
      * @param {number} [opts.maxDepth=10000] The maximum return stack length before a {@linkcode StackOverflowError} error is thrown.
-     * @param {string} [opts.moduleName=''] The name of the module this Phoo instance is managing.
-     * @param {string} [opts.aliasName=opts.moduleName] The aliased name (i.e., set with `import foo as bar`)
-     * @param {Phoo} [opts.parentModule] The reference to the parent module that imported this one.
      * @param {boolean} [opts.strictMode=true] Enable or disable strict mode (see {@linkcode Phoo.strictMode})
      * @param {string} [opts.namepathSeparator=':'] Separator used to split name paths in modules (e.g. `math:sqrt`)
      */
     constructor({
-        words = {},
-        builders = {},
-        literalizers = new Map(),
+        namespaces = [],
         stack = [],
         maxDepth = 10000,
-        moduleName = '',
-        aliasName,
-        parentModule = null,
         strictMode = true,
         namepathSeparator: namepathSeparator = ':',
     }) {
-        super({ words, builders, stack, maxDepth });
+        super({ namespaces, stack, maxDepth });
         /**
          * Map of regex to code that will transform
          * single-word literal values into the actual value.
          * @type {Map<RegExp, _PWordDef_>}
          */
         this.literalizers = literalizers;
-        /**
-         * The name of the module this Phoo instance is managing.
-         * @type {string}
-         */
-        this.moduleName = moduleName;
-        /**
-         * The alias name (i.e., set with `import foo as bar`)
-         * @type {string}
-         */
-        this.aliasName = aliasName || moduleName;
-        /**
-         * The parent module that imported this one.
-         * @type {Phoo}
-         */
-        this.parentModule = parentModule;
         /**
          * Whether strict mode is enabled.
          *
@@ -93,18 +68,19 @@ export class Phoo extends PBase {
         this.namepathSeparator = namepathSeparator;
     }
     /**
-     * Overrides [the same-named method]{@link PBase.lookupWord} in {@linkcode PBase}.
+     * Overrides [the same-named method]{@link PBase.resolveWord} in {@linkcode PBase}.
      *
      * Looks up the word in {@linkcode PBase.words|:::js this.words}.
      * @param {string} word The word to be looked up.
      * @returns {_PWordDef_}
      */
-    lookupWord(word) {
+    resolveWord(word) {
+        //TODO fixme
         var def = this.words[word];
         if (def === undefined)
             def = this.undefinedWord(word);
         if (type(def) === 'symbol')
-            return this.lookupWord(name(def));
+            return this.resolveWord(name(def));
         return def;
     }
 
@@ -145,7 +121,7 @@ export class Phoo extends PBase {
     }
 
     /**
-     * Called to dynamically create the definition of a word when {@linkcode Phoo.lookupWord}
+     * Called to dynamically create the definition of a word when {@linkcode Phoo.resolveWord}
      * otherwise fails to find it. See property [strictMode]{@linkcode Phoo.strictMode} for the behavior of this.
      * @param {string} word The word that is not defined.
      * @returns {_PWordDef_} The temporary definition of the word.
@@ -169,7 +145,7 @@ export class Phoo extends PBase {
      */
     async executeOneItem(item) {
         if (type(item) === 'symbol')
-            item = this.lookupWord(name(item));
+            item = this.resolveWord(name(item));
         if (item === 'use loose')
             this.strictMode = false;
         else if (item === 'use strict')

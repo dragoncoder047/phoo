@@ -6,6 +6,7 @@
 
 import { PhooError, UnknownWordError, StackOverflowError, StackUnderflowError, UnreachableError, TypeMismatchError, DubiousSyntaxError, BadNestingError, UnexpectedEOFError, RaceConditionError, ExternalInterrupt } from './errors.js';
 import { w, name, type } from './utils.js';
+import { Namespace } from './namespace.js';
 
 /**
  * Base class for Phoo interpreter. Some methods are overridden in {@linkcode Phoo}.
@@ -13,29 +14,21 @@ import { w, name, type } from './utils.js';
 export class PBase {
     /**
      * @param {Object} [opts={}]
-     * @param {Array<any>} [opts.stack=[]] The initial items into the stack.
-     * @param {_PWordMap_} [opts.words={}] The initial words to use,
-     * @param {_PWordMap_} [opts.builders={}] The initial builders to use.
+     * @param {Array} [opts.stack=[]] The initial items into the stack.
+     * @param {Namespace[]} [opts.namespaces] The initial namespace stack.
      * @param {number} [opts.maxDepth=10000] The maximum return stack length before a {@linkcode StackOverflowError} error is thrown.
      */
     constructor({
-        words = {},
-        builders = {},
+        namespaces = [],
         stack = [],
         maxDepth = 10000,
     }) {
         /**
          * Mapping of words to code
-         * @type {_PWordMap_}
-         * @default no words
+         * @type {Namespace}
+         * @default nothing
          */
-        this.words = words;
-        /**
-         * Mapping of builders to code
-         * @type {_PWordMap_}
-         * @default no builders
-         */
-        this.builders = builders;
+        this.namespaceStack = namespaces;
         /**
          * Stack that working values are
          * pushed and popped from during execution.
@@ -123,7 +116,7 @@ export class PBase {
     }
 
     /**
-     * Look up the definition of a word and retrieve it.
+     * Look up the definition of a word and retrieve it, following module symlinks if found.
      * Should defer to {@linkcode PBase.undefinedWord} if the word cannot otherwise
      * be found.
      *
@@ -132,7 +125,7 @@ export class PBase {
      * @abstract
      * @returns {_PWordDef_}
      */
-    lookupWord(word) {
+    resolveWord(word) {
         // stub method
     }
 
@@ -379,7 +372,7 @@ export class PBase {
                 var ci = c[pc];
                 if (type(ci) == 'symbol') {
                     var ciw = name(ci);
-                    ci = this.lookupWord(ciw);
+                    ci = this.resolveWord(ciw);
                 }
                 if (type(ci) === 'array') {
                     this.retPush({ pc, arr: c });
@@ -410,7 +403,7 @@ export class PBase {
     }
 
     /**
-     * Called to dynamically create the definition of a word when {@linkcode PBase.lookupWord}
+     * Called to dynamically create the definition of a word when {@linkcode PBase.resolveWord}
      * otherwise fails to find it.
      * By default this just throws an {@linkcode UnknownWordError}.
      * @param {string} word The word that is not defined.
