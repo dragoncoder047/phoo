@@ -9,7 +9,7 @@
 
 // cSpell:ignore symstr
 
-import { BadSyntaxError, IllegalOperationError, UnreachableError, ModuleNotFoundError, TypeMismatchError } from '../core/errors.js';
+import { BadSyntaxError, ModuleNotFoundError, TypeMismatchError } from '../core/errors.js';
 import { Phoo } from '../core/index.js';
 import { Module } from '../core/namespace.js';
 import { type, name } from '../core/utils.js';
@@ -22,15 +22,16 @@ import { module as builtinsModule } from './builtins.js';
  * @returns {Promise<void>} When initialization is complete.
  */
 export async function initBuiltins(p, allowImport = false) {
-    if (!p.namespaceStack.includes(builtinsModule))
+    if (!p.namespaceStack.includes(builtinsModule)) {
         p.namespaceStack.unshift(builtinsModule);
-    var resp = await fetch('./builtins.ph');
-    if (resp.status >= 300)
-        throw new UnreachableError('Fetch error');
-    p.namespaceStack.push(builtinsModule); // <<+-- these are to make sure the definitions end up in the builtins module
-    await p.run(await resp.text());        //   |
-    p.namespaceStack.pop();                // <<+
-    if (allowImport) p.namespaceStack[0].words.add('import', [meta_import]);
+        var resp = await fetch('./builtins.ph');
+        if (resp.status >= 300)
+            throw new ModuleNotFoundError('Fetch error');
+        p.namespaceStack.push(builtinsModule); // <<+-- these are to make sure the definitions end up in the builtins module
+        await p.run(await resp.text());        //   |
+        p.namespaceStack.pop();                // <<+
+        if (allowImport) p.namespaceStack[0].words.add('import', [meta_import]);
+    }
 }
 
 /**
@@ -67,7 +68,7 @@ export async function meta_import() {
         async function loadFromPH() {
             var resp = await fetch(urlPH);
             if (resp.status >= 300)
-                throw new UnreachableError('Fetch error');
+                throw new ModuleNotFoundError('Fetch error');
             var text = await resp.text();
             await self.run(text);
         }
