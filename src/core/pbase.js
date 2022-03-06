@@ -7,6 +7,7 @@
 import { PhooError, UnknownWordError, StackOverflowError, StackUnderflowError, UnreachableError, TypeMismatchError, DubiousSyntaxError, BadNestingError, UnexpectedEOFError, RaceConditionError, ExternalInterrupt } from './errors.js';
 import { w, name, type } from './utils.js';
 import { Namespace } from './namespace.js';
+import { Threadlock } from './threadlocks.js';
 
 /**
  * Base class for Phoo interpreter. Some methods are overridden in {@linkcode Phoo}.
@@ -49,13 +50,6 @@ export class PBase {
          * @default 10000
          */
         this.maxDepth = maxDepth;
-        /**
-         * Internal flag indicating if the mechanisms are in
-         * the proper state to allow a new thread to be run.
-         * @type {boolean}
-         * @private
-         */
-        this._safeToRun = true;
         /**
          * Internal flag indicating if the current thread is paused.
          * @type {boolean}
@@ -109,10 +103,10 @@ export class PBase {
          */
         this._outerPauseResolver = null;
         /**
-         * List of child threads that will be killed along with this one.
-         * @type {Array<PBase>}
+         * @type {Threadlock}
+         * @private
          */
-        this.children = [];
+         this.lock = new Threadlock();
     }
 
     /**
@@ -159,8 +153,7 @@ export class PBase {
             default:
                 return [source]; // just wrap it
         }
-        this._checkRaceCondition();
-        this._safeToRun = false; // see issue #1
+        await this.lock.acquire();
         var code = source.slice();
         var origLength = this.stack.length;
         var word, b, a = [];
@@ -178,9 +171,9 @@ export class PBase {
                             await b.call(this);
                             break;
                         case 'array':
-                            this._safeToRun = true; // see issue #1
+                            this.lock.release();
                             await this.run(b);
-                            this._safeToRun = false;
+                            await this.lock.acquire();
                             break;
                         default:
                             throw new TypeMismatchError(`Unexpected '${type(source)}' as builder.`);
@@ -200,21 +193,12 @@ export class PBase {
             throw DubiousSyntaxError.wrap(e, this.stack);
         }
         finally {
-            this._safeToRun = true; // see issue #1
+            this.lock.release();
             this._killed = 0;
         }
         if (this.stack.length !== origLength)
             throw BadNestingError.withPhooStack('During compilation: stack not returned to original length', this.stack);
         return a;
-    }
-
-    /**
-     * Internal method, throws if not in the right state to begin compiling or running.
-     * @private
-     */
-    _checkRaceCondition() {
-        if (!this._safeToRun) // see issue #1 -- won't be needed once fixed
-            throw new RaceConditionError();
     }
 
     /**
@@ -329,8 +313,7 @@ export class PBase {
      * @returns {Promise<Array>} The stack after execution.
      */
     async execute(c) {
-        this._checkRaceCondition(); // see issue #1
-        this._safeToRun = false; // see issue #1
+        await this.lock.acquire();
         var pc = 0;
         try {
             while (true) {
@@ -361,7 +344,7 @@ export class PBase {
             throw PhooError.wrap(e, this.returnStack);
         }
         finally {
-            this._safeToRun = true; // see issue #1
+            this.lock.release();
             this._killed = 0;
         }
         return this.workStack;

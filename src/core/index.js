@@ -9,6 +9,7 @@ import { name, clone as cloneObject, cloneArray, type } from './utils.js';
 import { _PWordDef_ } from './pbase.js';
 import { _PWordMap_ } from './pbase.js';
 import { Namespace, Module } from './namespace.js';
+import { Threadlock } from './threadlocks.js';
 
 /**
  * A Phoo interpreter.
@@ -82,7 +83,7 @@ export class Phoo extends PBase {
      * @private
      */
     resolve(word, kind = 'words') {
-        // TODO fixme
+        // TODO modules
         var def;
         for (var i = 0; i < this.namespaceStack.length && def === undefined; i++) def = this.getNamespace(i)[kind].find(word);
         if (def === undefined)
@@ -108,9 +109,9 @@ export class Phoo extends PBase {
             var result = regex.exec(word);
             if (result) {
                 this.push(result);
-                this._safeToRun = true; // HACK #1 - somehow it works
+                this.lock.release();
                 await this.run(code);
-                this._safeToRun = false;
+                await this.lock.acquire();
                 a.push(this.pop());
                 return true;
             }
@@ -150,9 +151,7 @@ export class Phoo extends PBase {
         else if (item === 'use strict')
             this.strictMode = true;
         else if (type(item) === 'function') {
-            this._safeToRun = true; // see issue #1
             await item.call(this);
-            this._safeToRun = false;
         }
         else
             this.push(item);

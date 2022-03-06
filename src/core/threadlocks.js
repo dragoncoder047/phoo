@@ -9,7 +9,7 @@ export class Threadlock {
     }
 
     async acquire() {
-        if (!this.locked) {
+        if (!this.locked) { // still reeks of #1 -- but this would be the ONLY place a race condition could occur
             this.locked = true;
         } else {
             var self = this;
