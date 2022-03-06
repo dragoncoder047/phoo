@@ -21,6 +21,9 @@ export class SimpleNamespace {
 
     /**
      * Add the word to make it available.
+     * 
+     * The old definition is not lost, it is just hidden by the new one
+     * and will come back if the new one is forgotten (using {@linkcode forget}).
      * @param {string} name The word to add.
      * @param {_PWordDef_} def The definition of it.
      */
@@ -32,7 +35,7 @@ export class SimpleNamespace {
     }
 
     /**
-     * Remove the word, reverting to the old definition if it had one.
+     * Remove the word, reverting to the old definition if there was one.
      * @param {string} name The word whose definition to remove.
      * @returns {_PWordDef_} The old definition, if there was one.
      */
