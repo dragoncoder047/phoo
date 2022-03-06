@@ -8,7 +8,6 @@ import { _PWordDef_ } from './pbase.js';
 
 /**
  * Namespace that holds everything in a scope.
- * 
  */
 export class Namespace {
     constructor() {
@@ -24,7 +23,6 @@ export class Namespace {
      * Add the word to make it available.
      * @param {string} word The word to add.
      * @param {_PWordDef_} def The definition of it.
-     * @throws {AlreadyDefined} if `safe` is `:::js true` and the word is already defined.
      */
     add(word, def) {
         var a = this.map.get(word) || [];
@@ -55,5 +53,18 @@ export class Namespace {
         var w = this.forget(word);
         this.add(word, w);
         return w;
+    }
+}
+
+/**
+ * A module is a named namespace that usually encloses a file.
+ */
+class Module extends Namespace {
+    /**
+     * @param {string} name The name of the module
+     */
+    constructor(name) {
+        super();
+        this.name = name;
     }
 }
