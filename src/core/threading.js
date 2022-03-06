@@ -109,6 +109,7 @@ export class Thread {
          */
         this.lock = new Threadlock();
     }
+
     /**
      * Callback when a non-array is encountered
      * during execution. Functions are simply called.
@@ -218,17 +219,35 @@ export class Thread {
     }
 
     /**
-     * Pop - todo
+     * 'Expects' the objects on top of the stack, and throws if they aren't the right type.
+     * @param {string|RegExp} ...types The types to check against
+     * @throws {TypeMismatchError} if any of the items don't match
      */
-    pop() {
-        throw 'todo';
+    expect(...types) {
+        for (var index = 0; index < types.length; index++) {
+            var item = this.peek(index);
+            var eType = types[index];
+            var gType = type(item);
+            if ((type(eType) === 'string' && eType !== gType) || (type(eType) === 'regexp' && !eType.test(gType)))
+                throw new TypeMismatchError(`Expected ${eType} on stack, got ${gType}: ${item}`);
+        }
     }
 
     /**
-     * Peek - todo 
+     * @param {number} [depth=0] how far down to pop.
+     * @throws {StackUnderflowError} if there are not enough items.
      */
-    peek() {
-        throw 'todo';
+    pop(depth = 0) {
+        if (this.workStack.length < (depth + 1))
+            throw new StackUnderflowError(`Expected at least ${depth + 1} items on stack, got ${this.workStack.length}`);
+        return this.workStack.splice(this.workStack.length - depth - 1, 1)[0];
+    }
+
+    /**
+     * @param {number} [depth=0] how far down to peek. 
+     */
+    peek(depth = 0) {
+        return this.workStack[this.workStack.length - 1 - depth];
     }
 
     /**
