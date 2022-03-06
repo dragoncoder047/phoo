@@ -11,8 +11,9 @@
 
 import { DubiousSyntaxError, IllegalOperationError, UnreachableError, ModuleNotFoundError } from '../core/errors.js';
 import { Phoo } from '../core/index.js';
+import { Module } from '../core/namespace.js';
 import { type, name } from '../core/utils.js';
-import { init as loadLowLevel } from './builtins.js';
+import { module as builtinsModule } from './builtins.js';
 
 /**
  * Runs the builtin modules on the Phoo instance, initializing it for basic use.
@@ -21,88 +22,83 @@ import { init as loadLowLevel } from './builtins.js';
  * @returns {Promise<void>} When initialization is complete.
  */
 export async function initBuiltins(p, allowImport = false) {
-    /**await /**/loadLowLevel(p);
+    if (!p.namespaceStack.includes(builtinsModule))
+        p.namespaceStack.unshift(builtinsModule);
     var resp = await fetch('./builtins.ph');
     if (resp.status >= 300)
         throw new UnreachableError('Fetch error');
-    await p.run(await resp.text());
-    if (allowImport) p.addWord('import', import_);
+    p.namespaceStack.push(builtinsModule); // <<+-- these are to make sure the definitions end up in the builtins module
+    await p.run(await resp.text());        //   |
+    p.namespaceStack.pop();                // <<+
+    if (allowImport) p.namespaceStack[0].words.add('import', [meta_import]);
 }
 
 /**
  * This function implements the import system of Phoo (the word `import`).
+ * @this {Thread}
  */
-export async function import_() {
+export async function meta_import() {
     const self = this;
-    async function next(...types) {
+    async function next(type) {
         await self.run("]'[");
-        return self.pop(...types);
+        self.expect(type);
+        return self.pop();
+    }
+
+    async function nextSymStr() {
+        return name(await next('symbol'));
     }
 
     async function backup() {
         await self.run('false -1 ]cjump[');
     }
 
-    async function importFromURL(url, mname, alias) {
-        if (self.children.filter(m => m.moduleName === mname && m.aliasName === alias).length)
+    async function importFromURL(url, mname) {
+        if (self.phoo.modules.some(m => m.name === mname))
             return; // already loaded the module
-        var newPhoo;
-        if (alias !== '*') {
-            newPhoo = new Phoo({
-                stack: self.workStack,
-                moduleName: mname,
-                aliasName: alias,
-                parentModule: self,
-                maxDepth: self.maxDepth,
-                namepathSeparator: self.namepathSeparator,
-            });
-            await initBuiltins(newPhoo, true);
+        self.phoo.namespaceStack.push(new Module(mname));
+        var urlPH = url.replace(/js$/, 'ph');
+        var urlJS = url.replace(/ph$/, 'js');
+        async function loadFromJS() {
+            var mod = await import(urlJS); // jshint ignore:line
+            self.phoo.namespaceStack.pop();
+            self.phoo.namespaceStack.push(mod.module);
         }
-        else {
-            newPhoo = self;
+        async function loadFromPH() {
+            var resp = await fetch(urlPH);
+            if (resp.status >= 300)
+                throw new UnreachableError('Fetch error');
+            var text = await resp.text();
+            await self.run(text);
         }
-        var resp, jsMod;
+
         if (url.endsWith('.js')) {
             try {
-                jsMod = await import(url); /* jshint ignore:line */
-                await jsMod.init(newPhoo);
+                loadFromJS();
             }
             catch (e) {
-                // try phoo code
-                resp = await fetch(url.replace(/.js$/, '.ph'));
-                if (resp.status >= 300)
-                    throw new ModuleNotFoundError('Fetch error');
-                await newPhoo.run(await resp.text());
+                loadFromPH();
+            }
+        } else {
+            try {
+                loadFromPH();
+            }
+            catch (e) {
+                loadFromJS();
             }
         }
-        else {
-            resp = await fetch(url);
-            if (resp.status >= 300) {
-                // try javascript module
-                try {
-                    jsMod = await import(url.replace(/.ph$/, '.js')); /* jshint ignore:line */
-                    await jsMod.init(newPhoo);
-                }
-                catch (e) {
-                    throw new ModuleNotFoundError('Fetch error');
-                }
-            }
-            await newPhoo.run(await resp.text());
-        }
-        if (alias !== '*') {
-            self.children.push(newPhoo);
-        }
+        self.phoo.modules.push(self.phoo.namespaceStack.pop());
     }
 
     function alias(n, a) {
-        self.addWord(a, w(n));
+        self.phoo.getNamespace(0).words.add(a, w(n));
     }
 
-    async function importFromName(n, alias) {
-        await importFromURL(n.startsWith('_') ? `./${n.slice(1)}.js` : `./${n}.ph`, n, alias);
+    async function importFromName(n) {
+        await importFromURL(n.startsWith('_') ? `./${n.slice(1)}.js` : `./${n.replace(self.phoo.namepathSeparator, '/')}.ph`, n);
     }
 
-    var w1 = await next('symbol', 'array', 'string');
+    var w1 = await next(/symbol|array|string/);
     var w1n, w2n, w3, w3n, w4n, w5n;
     if (type(w1) === 'symbol') {
         // import XX ...
@@ -111,10 +107,10 @@ export async function import_() {
             // import * from foo
             // import * from [ foo bar ]
             // import * from $ '/path/to/module.ph'
-            w2n = await next('>symstr');
+            w2n = nextSymStr();
             if (w2n !== 'from')
                 throw new DubiousSyntaxError('import: expected \'from\' after \'import *\'');
-            w3 = await next('symbol', 'array', 'string');
+            w3 = await next(/symbol|array|string/);
             if (type(w3) !== 'array') w3 = [w3];
             for (var m of w3) {
                 switch (type(m)) {
@@ -135,14 +131,14 @@ export async function import_() {
             // import foo as bar from baz
             // import foo from bar
             // import foo from bar as baz
-            w2n = await next('>symstr');
+            w2n = nextSymStr();
             if (w2n !== 'as' || w2n !== 'from') {
                 backup(); // undo call to next()
                 await importFromName(w1n);
             }
             else if (w2n === 'as') {
-                w3n = await next('>symstr');
-                w4n = await next('>symstr');
+                w3n = nextSymStr();
+                w4n = nextSymStr();
                 if (w4n !== 'from') {
                     // import foo as bar
                     backup();
@@ -150,7 +146,7 @@ export async function import_() {
                 }
                 else {
                     // import foo as bar from baz
-                    w5n = await next('>symstr');
+                    w5n = nextSymStr();
                     await importFromName(w5n);
                     alias(`${w5n}${this.namepathSeparator}${w1n}`, w3n);
                 }
@@ -158,8 +154,8 @@ export async function import_() {
             else if (w2n === 'from') {
                 // import foo from bar
                 // import foo from bar as baz
-                w3n = await next('>symstr');
-                w4n = await next('>symstr');
+                w3n = nextSymStr();
+                w4n = nextSymStr();
                 await importFromName(w3n);
                 if (w4n !== 'as') {
                     backup();
@@ -172,15 +168,15 @@ export async function import_() {
         }
     } else if (type(w1) === 'string') {
         // import $ '/path/to/module.ph' as module
-        w2n = await next('>symstr');
+        w2n = nextSymStr();
         if (w2n !== 'as')
             throw new DubiousSyntaxError('import: expected \'as\' after \'import <url>\'');
-        w3n = await next('>symstr');
+        w3n = nextSymStr();
         await importFromURL(w1, `urlimport-${w1}`, w3n);
     } else if (type(w1) === 'array') {
         // import [ foo bar ]
         // import [ foo bar ] from baz
-        w2n = await next('>symstr');
+        w2n = nextSymStr();
         if (w2n !== 'from') {
             backup();
             for (var m in w1) { /* jshint ignore:line */
@@ -193,7 +189,7 @@ export async function import_() {
                 }
             }
         } else {
-            w3n = await next('>symstr');
+            w3n = nextSymStr();
             await importFromName(w3n);
             for (var n of w1) {
                 var nn = name(n);

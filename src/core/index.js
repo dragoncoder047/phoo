@@ -5,17 +5,16 @@
 
 import { UnknownWordError } from './errors.js';
 import { PBase } from './pbase.js';
-import { name, type } from './utils.js';
+import { cloneArray, name, type } from './utils.js';
 import { _PWordDef_ } from './pbase.js';
 import { _PWordMap_ } from './pbase.js';
 import { Namespace, Module } from './namespace.js';
+import { Thread } from './threading.js';
 
 /**
  * A Phoo interpreter.
- *
- * Inherits methods from {@linkcode PBase}.
  */
-export class Phoo extends PBase {
+export class Phoo {
     /**
      * @param {Object} [opts={}]
      * @param {Array<any>} [opts.stack=[]] The initial items into the stack.
@@ -33,7 +32,26 @@ export class Phoo extends PBase {
         strictMode = true,
         namepathSeparator = ':',
     }) {
-        super({ namespaces, stack, maxDepth });
+        /**
+         * Mapping of words to code
+         * @type {Namespace[]}
+         * @default nothing
+         */
+        this.namespaceStack = namespaces;
+        /**
+         * Stack that working values are
+         * pushed and popped from during execution.
+         * @type {Array}
+         * @default []
+         */
+        this.workStack = stack;
+        /**
+         * The maximum length of {@linkcode PBase.returnStack}
+         * before a {@linkcode StackOverflowError} error is thrown.
+         * @type {number}
+         * @default 10000
+         */
+        this.maxDepth = maxDepth;
         /**
          * Modules that can be looked up by name.
          * @type {Module[]}
@@ -72,17 +90,28 @@ export class Phoo extends PBase {
     }
 
     /**
-     * @private
+     * Run some code in a subthread.
+     * @param {string} code Code to run
+     * @param {boolean} [block=false] Wait until the thread finishes.
+     * @returns {{promise: Promise<any[]>, t: Thread}|Promise<any[]>} The promise returned by {@linkcode Thread.run} and the thread itself, if `block` is false, otherwise the promise which can be awaited.
      */
+    spawn(code, block = false) {
+        var t = new Thread({
+            parent: this,
+            stack: cloneArray(this.stack),
+            maxDepth: this.maxDepth
+        });
+        var promise = t.run(code);
+        if (block) return promise;
+        return { promise, t };
+    }
+
     getNamespace(idx) {
         return this.namespaceStack[this.namespaceStack.length - 1 - idx];
     }
 
-    /**
-     * @private
-     */
     resolveNamepath(word, kind = 'words') {
-        // TODO modules
+        // TODO #3 modules
         var def;
         for (var i = 0; i < this.namespaceStack.length && def === undefined; i++) def = this.getNamespace(i)[kind].find(word);
         if (def === undefined)
