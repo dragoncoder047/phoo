@@ -1,5 +1,7 @@
 # Phoo
 
+<!-- cSpell:ignore phoo -->
+
 **Currently broken, working on getting it fixed...**
 
 Phoo is a programming language inspired by [Quackery][], bearing resemblance to both [Forth][] and [Ruby][] at the same time, and with elements of [Python][], [Lua][], and possibly some other esoteric languages that I can't remember. And it's (mostly) bootstrapped.
