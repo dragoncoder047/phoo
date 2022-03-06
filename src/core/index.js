@@ -3,10 +3,12 @@
  * Main import file for the Phoo core.
  */
 
-import { AlreadyDefinedError, UnknownWordError } from './errors.js';
+import { UnknownWordError } from './errors.js';
 import { PBase } from './pbase.js';
-import { WORD_NAME_SYMBOL } from './constants.js';
 import { name, clone as cloneObject, cloneArray, type } from './utils.js';
+import { _PWordDef_ } from './pbase.js';
+import { _PWordMap_ } from './pbase.js';
+import { Namespace, Module } from './namespace.js';
 
 /**
  * A Phoo interpreter.
@@ -18,12 +20,14 @@ export class Phoo extends PBase {
      * @param {Object} [opts={}]
      * @param {Array<any>} [opts.stack=[]] The initial items into the stack.
      * @param {Namespace[]} [opts.namespaces] The initial namespace stack.
+     * @param {Module[]} [opts.modules] The initial cache of modules.
      * @param {number} [opts.maxDepth=10000] The maximum return stack length before a {@linkcode StackOverflowError} error is thrown.
      * @param {boolean} [opts.strictMode=true] Enable or disable strict mode (see {@linkcode Phoo.strictMode})
      * @param {string} [opts.namepathSeparator=':'] Separator used to split name paths in modules (e.g. `math:sqrt`)
      */
     constructor({
         namespaces = [],
+        modules = [],
         stack = [],
         maxDepth = 10000,
         strictMode = true,
@@ -31,11 +35,10 @@ export class Phoo extends PBase {
     }) {
         super({ namespaces, stack, maxDepth });
         /**
-         * Map of regex to code that will transform
-         * single-word literal values into the actual value.
-         * @type {Map<RegExp, _PWordDef_>}
+         * Modules that can be looked up by name.
+         * @type {Module[]}
          */
-        this.literalizers = literalizers;
+        this.modules = modules;
         /**
          * Whether strict mode is enabled.
          *
@@ -67,33 +70,28 @@ export class Phoo extends PBase {
          */
         this.namepathSeparator = namepathSeparator;
     }
+
     /**
-     * Overrides [the same-named method]{@link PBase.resolveWord} in {@linkcode PBase}.
-     *
-     * Looks up the word in {@linkcode PBase.words|:::js this.words}.
-     * @param {string} word The word to be looked up.
-     * @returns {_PWordDef_}
+     * @private
      */
-    resolveWord(word) {
-        //TODO fixme
-        var def = this.words[word];
-        if (def === undefined)
-            def = this.undefinedWord(word);
-        if (type(def) === 'symbol')
-            return this.resolveWord(name(def));
-        return def;
+    getNamespace(idx) {
+        return this.namespaceStack[this.namespaceStack.length - 1 - idx];
     }
 
     /**
-     * Overrides [the same-named method]{@link PBase.lookupBuilder} in {@linkcode PBase}.
-     *
-     * Looks up the builder in {@linkcode PBase.words|:::js this.builders}.
-     * @param {string} builder The builder to be looked up.
-     * @returns {_PWordDef_}
+     * @private
      */
-    lookupBuilder(builder) {
-        return this.builders[builder];
+    resolve(word, kind = 'words') {
+        // TODO fixme
+        var def;
+        for (var i = 0; i < this.namespaceStack.length && def === undefined; i++) def = this.getNamespace(i)[kind].find(word);
+        if (def === undefined)
+            def = this.undefinedWord(word);
+        if (type(def) === 'symbol')
+            return this.resolve(name(def));
+        return def;
     }
+
     /**
      * Overrides [the same-named method]{@link PBase.compileLiteral} in {@linkcode PBase}.
      *
@@ -110,7 +108,7 @@ export class Phoo extends PBase {
             var result = regex.exec(word);
             if (result) {
                 this.push(result);
-                this._safeToRun = true; // kludgey, but it works
+                this._safeToRun = true; // HACK - somehow it works
                 await this.run(code);
                 this._safeToRun = false;
                 a.push(this.pop());
@@ -121,13 +119,14 @@ export class Phoo extends PBase {
     }
 
     /**
-     * Called to dynamically create the definition of a word when {@linkcode Phoo.resolveWord}
+     * Called to dynamically create the definition of a word when {@linkcode Phoo.resolve}
      * otherwise fails to find it. See property [strictMode]{@linkcode Phoo.strictMode} for the behavior of this.
      * @param {string} word The word that is not defined.
      * @returns {_PWordDef_} The temporary definition of the word.
      */
     undefinedWord(word) {
-        if (this.strictMode) throw UnknownWordError.withPhooStack(`Word ${word} does not exist`, this.returnStack);
+        if (this.strictMode)
+            throw UnknownWordError.withPhooStack(`Word ${word} does not exist`, this.returnStack);
         /**
          * @this Phoo
          */
@@ -145,7 +144,7 @@ export class Phoo extends PBase {
      */
     async executeOneItem(item) {
         if (type(item) === 'symbol')
-            item = this.resolveWord(name(item));
+            item = this.resolve(name(item));
         if (item === 'use loose')
             this.strictMode = false;
         else if (item === 'use strict')
@@ -157,42 +156,6 @@ export class Phoo extends PBase {
         }
         else
             this.push(item);
-    }
-
-    /**
-     * Add the word to make it available.
-     * @param {string} word The word to add.
-     * @param {_PWordDef_} def The definition of it.
-     * @param {boolean} [safe=true] Fail if already defined.
-     * @throws {AlreadyDefined} if `safe` is `:::js true` and the word is already defined.
-     */
-    addWord(word, def, safe = true) {
-        if (safe && this.words[word] !== undefined) throw new AlreadyDefinedError(`Word ${word} is already defined`);
-        this.words[word] = def;
-        def[WORD_NAME_SYMBOL] = word;
-    }
-
-    /**
-     * Add the builder to make it available.
-     * @param {string} builder The builder to add.
-     * @param {_PWordDef_} def The definition of it.
-     * @param {boolean} [safe=true] Fail if already defined.
-     * @throws {AlreadyDefined} if `safe` is `:::js true` and the builder is already defined.
-     */
-    addBuilder(builder, def, safe = true) {
-        if (safe && this.builders[builder] !== undefined) throw new AlreadyDefinedError(`Builder ${builder} is already defined`);
-        this.builders[builder] = def;
-    }
-
-    /**
-     * Add the literalizer.
-     *
-     * Note: This will not affect any arrays or word that have already been compiled.
-     * @param {RegExp} regex The regular expression to match against.
-     * @param {_PWordDef_} def The code to run when it matches.
-     */
-    addLiteralizer(regex, def) {
-        this.literalizers.set(regex, def);
     }
 
     /**
@@ -215,9 +178,6 @@ export class Phoo extends PBase {
         return c;
     }
 }
-
-import { _PWordDef_ } from './pbase.js';
-import { _PWordMap_ } from './pbase.js';
 
 /*re*/export { word, name, w } from './utils.js';
 /*re*/export * from './errors.js';

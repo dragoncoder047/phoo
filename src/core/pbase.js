@@ -114,33 +114,7 @@ export class PBase {
          */
         this.children = [];
     }
-
-    /**
-     * Look up the definition of a word and retrieve it, following module symlinks if found.
-     * Should defer to {@linkcode PBase.undefinedWord} if the word cannot otherwise
-     * be found.
-     *
-     * Does nothing by default, but it is overridden in {@linkcode Phoo}.
-     * @param {string} word The word to be looked up.
-     * @abstract
-     * @returns {_PWordDef_}
-     */
-    resolveWord(word) {
-        // stub method
-    }
-
-    /**
-     * Look up the definition of a builder and retrieve it.
-     * Should return `:::js undefined` if the builder cannot be found.
-     *
-     * Does nothing by default, but it is overridden in {@linkcode Phoo}.
-     * @param {string} builder The builder to be looked up.
-     * @abstract
-     * @returns {_PWordDef_}
-     */
-    lookupBuilder(builder) {
-        // stub method
-    }
+    
     /**
      * Try to transform the word into a literal.
      * Should return `:::js true` if the operation succeeded, and the transformed value
