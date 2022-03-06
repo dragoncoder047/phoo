@@ -88,7 +88,7 @@ export class Phoo extends PBase {
         if (def === undefined)
             def = this.undefinedWord(word);
         if (type(def) === 'symbol')
-            return this.resolve(name(def));
+            return this.resolve(name(def), kind);
         return def;
     }
 
