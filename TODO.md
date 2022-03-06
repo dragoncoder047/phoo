@@ -1,4 +1,4 @@
-* [ ] Finish docs
+* [ ] DOCUMENTATION!!!
 * [ ] Finish core
     * [ ] `local`
     * [ ] Rename `builder` to `new-macro!` as a macro (and follow convention that macros end with `!`)
