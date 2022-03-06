@@ -31,7 +31,7 @@ export class Phoo extends PBase {
         stack = [],
         maxDepth = 10000,
         strictMode = true,
-        namepathSeparator: namepathSeparator = ':',
+        namepathSeparator = ':',
     }) {
         super({ namespaces, stack, maxDepth });
         /**
