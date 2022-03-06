@@ -4,12 +4,12 @@
  */
 
 import { WORD_NAME_SYMBOL } from './constants.js';
-import { _PWordDef_ } from './pbase.js';
+import { _PWordDef_ } from './pbase.js';  //cSpell:ignore pbase
 
 /**
- * Namespace that holds everything in a scope.
+ * A `SimpleNamespace` holds only one type of thing in a scope.
  */
-export class Namespace {
+export class SimpleNamespace {
     constructor() {
         /**
          * The map of word name to definition.
@@ -21,45 +21,56 @@ export class Namespace {
 
     /**
      * Add the word to make it available.
-     * @param {string} word The word to add.
+     * @param {string} name The word to add.
      * @param {_PWordDef_} def The definition of it.
      */
-    add(word, def) {
-        var a = this.map.get(word) || [];
+    add(name, def) {
+        var a = this.map.get(name) || [];
         a.push(def);
-        this.map.set(word, a);
-        def[WORD_NAME_SYMBOL] = word;
+        this.map.set(name, a);
+        def[WORD_NAME_SYMBOL] = name;
     }
 
     /**
      * Remove the word, reverting to the old definition if it had one.
-     * @param {string} word The word whose definition to remove.
+     * @param {string} name The word whose definition to remove.
      * @returns {_PWordDef_} The old definition, if there was one.
      */
     
-    forget(word) {
-        var a = this.map.get(word) || [];
+    forget(name) {
+        var a = this.map.get(name) || [];
         var r = a.pop();
-        this.map.set(word, a);
+        this.map.set(name, a);
         return r;
     }
 
     /**
      * Find the definition of a word and return it.
-     * @param {string} word The word to look up.
+     * @param {string} name The word to look up.
      * @returns {_PWordDef_}
      */
-    find(word) {
-        var w = this.forget(word);
-        this.add(word, w);
+    find(name) {
+        var w = this.forget(name);
+        this.add(name, w);
         return w;
+    }
+}
+
+/**
+ * The namespace type that Phoo usually uses, holding words, builders, and literalizers.
+ */
+export class Namespace {
+    constructor() {
+        this.words = new SimpleNamespace();
+        this.builders = new SimpleNamespace();
+        this.literalizers = new SimpleNamespace();
     }
 }
 
 /**
  * A module is a named namespace that usually encloses a file.
  */
-class Module extends Namespace {
+export class Module extends Namespace {
     /**
      * @param {string} name The name of the module
      */
