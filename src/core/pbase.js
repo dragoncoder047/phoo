@@ -114,7 +114,7 @@ export class PBase {
          */
         this.children = [];
     }
-    
+
     /**
      * Try to transform the word into a literal.
      * Should return `:::js true` if the operation succeeded, and the transformed value
@@ -160,7 +160,7 @@ export class PBase {
                 return [source]; // just wrap it
         }
         this._checkRaceCondition();
-        this._safeToRun = false;
+        this._safeToRun = false; // see issue #1
         var code = source.slice();
         var origLength = this.stack.length;
         var word, b, a = [];
@@ -178,7 +178,7 @@ export class PBase {
                             await b.call(this);
                             break;
                         case 'array':
-                            this._safeToRun = true;
+                            this._safeToRun = true; // see issue #1
                             await this.run(b);
                             this._safeToRun = false;
                             break;
@@ -200,7 +200,7 @@ export class PBase {
             throw DubiousSyntaxError.wrap(e, this.stack);
         }
         finally {
-            this._safeToRun = true;
+            this._safeToRun = true; // see issue #1
             this._killed = 0;
         }
         if (this.stack.length !== origLength)
@@ -213,7 +213,7 @@ export class PBase {
      * @private
      */
     _checkRaceCondition() {
-        if (!this._safeToRun)
+        if (!this._safeToRun) // see issue #1 -- won't be needed once fixed
             throw new RaceConditionError();
     }
 
@@ -329,8 +329,8 @@ export class PBase {
      * @returns {Promise<Array>} The stack after execution.
      */
     async execute(c) {
-        this._checkRaceCondition();
-        this._safeToRun = false;
+        this._checkRaceCondition(); // see issue #1
+        this._safeToRun = false; // see issue #1
         var pc = 0;
         try {
             while (true) {
@@ -361,7 +361,7 @@ export class PBase {
             throw PhooError.wrap(e, this.returnStack);
         }
         finally {
-            this._safeToRun = true;
+            this._safeToRun = true; // see issue #1
             this._killed = 0;
         }
         return this.workStack;

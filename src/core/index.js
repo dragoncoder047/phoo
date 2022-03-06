@@ -108,7 +108,7 @@ export class Phoo extends PBase {
             var result = regex.exec(word);
             if (result) {
                 this.push(result);
-                this._safeToRun = true; // HACK - somehow it works
+                this._safeToRun = true; // HACK #1 - somehow it works
                 await this.run(code);
                 this._safeToRun = false;
                 a.push(this.pop());
@@ -150,7 +150,7 @@ export class Phoo extends PBase {
         else if (item === 'use strict')
             this.strictMode = true;
         else if (type(item) === 'function') {
-            this._safeToRun = true;
+            this._safeToRun = true; // see issue #1
             await item.call(this);
             this._safeToRun = false;
         }
