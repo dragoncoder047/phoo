@@ -5,7 +5,7 @@
 
 import { UnknownWordError } from './errors.js';
 import { PBase } from './pbase.js';
-import { name, clone as cloneObject, cloneArray, type } from './utils.js';
+import { name, type } from './utils.js';
 import { _PWordDef_ } from './pbase.js';
 import { _PWordMap_ } from './pbase.js';
 import { Namespace, Module } from './namespace.js';
@@ -81,47 +81,19 @@ export class Phoo extends PBase {
     /**
      * @private
      */
-    resolve(word, kind = 'words') {
+    resolveNamepath(word, kind = 'words') {
         // TODO modules
         var def;
         for (var i = 0; i < this.namespaceStack.length && def === undefined; i++) def = this.getNamespace(i)[kind].find(word);
         if (def === undefined)
             def = this.undefinedWord(word);
         if (type(def) === 'symbol')
-            return this.resolve(name(def), kind);
+            return this.resolveNamepath(name(def), kind);
         return def;
     }
 
     /**
-     * Overrides [the same-named method]{@link PBase.compileLiteral} in {@linkcode PBase}.
-     *
-     * Sequentially goes through and checks each regular expression
-     * in {@linkcode Phoo.literalizers|:::js this.literalizers}, and when one matches, it pushes
-     * the match result, runs the corresponding code, and pushes the
-     * top value on the stack to the compiled array.
-     * @param {string} word The word to be converted.
-     * @param {Array} a The current array being compiled.
-     * @returns {Promise<boolean>} Whether processing succeeded.
-     */
-    async compileLiteral(word, a) {
-        for (var ns of this.namespaceStack.slice().reverse()) {
-            for (var [regex, code] in ns.literalizers) {
-                var result = regex.exec(word);
-                if (result) {
-                    this.push(result);
-                    this.lock.release();
-                    await this.run(code);
-                    await this.lock.acquire();
-                    a.push(this.pop());
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Called to dynamically create the definition of a word when {@linkcode Phoo.resolve}
+     * Called to dynamically create the definition of a word when {@linkcode Phoo.resolveNamepath}
      * otherwise fails to find it. See property [strictMode]{@linkcode Phoo.strictMode} for the behavior of this.
      * @param {string} word The word that is not defined.
      * @returns {_PWordDef_} The temporary definition of the word.
@@ -130,54 +102,30 @@ export class Phoo extends PBase {
         if (this.strictMode)
             throw UnknownWordError.withPhooStack(`Word ${word} does not exist`, this.returnStack);
         /**
-         * @this Phoo
+         * @this Thread
          */
         else return function () {
             this.push(globalThis[word]);
         };
     }
 
-    /**
-     * Callback when a non-array is encountered
-     * during execution. Functions are simply called.
-     * 
-     * See property [strictMode]{@linkcode Phoo.strictMode} for the behavior of this.
-     * @param {any} item Thing to be dealt with.
-     */
-    async executeOneItem(item) {
-        if (type(item) === 'symbol')
-            item = this.resolve(name(item));
-        if (item === 'use loose')
-            this.strictMode = false;
-        else if (item === 'use strict')
-            this.strictMode = true;
-        else if (type(item) === 'function') {
-            await item.call(this);
-        }
-        else
-            this.push(item);
-    }
-
-    /**
-     * Clone this instance.
-     * @param {boolean} [recursive=true] Recursively clone words/builders/literalizers, the stack, and parent and child modules.
-     * @returns {Phoo}
-     */
-    clone(recursive = true) {
-        var c = new Phoo({
-            // FIXME HERE
-            words: cloneObject(this.words, recursive),
-            builders: cloneObject(this.builders, recursive),
-            literalizers: cloneObject(this.literalizers, recursive),
-            stack: cloneArray(this.stack, recursive, true),
-            maxDepth: this.maxDepth,
-            moduleName: this.moduleName,
-            parentModule: recursive ? this.parentModule.clone(true) : this.parentModule,
-            strictMode: this.strictMode,
-        });
-        c.children = recursive ? this.children.map(c => c.clone(true)) : this.children.slice();
-        return c;
-    }
+    // /**
+    //  * Clone this instance.
+    //  * @returns {Phoo}
+    //  */
+    // clone() {
+    //     var c = new Phoo({
+    //         // FIXME HERE
+    //         namespaces: this.namespaceStack.slice(),
+    //         stack: cloneArray(this.stack, recursive, true),
+    //         maxDepth: this.maxDepth,
+    //         moduleName: this.moduleName,
+    //         parentModule: recursive ? this.parentModule.clone(true) : this.parentModule,
+    //         strictMode: this.strictMode,
+    //     });
+    //     c.children = recursive ? this.children.map(c => c.clone(true)) : this.children.slice();
+    //     return c;
+    // }
 }
 
 /*re*/export { word, name, w } from './utils.js';

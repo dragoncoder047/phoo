@@ -88,7 +88,7 @@ export class StackUnderflowError extends PhooError { }
 /**
  * Error raised when a race condition would result.
  */
-export class RaceConditionError extends PhooError { }
+export class RaceConditionError extends PhooError { } // Is this even needed anymore (see #1)
 
 /**
  * Error raised when the program is manually interrupted.
