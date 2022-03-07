@@ -8,7 +8,7 @@ function bb(n) { var r = []; for (var i = 0; i < n; i++) r.push('bigint'); retur
 
 a(module, bb(2), 'gcd', gcd);
 a(module, bb(2), 'lcm', lcm);
-a(module, bb(2), '/t', truncdiv);
+a(module, bb(2), '/safe', safediv);
 a(module, bb(2), 'mod', mod);
 a(module, bb(3), '%**', modpow);
 a(module, bb(2), 'log_', intlog);
@@ -43,16 +43,14 @@ function gcd(a, b) {
 function lcm(a, b) {
     var g = gcd(a, b);
     if (g == 0) return 0n;
-    return intdiv(a, g) * b;
+    return safediv(a, g) * b;
 }
 
 // edge cases: returns 0 if result would be infinity
-function truncdiv(a, b) {
+function safediv(a, b) {
     if (b == 0) return n0;
     return a / b;
 }
-
-intdiv = truncdiv; // assuming bigint support.
 
 function mod(a, b) {
     var negb = (b < 0n);
@@ -60,55 +58,54 @@ function mod(a, b) {
     var nega = (a < 0n);
     if (nega) a = -a;
     a %= b;
-    if (nega) { a = (b - a) % b; } // not the most optimal implementation, but made to easily work for both Number and BigInt
+    if (nega) { a = (b - a) % b; } // not the most optimal implementation, but made to easily work for BigInt
     if (negb) a = -a;
     return a;
 }
 
-// integer power (a**b) modulo m.
+// integer power (b**e) modulo m.
 // Handles error cases as follows:
-// Returns 0 if the output would be infinity (instead of throwing error) which happens if b < 0 and a == 0.
+// Returns 0 if the output would be infinity (instead of throwing error) which happens if e < 0 and b == 0.
 // Returns 0 if m is <= 0
 // Returns 1 for the case of 0**0.
-function modpow(a, b, m) {
+function modpow(b, e, m) {
     if (m == 1n) return 0n; // anything modulo 1 is 0.
     if (m <= 0n) return 0n; // error
-    // integer power
-    if (b < 0n) {
-        if (a == 0n) {
+    if (e < 0n) {
+        if (b == 0n) {
             return 0n; // actually infinity, but user must handle this as error case outside if desired
-        } else if (a == 1n) {
+        } else if (b == 1n) {
             return 1n;
-        } else if (a == -1n) {
-            return (b & 1n) ? -1n : 1n;
+        } else if (b == -1n) {
+            return (e & 1n) ? -1n : 1n;
         } else {
             return 0n; // integer power result: truncation of the small value is 0.
         }
-    } else if (b == 0n) {
+    } else if (e == 0n) {
         return 1n;
     } else {
-        var neg = a < 0n;
-        if (neg) a = -a;
+        var neg = b < 0n;
+        if (neg) b = -b;
         var r = 1n;
         var pot = ((m & (m - 1n)) == 0n); // power of two, so can use faster mask instead of modulo division
         if (pot) {
             var mask = m - 1n;
-            a &= mask;
-            while (b > 0n) {
-                if (b & 1n) r = ((r * a) & mask);
-                b >>= 1n;
-                a = ((a * a) & mask);
+            b &= mask;
+            while (e > 0n) {
+                if (e & 1n) r = (r * b) & mask;
+                e >>= 1n;
+                b = (b * b) & mask;
             }
         } else {
             r = 1n;
-            a %= m;
-            while (b > 0) {
-                if (b & n1) r = (r * a) % m;
-                b >>= 1n;
-                a = (a * a) % m;
+            b %= m;
+            while (e > 0) {
+                if (e & n1) r = (r * b) % m;
+                e >>= 1n;
+                b = (b * b) % m;
             }
         }
-        if (neg && (b & n1)) {
+        if (neg && (e & n1)) {
             r = -r;
         }
         return r;
@@ -125,39 +122,39 @@ function intlog(a, b) {
     var r = 0n;
     while (a > 0n) {
         r++;
-        a = intdiv(a, b);
+        a = safediv(a, b);
     }
-    return r - 0n;
+    return r - 1n;
 }
 
-// computes floored integer root b of a (e.g. b = 2 gives sqrt, b=3 gives cbrt)
-// that is, computes largest integer k such that k**b <= a
-// b must be positive integer
+// computes floored integer root n of x (e.g. n = 2 gives sqrt, n=3 gives cbrt)
+// that is, computes largest integer r such that r**n <= x
+// n must be positive integer
 // returns undefined if result could not be computed
-function introot(a, b) {
-    if (b <= 0n) return undefined;
-    if (b == 1n) return a;
-    var neg = a < 0;
-    if (neg && !(b & 1n)) return undefined;
-    if (neg) a = -a;
+function introot(x, n) {
+    if (n <= 0n) return undefined;
+    if (n == 1n) return x;
+    var neg = x < 0;
+    if (neg && !(n & 1n)) return undefined;
+    if (neg) x = -x;
 
     // if n is bigger than log2(a), the result is smaller than 2
-    var l = log2(a);
+    var l = log2(x);
     if (l == 0n) return undefined;
-    if (b > l) return neg ? -1n : 1n;
+    if (n > l) return neg ? -1n : 1n;
 
     var low = n0;
     // high must be higher than the solution (not equal), otherwise the comparisons below don't work correctly.
     // estimate for higher bound: exact non-integer solution of a ^ (1 / b) is 2 ** (log2(a) / b)
     // integer approximation: ensure to use ceil of log2(a)/b to have higher upper bound, and add 1 to be sure it's higher.
     // ceil of log2(a) is l + 1, and ceil of (l + 1) / b is intdiv(l + b + 1 - 1, b)
-    var high = (2n ** intdiv(l + b, b)) + 2n;
+    var high = (2n ** safediv(l + n, n)) + 2n;
     var r;
     while (true) {
         r = (low + high) >> 1n;
-        var rr = r ** b;
-        if (rr == a) return neg ? -r : r;
-        else if (rr < a) low = r;
+        var rr = r ** n;
+        if (rr == x) return neg ? -r : r;
+        else if (rr < x) low = r;
         else high = r;
         if (high <= low + n1) return neg ? -low : low;
     }
@@ -176,14 +173,14 @@ function modinv(a, b) {
         while (true) {
             if (a == 1n) { r = x; break; }
             if (a == 0n) { r = 0n; break; }
-            var d = intdiv(b, a);
+            var d = safediv(b, a);
             b = b - d * a; // modulo (matching floored division)
             y -= x * d;
             b = b;
 
             if (b == 1n) { r = y; break; }
             if (b == 0n) { r = 0n; break; }
-            d = intdiv(a, b);
+            d = safediv(a, b);
             b = a - d * b; // modulo (matching floored division)
             x -= y * d;
             a = b;
@@ -195,31 +192,31 @@ function modinv(a, b) {
 
 // integer log2
 // error cases: returns 0 if a <= 0
-function log2(a) {
-    if (a <= 1n) return 0n;
+function log2(x) {
+    if (x <= 1n) return 0n;
     var r = 0n;
-    while (a > 0) {
+    while (x > 0) {
         r++;
-        a >>= 1n;
+        x >>= 1n;
     }
     return r - 1n;
 }
 
 // integer sqrt
 // error cases: returns 0 if a < 0
-function sqrt(a) {
-    if (a <= 0n) return 0n;
+function sqrt(x) {
+    if (x <= 0n) return 0n;
     var r = 0n;
     var s = 2n;
-    var as = a >> s;
-    while (as != 0n) {
+    var xsh = x >> s;
+    while (xsh != 0n) {
         s += 2n;
-        as = a >> s;
+        xsh = x >> s;
     }
     while (s >= 0n) {
         r <<= 1n;
         var c2 = r + 1n;
-        if (c2 * c2 <= (a >> s)) {
+        if (c2 * c2 <= (x >> s)) {
             r = c2;
         }
         s -= 2n;
@@ -227,31 +224,31 @@ function sqrt(a) {
     return r;
 }
 
-// factorial of a modulo b. returns result or undefined on overflow.
+// factorial of n modulo m. returns result or undefined on overflow.
 // overflow means the real (non-modulo) result is larger than b, or error condition
 // error cases:
-// - returns undefined if a < 0
-// - returns undefined if b <= 0
-// NOTE: can be slow for a > 4096 especially if b only has large prime factors
-function factorial(a, b) {
-    if (a < 0n) return undefined;
-    if (b <= 0n) return undefined;
+// - returns undefined if n < 0
+// - returns undefined if m <= 0
+// NOTE: can be slow for n > 4096 especially if m only has large prime factors
+function factorial(n, m) {
+    if (n < 0n) return undefined;
+    if (m <= 0n) return undefined;
 
-    var pot = (b & (b - 1n)) == 0; // power of two, so can use faster mask instead of modulo division
+    var pot = (m & (m - 1n)) == 0; // power of two, so can use faster mask instead of modulo division
 
     // if b is a power of 2 and a/2 is larger than amount of output bits,
     // then we know that all visible output bits will be 0, due to the amount of
     // factors '2' in the result. So no need to compute then.
-    if (pot && a > log2(b) * 2n) return undefined;
+    if (pot && n > log2(m) * 2n) return undefined;
     // if a is larger than b, then it's guaranteed that the modulo value itself
     // is a factor and we know the output modulo b will be 0.
-    if (a >= b) return undefined;
+    if (n >= m) return undefined;
 
     var r = 1n, i;
 
     if (pot) {
-        var mask = b - 1n;
-        for (i = 2n; i <= a; i++) {
+        var mask = m - 1n;
+        for (i = 2n; i <= n; i++) {
             r *= i;
             if (r > mask) {
                 r &= mask;
@@ -259,15 +256,15 @@ function factorial(a, b) {
             }
         }
     } else {
-        if (a >= b) {
+        if (n >= m) {
             // result is guaranteed to be 0, since the modulo itself will be
             // contained in the factors when a >= b. So no need to compute.
             r = 0n;
         } else {
-            for (i = 2n; i <= a; i++) {
+            for (i = 2n; i <= n; i++) {
                 r *= i;
-                if (r > b) {
-                    r = mod(r, b);
+                if (r > m) {
+                    r = mod(r, m);
                     // once the modulo operation made the result 0, which can easily happen as soon
                     // as we passed all the prime factors of b, we can stop since the result is
                     // guaranteed to stay 0.
@@ -437,7 +434,7 @@ function smallestfactor(n) {
 
     // recursively factor to ensure getting the smallest factor
     var r0 = smallestfactor(r);
-    var r1 = smallestfactor(intdiv(n, r));
+    var r1 = smallestfactor(safediv(n, r));
     return (r0 < r1) ? r0 : r1;
 }
 
@@ -455,7 +452,7 @@ function factorize(n) {
     for (i = 0; i < FIRST_PRIMES.length; i++) {
         while (n % FIRST_PRIMES[i] == 0) {
             result.push(FIRST_PRIMES[i]);
-            n = intdiv(n, FIRST_PRIMES[i]);
+            n = safediv(n, FIRST_PRIMES[i]);
         }
     }
 
@@ -481,7 +478,7 @@ function factorize(n) {
     // recursively factor, each side could have more factors
     var r0 = factorize(r);
     if (r0.length == 0) return []; // error
-    var r1 = factorize(intdiv(n, r));
+    var r1 = factorize(safediv(n, r));
     if (r1.length == 0) return []; // error
     return result.concat(r0, r1).sort((a, b) => a > b);
 }
@@ -536,7 +533,7 @@ function multiplicativeorder(a, m) {
         var p = f[i][0];
         var e = f[i][1];
         var m2 = p ** e;
-        var t = intdiv(m2, p) * (p - 1n);
+        var t = safediv(m2, p) * (p - 1n);
         var f2 = allfactors(t);
         for (var j = 0; j < f2.length; j++) {
             if (modpow(a, f2[j], m2) == 1n) {
@@ -614,8 +611,8 @@ function totient(n) {
     return r;
 }
 
-function legendre(n, p) {
-    return modpow(n, (p - 1n) >> 1n, p);
+function legendre(a, p) {
+    return modpow(a, (p - 1n) >> 1n, p);
 }
 
 // Tonelli–Shanks algorithm for quadratic residue (square root of n modulo p). p must be prime.
