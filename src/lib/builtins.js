@@ -7,7 +7,7 @@
 import { type, name, word } from '../core/utils.js';
 import { IllegalOperation, UnexpectedEOF, StackUnderflow, PhooError } from '../core/errors.js';
 import { STACK_TRACE_SYMBOL } from '../core/constants.js';
-import { Phoo } from '../core/index.js';
+import { naiveCompile, Phoo } from '../core/index.js';
 import { Module } from '../core/namespace.js';
 export const module = new Module('__builtins__');
 // var [, word, code] = /^(?:\s*)(\S+)([\S\s]*)$/.exec(code);
@@ -134,25 +134,25 @@ module.words.add('+', function sum() {
     this.push(this.pop() + this.pop());
 });
 
-function negate() {
+module.words.add('negate', function negate() {
     this.expect(/bigint|number/);
     this.push(-this.pop());
-}
+});
 
-function product() {
+module.words.add('*', function product() {
     this.expect(/bigint|number/, /bigint|number/);
     this.push(this.pop() * this.pop());
-}
+});
 
-function exp() {
+module.words.add('**', function exponentiate() {
     this.expect(/bigint|number/, /bigint|number/);
     var exponent = this.pop();
     var base = this.pop();
     this.push(base ** exponent);
-}
+});
 
 // cSpell:ignore divmod
-function divmod() {
+module.words.add('/mod', function divmod() {
     this.expect(/bigint|number/, /bigint|number/);
     var divisor = this.pop();
     var dividend = this.pop();
@@ -160,68 +160,69 @@ function divmod() {
     if (type(quot) !== 'bigint') quot = Math.floor(quot);
     this.push(quot);
     this.push(dividend % divisor);
-}
+});
 
-function div() {
+module.words.add('/', function divide() {
     this.expect(/bigint|number/, /bigint|number/);
     var divisor = this.pop();
     var dividend = this.pop();
     this.push(dividend / divisor);
-}
+});
 
-function eq() {
+module.words.add('=', function equal() {
     this.push(this.pop() == this.pop());
-}
+});
 
-function gt() {
+module.words.add('>', function greater() {
     this.expect(/bigint|number/, /bigint|number/);
     var a = this.pop();
     var b = this.pop();
     this.push(b > a);
-}
+});
 
-function nand() {
+module.words.add('nand', function nand() {
     var notA = !this.pop();
     var notB = !this.pop();
     //     or !(a && b)
     // de Morgan's law
     this.push(notA || notB);
-}
-// cSpell:ignore bitinv bitand bitor bitxor
-function bitinv() {
+});
+
+// cSpell:ignore bitinvert bitand bitor bitxor
+module.words.add('~', function bitinvert() {
     this.expect(/bigint|number/);
     this.push(~this.pop());
-}
+});
 
-function bitand() {
+module.words.add('&', function bitand() {
     this.expect(/bigint|number/, /bigint|number/);
     this.push(this.pop() & this.pop());
-}
+});
 
-function bitor() {
+module.words.add('|', function bitor() {
     this.expect(/bigint|number/, /bigint|number/);
     this.push(this.pop() | this.pop());
-}
+});
 
-function bitxor() {
+module.words.add('^', function bitxor() {
     this.expect(/bigint|number/, /bigint|number/);
     this.push(this.pop() ^ this.pop());
-}
+});
 
-function shl() {
+module.words.add('<<', function shiftleft() {
     this.expect(/bigint|number/, /bigint|number/);
     var places = this.pop();
     var num = this.pop();
     this.push(num << places);
-}
+});
 
-function put() {
+module.words.add('put', function put() {
     this.expect('array');
     var a = this.pop();
     a.push(this.pop());
-}
+});
 
-function take() {
+module.words.add('take', function take() {
     this.expect('array');
     var a = this.pop('array');
     var fff;
@@ -234,19 +235,20 @@ function take() {
     if (a.length < 1)
         throw new StackUnderflow('take: Unexpectedly empty array.');
     this.push(a.pop());
-}
+});
 
-function metaDone() {
+module.words.add(']done[', function metaDone() {
     this.retPop();
-}
+});
 
-function metaAgain() {
+module.words.add(']again[', function metaAgain() {
     var entry = this.retPop();
     entry.pc = -1;
     this.retPush(entry);
-}
+});
+
 // cSpell:ignore cjump
-function cjump() {
+module.words.add(']cjump[', function cjump() {
     var amount = +this.pop();
     var falsey = !this.pop();
     if (falsey) {
@@ -254,75 +256,75 @@ function cjump() {
         entry.pc += amount;
         this.retPush(entry);
     }
-}
+});
 
-function metaLiteral() {
+module.words.add("]'[", function metaLiteral() {
     var entry = this.retPop();
     entry.pc++;
     if (entry.arr.length <= entry.pc)
         throw new IllegalOperation("]'[: ' at the end of an array");
     this.push(entry.arr[entry.pc]);
     this.retPush(entry);
-}
+});
 
-function metaDo() {
+module.words.add(']do[', function metaDo() {
     var arr = this.pop();
     if (type(arr) !== 'array') arr = [arr];
     this.retPush({ arr, pc: -1 });
-}
+});
 
-function metaThis() {
+module.words.add(']this[', function metaThis() {
     var entry = this.retPop();
     this.retPush(entry);
     this.push(entry.arr);
-}
+});
 
-function lower() {
+module.words.add('lower', function lower() {
     this.expect('string');
     this.push(this.pop().toLowerCase());
-}
+});
 
-function upper() {
+module.words.add('upper', function upper() {
     this.expect('string');
     this.push(this.pop().toUpperCase());
-}
+});
 
-function strConcat() {
+module.words.add('..', function strConcat() {
     var a = '' + this.pop();
     var b = '' + this.pop();
     this.push(b + a);
-}
+});
 
-function newArray() {
+module.words.add('[]', function newArray() {
     this.push([]);
-}
+});
 
-function arrConcat() {
+module.words.add('concat', function arrConcat() {
     var a = this.pop();
     var b = this.pop();
     if (type(a) !== 'array') a = [a];
     if (type(b) !== 'array') b = [b];
     this.push(b.concat(a));
-}
+});
 
-function split() {
+module.words.add('split', function split() {
     this.expect(/bigint|number/, /string|array/);
     var i = this.pop();
     var a = this.pop();
     this.push(a.slice(0, i));
     this.push(a.slice(i));
-}
+});
 
-function peek() {
+module.words.add('peek', function peek() {
     this.expect(/bigint|number/, /string|array/);
     var i = this.pop();
     var a = this.pop();
     if (i < -a.length || i >= a.length)
         throw new IllegalOperation('peek: Index out of bounds');
     this.push(a[(i + a.length) % a.length]);
-}
+});
 
-function poke() {
+module.words.add('poke', function poke() {
     this.expect(/bigint|number/, /string|array/);
     var i = this.pop();
     var a = this.pop();
@@ -331,17 +333,18 @@ function poke() {
         throw new IllegalOperation('poke: Index out of bounds');
     a[(i + a.length) % a.length] = t;
     this.push(a);
-}
+});
+
 // to find do findwith [ over = ] drop end
 // ...but js is much faster
-function find() {
+module.words.add('find', function find() {
     this.expect('array');
     var a = this.pop();
     var i = this.pop();
     this.push((a.indexOf(i) + a.length) % a.length);
-}
+});
 
-async function sandbox() {
+module.words.add(']sandbox[', async function sandbox() {
     var c = this.pop();
     try {
         await this.execute(c, true);
@@ -349,132 +352,136 @@ async function sandbox() {
     } catch (e) {
         this.push(e);
     }
-}
+});
 
-function error() {
+module.words.add('die', function die() {
     throw PhooError.withPhooStack('' + this.pop(), this.returnStack);
-}
+});
 
-function getStack() {
+module.words.add(']getstack[', function getStack() {
     var err = this.pop();
     this.push(err[STACK_TRACE_SYMBOL]);
-}
+});
 
-function num$() {
+module.words.add('num>$', function num$() {
     this.expect(/number|bigint/, /number|bigint/);
     var b = this.pop();
     var n = this.pop();
     this.push(n.toString(b));
-}
+});
 
-function $num() {
+module.words.add('$>num', function $num() {
     this.expect(/number|bigint/, 'string');
     var b = this.pop();
     var s = this.pop();
     this.push(parseInt(s, b));
-}
+});
 
-function chr() {
+module.words.add('chr', function chr() {
     this.expect('number');
     this.push(String.fromCharCode(this.pop()));
-}
+});
 
-function type_() {
+module.words.add('type', function type_() {
     this.push(type(this.pop()));
-}
+});
 
-function bigg() {
+module.words.add('bigg', function bigg() {
     this.push(BigInt(this.pop()));
-}
+});
 
-async function compile() {
+module.words.add('compile', async function compile() {
     this.push(await this.compile(this.pop(), true));
-}
+});
 
-function time() {
+module.words.add('time', function time() {
     this.push(+new Date());
-}
+});
 
-function nestdepth() {
+module.words.add('nestdepth', function nestdepth() {
     this.push(this.returnStack.length);
-}
+});
 
-async function await_() {
+module.words.add('await', async function await_() {
     this.expect('Promise');
     this.push(await this.pop());
-}
+});
 
-function get() {
+module.words.add('get', function get() {
     var k = this.pop();
     var o = this.pop();
     this.push(o[k]);
-}
+});
 
-function set() {
+module.words.add('set', function set() {
     var k = this.pop();
     var o = this.pop();
     var v = this.pop();
     o[k] = v;
-}
+});
 
-function call() {
+module.words.add('call', function call() {
     this.expect('function', 'array');
     var f = this.pop();
     var a = this.pop();
     this.push(f(...a));
-}
+});
 
-function new_() {
+module.words.add('new', function new_() {
     this.expect('function', 'array');
     var c = this.pop();
     var a = this.pop();
     this.push(new c(...a));
-}
+});
 
-function word_() {
+module.words.add('word', function word_() {
     this.expect('string');
     this.push(word(this.pop()));
-}
+});
 
-function name_() {
+module.words.add('name', function name_() {
     this.expect('symbol');
     this.push(name(this.pop()));
-}
+});
 
-function newObject() {
+module.words.add('{}', function newObject() {
     this.push({});
-}
+});
 
-function self() {
+module.words.add('self', function self() {
     this.push(this);
-}
+});
 
-function stacksize() {
+module.words.add('stacksize', function stacksize() {
     this.push(this.workStack.length);
-}
+});
 
-function win() {
+module.words.add('window', function win() {
     this.push(globalThis);
-}
+});
 
 // and now, the most important ones!
-function metaDef() {
+module.words.add(']to[', function metaTo() {
     var d = this.pop('array', 'symbol');
     var n = name(this.pop('symbol'));
     this.phoo.getNamespace(0).words.add(n, d);
-}
-function metaBuilder() {
+});
+
+module.words.add(']builder[', function metaBuilder() {
     var d = this.pop('array');
     var n = name(this.pop('symbol'));
     this.phoo.getNamespace(0).builders.add(n, d);
 
-}
-function metaForget() {
+});
+
+module.words.add(']forget[', function metaForget() {
     var n = name(this.pop('symbol'));
     this.phoo.getNamespace(0).words.forget(n);
-}
+});
 
-//TODO- don't forget outer array definition
+module.words.add('to', naiveCompile("]'[ ]'[ ]to["));
+module.words.add('builder', naiveCompile("]'[ ]'[ ]builder["));
+module.words.add('forget', naiveCompile("]'[ ]forget["));
 
 // literalizers
 module.literalizers.add(/^[-+]?(([0-9]*\.?[0-9]+([Ee][-+]?[0-9]+)?)|(Infinity)|(NaN))$/,
