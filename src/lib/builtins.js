@@ -189,7 +189,7 @@ module.words.add('put', function put() {
 
 module.words.add('take', function take() {
     this.expect('array');
-    var a = this.pop('array');
+    var a = this.pop();
     var fff;
     if (type(a[0]) === 'symbol')
         fff = this.phoo.resolveNamepath(name(a[0]))[0];
@@ -409,6 +409,11 @@ module.words.add('name', function name_() {
     this.push(name(this.pop()));
 });
 
+module.words.add('resolve', function resolve() {
+    this.expect('symbol');
+    this.push(this.phoo.resolveNamepath(this.pop()));
+});
+
 module.words.add('{}', function newObject() {
     this.push({});
 });
@@ -427,20 +432,23 @@ module.words.add('window', function win() {
 
 // and now, the most important ones!
 module.words.add(']to[', function metaTo() {
-    var d = this.pop('array', 'symbol');
-    var n = name(this.pop('symbol'));
+    this.expect(/array|symbol/, 'symbol');
+    var d = this.pop();
+    var n = name(this.pop());
     this.phoo.getNamespace(0).words.add(n, d);
 });
 
 module.words.add(']builder[', function metaBuilder() {
-    var d = this.pop('array');
-    var n = name(this.pop('symbol'));
+    this.expect('array', 'symbol');
+    var d = this.pop();
+    var n = name(this.pop());
     this.phoo.getNamespace(0).builders.add(n, d);
 
 });
 
 module.words.add(']forget[', function metaForget() {
-    var n = name(this.pop('symbol'));
+    this.expect('symbol');
+    var n = name(this.pop());
     this.phoo.getNamespace(0).words.forget(n);
 });
 
