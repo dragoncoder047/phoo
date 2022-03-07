@@ -634,7 +634,7 @@ function ressol(n, p) {
     }
 
     var nr = 1n; // find a non-residue
-    for (; ;) {
+    while (true) {
         nr++;
         if (legendre(nr, p) > 1) break; // if legendre symbol is -1
     }

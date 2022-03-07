@@ -1,9 +1,21 @@
-
 const { sin, cos, round, abs, floor, min, max, sqrt, pow, log, exp, PI, E } = Math;
-const TWOPI = 2 * PI;
+const TWO_PI = 2 * PI;
+
+import { Module } from '../core/namespace.js';
+import { addFunctionAsWord as a } from '../core/index.js';
+
+export const module = new Module('_fmath');
+
+a(module, nn(1), 'gamma', gamma);
+a(module, nn(1), 'loggamma', loggamma);
+a(module, nn(1), 'W', lambertw);
+a(module, nn(2), 'erf', erf);
+a(module, nn(2), 'erfc', erfc);
+a(module, nn(2), 'J', besselj);
+
+function nn(n) { var r = []; for (var i = 0; i < n; i++) r.push('number'); return r; }
 
 // approximation of gamma function, for floating point input
-// 'gamma'
 function gamma(x) {
     if (x <= 0 && x == round(x)) return Infinity;
     if (x > 200) return Infinity;
@@ -15,10 +27,9 @@ function gamma(x) {
         y += p[i] / (x + i);
     }
     var t = x + 7 + 0.5;
-    return sqrt(TWOPI) * pow(t, x + 0.5) * exp(-t) * y;
+    return sqrt(TWO_PI) * pow(t, x + 0.5) * exp(-t) * y;
 }
 
-// 'loggamma'
 function loggamma(x) {
     if (x < 0) {
         if (x == floor(x)) return Infinity;
@@ -41,7 +52,6 @@ function loggamma(x) {
 }
 
 
-// 'lambertW'
 function lambertw(x) {
     if (isNaN(x)) return NaN;
     if (x == Infinity || x == -Infinity) return Infinity;
@@ -78,7 +88,7 @@ function lambertw(x) {
 }
 
 // Faddeeva function: w(z) = exp(-z^2)*erfc(-iz)
-// 'fadeeva'
+// internal
 function faddeeva(x, y) {
     const TWO_OVER_SQRT_PI = 2 / sqrt(PI);
     function cexp(x, y) {
@@ -151,21 +161,18 @@ function faddeeva(x, y) {
     return result;
 }
 
-// 'erf'
 function erf(x, y) {
     var a = exp(-x * x);
     if (x >= 0) return 1 - a * faddeeva(0, x)[0];
     else return a * faddeeva(0, -x)[0] - 1;
 }
 
-// 'erfc'
 function erfc(x, y) {
     var a = exp(-x * x);
     if (x >= 0) return a * faddeeva(0, x)[0];
     else return 2 - a * faddeeva(0, -x)[0];
 }
 
-// 'besselJ'
 function besselj(n, x) {
     if (n < 0 && floor(n) == n) {
         return (n & 1) ? -besselj(-n, x) : besselj(-n, x);
