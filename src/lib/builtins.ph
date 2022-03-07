@@ -6,14 +6,14 @@ to protect do
     try.prt put
 end
 
-to nop [ ]
+to noop [ ]
 
 to alias to
 
 builder const do
     dip do
         [] = iff
-            $ '"constant" needs something before it.' error
+            $ '"constant" needs something before it.' die
         dup take run
         nested
         concat
@@ -55,11 +55,11 @@ to 2over [ dip [ dip 2dup ] 2swap ]
 to pack do
     [] swap times do
         swap nested concat
-    ]
+    end
     reverse
 end
 
-to unpack [ witheach nop ]
+to unpack [ witheach noop ]
 
 to dip.hold [ stack ]
 protect dip.hold
@@ -183,7 +183,7 @@ to times do
     ]'[ times.action put
     dup times.start put
     do
-        1 - dup -1 > while
+        1- dup -1 > while
         times.count put
         times.action copy run
         times.count take
@@ -204,17 +204,17 @@ to restart [ times.start copy times.count replace ]
 
 to break [ 0 times.count replace ]
 
-to printable [ ord 32 > ]
+to printable? [ ord 32 > ]
 
-to trim [ dup findwith printable nop split nip ]
+to trim [ dup findwith printable? noop split nip ]
 
-to nextword [ dup findwith [ printable not end nop split swap ]
+to nextword [ dup findwith [ printable? not ] noop split swap ]
 
 to split$ do
     [] swap
     do
         trim
-        dup # while
+        dup len while
         nextword
         swap dip concat again
     end
@@ -223,7 +223,7 @@ end
 
 to nested [ [] tuck put ]
 
-to # [ .length ]
+to len [ .length ]
 
 to pluck [ split 1 split swap dip join 0 peek ]
 
@@ -245,8 +245,8 @@ to of do
         if do
             dip do
                 tuck join swap
-            ]
-        ]
+            end
+        end
         dip [ dup join ]
         again
     end
@@ -255,7 +255,7 @@ end
 
 to reverse do
     dup $ 'array' isa? if do
-        [] swap witheach [ arrayify swap concat ]
+        [] swap witheach [ nested swap concat ]
     end
 end
 
@@ -267,7 +267,7 @@ end
 
 to reflect do
     dup $ 'array' isa? if do
-        [] swap witheach [ reflect arrayify swap concat ]
+        [] swap witheach [ reflect nested swap concat ]
     end
 end
 
@@ -276,7 +276,7 @@ protect with.hold
 
 to makewith do
     nested
-    ' [ dup with.hold put # times ]
+    ' [ dup with.hold put len times ]
     ' [ with.hold copy i^ peek ]
     rot concat
     nested concat
@@ -299,6 +299,17 @@ to map do
     map.hold release
 end
 
+to filter do
+    ]'[ map.hold put
+    [] swap
+    witheach do
+        dup
+        map.hold copy run
+        if concat
+    end
+    map.hold release
+end
+
 to mi.tidyup [ stack ]
 to mi.result [ stack ]
 protect mi.tidyup
@@ -306,7 +317,7 @@ protect mi.result
 
 to matchitem do
     mi.tidyup put
-    over # mi.result put
+    over len mi.result put
     ' [
         if do
             i^ mi.result replace
@@ -321,10 +332,10 @@ end
 to findwith [ ]'[ ]'[ matchitem ]
 
 to findseq do
-    over # over #
+    over len over len
     dup temp put
     swap - 1+ times do
-        2dup over #
+        2dup over len
         split drop = if do
             i^ temp replace
             break
@@ -334,7 +345,7 @@ to findseq do
     2drop temp take
 end
 
-to found? [ # < ]
+to found? [ len < ]
 
 to sort.test [ stack ]
 protect sort.test
@@ -344,7 +355,7 @@ to sortwith do
     [] swap witheach do
         swap 2dup findwith
             [ over sort.test copy run ]
-            nop
+            noop
         nip stuff
     end
     sort.test release
@@ -360,9 +371,9 @@ to try do
     {} try.hist put
     try.prt copy
     do
-        dup # while
+        dup len while
         behead
-        dup run # swap
+        dup resolve len swap
         try.hist copy swap
         set
         again
@@ -375,9 +386,9 @@ to try do
     dup iff do
         try.prt copy
         do
-            dup # while
+            dup len while
             behead
-            dup run # over
+            dup resolve len over
             try.hist copy get
             - do
                 dup while
@@ -388,7 +399,7 @@ to try do
         end
         true
     end
-    else nop
+    else noop
     try.hist release
     1 ]cjump[
 end
@@ -397,15 +408,15 @@ to to-do [ stack ]
 
 to new-do [ ' done swap put ]
 
-to add-to [ dip [ 1+ pack end put ]
+to add-to [ dip [ 1+ pack ] put ]
 
-to now-do [ do dup take unpack run again end drop ]
+to now-do [ [ dup take unpack run again ] drop ]
 
 to do-now [ 1 split reverse concat now-do ]
 
-to not-do [ do dup take ' done = until end drop ]
+to not-do [ [ dup take ' done = until ] drop ]
 
-to ord [ ' [ 0 end swap .charCodeAt() ]
+to ord [ ' [ 0 ] swap .charCodeAt() ]
 
 to isa? [ swap type = ]
 
