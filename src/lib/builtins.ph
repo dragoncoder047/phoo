@@ -1,274 +1,280 @@
-def try.prt [ stack [ ] ]
+to try.prt [ stack [ ] ]
 
-def protect [
+to protect do
     try.prt take
     ]'[ nested concat
     try.prt put
-]
+end
 
-def nop [ ]
+to nop [ ]
 
-def alias def
+to alias to
 
-builder const [
-    dip [
+builder const do
+    dip do
         [] = iff
             $ '"constant" needs something before it.' error
-        dup take do
+        dup take run
         nested
         concat
-    ]
-]
+    end
+end
 
-builder now! [ dip [ dup take do ] ]
+builder now! do
+    dip [ dup take run ]
+end
 
-builder // [
+builder // do
     dup $ '' = not while
     behead
     dup 10 chr = dip [ 13 chr = ] or until
-]
+end
 
-def rot [ dip swap swap ]
+to dup [ 0 pick ]
 
-def unrot [ rot rot ]
+to over [ 1 pick ]
 
-def over [ dip dup swap ]
+to swap [ 1 roll ]
 
-def nip [ swap drop ]
+to rot [ 2 roll ]
 
-def tuck [ dup unrot ]
+to unrot [ rot rot ]
 
-def 2dup [ over over ]
+to nip [ swap drop ]
 
-def 2drop [ drop drop ]
+to tuck [ dup unrot ]
 
-def 2swap [ rot dip rot ]
+to 2dup [ over over ]
 
-def 2over [ dip [ dip 2dup ] 2swap ]
+to 2drop [ drop drop ]
 
-def pack [
-    [] swap times [
+to 2swap [ rot dip rot ]
+
+to 2over [ dip [ dip 2dup ] 2swap ]
+
+to pack do
+    [] swap times do
         swap nested concat
     ]
     reverse
-]
+end
 
-def unpack [ witheach nop ]
+to unpack [ witheach nop ]
 
-def dip.hold [ stack ]
+to dip.hold [ stack ]
 protect dip.hold
-def dip [ dip.hold put ]'[ do dip.hold take ]
+to dip [ dip.hold put ]'[ run dip.hold take ]
 
-def abs [ dup 0 < if negate ]
+to abs [ dup 0 < if negate ]
 
-def - [ negate + ]
+to - [ negate + ]
 
-def /f [ /% drop ]
+to /~ [ /mod drop ]
 
-def % [ /% nip ]
+to mod [ /mod nip ]
 
-def != [ = not ]
+to != [ = not ]
 
-def <= [ 2dup swap > dip = or ]
+to <= [ 2dup swap > dip = or ]
 
-def < [ swap > ]
+to < [ swap > ]
 
-def >= [ swap <= ]
+to >= [ swap <= ]
 
-def min [ 2dup > if swap drop ]
+to min [ 2dup > if swap drop ]
 
-def max [ 2dup < if swap drop ]
+to max [ 2dup < if swap drop ]
 
-def clamp [ rot min max ]
+to clamp [ rot min max ]
 
-def within [ rot tuck > unrot > not and ]
+to within [ rot tuck > unrot > not and ]
 
-def $< [
-    [
+to $< do
+    do
         dup  $ '' = iff
             false done
         over $ '' = iff
             true done
         behead rot behead rot
-        2dup = iff [
+        2dup = iff do
             2drop swap
-        ] again
+        end again
         ord swap ord >
-    ]
+    end
     unrot 2drop
-]
+end
 
-def $> [ swap $< ]
+to $> [ swap $< ]
 
-def not [ dup nand ]
+to not [ dup nand ]
 
-def and [ nand not ]
+to and [ nand not ]
 
-def or [ not swap not nand ]
+to or [ not swap not nand ]
 
-def xor [ not swap not != ]
+to xor [ not swap not != ]
 
-def >> [ negate << ]
+to >> [ negate << ]
 
-def bit [ dup $ 'bigint' isa? iff 1n else 1 swap << ]
+to bit [ dup $ 'bigint' isa? iff 1n else 1 swap << ]
 
-def immovable [ ]
+to immovable [ ]
 
-def stack [ immovable ]this[ ]done[ ]
+to stack [ immovable ]this[ ]done[ ]
 
-def release [ take drop ]
+to release [ take drop ]
 
-def copy [ dup take dup rot put ]
+to copy [ dup take dup rot put ]
 
-def replace [ dup release put ]
+to replace [ dup release put ]
 
-def move [ swap take swap put ]
+to move [ swap take swap put ]
 
-def tally [ dup take rot + swap put ]
+to tally [ dup take rot + swap put ]
 
-def temp [ stack ]
+to temp [ stack ]
 
-def done [ ]done[ ]
+to done [ ]done[ ]
 
-def again [ ]again[ ]
+to again [ ]again[ ]
 
-def if [ 1 ]cjump[ ]
-def iff [ 2 ]cjump[ ]
+to if [ 1 ]cjump[ ]
+to iff [ 2 ]cjump[ ]
 
-def else [ false 1 ]cjump[ ]
+to else [ false 1 ]cjump[ ]
 
-def until [ not if ]again[ ]
+to until [ not if ]again[ ]
 
-def while [ not if ]done[ ]
+to while [ not if ]done[ ]
 
-def switch.arg [ stack ]
+to switch.arg [ stack ]
 protect switch.arg
 
-def switch [ switch.arg put ]
+to switch [ switch.arg put ]
 
-def default [ switch.arg release ]
+to default [ switch.arg release ]
 
-def case [
+to case do
     switch.arg copy
     != [ 4 ]cjump[ ]
          false 1 ]cjump[ done
     default
-    ]'[ do ]done[
-]
+    ]'[ run ]done[
+end
 
-def ' [ ]'[ ]
+to ' [ ]'[ ]
 
-def do [ ]do[ ]
+to run [ ]run[ ]
 
-def [ ]this[ ]
+to this [ ]this[ ]
 
-def table [ immovable dup -1 > + ]this[ swap peek ]done[ ]
+to table [ immovable dup -1 > + ]this[ swap peek ]done[ ]
 
-def recurse [ ]this[ do ]
+to recurse [ ]this[ run ]
 
-def times.start [ stack ]
-def times.count [ stack ]
-def times.action [ stack ]
+to times.start [ stack ]
+to times.count [ stack ]
+to times.action [ stack ]
 protect times.start
 protect times.action
 protect times.count
 
-def times [
+to times do
     ]'[ times.action put
     dup times.start put
-    [
+    do
         1 - dup -1 > while
         times.count put
-        times.action copy do
+        times.action copy run
         times.count take
         again
-    ]
+    end
     drop
     times.action release
     times.start release
-]
+end
 
-def i [ times.count copy ]
+to i [ times.count copy ]
 
-def i^ [ times.start copy i 1+ - ]
+to i^ [ times.start copy i 1+ - ]
 
-def step [ times.count take 1+ swap - times.count put ]
+to step [ times.count take 1+ swap - times.count put ]
 
-def restart [ times.start copy times.count replace ]
+to restart [ times.start copy times.count replace ]
 
-def break [ 0 times.count replace ]
+to break [ 0 times.count replace ]
 
-def printable [ ord 32 > ]
+to printable [ ord 32 > ]
 
-def trim [ dup findwith printable nop split nip ]
+to trim [ dup findwith printable nop split nip ]
 
-def nextword [ dup findwith [ printable not ] nop split swap ]
+to nextword [ dup findwith [ printable not end nop split swap ]
 
-def split$ [
+to split$ do
     [] swap
-    [
+    do
         trim
         dup # while
         nextword
         swap dip concat again
-    ]
+    end
     drop
-]
+end
 
-def nested [ [] tuck put ]
+to nested [ [] tuck put ]
 
-def # [ .get length ]
+to # [ .length ]
 
-def pluck [ split 1 split swap dip join 0 peek ]
+to pluck [ split 1 split swap dip join 0 peek ]
 
-def stuff [ split rot nested swap join join ]
+to stuff [ split rot nested swap join join ]
 
-def behead [ 0 pluck ]
+to behead [ 0 pluck ]
 
-def join [ 2dup $ 'string' isa? dip [ $ 'string' isa? ] and iff .. else concat ]
+to join [ 2dup $ 'string' isa? dip [ $ 'string' isa? end and iff .. else concat ]
 
-def of [
-    dip [
+to of do
+    dip do
         dup $ 'string' isa? iff $ '' else []
-    ]
+    end
     swap unrot
     dup 1 < iff
         2drop done
-    [
-        2 /% over while
-        if [
-            dip [
+    do
+        2 /mod over while
+        if do
+            dip do
                 tuck join swap
             ]
         ]
         dip [ dup join ]
         again
-    ]
+    end
     2drop join
-]
+end
 
-def reverse [
-    dup $ 'array' isa? if [
+to reverse do
+    dup $ 'array' isa? if do
         [] swap witheach [ arrayify swap concat ]
-    ]
-]
+    end
+end
 
-def reverse$ [
-    dup $ 'string' isa? if [
+to reverse$ do
+    dup $ 'string' isa? if do
         $ '' swap witheach [ swap .. ]
-    ]
-]
+    end
+end
 
-def reflect [
-    dup $ 'array' isa? if [
+to reflect do
+    dup $ 'array' isa? if do
         [] swap witheach [ reflect arrayify swap concat ]
-    ]
-]
+    end
+end
 
-def with.hold [ stack ]
+to with.hold [ stack ]
 protect with.hold
 
-def makewith [
+to makewith do
     nested
     ' [ dup with.hold put # times ]
     ' [ with.hold copy i^ peek ]
@@ -276,154 +282,139 @@ def makewith [
     nested concat
     ' [ with.hold release ]
     concat
-]
+end
 
-def witheach [ ]'[ makewith do ]
+to witheach [ ]'[ makewith run ]
 
-def map.hold [ stack ]
+to map.hold [ stack ]
+protect map.hold
 
-def map [
+to map do
     ]'[ map.hold put
     [] swap
-    witheach [
-        map.hold copy do
+    witheach do
+        map.hold copy run
         concat
-    ]
+    end
     map.hold release
-]
+end
 
-def mi.tidyup [ stack ]
-def mi.result [ stack ]
+to mi.tidyup [ stack ]
+to mi.result [ stack ]
 protect mi.tidyup
 protect mi.result
 
-def matchitem [
+to matchitem do
     mi.tidyup put
     over # mi.result put
     ' [
-        if [
+        if do
             i^ mi.result replace
             break
-        ]
+        end
     ]
-    concat makewith do
-    mi.tidyup take do
+    concat makewith run
+    mi.tidyup take run
     mi.result take
-]
+end
 
-def findwith [ ]'[ ]'[ matchitem ]
+to findwith [ ]'[ ]'[ matchitem ]
 
-def findseq [
+to findseq do
     over # over #
     dup temp put
-    swap - 1+ times [
+    swap - 1+ times do
         2dup over #
-        split drop = if [
+        split drop = if do
             i^ temp replace
             break
-        ]
+        end
         behead drop
-    ]
+    end
     2drop temp take
-]
+end
 
-def found [ # < ]
+to found? [ # < ]
 
-def sort.test [ stack ]
+to sort.test [ stack ]
 protect sort.test
 
-def sortwith [
+to sortwith do
     ]'[ sort.test put
-    [] swap witheach [
+    [] swap witheach do
         swap 2dup findwith
-            [ over sort.test copy do ]
+            [ over sort.test copy run ]
             nop
         nip stuff
-    ]
+    end
     sort.test release
-]
+end
 
-def sort [ sortwith > ]
+to sort [ sortwith > ]
 
-def sort$ [ sortwith $> ]
+to sort$ [ sortwith $> ]
 
-def try.hist [ stack ]
+to try.hist [ stack ]
 
-def try [
+to try do
     {} try.hist put
     try.prt copy
-    [
+    do
         dup # while
         behead
-        dup do # swap
+        dup run # swap
         try.hist copy swap
         set
         again
-    ]
+    end
     drop
 
     ]'[
     ]sandbox[
 
-    dup iff [
+    dup iff do
         try.prt copy
-        [
+        do
             dup # while
             behead
-            dup do # over
+            dup run # over
             try.hist copy get
-            - [
+            - do
                 dup while
-                over do take
+                over run take
                 1-
-            ]
+            end
             drop
-        ]
+        end
         true
-    ]
+    end
     else nop
     try.hist release
     1 ]cjump[
-]
+end
 
-def to-do [ stack ]
+to to-do [ stack ]
 
-def new-do [ ' done swap put ]
+to new-do [ ' done swap put ]
 
-def add-to [ dip [ 1+ pack ] put ]
+to add-to [ dip [ 1+ pack end put ]
 
-def now-do [ [ dup take unpack do again ] drop ]
+to now-do [ do dup take unpack run again end drop ]
 
-def do-now [ 1 split reverse concat now-do ]
+to do-now [ 1 split reverse concat now-do ]
 
-def not-do [ [ dup take ' done = until ] drop ]
+to not-do [ do dup take ' done = until end drop ]
 
-def ord [ ' [ 0 ] swap .call charCodeAt ]
+to ord [ ' [ 0 end swap .charCodeAt() ]
 
-def isa? [ swap type = ]
+to isa? [ swap type = ]
 
-def isoneof? [ [] unrot witheach [ dip dup isa? swap dip concat ] drop false swap witheach or ]
+to isoneof? [ [] unrot witheach [ dip dup isa? swap dip concat end drop false swap witheach or ]
 
-def stringify [ .call! toString ]
+to stringify [ .toString! ]
 
-def arrayify [ dup $ 'array' isa? not if nested ]
+to arrayify [ dup $ 'array' isa? not if nested ]
 
-def phoo [ compile do ]
+to phoo [ compile run ]
 
-def callprop [
-    dip dup
-    getprop
-    dip nested
-    $ 'bind' get call
-    call
-]
-
-def .get [ ]'[ name get ]
-
-def .set [ ]'[ name set ]
-
-def .call [ ]'[ name callprop ]
-
-def .call! [ [] swap ]'[ name callprop ]
-
-def new! [ [] swap new ]
+to new! [ [] swap new ]

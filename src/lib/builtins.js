@@ -66,28 +66,6 @@ module.builders.add('end', closeBracket);
 
 // words
 
-/*
-From http://galileo.phys.virginia.edu/classes/551.jvn.fall01/primer.htm :
-Forth includes the words OVER, TUCK, PICK and ROLL that act as shown 
-below (note PICK and ROLL must be preceded by an integer that says 
-where on the stack an element gets PICK'ed or ROLL'ed): 
-
-        cell | initial | OVER    TUCK    3 PICK    3 ROLL 
-
-          0  |   -16   |  73      -16        2        2
-          1  |    73   | -16       73      -16      -16 
-          2  |     5   |  73      -16       73       73 
-          3  |     2   |   5        5        5        5 
-          4  |         |   2        2        2 
-
-Clearly, 0 PICK is the same as DUP, 1 PICK is a synonym for OVER, 1 ROLL 
-means SWAP and 2 ROLL means ROT.
-    to dup do 0 pick end
-    to over do 1 pick end
-    to swap do 1 roll end
-    to rot do 2 roll end
-*/
-
 module.words.add('pick', function pick() {
     this.expect('number');
     var n = this.pop();
@@ -100,22 +78,9 @@ module.words.add('roll', function roll() {
     this.push(this.pop(n + 1));
 });
 
-// function dup() {
-//     var a = this.pop();
-//     this.push(a);
-//     this.push(a);
-// }
-
 module.words.add('drop', function drop() {
     this.pop();
 });
-
-// function swap() {
-//     var a = this.pop();
-//     var b = this.pop();
-//     this.push(a);
-//     this.push(b);
-// }
 
 module.words.add('1+', function onePlus() {
     this.expect(/bigint|number/);
@@ -267,7 +232,7 @@ module.words.add("]'[", function metaLiteral() {
     this.retPush(entry);
 });
 
-module.words.add(']do[', function metaDo() {
+module.words.add(']run[', function metaRun() {
     var arr = this.pop();
     if (type(arr) !== 'array') arr = [arr];
     this.retPush({ arr, pc: -1 });
@@ -502,7 +467,7 @@ module.literalizers.add(/^(?<num>[-+]?(?:(?:0x[0-9a-f]+)|(?:[0-9]+)))(?<big>n)?$
     }
 );
 
-module.literalizers.add(/(?<base>[0-9]{1,2})#(?<num>[a-z]+)(?<big>-n)/,
+module.literalizers.add(/^(?<base>[0-9]{1,2})#(?<num>[a-z]+)(?<big>-n)$/,
     function psNumber() {
         var m = this.pop();
         if (!m.big) {
@@ -516,6 +481,47 @@ module.literalizers.add(/(?<base>[0-9]{1,2})#(?<num>[a-z]+)(?<big>-n)/,
                 n += BigInt(parseInt(d, +m.base));
             }
             this.push(n);
+        }
+    }
+);
+
+module.literalizers.add(/^\.(?<pname>.+)(?<type>\(\)|=|!)?$/,
+    function getsetcall_shorthand() {
+        var m = this.pop();
+        var pname = m.pname;
+        var ty = m.type;
+        switch (ty) {
+            case '()':
+                this.push(function () {
+                    this.expect('array', /./);
+                    var args = this.pop();
+                    var obj = this.pop();
+                    this.push(obj[pname](...args));
+                });
+                break;
+            case '!':
+                this.push(function () {
+                    this.expect(/./);
+                    var obj = this.pop();
+                    this.push(obj[pname]());
+                });
+                break;
+            case '=':
+                this.push(function () {
+                    this.expect(/./, /./);
+                    var val = this.pop();
+                    var obj = this.pop();
+                    obj[pname] = val;
+                });
+                break;
+            case '':
+            default:
+                this.push(function () {
+                    this.expect(/./);
+                    var obj = this.pop();
+                    this.push(obj[pname]);
+                });
+                break;
         }
     }
 );
