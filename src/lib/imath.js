@@ -1,6 +1,36 @@
 
+import { Module } from '../core/namespace.js';
+import { addFunctionAsWord as a } from '../core/index.js';
 
-// 'gcd'
+export const module = new Module('_imath');
+
+function bb(n) { var r = []; for (var i = 0; i < n; i++) r.push('bigint'); return r; }
+
+a(module, bb(2), 'gcd', gcd);
+a(module, bb(2), 'lcm', lcm);
+a(module, bb(2), '/t', truncdiv);
+a(module, bb(2), 'mod', mod);
+a(module, bb(3), '%**', modpow);
+a(module, bb(2), 'log_', intlog);
+a(module, bb(2), 'root_', introot);
+a(module, bb(2), 'modinv', modinv);
+a(module, bb(1), 'log2_', log2);
+a(module, bb(1), 'sqrt_', sqrt);
+a(module, bb(2), '!%', factorial);
+a(module, bb(1), 'prime?', isprime);
+a(module, bb(1), 'nextprime', nextprime);
+a(module, bb(1), 'prevprime', prevprime);
+a(module, bb(1), 'ppow', perfectpow);
+a(module, bb(1), 'smallestfactor', smallestfactor);
+a(module, bb(1), 'pfactors', factorize);
+a(module, bb(1), 'primepoly', factorize2);
+a(module, bb(2), 'multiplicativeorder', multiplicativeorder);
+a(module, bb(3), 'discretelog', discretelog);
+a(module, bb(1), 'totient', totient);
+a(module, bb(2), 'legendre', legendre);
+a(module, bb(2), 'ressol', ressol);
+a(module, bb(2), 'nCk', binomial);
+
 function gcd(a, b) {
     if (a < 0) a = -a;
     if (b < 0) b = -b;
@@ -10,7 +40,6 @@ function gcd(a, b) {
     }
 }
 
-// 'lcm'
 function lcm(a, b) {
     var g = gcd(a, b);
     if (g == 0) return 0n;
@@ -18,27 +47,13 @@ function lcm(a, b) {
 }
 
 // edge cases: returns 0 if result would be infinity
-// '/t'
 function truncdiv(a, b) {
     if (b == 0) return n0;
     return a / b;
 }
 
-// edge cases: returns 0 if result would be infinity
-// '/f' // is this the same as '/~' ?? from core
-function floordiv(a, b) {
-    if (b == 0) return n0;
-    var q = a / b;
-    if ((a < 0) != (b < 0)) {
-        var m = q * b;
-        if (m != a) q--;
-    }
-    return q;
-}
-
 intdiv = truncdiv; // assuming bigint support.
 
-// 'mod'
 function mod(a, b) {
     var negb = (b < 0n);
     if (negb) b = -b;
@@ -50,18 +65,11 @@ function mod(a, b) {
     return a;
 }
 
-// 'mod+'
-function modadd(a, b, c) { return (a + b) % c; }
-
-// 'mod*'
-function modmul(a, b, c) { return (a * b) % c; }
-
 // integer power (a**b) modulo m.
 // Handles error cases as follows:
 // Returns 0 if the output would be infinity (instead of throwing error) which happens if b < 0 and a == 0.
 // Returns 0 if m is <= 0
 // Returns 1 for the case of 0**0.
-// 'mod**'
 function modpow(a, b, m) {
     if (m == 1n) return 0n; // anything modulo 1 is 0.
     if (m <= 0n) return 0n; // error
@@ -95,9 +103,9 @@ function modpow(a, b, m) {
             r = 1n;
             a %= m;
             while (b > 0) {
-                if (b & n1) r = modmul(r, a, m);
+                if (b & n1) r = (r * a) % m;
                 b >>= 1n;
-                a = modmul(a, a, m);
+                a = (a * a) % m;
             }
         }
         if (neg && (b & n1)) {
@@ -110,7 +118,6 @@ function modpow(a, b, m) {
 // returns floored integer log b of a (e.g. b = 2 gives log2)
 // that is, returns largest integer k such that b**k <= a
 // error cases: returns 0 if a <= 0 or b <= 1
-// 'log_'
 function intlog(a, b) {
     if (b <= 1n) return 0n;
     if (a <= 1n) return 0n;
@@ -127,7 +134,6 @@ function intlog(a, b) {
 // that is, computes largest integer k such that k**b <= a
 // b must be positive integer
 // returns undefined if result could not be computed
-// 'root_'
 function introot(a, b) {
     if (b <= 0n) return undefined;
     if (b == 1n) return a;
@@ -159,7 +165,6 @@ function introot(a, b) {
 
 // integer modular inverse 1 / a modulo b
 // edge cases: if a is 0 or m <= 0, returns 0
-// 'modinv'
 function modinv(a, b) {
     if (a == 0n || b == 0n) {
         return 0n;
@@ -190,7 +195,6 @@ function modinv(a, b) {
 
 // integer log2
 // error cases: returns 0 if a <= 0
-// 'log2_'
 function log2(a) {
     if (a <= 1n) return 0n;
     var r = 0n;
@@ -203,7 +207,6 @@ function log2(a) {
 
 // integer sqrt
 // error cases: returns 0 if a < 0
-// 'sqrt_'
 function sqrt(a) {
     if (a <= 0n) return 0n;
     var r = 0n;
@@ -230,7 +233,6 @@ function sqrt(a) {
 // - returns undefined if a < 0
 // - returns undefined if b <= 0
 // NOTE: can be slow for a > 4096 especially if b only has large prime factors
-// '!%'
 function factorial(a, b) {
     if (a < 0n) return undefined;
     if (b <= 0n) return undefined;
@@ -277,7 +279,6 @@ function factorial(a, b) {
     return r;
 }
 
-// 'prime?'
 function isprime(n) {
     if (n < 2n) return false;
     if ((n & 1n) == 0n) return n == 2n;
@@ -319,7 +320,7 @@ function isprime(n) {
             var x = modpow(b, d, n);
             var y;
             while (s) {
-                y = modmul(x, x, n);
+                y = (x * x) % n;
                 if (y == 1n && x != 1n && x != n - 1n) return true; // not a witness
                 x = y;
                 s--;
@@ -330,7 +331,6 @@ function isprime(n) {
     }
 }
 
-// 'nextprime'
 function nextprime(n) {
     if (isprime(n)) return n;
 
@@ -349,7 +349,6 @@ function nextprime(n) {
     }
 }
 
-// 'prevprime'
 function prevprime(n) {
     if (n < 2n) return undefined; // there is no lower prime
     if (n < 3n) return 2n;
@@ -374,7 +373,6 @@ function prevprime(n) {
 
 // returns the highest possible exponent if the number is a perfect power (>= 2), or 1 if not.
 // e.g. if n is 8, returns 3 because 2^3 is 8, if n is 10 returns 1.
-// 'ppow'
 function perfectpow(n) {
     if (n <= 3n) return 1n;
     var l2 = log2(n);
@@ -421,7 +419,6 @@ const FIRST_PRIMES = [2n, 3n, 5n, 7n, 11n, 13n, 17n];
 // returns smallest prime factor of n, or 0 if factorizing it takes too long.
 // can usually find the product of two 32-bit primes in time.
 // NOTE: factorization is most difficult when n is a product of two different large primes
-// 'smallestfactor'
 function smallestfactor(n) {
     if (n < 0n) return undefined;
     if (n == 0n) return 0n;
@@ -445,7 +442,6 @@ function smallestfactor(n) {
 }
 
 // returns all prime factors of n
-// 'pfactors'
 function factorize(n) {
     if (n == 0n || n == 1n) return [n];
     var result = [], i;
@@ -491,7 +487,6 @@ function factorize(n) {
 }
 
 // returns list of pairs: first is a prime number, second is its power
-// 'primepows'
 function factorize2(n) {
     var f = factorize(n);
     var result = [];
@@ -530,7 +525,6 @@ function allfactors(n) {
 // this is a special case of discrete log, where b == 1, but computed in a different way
 // TODO: doesn't work for 10007n, 1000000000000000000000007n. Answer should be: 1000000000000000000000006n
 // probable reason: must use not just prime factors, but all unique factors (including non prime ones, but no need to repeat same ones), for f2 at least (for f prime factors is ok)
-// 'multiplicativeorder'
 function multiplicativeorder(a, m) {
     if (m == 0) return -1n;
     if (gcd(a, m) != 1) return 0n;
@@ -569,7 +563,7 @@ function bsgs(a, b, m) {
         if (i > limit) break;
         var k = e.toString(16);  // JS object keys are strings, by default BigInt converts to decimal string which is much slower.
         if (!o[k]) o[k] = i; // prefer smaller values as result
-        e = modmul(e, an, m);
+        e = (e * an) % m;
     }
     e = 1n;
     var result = 0n;
@@ -578,7 +572,7 @@ function bsgs(a, b, m) {
             if (!result) return -1n;
             break;
         }
-        var c = modmul(e, b, m);
+        var c = (e * b) % m;
         var v = o[c.toString(16)];
         if (v != undefined) {
             var r = v * n - i;
@@ -586,7 +580,7 @@ function bsgs(a, b, m) {
                 result = r; // continue instead of immediately returning: try to find smaller result
             }
         }
-        e = modmul(e, a, m);
+        e = (e * a) % m;
     }
     return result;
 }
@@ -595,9 +589,8 @@ function bsgs(a, b, m) {
 // This problem is of similar computational difficulty as integer factorization.
 // If b is 1, computes multiplicative order: r such that a**r = 1 (mod m)
 // Returns 0 if it's known there is no result, -1 if it failed to compute (took too long)
-// 'discretelog'
 function discretelog(a, b, m) {
-    if (m <= 0) return -1n;
+    if (m <= 0) return undefined;
     var r = (b == 1) ? multiplicativeorder(a, m) : bsgs(a, b, m);
 
     var test = modpow(a, r, m);
@@ -610,7 +603,6 @@ function discretelog(a, b, m) {
 }
 
 // Euler's totient function: counts amount of positive integers <= n that are relatively prime to n
-// 'totient'
 function totient(n) {
     if (n == 0n || n == 1n) return n;
     var f = factorize2(n);
@@ -622,13 +614,11 @@ function totient(n) {
     return r;
 }
 
-// 'legendre'
 function legendre(n, p) {
     return modpow(n, (p - 1n) >> 1n, p);
 }
 
 // Tonelli–Shanks algorithm for quadratic residue (square root of n modulo p). p must be prime.
-// 'ressol'
 function ressol(n, p) {
     if (p == 2) return 0n;
     if (p < 2) return -1n; // error
@@ -677,8 +667,6 @@ function ressol(n, p) {
 }
 
 const BINOMIAL_LIMIT = 1n << 65536n;
-
-// 'nCk'
 function binomial(n, k) {
     if (k > n) return 0n;
     if (n == k || k == 0n) return 1n;
