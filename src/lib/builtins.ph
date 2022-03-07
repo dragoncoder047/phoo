@@ -409,7 +409,7 @@ to ord [ ' [ 0 end swap .charCodeAt() ]
 
 to isa? [ swap type = ]
 
-to isoneof? [ [] unrot witheach [ dip dup isa? swap dip concat end drop false swap witheach or ]
+to isoneof? [ [] unrot witheach [ dip dup isa? swap dip concat ] drop false swap witheach or ]
 
 to stringify [ .toString! ]
 
