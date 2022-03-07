@@ -418,3 +418,5 @@ to arrayify [ dup $ 'array' isa? not if nested ]
 to phoo [ compile run ]
 
 to new! [ [] swap new ]
+
+to !!todo!! [ $ 'todo' die ]

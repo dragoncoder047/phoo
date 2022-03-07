@@ -1,3 +1,5 @@
+// WOW, this is really old
+
 function (p) {
     var o = p.pop();
     return print(type(o) == 'string' ? o : deep_repr(o, {sub: new Map([[p, 'self']])}));
