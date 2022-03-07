@@ -416,7 +416,7 @@ function pollard_rho(n, c) {
     }
 }
 
-const firstprimes = [2n, 3n, 5n, 7n, 11n, 13n, 17n];
+const FIRST_PRIMES = [2n, 3n, 5n, 7n, 11n, 13n, 17n];
 
 // returns smallest prime factor of n, or 0 if factorizing it takes too long.
 // can usually find the product of two 32-bit primes in time.
@@ -426,8 +426,8 @@ function smallestfactor(n) {
     if (n < 0n) return undefined;
     if (n == 0n) return 0n;
     if (n == 1n) return 1n;
-    for (var i = 0; i < firstprimes.length; i++) {
-        if (n % firstprimes[i] == 0n) return firstprimes[i];
+    for (var i = 0; i < FIRST_PRIMES.length; i++) {
+        if (n % FIRST_PRIMES[i] == 0n) return FIRST_PRIMES[i];
     }
 
     var p = perfectpow(n);
@@ -456,10 +456,10 @@ function factorize(n) {
         result.unshift(-1n);
         return result;
     }
-    for (i = 0; i < firstprimes.length; i++) {
-        while (n % firstprimes[i] == 0) {
-            result.push(firstprimes[i]);
-            n = intdiv(n, firstprimes[i]);
+    for (i = 0; i < FIRST_PRIMES.length; i++) {
+        while (n % FIRST_PRIMES[i] == 0) {
+            result.push(FIRST_PRIMES[i]);
+            n = intdiv(n, FIRST_PRIMES[i]);
         }
     }
 
