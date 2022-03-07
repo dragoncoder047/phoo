@@ -160,9 +160,10 @@ export class Thread {
     /**
      * Compile the code, but do not run it. This **will** invoke any builders and/or literalizers used.
      * @param {string|Array} source The code to be compiled. If it is an array already, this will just return it unchanged.
+     * @param {boolean} [forceNoLock=false] ***FOR INTERNAL USE ONLY!!!***
      * @returns {Promise<Array>}
      */
-    async compile(source) {
+    async compile(source, forceNoLock = false) {
         switch (type(source)) {
             case 'string':
                 break; // default behavior
@@ -171,7 +172,7 @@ export class Thread {
             default:
                 return [source]; // just wrap it
         }
-        await this.lock.acquire();
+        if (!forceNoLock) await this.lock.acquire();
         var code = source.slice();
         var origLength = this.stack.length;
         var word, b, a = [];
@@ -188,9 +189,9 @@ export class Thread {
                             await b.call(this);
                             break;
                         case 'array':
-                            this.lock.release();
-                            await this.run(b);
-                            await this.lock.acquire();
+                            if (!forceNoLock) this.lock.release();
+                            await this.execute(b, forceNoLock);
+                            if (!forceNoLock) await this.lock.acquire();
                             break;
                         default:
                             throw new TypeMismatchError(`Unexpected '${type(source)}' as builder.`);
@@ -211,7 +212,7 @@ export class Thread {
             throw BadSyntaxError.wrap(e, this.stack);
         }
         finally {
-            this.lock.release();
+            if (!forceNoLock) this.lock.release();
             this._killed = 0;
         }
         if (this.stack.length !== origLength)
@@ -284,10 +285,11 @@ export class Thread {
     /**
      * Execute the compiled code contained in the array.
      * @param {Array} c The compiled array (returned by {@linkcode Thread.compile})
+     * @param {boolean} [forceNoLock=false] ***FOR INTERNAL USE ONLY!!!***
      * @returns {Promise<Array>} The stack after execution.
      */
-    async execute(c) {
-        await this.lock.acquire();
+    async execute(c, forceNoLock = false) {
+        if (!forceNoLock) await this.lock.acquire();
         var pc = 0;
         try {
             while (true) {
@@ -311,6 +313,7 @@ export class Thread {
                     pc = -1;
                 } else
                     await this.executeOneItem(ci);
+                // TODO - this might cause a lockout when using `]sandbox[` that calls this recursively. Hence `forceNoLock` parameter
                 pc++;
             }
         } catch (e) {
@@ -318,7 +321,7 @@ export class Thread {
             throw PhooError.wrap(e, this.returnStack);
         }
         finally {
-            this.lock.release();
+            if (!forceNoLock) this.lock.release();
             this._killed = 0;
         }
         return this.workStack;

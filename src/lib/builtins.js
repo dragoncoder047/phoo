@@ -6,31 +6,25 @@
 
 import { type, name, word } from '../core/utils.js';
 import { IllegalOperation, UnexpectedEOF, StackUnderflow, PhooError } from '../core/errors.js';
-import { batchAdd } from '../helpers.js';
-import { pStackTrace } from '../core/constants.js';
+import { STACK_TRACE_SYMBOL } from '../core/constants.js';
 import { Phoo } from '../core/index.js';
-
+import { Module } from '../core/namespace.js';
+export const module = new Module('__builtins__');
 // var [, word, code] = /^(?:\s*)(\S+)([\S\s]*)$/.exec(code);
 
 // builders
 
-/**
- * @this Phoo
- */
-function blockComment() {
-    var code = this.pop('string');
+module.builders.add('/*', function blockComment() {
+    var code = this.pop();
     if (!/\s\*\/\s/.test(code)) {
         throw new UnexpectedEOF('/*: Unclosed block comment.');
     }
     var [, code] = code.split(/\s\*\/\s/, 1); /* jshint ignore:line */
     this.push(code);
-}
+});
 
-/**
- * @this Phoo
- */
-function string() {
-    var code = this.pop('string');
+module.builders.add('$', function string() {
+    var code = this.pop();
     code = code.replace(/^\s+/, ''); // strip leading white space after $
     var delim = code[0];
     code = code.slice(1);
@@ -44,211 +38,195 @@ function string() {
     // ignoring it for now
     code = formatCode + code;
 
-    var array = this.pop('array');
+    var array = this.pop();
     array.push(str);
     this.push(array);
     this.push(code);
-}
+});
 
-/**
- * @this Phoo
- */
 function openBracket() {
-    var s = this.pop('string');
+    var s = this.pop();
     this.push([]);
     this.push(s);
 }
+module.builders.add('[', openBracket);
+module.builders.add('do', openBracket);
 
-/**
- * @this Phoo
- */
 function closeBracket() {
-    var s = this.pop('string');
-    var i = this.pop('array');
-    var o = this.pop('array');
+    var s = this.pop();
+    var i = this.pop();
+    this.expect('array');
+    var o = this.pop();
     o.push(i);
     this.push(o);
     this.push(s);
 }
+module.builders.add(']', closeBracket);
+module.builders.add('end', closeBracket);
 
 // words
 
-/**
- * @this Phoo
- */
-function dup() {
-    var a = this.pop();
-    this.push(a);
-    this.push(a);
-}
+/*
+From http://galileo.phys.virginia.edu/classes/551.jvn.fall01/primer.htm :
+Forth includes the words OVER, TUCK, PICK and ROLL that act as shown 
+below (note PICK and ROLL must be preceded by an integer that says 
+where on the stack an element gets PICK'ed or ROLL'ed): 
 
-/**
- * @this Phoo
- */
-function drop() {
+        cell | initial | OVER    TUCK    3 PICK    3 ROLL 
+
+          0  |   -16   |  73      -16        2        2
+          1  |    73   | -16       73      -16      -16 
+          2  |     5   |  73      -16       73       73 
+          3  |     2   |   5        5        5        5 
+          4  |         |   2        2        2 
+
+Clearly, 0 PICK is the same as DUP, 1 PICK is a synonym for OVER, 1 ROLL 
+means SWAP and 2 ROLL means ROT.
+    to dup do 0 pick end
+    to over do 1 pick end
+    to swap do 1 roll end
+    to rot do 2 roll end
+*/
+
+module.words.add('pick', function pick() {
+    this.expect('number');
+    var n = this.pop();
+    this.push(this.peek(n + 1));
+});
+
+module.words.add('roll', function roll() {
+    this.expect('number');
+    var n = this.pop();
+    this.push(this.pop(n + 1));
+});
+
+// function dup() {
+//     var a = this.pop();
+//     this.push(a);
+//     this.push(a);
+// }
+
+module.words.add('drop', function drop() {
     this.pop();
-}
+});
 
-/**
- * @this Phoo
- */
-function swap() {
-    var a = this.pop();
-    var b = this.pop();
-    this.push(a);
-    this.push(b);
-}
+// function swap() {
+//     var a = this.pop();
+//     var b = this.pop();
+//     this.push(a);
+//     this.push(b);
+// }
 
-/**
- * @this Phoo
- */
-function onePlus() {
-    // cSpell:ignore bignum
-    var n = this.pop('>bignum');
+module.words.add('1+', function onePlus() {
+    this.expect(/bigint|number/);
+    var n = this.pop();
     this.push(++n);
-}
+});
 
-/**
- * @this Phoo
- */
-function oneMinus() {
-    var n = this.pop('>bignum');
+module.words.add('1-', function oneMinus() {
+    this.expect(/bigint|number/);
+    var n = this.pop();
     this.push(--n);
-}
+});
 
-/**
- * @this Phoo
- */
-function sum() {
-    this.push(this.pop('>bignum') + this.pop('>bignum'));
-}
+module.words.add('+', function sum() {
+    this.expect(/bigint|number/, /bigint|number/);
+    this.push(this.pop() + this.pop());
+});
 
-/**
- * @this Phoo
- */
 function negate() {
-    this.push(-this.pop('>bignum'));
+    this.expect(/bigint|number/);
+    this.push(-this.pop());
 }
 
-/**
- * @this Phoo
- */
 function product() {
-    this.push(this.pop('>bignum') * this.pop('>bignum'));
+    this.expect(/bigint|number/, /bigint|number/);
+    this.push(this.pop() * this.pop());
 }
 
-/**
- * @this Phoo
- */
 function exp() {
-    var exponent = this.pop('>bignum');
-    var base = this.pop('>bignum');
+    this.expect(/bigint|number/, /bigint|number/);
+    var exponent = this.pop();
+    var base = this.pop();
     this.push(base ** exponent);
 }
 
 // cSpell:ignore divmod
-/**
- * @this Phoo
- */
 function divmod() {
-    var divisor = this.pop('>bignum');
-    var dividend = this.pop('>bignum');
+    this.expect(/bigint|number/, /bigint|number/);
+    var divisor = this.pop();
+    var dividend = this.pop();
     var quot = dividend / divisor;
     if (type(quot) !== 'bigint') quot = Math.floor(quot);
     this.push(quot);
     this.push(dividend % divisor);
 }
 
-/**
- * @this Phoo
- */
 function div() {
-    var divisor = this.pop('>bignum');
-    var dividend = this.pop('>bignum');
+    this.expect(/bigint|number/, /bigint|number/);
+    var divisor = this.pop();
+    var dividend = this.pop();
     this.push(dividend / divisor);
 }
 
-/**
- * @this Phoo
- */
 function eq() {
     this.push(this.pop() == this.pop());
 }
 
-/**
- * @this Phoo
- */
 function gt() {
-    var a = this.pop('>bignum');
-    var b = this.pop('>bignum');
+    this.expect(/bigint|number/, /bigint|number/);
+    var a = this.pop();
+    var b = this.pop();
     this.push(b > a);
 }
 
-/**
- * @this Phoo
- */
 function nand() {
-    var a = this.pop('>bool');
-    var b = this.pop('>bool');
+    var notA = !this.pop();
+    var notB = !this.pop();
     //     or !(a && b)
     // de Morgan's law
-    this.push(!a || !b);
+    this.push(notA || notB);
 }
-
 // cSpell:ignore bitinv bitand bitor bitxor
-/**
- * @this Phoo
- */
 function bitinv() {
-    this.push(~this.pop('>bignum'));
+    this.expect(/bigint|number/);
+    this.push(~this.pop());
 }
 
-/**
- * @this Phoo
- */
 function bitand() {
-    this.push(this.pop('>bignum') & this.pop('>bignum'));
+    this.expect(/bigint|number/, /bigint|number/);
+    this.push(this.pop() & this.pop());
 }
 
-/**
- * @this Phoo
- */
 function bitor() {
-    this.push(this.pop('>bignum') | this.pop('>bignum'));
+    this.expect(/bigint|number/, /bigint|number/);
+    this.push(this.pop() | this.pop());
 }
 
-/**
- * @this Phoo
- */
 function bitxor() {
-    this.push(this.pop('>bignum') ^ this.pop('>bignum'));
+    this.expect(/bigint|number/, /bigint|number/);
+    this.push(this.pop() ^ this.pop());
 }
 
-/**
- * @this Phoo
- */
 function shl() {
-    var places = this.pop('>bignum');
-    var num = this.pop('>bignum');
+    this.expect(/bigint|number/, /bigint|number/);
+    var places = this.pop();
+    var num = this.pop();
     this.push(num << places);
 }
 
-/**
- * @this Phoo
- */
 function put() {
-    var a = this.pop('array');
+    this.expect('array');
+    var a = this.pop();
     a.push(this.pop());
 }
 
-/**
- * @this Phoo
- */
 function take() {
+    this.expect('array');
     var a = this.pop('array');
     var fff;
     if (type(a[0]) === 'symbol')
-        fff = this.lookupWord(name(a[0]))[0];
+        fff = this.phoo.resolveNamepath(name(a[0]))[0];
     else
         fff = a[0][0];
     if (fff === word('immovable'))
@@ -258,39 +236,26 @@ function take() {
     this.push(a.pop());
 }
 
-/**
- * @this Phoo
- */
 function metaDone() {
     this.retPop();
 }
 
-/**
- * @this Phoo
- */
 function metaAgain() {
     var entry = this.retPop();
     entry.pc = -1;
     this.retPush(entry);
 }
-
 // cSpell:ignore cjump
-/**
- * @this Phoo
- */
 function cjump() {
-    var amount = this.pop('>num');
-    var test = this.pop('>bool');
-    if (!test) {
+    var amount = +this.pop();
+    var falsey = !this.pop();
+    if (falsey) {
         var entry = this.retPop();
         entry.pc += amount;
         this.retPush(entry);
     }
 }
 
-/**
- * @this Phoo
- */
 function metaLiteral() {
     var entry = this.retPop();
     entry.pc++;
@@ -300,57 +265,38 @@ function metaLiteral() {
     this.retPush(entry);
 }
 
-/**
- * @this Phoo
- */
 function metaDo() {
     var arr = this.pop();
     if (type(arr) !== 'array') arr = [arr];
     this.retPush({ arr, pc: -1 });
 }
 
-/**
- * @this Phoo
- */
 function metaThis() {
     var entry = this.retPop();
     this.retPush(entry);
     this.push(entry.arr);
 }
 
-/**
- * @this Phoo
- */
 function lower() {
-    this.push(this.pop('string').toLowerCase());
+    this.expect('string');
+    this.push(this.pop().toLowerCase());
 }
 
-/**
- * @this Phoo
- */
 function upper() {
-    this.push(this.pop('string').toUpperCase());
+    this.expect('string');
+    this.push(this.pop().toUpperCase());
 }
 
-/**
- * @this Phoo
- */
 function strConcat() {
-    var a = this.pop('>str');
-    var b = this.pop('>str');
+    var a = '' + this.pop();
+    var b = '' + this.pop();
     this.push(b + a);
 }
 
-/**
- * @this Phoo
- */
 function newArray() {
     this.push([]);
 }
 
-/**
- * @this Phoo
- */
 function arrConcat() {
     var a = this.pop();
     var b = this.pop();
@@ -359,158 +305,111 @@ function arrConcat() {
     this.push(b.concat(a));
 }
 
-/**
- * @this Phoo
- */
 function split() {
-    var i = this.pop('>bignum');
-    var a = this.pop('string', 'array');
+    this.expect(/bigint|number/, /string|array/);
+    var i = this.pop();
+    var a = this.pop();
     this.push(a.slice(0, i));
     this.push(a.slice(i));
 }
 
-/**
- * @this Phoo
- */
 function peek() {
-    var i = this.pop('>bignum');
-    var a = this.pop('array', 'string');
+    this.expect(/bigint|number/, /string|array/);
+    var i = this.pop();
+    var a = this.pop();
     if (i < -a.length || i >= a.length)
         throw new IllegalOperation('peek: Index out of bounds');
     this.push(a[(i + a.length) % a.length]);
 }
 
-/**
- * @this Phoo
- */
 function poke() {
-    var i = this.pop('>bignum');
-    var a = this.pop('array', 'string');
+    this.expect(/bigint|number/, /string|array/);
+    var i = this.pop();
+    var a = this.pop();
     var t = this.pop();
     if (i < -a.length || i >= a.length)
         throw new IllegalOperation('poke: Index out of bounds');
     a[(i + a.length) % a.length] = t;
     this.push(a);
 }
-
-// def find [ findwith [ over = ] drop ]
+// to find do findwith [ over = ] drop end
 // ...but js is much faster
-/**
- * @this Phoo
- */
 function find() {
-    var a = this.pop('array');
+    this.expect('array');
+    var a = this.pop();
     var i = this.pop();
     this.push((a.indexOf(i) + a.length) % a.length);
 }
 
-/**
- * @this Phoo
- */
 async function sandbox() {
     var c = this.pop();
     try {
-        await this.execute(c);
+        await this.execute(c, true);
         this.push(false);
     } catch (e) {
         this.push(e);
     }
 }
 
-/**
- * @this Phoo
- */
 function error() {
-    throw PhooError.withPhooStack(this.pop('string'), this.returnStack);
+    throw PhooError.withPhooStack('' + this.pop(), this.returnStack);
 }
 
-/**
- * @this Phoo
- */
 function getStack() {
     var err = this.pop();
-    this.push(err[pStackTrace]);
+    this.push(err[STACK_TRACE_SYMBOL]);
 }
 
-/**
- * @this Phoo
- */
 function num$() {
-    var b = this.pop('>bignum');
-    var n = this.pop('>bignum');
+    this.expect(/number|bigint/, /number|bigint/);
+    var b = this.pop();
+    var n = this.pop();
     this.push(n.toString(b));
 }
 
-/**
- * @this Phoo
- */
 function $num() {
-    var b = this.pop('>bignum');
-    var s = this.pop('string');
+    this.expect(/number|bigint/, 'string');
+    var b = this.pop();
+    var s = this.pop();
     this.push(parseInt(s, b));
 }
 
-/**
- * @this Phoo
- */
 function chr() {
-    this.push(String.fromCharCode(this.pop('number')));
+    this.expect('number');
+    this.push(String.fromCharCode(this.pop()));
 }
 
-/**
- * @this Phoo
- */
 function type_() {
     this.push(type(this.pop()));
 }
 
-/**
- * @this Phoo
- */
 function bigg() {
     this.push(BigInt(this.pop()));
 }
 
-/**
- * @this Phoo
- */
 async function compile() {
-    this.push(await this.compile(this.pop()));
+    this.push(await this.compile(this.pop(), true));
 }
 
-/**
- * @this Phoo
- */
 function time() {
     this.push(+new Date());
 }
 
-/**
- * @this Phoo
- */
 function nestdepth() {
     this.push(this.returnStack.length);
 }
 
-/**
- * @this Phoo
- */
 async function await_() {
-    this.push(await this.pop('Promise'));
+    this.expect('Promise');
+    this.push(await this.pop());
 }
 
-/**
- * @this Phoo
- */
 function get() {
     var k = this.pop();
     var o = this.pop();
     this.push(o[k]);
 }
 
-/**
- * @this Phoo
- */
 function set() {
     var k = this.pop();
     var o = this.pop();
@@ -518,97 +417,74 @@ function set() {
     o[k] = v;
 }
 
-/**
- * @this Phoo
- */
 function call() {
-    var f = this.pop('function');
-    var a = this.pop('array');
+    this.expect('function', 'array');
+    var f = this.pop();
+    var a = this.pop();
     this.push(f(...a));
 }
 
-/**
- * @this Phoo
- */
 function new_() {
-    var c = this.pop('function');
-    var a = this.pop('array');
+    this.expect('function', 'array');
+    var c = this.pop();
+    var a = this.pop();
     this.push(new c(...a));
 }
 
-/**
- * @this Phoo
- */
 function word_() {
-    this.push(word(this.pop('string')));
+    this.expect('string');
+    this.push(word(this.pop()));
 }
 
-/**
- * @this Phoo
- */
 function name_() {
-    this.push(name(this.pop('symbol')));
+    this.expect('symbol');
+    this.push(name(this.pop()));
 }
 
-/**
- * @this Phoo
- */
 function newObject() {
     this.push({});
 }
 
-/**
- * @this Phoo
- */
 function self() {
     this.push(this);
 }
 
-/**
- * @this Phoo
- */
 function stacksize() {
     this.push(this.workStack.length);
 }
 
-/**
- * @this Phoo
- */
 function win() {
     this.push(globalThis);
 }
 
 // and now, the most important ones!
-
-const def = [word("]'["), word("]'["), function metaDef() {
+function metaDef() {
     var d = this.pop('array', 'symbol');
     var n = name(this.pop('symbol'));
-    this.addWord(n, d, this.strictMode);
-}];
-
-const builder = [word("]'["), word("]'["), function metaBuilder() {
+    this.phoo.getNamespace(0).words.add(n, d);
+}
+function metaBuilder() {
     var d = this.pop('array');
     var n = name(this.pop('symbol'));
-    this.addBuilder(n, d, this.strictMode);
-}];
+    this.phoo.getNamespace(0).builders.add(n, d);
 
-const del = [word("]'["), function metaDelete() {
+}
+function metaForget() {
     var n = name(this.pop('symbol'));
-}];
+    this.phoo.getNamespace(0).words.forget(n);
+}
+
+//TODO- don't forget outer array definition
 
 // literalizers
-
-var literalizers = new Map();
-literalizers.set(
-    /^[-+]?(([0-9]*\.?[0-9]+([Ee][-+]?[0-9]+)?)|(Infinity)|(NaN))$/,
+module.literalizers.add(/^[-+]?(([0-9]*\.?[0-9]+([Ee][-+]?[0-9]+)?)|(Infinity)|(NaN))$/,
     function floats() {
         var n = this.pop()[0];
         this.push(parseFloat(n));
     }
 );
 
-literalizers.set(
-    /^(?<num>[-+]?(?:(?:0x[0-9a-f]+)|(?:[0-9]+)))(?<big>n)?$/i,
+module.literalizers.add(/^(?<num>[-+]?(?:(?:0x[0-9a-f]+)|(?:[0-9]+)))(?<big>n)?$/i,
     function hexOrBigInt() {
         var m = this.pop();
         if (m.big) {
@@ -619,8 +495,7 @@ literalizers.set(
     }
 );
 
-literalizers.set(
-    /(?<base>[0-9]{1,2})#(?<num>[a-z]+)(?<big>-n)/,
+module.literalizers.add(/(?<base>[0-9]{1,2})#(?<num>[a-z]+)(?<big>-n)/,
     function psNumber() {
         var m = this.pop();
         if (!m.big) {
@@ -628,96 +503,12 @@ literalizers.set(
         }
         else {
             var n = BigInt(0);
+            var b = BigInt(m.base);
             for (var d in [...m.num].reverse()) {
-                n *= BigInt(m.base);
+                n *= b;
                 n += BigInt(parseInt(d, +m.base));
             }
             this.push(n);
         }
     }
 );
-
-export function init(p) {
-    batchAdd(p, {
-        words: {
-            dup, drop, swap,
-            '1+': onePlus,
-            '1-': oneMinus,
-            '+': sum,
-            negate,
-            '*': product,
-            '**': exp,
-            '/%': divmod,
-            '/': div,
-
-            '=': eq,
-            '>': gt,
-
-            nand,
-
-            '~': bitinv,
-            '&': bitand,
-            '|': bitor,
-            '^': bitxor,
-            '<<': shl,
-
-            put, take,
-
-            ']done[': metaDone,
-            ']again[': metaAgain,
-            ']cjump[': cjump,
-
-            "]'[": metaLiteral,
-            ']do[': metaDo,
-            ']this[': metaThis,
-
-            lower, upper,
-            '..': strConcat,
-
-            '[]': newArray,
-            concat: arrConcat,
-            split, peek, poke,
-
-            find,
-
-            ']sandbox[': sandbox,
-            error,
-            ']getstack[': getStack,
-
-            'num->$': num$,
-            '$->num': $num,
-            chr,
-            type: type_,
-            bigg,
-
-            compile,
-
-            time,
-
-            nestdepth,
-            'await': await_,
-            get, set, call,
-            new: new_,
-            word: word_,
-            name: name_,
-            '{}': newObject,
-            self, stacksize,
-            window: win,
-
-            def, builder,
-
-            // a couple constants that don't need to be literalizers
-            'true': [true],
-            'false': [false],
-            'undefined': [undefined],
-            'null': [null],
-        },
-        builders: {
-            '/*': blockComment,
-            $: string,
-            '[': openBracket,
-            ']': closeBracket,
-        },
-        literalizers,
-    });
-}
