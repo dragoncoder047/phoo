@@ -129,9 +129,25 @@ export class Phoo {
      * @returns {_PWordDef_}
      */
     resolveNamepath(word, where = 'words') {
-        // TODO #3 modules
-        var def;
-        for (var i = 0; i < this.namespaceStack.length && def === undefined; i++) def = this.getNamespace(i)[where].find(word);
+        var def, nps = this.namepathSeparator;
+        if (word.indexOf(nps) > -1) {
+            var s;
+            if (word.startsWith(nps)) {
+                s = word.slice(nps.length).split(nps).concat([nps]);
+            } else {
+                s = word.split(nps);
+            }
+            def = this.main.findSubmodule(s[0]);
+            for (var p of s.slice(1, -1)) {
+                def = def.findSubmodule(p);
+                if (def === undefined) break;
+            }
+            if (def !== undefined && s[s.length - 1] !== nps) {
+                def = def[where].find(s[s.length - 1]);
+            }
+        } else {
+            for (var i = 0; i < this.namespaceStack.length && def === undefined; i++) def = this.getNamespace(i)[where].find(word);
+        }
         if (def === undefined)
             def = this.undefinedWord(word);
         if (type(def) === 'symbol')
