@@ -16,35 +16,20 @@ import { Thread } from './threading.js';
  */
 export class Phoo {
     /**
-     * @param {Object} [opts={}]
-     * @param {Array<any>} [opts.stack=[]] The initial items into the stack.
-     * @param {Namespace[]} [opts.namespaces] The initial namespace stack.
+     * @param {Object} [opts={}] options
+     * @param {Object} [opts.settings] Settings to start a new Thread with.
+     * @param {Array<any>} [opts.settings.stack=[]] The initial items into the stack.
+     * @param {number} [opts.settings.maxDepth=10000] The maximum return stack length before a {@linkcode StackOverflowError} error is thrown.
+     * @param {boolean} [opts.settings.strictMode=true] Enable or disable strict mode (see {@linkcode Phoo.strictMode})
+     * @param {string} [opts.settings.namepathSeparator=':'] Separator used to split name paths in modules (e.g. `math:sqrt`)
      * @param {Module} [opts.mainModule] The global (`__main__`) module
-     * @param {number} [opts.maxDepth=10000] The maximum return stack length before a {@linkcode StackOverflowError} error is thrown.
-     * @param {boolean} [opts.strictMode=true] Enable or disable strict mode (see {@linkcode Phoo.strictMode})
-     * @param {string} [opts.namepathSeparator=':'] Separator used to split name paths in modules (e.g. `math:sqrt`)
      */
-    constructor({
-        namespaces = [],
-        mainModule = null,
-        stack = [],
-        maxDepth = 10000,
-        strictMode = true,
-        namepathSeparator = ':',
-    }) {
+    constructor(opts) {
         /**
-         * Mapping of words to code
-         * @type {Namespace[]}
-         * @default nothing
+         * Settings to start a new thread with.
+         * @type {object}
          */
-        this.namespaceStack = namespaces;
-        /**
-         * Stack that working values are
-         * pushed and popped from during execution.
-         * @type {Array}
-         * @default []
-         */
-        this.workStack = stack;
+        this.settings = Object.assign({ stack: [], maxDepth: 10000, strictMode: true, namepathSeparator: ':' }, opts.settings);
         /**
          * The maximum length of {@linkcode returnStack}
          * before a {@linkcode StackOverflowError} error is thrown.
@@ -91,11 +76,13 @@ export class Phoo {
     
     /**
      * Create a new subthread.
+     * @param {Module} [module] The module that this thread runs.
      */
-    thread() {
+    thread({ module, stack = [] }) {
         return new Thread({
             parent: this,
-            stack: cloneArray(this.stack),
+            module: module || this.mainModule,
+            stack,
             maxDepth: this.maxDepth
         });
     }
@@ -104,10 +91,11 @@ export class Phoo {
      * Run some code in a subthread.
      * @param {string} code Code to run
      * @param {boolean} [block=false] Wait until the thread finishes.
+     * @param {Module} [module] The module to run in.
      * @returns {{promise: Promise<any[]>, t: Thread}|Promise<any[]>} The promise returned by {@linkcode Thread.run} and the thread itself, if `block` is false, otherwise the promise which can be awaited.
      */
-    spawn(code, block = false) {
-        var t = this.thread();
+    spawn(code, block = false, module) {
+        var t = this.thread(module);
         var promise = t.run(code);
         if (block) return promise;
         return { promise, t };
