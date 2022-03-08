@@ -19,14 +19,14 @@ export class Phoo {
      * @param {Object} [opts={}]
      * @param {Array<any>} [opts.stack=[]] The initial items into the stack.
      * @param {Namespace[]} [opts.namespaces] The initial namespace stack.
-     * @param {Module[]} [opts.modules] The initial cache of modules.
+     * @param {Module} [opts.mainModule] The global (`__main__`) module
      * @param {number} [opts.maxDepth=10000] The maximum return stack length before a {@linkcode StackOverflowError} error is thrown.
      * @param {boolean} [opts.strictMode=true] Enable or disable strict mode (see {@linkcode Phoo.strictMode})
      * @param {string} [opts.namepathSeparator=':'] Separator used to split name paths in modules (e.g. `math:sqrt`)
      */
     constructor({
         namespaces = [],
-        modules = [],
+        mainModule = null,
         stack = [],
         maxDepth = 10000,
         strictMode = true,
@@ -53,10 +53,10 @@ export class Phoo {
          */
         this.maxDepth = maxDepth;
         /**
-         * Modules that can be looked up by name.
-         * @type {Module[]}
+         * The `__main__` module.
+         * @type {Module}
          */
-        this.modules = modules;
+        this.mainModule = mainModule;
         /**
          * Whether strict mode is enabled.
          *
