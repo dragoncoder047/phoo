@@ -95,6 +95,7 @@ export class Module extends Namespace {
      * @returns {Module|null}
      */
     findSubmodule(n) {
+        if (n == this.name) return this;
         for (var s of this.submodules) {
             if (s.name == n) return s;
             var ss = s.findSubmodule(n);
