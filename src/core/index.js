@@ -46,7 +46,7 @@ export class Phoo {
          */
         this.workStack = stack;
         /**
-         * The maximum length of {@linkcode PBase.returnStack}
+         * The maximum length of {@linkcode returnStack}
          * before a {@linkcode StackOverflowError} error is thrown.
          * @type {number}
          * @default 10000
