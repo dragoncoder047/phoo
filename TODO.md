@@ -4,8 +4,8 @@
     * [ ] Rename `builder` to `new-macro!` as a macro (and follow convention that macros end with `!`)
     * [ ] `import!` for importing macros and literalizers
     * Renaming
-        * [ ] `[`/`]` -> `do`/`end`?
-        * [ ] `def` -> `to`
+        * [X] `[`/`]` -> `do`/`end`?
+        * [X] `def` -> `to`
         * [ ] `say` -> `echo`
     * [ ] Fix bug in `execute`: record return stack depth and return when it gets back to that, not when it gets to 0
     * [ ] Have separate `thread` and have that manage threads (each have own work and return stacks, but shared namespaces)
@@ -14,7 +14,7 @@
         * [ ] Namespace stack for modules, classes, etc.
 * [ ] Web app
 * [ ] Modules:
-    * [ ] Big-math (logic emu)
+    * [X] Big-math (logic emu)
     * [ ] p5.js
     * [ ] tone.js
     * [ ] jquery (DOM)
