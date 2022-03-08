@@ -53,9 +53,7 @@ export class SimpleNamespace {
      * @returns {_PWordDef_}
      */
     find(name) {
-        var w = this.forget(name);
-        this.add(name, w);
-        return w;
+        return (this.map.get(name) || [])[0];
     }
 }
 
