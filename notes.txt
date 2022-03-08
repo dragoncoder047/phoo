@@ -1,0 +1,18 @@
+Phoo
+    Settings = stack, recursionlimit, strict, nps
+    Main module
+    
+    Spawns thread ->
+        clone of settings
+        own scope stack
+        module
+        
+        ref to parent Phoo
+        
+        when importing ->
+            looks at __main__ module recursive lookup uses cache if found
+           
+        looking up word ->
+            has nps? find module
+            no nps? look in scope stack
+            scope stack can have module from import *
