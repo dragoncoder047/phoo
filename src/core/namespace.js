@@ -79,6 +79,27 @@ export class Module extends Namespace {
      */
     constructor(name) {
         super();
+        /**
+         * @type {string}
+         */
         this.name = name;
+        /**
+         * @type {Module[]}
+         */
+        this.submodules = [];
+    }
+
+    /**
+     * Look up the module in submodules
+     * @param {string} n module name
+     * @returns {Module|null}
+     */
+    findSubmodule(n) {
+        for (var s of this.submodules) {
+            if (s.name == n) return s;
+            var ss = s.findSubmodule(n);
+            if (ss) return ss;
+        }
+        return null;
     }
 }
