@@ -82,21 +82,21 @@ export class Module extends Namespace {
          */
         this.name = name;
         /**
-         * @type {Module[]}
+         * @type {Map<string, Module>}
          */
-        this.submodules = [];
+        this.submodules = new Map();
     }
 
     /**
      * Look up the module in submodules
-     * @param {string} n module name
+     * @param {string} what module name
      * @returns {Module|null}
      */
-    findSubmodule(n) {
-        if (n == this.name) return this;
-        for (var s of this.submodules) {
-            if (s.name == n) return s;
-            var ss = s.findSubmodule(n);
+    findSubmodule(what) {
+        if (what == this.name) return this;
+        for (var [n, s] of this.submodules) {
+            if (n == what) return s;
+            var ss = s.findSubmodule(what);
             if (ss) return ss;
         }
         return null;
