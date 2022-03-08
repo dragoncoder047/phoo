@@ -185,7 +185,7 @@ export class Phoo {
  * Add a function easily as a word, taking the arguments in order off the
  * top of the stack and pushing the return value.
  * @param {Namespace} ns The namespace instance to add to.
- * @param {Array<string|Array<string>>} inputTypes The names of the acceptable types for each parameter.
+ * @param {Array<string|RegExp>} inputTypes The names of the acceptable types for each parameter.
  * @param {string} [name] The name of the word (default: the `name` of the function)
  * @param {function} func The function (duh)
  */
@@ -199,8 +199,7 @@ export class Phoo {
         var args = [];
         for (var i=0; i<inputTypes.length; i++) 
             args.push(this.pop());
-        var result = func.apply(this, args);
-        this.push(result);
+        this.push(func.apply(this, args));
     }
     ns.words.add(name, wordFunction);
 }
