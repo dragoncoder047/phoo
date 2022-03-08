@@ -19,25 +19,35 @@ export class Thread {
     /**
      * @param {Object} [opts]
      * @param {Phoo} [opts.parent] Owner of this thread.
+     * @param {Module} [opts.module] Module this thread is handling.
      * @param {Namespace[]} [opts.namespaces] The initial namespace stack.
      * @param {any[]} [opts.stack=[]] The initial items on the work stack.
      * @param {number} [opts.maxDepth=10000] The maximum return stack length before a {@linkcode StackOverflowError} error is thrown.
      */
     constructor({
         parent,
+        module,
+        namespaces = [],
         stack = [],
         maxDepth = 10000
     }) {
         /**
+         * Owner of this thread.
          * @type {Phoo}
          */
         this.phoo = parent;
+        /**
+         * The module that this thread writes to.
+         * @type {Module}
+         */
+        this.module = module;
         /**
          * Stack that working values are pushed and popped from during execution.
          * @type {Array}
          * @default []
          */
         this.workStack = stack;
+        // TODO - add namespaces!!!!!!!!!!!!!!!!
         /**
          * Stack that outer arrays and current PC's are saved on
          * when the Phoo machine 'jumps in' to an inner array.
