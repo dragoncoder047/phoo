@@ -88,6 +88,17 @@ export class Phoo {
          */
         this.namepathSeparator = namepathSeparator;
     }
+    
+    /**
+     * Create a new subthread.
+     */
+    thread() {
+        return new Thread({
+            parent: this,
+            stack: cloneArray(this.stack),
+            maxDepth: this.maxDepth
+        });
+    }
 
     /**
      * Run some code in a subthread.
@@ -96,11 +107,7 @@ export class Phoo {
      * @returns {{promise: Promise<any[]>, t: Thread}|Promise<any[]>} The promise returned by {@linkcode Thread.run} and the thread itself, if `block` is false, otherwise the promise which can be awaited.
      */
     spawn(code, block = false) {
-        var t = new Thread({
-            parent: this,
-            stack: cloneArray(this.stack),
-            maxDepth: this.maxDepth
-        });
+        var t = this.thread();
         var promise = t.run(code);
         if (block) return promise;
         return { promise, t };
