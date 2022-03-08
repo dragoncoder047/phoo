@@ -112,19 +112,30 @@ export class Phoo {
         if (block) return promise;
         return { promise, t };
     }
-
+    
+    /**
+     * Find the namespace in the namespace stack.
+     * @param {number} idx The depth in the stack to look.
+     * @returns {Namespace}
+     */
     getNamespace(idx) {
         return this.namespaceStack[this.namespaceStack.length - 1 - idx];
     }
-
-    resolveNamepath(word, kind = 'words') {
+    
+    /**
+     * Recursively look up the word/builder's definition, following symlinks and traversing the module tree.
+     * @param {string} word The name of the word/builder
+     * @param {'words'|'builders'} [where='words'] Words or builders.
+     * @returns {_PWordDef_}
+     */
+    resolveNamepath(word, where = 'words') {
         // TODO #3 modules
         var def;
-        for (var i = 0; i < this.namespaceStack.length && def === undefined; i++) def = this.getNamespace(i)[kind].find(word);
+        for (var i = 0; i < this.namespaceStack.length && def === undefined; i++) def = this.getNamespace(i)[where].find(word);
         if (def === undefined)
             def = this.undefinedWord(word);
         if (type(def) === 'symbol')
-            return this.resolveNamepath(name(def), kind);
+            return this.resolveNamepath(name(def), where);
         return def;
     }
 
