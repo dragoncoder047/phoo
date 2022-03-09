@@ -25,6 +25,22 @@ Thread
     
     inside word function:
         this refers to thread instance
+        
+    work stack:
+        of anything
+        push()
+        pop()
+        expect()
+    
+    return stack
+        of entries: pc: number, arr: array
+        retPush()
+        retPop()
+    
+    scope stack
+        of Namespaces
+        enterScope()
+        exitScope()
 
 Module
     SimpleModules for each of words, builders, literalizers
