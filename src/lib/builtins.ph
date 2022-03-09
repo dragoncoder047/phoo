@@ -162,6 +162,8 @@ to case do
     ]'[ run ]done[
 end
 
+to ' [ ]'[ ]
+
 to run [ ]run[ ]
 
 to this [ ]this[ ]
