@@ -24,7 +24,7 @@ macro now! do
     dip [ dup take run ]
 end
 
-builder // do
+macro // do
     dup $ '' = not while
     behead
     dup 10 chr = dip [ 13 chr = ] or until
@@ -161,8 +161,6 @@ to case do
     default
     ]'[ run ]done[
 end
-
-to ' [ ]'[ ]
 
 to run [ ]run[ ]
 
