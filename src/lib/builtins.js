@@ -231,6 +231,7 @@ module.words.add("]'[", function metaLiteral() {
     this.push(entry.arr[entry.pc]);
     this.retPush(entry);
 });
+module.words.add("'", naiveCompile("]'[")); // `to` depends on this and `concat`
 
 module.words.add(']run[', function metaRun() {
     var arr = this.pop();
