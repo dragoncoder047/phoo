@@ -2,14 +2,15 @@
 * [ ] Finish core
     * [ ] ~~`local`~~ `inline`
         * [ ] Have `to` automatically under-the-hood create a new scope and meta-def to actually do the defining
-    * [ ] Rename `builder` to `new-macro!` as a macro (and follow convention that macros end with `!`)
-    * [ ] `import!` for importing macros and literalizers
+    * [X] Rename `builder` to ~~`new-macro!`~~ `macro` as a macro
+    * [ ] (and follow convention that macros end with `!`)
+    * ~~[ ] `import!` for importing macros and literalizers~~ Just use `now!`.
     * Renaming
         * [X] `[`/`]` -> `do`/`end`?
         * [X] `def` -> `to`
         * [ ] `say` -> `echo`
     * [ ] Fix bug in `execute`: record return stack depth and return when it gets back to that, not when it gets to 0
-    * [ ] Have separate `thread` and have that manage threads (each have own work and return stacks, but shared ~~namespaces~~ modules)
+    * [X] Have separate `thread` and have that manage threads (each have own work and return stacks, but shared ~~namespaces~~ modules)
     * [ ] Namespacing:
         * [ ] Instead of having tree of nested Phoo interpreters, have a `sys.modules` map &agrave; la Python, that is searched to prevent recursive import cycles
         * [ ] Namespace stack for modules, classes, etc.
