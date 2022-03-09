@@ -2,17 +2,31 @@ Phoo
     Settings = stack, recursionlimit, strict, nps
     Main module
     
-    Spawns thread ->
-        clone of settings
-        own scope stack
-        module
-        
-        ref to parent Phoo
-        
-        when importing ->
-            looks at __main__ module recursive lookup uses cache if found
-           
-        looking up word ->
-            has nps? find module
-            no nps? look in scope stack
-            scope stack can have module from import *
+    spawn() -> thread
+    thread() -> thread
+    
+    resolveNamepath() ->
+        has nps? find module:
+            split at nps
+            call module.findSubmodule() for each
+            not found -> load from network/sw cache
+        no nps? look in scope stack, top down
+        scope stack can have module from import *
+
+Thread
+    clone of settings
+    own scope stack
+    current module - defs get written here if scope stack is empty
+
+    ref to parent Phoo
+    
+    run() <=> execute(compile()) (instance is threadlocked when running anything)
+    pause(), step(), resume() debugging commands
+    
+    inside word function:
+        this refers to thread instance
+
+Module
+    SimpleModules for each of words, builders, literalizers
+        Map of words to definition stack
+    Map of submodule name or alias name to submodule object
