@@ -63,7 +63,7 @@ export class SimpleNamespace {
 export class Namespace {
     constructor() {
         this.words = new SimpleNamespace();
-        this.builders = new SimpleNamespace();
+        this.macros = new SimpleNamespace();
         this.literalizers = new SimpleNamespace();
     }
 }
