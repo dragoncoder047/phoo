@@ -383,7 +383,7 @@ to try do
     ]'[
     ]sandbox[
 
-    dup iff do
+    dup dup if do
         try.prt copy
         do
             dup len while
@@ -399,7 +399,6 @@ to try do
         end
         true
     end
-    else noop
     try.hist release
     1 ]cjump[
 end
@@ -422,7 +421,7 @@ to isa? [ swap type = ]
 
 to isoneof? [ [] unrot witheach [ dip dup isa? swap dip concat ] drop false swap witheach or ]
 
-to stringify [ .toString! ]
+to stringify [ .toString@ ]
 
 to arrayify [ dup $ 'array' isa? not if nested ]
 
