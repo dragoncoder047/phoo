@@ -12,9 +12,9 @@ import { Module } from '../core/namespace.js';
 export const module = new Module('__builtins__');
 // var [, word, code] = /^(?:\s*)(\S+)([\S\s]*)$/.exec(code);
 
-// builders
+// macros
 
-module.builders.add('/*', function blockComment() {
+module.macros.add('/*', function blockComment() {
     var code = this.pop();
     if (!/\s\*\/\s/.test(code)) {
         throw new UnexpectedEOF('/*: Unclosed block comment.');
@@ -23,7 +23,7 @@ module.builders.add('/*', function blockComment() {
     this.push(code);
 });
 
-module.builders.add('$', function string() {
+module.macros.add('$', function string() {
     var code = this.pop();
     code = code.replace(/^\s+/, ''); // strip leading white space after $
     var delim = code[0];
@@ -31,9 +31,10 @@ module.builders.add('$', function string() {
     if (code.indexOf(delim) < 0) {
         throw new UnexpectedEOF('$: Unterminated string literal.');
     }
-    var [str, code] = code.split(delim, 1); /* jshint ignore:line */
+    var str, formatCode;
+    [str, code] = code.split(delim, 1); /* jshint ignore:line */
 
-    var [, formatCode, code] = /^(?:(\S+)|(?:\s+))([\S\s]*)$/.exec(code); /* jshint ignore:line */
+    [, formatCode, code] = /^(?:(\S+)|(?:\s+))([\S\s]*)$/.exec(code); /* jshint ignore:line */
     // do something with format code stuck onto end delimiter???
     // ignoring it for now
     code = formatCode + code;
@@ -49,8 +50,8 @@ function openBracket() {
     this.push([]);
     this.push(s);
 }
-module.builders.add('[', openBracket);
-module.builders.add('do', openBracket);
+module.macros.add('[', openBracket);
+module.macros.add('do', openBracket);
 
 function closeBracket() {
     var s = this.pop();
@@ -61,8 +62,8 @@ function closeBracket() {
     this.push(o);
     this.push(s);
 }
-module.builders.add(']', closeBracket);
-module.builders.add('end', closeBracket);
+module.macros.add(']', closeBracket);
+module.macros.add('end', closeBracket);
 
 // words
 
@@ -231,7 +232,6 @@ module.words.add("]'[", function metaLiteral() {
     this.push(entry.arr[entry.pc]);
     this.retPush(entry);
 });
-module.words.add("'", naiveCompile("]'[")); // `to` depends on this and `concat`
 
 module.words.add(']run[', function metaRun() {
     var arr = this.pop();
@@ -436,15 +436,14 @@ module.words.add(']define[', function metaDefine() {
     this.expect(/array|symbol/, 'symbol');
     var d = this.pop();
     var n = name(this.pop());
-    this.phoo.getNamespace(0).words.add(n, d);
+    (this.scopeStack[this.scopeStack.length - 1] || this.module).words.add(n, d);
 });
 
 module.words.add(']define-macro[', function metaMacro() {
     this.expect('array', 'symbol');
     var d = this.pop();
     var n = name(this.pop());
-    this.phoo.getNamespace(0).builders.add(n, d);
-
+    (this.scopeStack[this.scopeStack.length - 1] || this.module).macros.add(n, d);
 });
 
 module.words.add(']forget[', function metaForget() {
@@ -453,7 +452,7 @@ module.words.add(']forget[', function metaForget() {
     this.phoo.getNamespace(0).words.forget(n);
 });
 
-module.words.add('@inline', naiveCompile("]'[ ]'[ ]define["));
+module.words.add('to', naiveCompile("]'[ ]'[ ]define["));
 module.words.add('macro', naiveCompile("]'[ ]'[ ]define-macro["));
 module.words.add('forget', naiveCompile("]'[ ]forget["));
 
@@ -469,9 +468,9 @@ module.literalizers.add(/^(?<num>[-+]?(?:(?:0x[0-9a-f]+)|(?:[0-9]+)))(?<big>n)?$
     function hexOrBigInt() {
         var m = this.pop();
         if (m.big) {
-            cArr.push(BigInt(m.num));
+            this.push(BigInt(m.num));
         } else {
-            cArr.push(parseInt(m.num));
+            this.push(parseInt(m.num));
         }
     }
 );
@@ -508,7 +507,7 @@ module.literalizers.add(/^\.(?<pname>.+)(?<type>\(\)|=|!)?$/,
                     this.push(obj[pname](...args));
                 });
                 break;
-            case '!':
+            case '@':
                 this.push(function () {
                     this.expect(/./);
                     var obj = this.pop();
