@@ -10,17 +10,17 @@ to noop [ ]
 
 to alias to
 
-builder const do
+macro const do
     dip do
         [] = iff
-            $ '"constant" needs something before it.' die
+            $ 'const: need something before to precompile' die
         dup take run
         nested
         concat
     end
 end
 
-builder now! do
+macro now! do
     dip [ dup take run ]
 end
 
