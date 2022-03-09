@@ -20,15 +20,15 @@ export class Thread {
      * @param {Object} [opts]
      * @param {Phoo} [opts.parent] Owner of this thread.
      * @param {Module} [opts.module] Module this thread is handling.
-     * @param {Namespace[]} [opts.namespaces] The initial namespace stack.
+     * @param {Namespace[]} [opts.scopes] The initial namespace stack.
      * @param {any[]} [opts.stack=[]] The initial items on the work stack.
      * @param {number} [opts.maxDepth=10000] The maximum return stack length before a {@linkcode StackOverflowError} error is thrown.
      */
     constructor({
         parent,
         module,
-        namespaces = [],
         stack = [],
+        scopes = [],
         maxDepth = 10000
     }) {
         /**
@@ -47,7 +47,11 @@ export class Thread {
          * @default []
          */
         this.workStack = stack;
-        // TODO - add namespaces!!!!!!!!!!!!!!!!
+        /**
+         * Stack of namespace scopes.
+         * @type {Namespace[]}
+         */
+        this.scopeStack = scopes;
         /**
          * Stack that outer arrays and current PC's are saved on
          * when the Phoo machine 'jumps in' to an inner array.
@@ -156,9 +160,7 @@ export class Thread {
                 var result = regex.exec(word);
                 if (result) {
                     this.push(result);
-                    this.lock.release();
-                    await this.run(code);
-                    await this.lock.acquire();
+                    await this.run(code, true);
                     a.push(this.pop());
                     return true;
                 }
@@ -292,6 +294,17 @@ export class Thread {
         if (this.returnStack.length > this.maxDepth)
             throw new StackOverflowError('Maximum return stack length exceeded');
     }
+    
+    enterScope() {
+        this.scopeStack.push(new Namespace());   
+    }
+    
+    exitScope() {
+        if (this.scopeStack.length === 0)
+            throw new StackUnderflowError.withPhooStack('No scope to exit from', this.returnStack)
+        this.scopeStack.pop();
+    }
+    
     /**
      * Execute the compiled code contained in the array.
      * @param {Array} c The compiled array (returned by {@linkcode Thread.compile})
@@ -340,10 +353,11 @@ export class Thread {
     /**
      * Invokes the compiler and then runs the compiled code, all in one call.
      * @param {string|Array|_PProgram_} code The code to be run.
+     * @param {boolean} [forceNoLock=false] ***FOR INTERNAL USE ONLY!!!***
      * @returns {Promise<Array>} The stack after execution (same as what {@linkcode Thread.execute} returns)
      */
-    async run(code) {
-        return await this.execute(await this.compile(code));
+    async run(code, forceNoLock = false) {
+        return await this.execute(await this.compile(code, forceNoLock), forceNoLock);
     }
 
     /**
