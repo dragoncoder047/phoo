@@ -431,14 +431,14 @@ module.words.add('window', function win() {
 });
 
 // and now, the most important ones!
-module.words.add(']to[', function metaTo() {
+module.words.add(']define[', function metaDefine() {
     this.expect(/array|symbol/, 'symbol');
     var d = this.pop();
     var n = name(this.pop());
     this.phoo.getNamespace(0).words.add(n, d);
 });
 
-module.words.add(']builder[', function metaBuilder() {
+module.words.add(']define-macro[', function metaMacro() {
     this.expect('array', 'symbol');
     var d = this.pop();
     var n = name(this.pop());
@@ -452,8 +452,8 @@ module.words.add(']forget[', function metaForget() {
     this.phoo.getNamespace(0).words.forget(n);
 });
 
-module.words.add('to', naiveCompile("]'[ ]'[ ]to["));
-module.words.add('builder', naiveCompile("]'[ ]'[ ]builder["));
+module.words.add('@inline', naiveCompile("]'[ ]'[ ]define["));
+module.words.add('macro', naiveCompile("]'[ ]'[ ]define-macro["));
 module.words.add('forget', naiveCompile("]'[ ]forget["));
 
 // literalizers
