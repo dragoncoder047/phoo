@@ -1,6 +1,6 @@
 * [ ] DOCUMENTATION!!!
 * [ ] Finish core
-    * [ ] ~~`local`~~ `inline`
+    * [ ] ~~`local`~~ `@inline`
         * [ ] Have `to` automatically under-the-hood create a new scope and meta-def to actually do the defining
     * [X] Rename `builder` to ~~`new-macro!`~~ `macro` as a macro
     * [ ] (and follow convention that macros end with `!`)
@@ -26,7 +26,7 @@
     * [ ] Create different type of block (maybe using `{}` instead of using `[]`) that records its depth when entering and cleans up stack when an error is propagating
         * [ ] maybe just have `{}` make an 'anonymous function'-ish thing?
     * [ ] Type system: `typedef`:
-        * [ ] Trap `def` and `local` hooks and write them to an object that will be used in `:::js Object.create(prototype)`-like construct
+        * [ ] Trap `to` and `@inline` hooks and write them to an object that will be used in `:::js Object.create(prototype)`-like construct
         * [ ] Operator overloading &agrave; la Python:
             * Have methods called `__op_+__`, `__op_-__`, etc. for any custom operator.
             * [ ] New definer called `oper` that takes a symbol and an arity and walks the modules and defines that word in all of them
