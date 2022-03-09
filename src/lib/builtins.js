@@ -352,7 +352,7 @@ module.words.add('type', function type_() {
     this.push(type(this.pop()));
 });
 
-module.words.add('bigg', function bigg() {
+module.words.add('big', function big() {
     this.push(BigInt(this.pop()));
 });
 
