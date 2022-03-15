@@ -1,25 +1,25 @@
-
-
-
-
 export class Threadlock {
     constructor() {
-        this.queue = [];
-        this.locked = false;
+        this.promise = Promise.resolve();
+        this.locks = 0;
     }
 
     async acquire() {
-        if (!this.locked) { // still reeks of #1 -- but this would be the ONLY place a race condition could occur
-            this.locked = true;
-        } else {
-            var self = this;
-            await new Promise(unlock => self.queue.push(unlock));
-        }
+        var self = this;
+        this.locks++;
+        var unlock;
+        var willLock = new Promise(r => {
+            unlock = () => {
+                self.locks--;
+                r();
+            }
+        });
+        var willUnlock = this.promise.then(() => unlock);
+        this.promise = this.promise.then(() => willLock);
+        return willUnlock;
     }
 
-    release() {
-        var unlockNextThread = this.queue.shift();
-        if (unlockNextThread) unlockNextThread();
-        else this.locked = false;
+    get locked() {
+        return this.locks > 0;
     }
 }
