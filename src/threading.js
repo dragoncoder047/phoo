@@ -184,7 +184,8 @@ export class Thread {
             default:
                 return [source]; // just wrap it
         }
-        if (!hasLockAlready) await this.lock.acquire();
+        var unlock;
+        if (!hasLockAlready) unlock = await this.lock.acquire();
         var code = source.slice();
         var origLength = this.stack.length;
         var word, b, a = [];
@@ -201,9 +202,9 @@ export class Thread {
                             await b.call(this);
                             break;
                         case 'array':
-                            if (!hasLockAlready) this.lock.release();
+                            if (!hasLockAlready) unlock();
                             await this.execute(b, forceNoLock);
-                            if (!hasLockAlready) await this.lock.acquire();
+                            if (!hasLockAlready) unlock = await this.lock.acquire();
                             break;
                         default:
                             throw new TypeMismatchError(`Unexpected ${type(source)} as builder.`);
@@ -224,7 +225,7 @@ export class Thread {
             throw BadSyntaxError.wrap(e, this.stack);
         }
         finally {
-            if (!hasLockAlready) this.lock.release();
+            if (!hasLockAlready) unlock();
             this._killed = 0;
         }
         if (this.stack.length !== origLength)
@@ -312,7 +313,8 @@ export class Thread {
      * @returns {Promise<Array>} The stack after execution.
      */
     async execute(c, hasLockAlready = false) {
-        if (!hasLockAlready) await this.lock.acquire();
+        var unlock;
+        if (!hasLockAlready) unlock = await this.lock.acquire();
         var pc = 0;
         try {
             while (true) {
@@ -344,7 +346,7 @@ export class Thread {
             throw PhooError.wrap(e, this.returnStack);
         }
         finally {
-            if (!hasLockAlready) this.lock.release();
+            if (!hasLockAlready) unlock();
             this._killed = 0;
         }
         return this.workStack;
