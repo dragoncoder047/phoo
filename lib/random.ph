@@ -1,5 +1,5 @@
 import [ log exp sqrt ] from math
-import [ random seed ] from _random
+import * from _random
 
 /* cSpell:ignore fbelow ibelow */
 to fbelow [ random * ]
