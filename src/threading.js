@@ -155,7 +155,7 @@ export class Thread {
      * @returns {Promise<boolean>} Whether processing succeeded.
      */
     async compileLiteral(word, a) {
-        for (var ns of this.phoo.namespaceStack.slice().reverse()) {
+        for (var ns of this.namespaceStack.concat([this.module]).reverse()) {
             for (var [regex, code] in ns.literalizers.map) {
                 var result = regex.exec(word);
                 if (result) {
@@ -172,10 +172,10 @@ export class Thread {
     /**
      * Compile the code, but do not run it. This **will** invoke any builders and/or literalizers used.
      * @param {string|Array} source The code to be compiled. If it is an array already, this will just return it unchanged.
-     * @param {boolean} [forceNoLock=false] ***FOR INTERNAL USE ONLY!!!***
+     * @param {boolean} [hasLockAlready=false] ***FOR INTERNAL USE ONLY!!!***
      * @returns {Promise<Array>}
      */
-    async compile(source, forceNoLock = false) {
+    async compile(source, hasLockAlready = false) {
         switch (type(source)) {
             case 'string':
                 break; // default behavior
@@ -184,13 +184,13 @@ export class Thread {
             default:
                 return [source]; // just wrap it
         }
-        if (!forceNoLock) await this.lock.acquire();
+        if (!hasLockAlready) await this.lock.acquire();
         var code = source.slice();
         var origLength = this.stack.length;
         var word, b, a = [];
         try {
             while (code.length > 0) {
-                await this.checkIfKilled(false);
+                await this.checkIfKilled();
                 [word, code] = code.split(/\s+/, 2);
                 b = this.phoo.resolveNamepath(word, 'builders');
                 if (b !== undefined) {
@@ -201,12 +201,12 @@ export class Thread {
                             await b.call(this);
                             break;
                         case 'array':
-                            if (!forceNoLock) this.lock.release();
+                            if (!hasLockAlready) this.lock.release();
                             await this.execute(b, forceNoLock);
-                            if (!forceNoLock) await this.lock.acquire();
+                            if (!hasLockAlready) await this.lock.acquire();
                             break;
                         default:
-                            throw new TypeMismatchError(`Unexpected '${type(source)}' as builder.`);
+                            throw new TypeMismatchError(`Unexpected ${type(source)} as builder.`);
                     }
                     this.expect('string', 'array');
                     code = this.pop();
@@ -224,7 +224,7 @@ export class Thread {
             throw BadSyntaxError.wrap(e, this.stack);
         }
         finally {
-            if (!forceNoLock) this.lock.release();
+            if (!hasLockAlready) this.lock.release();
             this._killed = 0;
         }
         if (this.stack.length !== origLength)
@@ -308,15 +308,15 @@ export class Thread {
     /**
      * Execute the compiled code contained in the array.
      * @param {Array} c The compiled array (returned by {@linkcode Thread.compile})
-     * @param {boolean} [forceNoLock=false] ***FOR INTERNAL USE ONLY!!!***
+     * @param {boolean} [hasLockAlready=false] ***FOR INTERNAL USE ONLY!!!***
      * @returns {Promise<Array>} The stack after execution.
      */
-    async execute(c, forceNoLock = false) {
-        if (!forceNoLock) await this.lock.acquire();
+    async execute(c, hasLockAlready = false) {
+        if (!hasLockAlready) await this.lock.acquire();
         var pc = 0;
         try {
             while (true) {
-                await this.checkIfKilled(false);
+                await this.checkIfKilled();
                 await this.checkForPaused();
                 if (pc >= c.length) {
                     if (this.returnStack.length == 0) break;
@@ -336,7 +336,7 @@ export class Thread {
                     pc = -1;
                 } else
                     await this.executeOneItem(ci);
-                // TODO - this might cause a lockout when using `]sandbox[` that calls this recursively. Hence `forceNoLock` parameter
+                // TODO - this might cause a lockout when using `]sandbox[` that calls this recursively. Hence `hasLockAlready` parameter
                 pc++;
             }
         } catch (e) {
@@ -344,7 +344,7 @@ export class Thread {
             throw PhooError.wrap(e, this.returnStack);
         }
         finally {
-            if (!forceNoLock) this.lock.release();
+            if (!hasLockAlready) this.lock.release();
             this._killed = 0;
         }
         return this.workStack;
@@ -353,11 +353,11 @@ export class Thread {
     /**
      * Invokes the compiler and then runs the compiled code, all in one call.
      * @param {string|Array|_PProgram_} code The code to be run.
-     * @param {boolean} [forceNoLock=false] ***FOR INTERNAL USE ONLY!!!***
+     * @param {boolean} [hasLockAlready=false] ***FOR INTERNAL USE ONLY!!!***
      * @returns {Promise<Array>} The stack after execution (same as what {@linkcode Thread.execute} returns)
      */
-    async run(code, forceNoLock = false) {
-        return await this.execute(await this.compile(code, forceNoLock), forceNoLock);
+    async run(code, hasLockAlready = false) {
+        return await this.execute(await this.compile(code, hasLockAlready), hasLockAlready);
     }
 
     /**
@@ -367,15 +367,9 @@ export class Thread {
      * this will throw an error. Otherwise, it does nothing.
      * You can catch the error if you need to clean up, but you should
      * re-throw it after cleanup is complete.
-     * @param {boolean} [recursive=true] Should child threads be killed as well.
      */
-    async checkIfKilled(recursive = true) {
-        if (this._killed > 0) {
-            if (this._killed === 2 || recursive) {
-                for (var child in this.children) {
-                    await child.kill(true);
-                }
-            }
+    async checkIfKilled() {
+        if (this._killed) {
             if (this._outerKillResolver !== null) {
                 this._outerKillResolver();
                 this._outerKillResolver = null;
@@ -387,34 +381,21 @@ export class Thread {
     /**
      * Stop this thread from executing.
      * Resolves when termination has completed.
-     * @param {boolean} recursive Whether to force-kill child threads too.
      * @returns {Promise<void>}
      */
-    async kill(recursive = false) {
+    async kill() {
         var self = this;
-        if (!recursive) {
-            if (!this._paused && this._safeToRun) return; // not running
-            else if (this._paused && this._innerPauseRejector !== null) {
-                this._innerPauseRejector();
-                this._innerPauseRejector = null;
-                return;
-            }
+        if (!this.lock.locked) return; // not running
+        else if (this._paused && this._innerPauseRejector !== null) {
+            this._innerPauseRejector();
+            this._innerPauseRejector = null;
+            return;
+        }
 
-            await new Promise(r => {
-                self._outerKillResolver = r;
-                self._killed = 1;
-            });
-        }
-        else {
-            if (this._paused && this._innerPauseResolver !== null) {
-                this._innerPauseResolver();
-                this._innerPauseResolver = null;
-            }
-            await new Promise(r => {
-                self._outerKillResolver = r;
-                self._killed = 2;
-            });
-        }
+        await new Promise(r => {
+            self._outerKillResolver = r;
+            self._killed = true;
+        });
     }
 
     /**
@@ -426,11 +407,7 @@ export class Thread {
         var self = this;
         await new Promise((res, rej) => {
             self._innerPauseResolver = res;
-            self._innerPauseRejector = async err => {
-                for (var child in self.children)
-                    await child.kill(true);
-                rej(err);
-            };
+            self._innerPauseRejector = rej;
             if (self._outerPauseResolver !== null) {
                 self._outerPauseResolver();
                 self._outerPauseResolver = null;
@@ -459,7 +436,7 @@ export class Thread {
      * @returns {Promise<void>}
      */
     async step() {
-        if (this._paused !== 'paused') await this.pause();
+        if (!this._paused) await this.pause();
         var self = this;
         await new Promise(r => {
             self._outerPauseResolver = r;
