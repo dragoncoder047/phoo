@@ -286,28 +286,29 @@ end
 
 to witheach [ ]'[ makewith run ]
 
-to map.hold [ stack ]
-protect map.hold
+to fold do
+    over [] = iff drop done
+    dip do
+        behead swap
+        ' [ witheach ] 
+    end
+    nested join run
+end
+
+to foldr [ dip reverse fold ]
 
 to map do
-    ]'[ map.hold put
-    [] swap
-    witheach do
-        map.hold copy run
-        concat
-    end
-    map.hold release
+    ' [ [ ] ] rot join swap
+    nested
+    ' [ nested join ] join
+    fold
 end
 
 to filter do
-    ]'[ map.hold put
-    [] swap
-    witheach do
-        dup
-        map.hold copy run
-        if concat
-    end
-    map.hold release
+    ' [ [ ] ] rot join swap
+    nested ' dup swap join
+    ' [ iff [ nested join ] else drop ] join
+    fold
 end
 
 to mi.tidyup [ stack ]
