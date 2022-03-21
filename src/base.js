@@ -1,7 +1,6 @@
 /**
  * @fileoverview
- * Main import file for the Phoo core.
- * Also includes some helpers at the bottom.
+ * Base file for Phoo main class.
  */
 
 import { UnknownWordError } from './errors.js';
@@ -12,9 +11,9 @@ import { Namespace, Module } from './namespace.js';
 import { Thread } from './threading.js';
 
 /**
- * A Phoo interpreter.
+ * Base class for Phoo interpreter.
  */
-export class Phoo {
+export class BasePhoo {
     /**
      * @param {Object} [opts={}] options
      * @param {Object} [opts.settings] Settings to start a new Thread with.
@@ -177,43 +176,4 @@ export class Phoo {
     //     c.children = recursive ? this.children.map(c => c.clone(true)) : this.children.slice();
     //     return c;
     // }
-}
-
-/*re*/export { word, name, w } from './utils.js';
-/*re*/export * from './errors.js';
-/*re*/export * from './constants.js';
-
-//-------------------------Helpers------------------------
-
-/**
- * Add a function easily as a word, taking the arguments in order off the
- * top of the stack and pushing the return value.
- * @param {Namespace} ns The namespace instance to add to.
- * @param {Array<string|RegExp>} inputTypes The names of the acceptable types for each parameter.
- * @param {string} [name] The name of the word (default: the `name` of the function)
- * @param {function} func The function (duh)
- */
- export function addFunctionAsWord(ns, inputTypes, name, func) {
-    if (type(name) == 'function') { // allow name to be omitted
-        func = name;
-        name = func.name;
-    }
-    function wordFunction() {
-        this.expect(...inputTypes);
-        var args = [];
-        for (var i=0; i<inputTypes.length; i++) 
-            args.push(this.pop());
-        this.push(func.apply(this, args));
-    }
-    ns.words.add(name, wordFunction);
-}
-
-/**
- * Naively compile the string, converting each word into its corresponding symbol,
- * not invoking builders or literalizers.
- * @param {string} string
- * @returns {symbol[]}
- */
-export function naiveCompile(string) {
-    return string.split(/\s+/).map(word);
 }
