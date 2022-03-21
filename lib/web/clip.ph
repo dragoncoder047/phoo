@@ -1,15 +1,11 @@
-import _p
+import web:permissions as _p
 
 to can-write? do
-    $ "clipboard-write" {} tuck .name=
-    nested
-    window .navigator .permissions .query() await
+    $ "clipboard-write" _p:query
 end
 
 to can-read? do
-    $ "clipboard-read" {} tuck .name=
-    nested
-    window .navigator .permissions .query() await
+    $ "clipboard-read" _p:query
 end
 
 to read do

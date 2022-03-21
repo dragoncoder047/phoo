@@ -7,5 +7,5 @@ end
 to JSON do
     nested
     window .fetch() await
-    .text@ await
+    .json@ await
 end

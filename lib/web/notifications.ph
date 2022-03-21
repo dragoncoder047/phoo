@@ -1,4 +1,4 @@
-import _p
+import web:permissions as _p
 
 to has-permission? do
     window .Notification .requestPermission@ await
