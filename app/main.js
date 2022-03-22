@@ -4,6 +4,7 @@ function $(sel) { return document.querySelector(sel); }
 
 var term = new Terminal();
 term.open($('main'));
+term.fit();
 term.write('Phoo is loading... ')
 
 var loading = (function load() {
@@ -19,7 +20,9 @@ var loading = (function load() {
 
 // do load
 
-return;
-
 clearTimeout(loading);
 term.clear();
+
+term.onData = function(data) {
+    term.write(data);
+}
