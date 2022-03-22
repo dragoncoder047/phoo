@@ -20,7 +20,7 @@ var loading = (function load() {
 })();
 
 // do load
-
+return;
 clearTimeout(loading);
 term.clear();
 term.writeln('Hello world')
