@@ -5,7 +5,7 @@ const term = new Terminal({
     cursorBlink: true,
     cursorStyle: 'block',
 });
-const fitter = new FitAddon();
+const fitter = new FitAddon.FitAddon();
 const readline = new LocalEchoController({ historySize: Infinity });
 term.open($('#terminal'));
 term.loadAddon(fitter);
