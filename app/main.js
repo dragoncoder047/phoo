@@ -4,13 +4,11 @@ var term = new Terminal({
     convertEol: true,
     cursorBlink: true,
     cursorStyle: 'block',
-    rows: 25,
-    cols: 80,
 });
-//var fitter = new FitAddon();
+var fitter = new FitAddon();
 term.open($('#terminal'));
-//term.loadAddon(fitter);
-//fitter.fit();
+term.loadAddon(fitter);
+fitter.fit();
 term.write('Phoo is loading... ')
 
 var loading = (function load() {
