@@ -3,7 +3,11 @@ import { Phoo, initBuiltins } from '../src/index.js';
 function $(sel) { return document.querySelector(sel); }
 
 var term = new Terminal({
+    convertEol: true,
     cursorBlink: true,
+    cursorStyle: 'block',
+    rows: 25,
+    cols: 80,
 });
 term.open($('#terminal'));
 term.write('Phoo is loading... ')
