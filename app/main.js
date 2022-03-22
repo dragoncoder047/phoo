@@ -4,11 +4,10 @@ function $(sel) { return document.querySelector(sel); }
 
 var term = new Terminal();
 term.open($('main'));
-term.fit();
 term.write('Phoo is loading... ')
 
 var loading = (function load() {
-    var x = '/-|\\';
+    var x = '/-\\|';
     var i = 0;
     (function test() {
         term.write('\b');
