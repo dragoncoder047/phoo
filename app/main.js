@@ -22,14 +22,15 @@ var loading = (function load() {
 
 clearTimeout(loading);
 term.clear();
+term.writeln('Hello world')
 
 var STDIN = '';
 
-term.onKey = (key, e) => {
-    STDIN += key;
-    term.write(key);
-    if (key == '\n') {
+term.onData(data => {
+    STDIN += data;
+    term.writeln(data);
+    if (data == '\n') {
         term.write(`\x1b[31m${STDIN}\x1b[0m`);
         STDIN = '';
     }
-};
+});
