@@ -7,7 +7,10 @@ var term = new Terminal({
     rows: 25,
     cols: 80,
 });
+var fitter = new FitAddon();
+term.loadAddon(fitter);
 term.open($('#terminal'));
+fitter.fit();
 term.write('Phoo is loading... ')
 
 var loading = (function load() {
