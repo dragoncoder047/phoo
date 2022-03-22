@@ -34,3 +34,5 @@ term.onData(data => {
         STDIN = '';
     }
 });
+
+term.focus();

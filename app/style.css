@@ -12,4 +12,5 @@ header {
 
 main {
     height: calc(100% - 20px);
+    border: 1px solid magenta;
 }
