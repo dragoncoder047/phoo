@@ -19,7 +19,6 @@ var loading = (function load() {
 })();
 
 // do load
-return;
 
 clearTimeout(loading);
 term.clear();
