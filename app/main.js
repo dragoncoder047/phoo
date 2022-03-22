@@ -77,4 +77,10 @@ import('../src/indx.js').then(imodule => {
     }
 
     term.focus();
-});
+}).catch(e => {
+    term.clear();
+    term.write('\x1b[41m');
+    term.write('Fatal error!\n\n');
+    term.write(e.stack);
+    term.blur();
+})
