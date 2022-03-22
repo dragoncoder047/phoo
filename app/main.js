@@ -1,5 +1,13 @@
 function $(sel) { return document.querySelector(sel); }
 
-var t = new Terminal();
-t.open($('main'));
-t.write('testing 123...\n\nHello \x1B[1;3;31mphoo\x1B[0m')
+var term = new Terminal();
+term.open($('main'));
+term.write('Phoo is loading... ')
+var x = '/-|\\';
+var i = 0;
+(function test() {
+    term.write('\b');
+    term.write(x[i]);
+    if (++i == x.length) i = 0;
+    setTimeout(test, 50);
+})();
