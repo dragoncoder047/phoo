@@ -19,10 +19,18 @@ var loading = (function load() {
 })();
 
 // do load
+return;
 
 clearTimeout(loading);
 term.clear();
 
-term.onData = function(data) {
-    term.write(data);
-}
+var STDIN = '';
+
+term.onKey = (key, e) => {
+    STDIN += key;
+    term.write(key);
+    if (key == '\n') {
+        term.write(`\x1b[31m${STDIN}\x1b[0m`);
+        STDIN = '';
+    }
+};
