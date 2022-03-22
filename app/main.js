@@ -5,8 +5,8 @@ const term = new Terminal({
     cursorBlink: true,
     cursorStyle: 'block',
 });
-const fitter = new FitAddon();
-const readline = new LocalEchoController();
+const fitter = FitAddon();
+const readline = LocalEchoController();
 term.open($('#terminal'));
 term.loadAddon(fitter);
 term.loadAddon(readline);
@@ -25,7 +25,7 @@ var loading = (function load() {
 })();
 
 // do load
-import('../src/indx.js').then(async imodule => {
+import('../src/index.js').then(async imodule => {
     clearTimeout(loading);
     term.clear();
     term.writeln('Hello world');
@@ -50,5 +50,4 @@ import('../src/indx.js').then(async imodule => {
     term.write('\x1b[41m');
     term.write('Fatal error!\n\n');
     term.write(e.stack);
-    term.blur();
 });
