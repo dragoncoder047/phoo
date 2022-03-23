@@ -5,6 +5,8 @@ const term = new Terminal({
     cursorBlink: true,
     cursorStyle: 'block',
     fontFamily: '"IBM Mono", monospace',
+    fontSize: 16,
+    letterSpacing: 16,
 });
 term.open($('#terminal'));
 const fitter = new FitAddon.FitAddon(); // webpack glitch; should be just `new FitAddon()`
@@ -22,20 +24,21 @@ term.loadAddon(fitter);
 fitter.fit();
 term.write('Phoo is loading... ');
 
-var loading = (function load() {
+var loading = true;
+(function load() {
     var x = '/-\\|';
     var i = 0;
-    return (function test() {
+    (function test() {
         term.write('\b');
         term.write(x[i]);
         if (++i == x.length) i = 0;
-        return setTimeout(test, 250);
+        if (loading) setTimeout(test, 250);
     })();
 })();
 
 // do load
 import('../src/index.js').then(async imodule => {
-    clearTimeout(loading);
+    loading = false;
     term.clear();
     term.writeln('Hello world');
     term.focus();
@@ -55,6 +58,7 @@ import('../src/index.js').then(async imodule => {
     }
 
 }).catch(e => {
+    loading = false;
     term.clear();
     term.write('\x1b[41m');
     term.write('Fatal error!\n\n');
