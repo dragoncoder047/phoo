@@ -4,9 +4,19 @@ const term = new Terminal({
     convertEol: true,
     cursorBlink: true,
     cursorStyle: 'block',
+    fontFamily: '"IBM Mono", monospace',
 });
-const fitter = new FitAddon.FitAddon();
-const readline = new LocalEchoController({ historySize: Infinity });
+const fitter = new FitAddon.FitAddon(); // webpack glitch; should be just `new FitAddon()`
+const readline = new LocalEchoController({ // note: this is a monkeypatched version.
+    historySize: Infinity,
+    incompleteTest: function isIncomplete(text) {
+        var words = text.split(/\s+/);
+        var weights = { do: 1, end: -1, '[': 1, ']': -1 };
+        var count = 0;
+        for (var w of words) count += weights[w] || 0;
+        return count > 0;
+    }
+});
 term.open($('#terminal'));
 term.loadAddon(fitter);
 term.loadAddon(readline);

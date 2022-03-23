@@ -22,4 +22,4 @@ The Phoo web app uses:
 
 * [xterm.js](https://xtermjs.org) - MIT license
 * fit addon for xterm.js - MIT license
-* [local-echo.js](https://github.com/wavesoft/local-echo) - Apache 2.0 license
+* [local-echo](https://github.com/wavesoft/local-echo) - Apache 2.0 license (*This is a manually built, monkeypatched version.*)
