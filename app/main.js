@@ -42,8 +42,8 @@ import('../src/index.js').then(async imodule => {
     term.writeln('Hello world');
     term.focus();
 
-    const PROMPT_1 = '\x1b[31m->\x1b[0m ';
-    const PROMPT_2 = '\x1b[31m..\x1b[0m ';
+    const PROMPT_1 = '-> ';
+    const PROMPT_2 = '.. ';
 
     while (true) {
         runCommand(await readline.read(PROMPT_1, PROMPT_2));
