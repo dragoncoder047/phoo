@@ -71,10 +71,10 @@ export class BasePhoo {
          */
         this.namepathSeparator = namepathSeparator;
     }
-    
+
     /**
      * Create a new subthread.
-     * @param {Module} [module] The module that this thread runs.
+     * ///////@param {Module} [module] The module that this thread runs.
      */
     thread({ module, stack = [] }) {
         return new Thread({
@@ -93,12 +93,12 @@ export class BasePhoo {
      * @returns {{promise: Promise<any[]>, t: Thread}|Promise<any[]>} The promise returned by {@linkcode Thread.run} and the thread itself, if `block` is false, otherwise the promise which can be awaited.
      */
     spawn(code, block = false, module) {
-        var t = this.thread(module);
+        var t = this.thread({ module, stack: this.stack });
         var promise = t.run(code);
         if (block) return promise;
         return { promise, t };
     }
-    
+
     /**
      * Find the namespace in the namespace stack.
      * @param {number} idx The depth in the stack to look.
@@ -107,7 +107,7 @@ export class BasePhoo {
     getNamespace(idx) {
         return this.namespaceStack[this.namespaceStack.length - 1 - idx];
     }
-    
+
     /**
      * Recursively look up the word/builder's definition, following symlinks and traversing the module tree.
      * @param {string} word The name of the word/builder

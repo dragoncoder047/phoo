@@ -1,9 +1,9 @@
-@import url('/static/css/fonts.css');
+/* @import url('/static/css/fonts.css'); */
 
 body {
     background: black;
     font-size: 16px;
-    font-family: "IBM Mono", monospace;
+    font-family: monospace;
     color: white;
     height: 100%;
 }
