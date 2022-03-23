@@ -12,7 +12,7 @@
 import { BasePhoo } from './base.js';
 import { BadSyntaxError, ModuleNotFoundError, TypeMismatchError } from './errors.js';
 import { Module } from './namespace.js';
-import { type, name } from '.utils.js';
+import { type, name } from './utils.js';
 import { module as builtinsModule } from '../lib/builtins.js';
 
 /**
