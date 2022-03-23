@@ -23,6 +23,7 @@ main {
 #terminal {
     padding: 20px 20px;
     border-radius: 4px;
+    height: 100%;
     border: 1px solid magenta;
     margin: 5px;
 }
