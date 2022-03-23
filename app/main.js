@@ -38,8 +38,7 @@ var loading = true;
 // do load
 import('../src/index.js').then(async imodule => {
     loading = false;
-    term.clear();
-    term.writeln('Hello world');
+    term.writeln('\x1b[100DWelcome to Phoo.');
     term.focus();
 
     const PROMPT_1 = '\x1b[34m->\x1b[0m ';
