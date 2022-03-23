@@ -6,7 +6,6 @@ const term = new Terminal({
     cursorStyle: 'block',
     fontFamily: '"IBM Mono", monospace',
     fontSize: 16,
-    letterSpacing: 16,
 });
 term.open($('#terminal'));
 const fitter = new FitAddon.FitAddon(); // webpack glitch; should be just `new FitAddon()`
@@ -29,10 +28,12 @@ var loading = true;
     var x = '/-\\|';
     var i = 0;
     (function test() {
-        term.write('\b');
-        term.write(x[i]);
-        if (++i == x.length) i = 0;
-        if (loading) setTimeout(test, 250);
+        if (loading) {
+            setTimeout(test, 150);
+            term.write('\b');
+            term.write(x[i]);
+            if (++i == x.length) i = 0;
+        }
     })();
 })();
 
