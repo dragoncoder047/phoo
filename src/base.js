@@ -5,6 +5,7 @@
 
 import { UnknownWordError } from './errors.js';
 import { name, type } from './utils.js';
+import { _PWordDef_, _PWordMap_ } from './threading.js';
 import { Namespace, Module } from './namespace.js';
 import { Thread } from './threading.js';
 

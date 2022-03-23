@@ -4,7 +4,7 @@
  */
 
 import { WORD_NAME_SYMBOL } from './constants.js';
-import { _PWordDef_ } from './index.js';
+import { _PWordDef_ } from './threading.js';
 
 /**
  * A `SimpleNamespace` holds only one type of thing in a scope.
