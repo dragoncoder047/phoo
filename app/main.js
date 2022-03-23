@@ -6,6 +6,7 @@ const term = new Terminal({
     cursorStyle: 'block',
     fontFamily: '"IBM Mono", monospace',
     fontSize: 16,
+    letterSpacing: 12,
 });
 term.open($('#terminal'));
 const fitter = new FitAddon.FitAddon(); // webpack glitch; should be just `new FitAddon()`

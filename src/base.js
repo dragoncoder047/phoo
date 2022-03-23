@@ -4,9 +4,7 @@
  */
 
 import { UnknownWordError } from './errors.js';
-import { cloneArray, name, type } from './utils.js';
-import { _PWordDef_ } from './pbase.js';
-import { _PWordMap_ } from './pbase.js';
+import { name, type } from './utils.js';
 import { Namespace, Module } from './namespace.js';
 import { Thread } from './threading.js';
 
