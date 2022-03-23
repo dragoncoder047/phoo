@@ -58,10 +58,9 @@ import('../src/index.js').then(async imodule => {
 
 }).catch(e => {
     loading = false;
-    term.clear();
-    term.write('\x1b[31m\x1b[43m');
-    term.writeln('Fatal error!\n');
-    term.writeln(e.message);
+    term.write('\x1b[31m');
+    term.writeln('\nFatal error!');
+    term.writeln(e);
     term.writeln(e.stack);
     throw e;
 });
