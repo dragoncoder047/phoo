@@ -92,53 +92,11 @@ export class BasePhoo {
      * @param {Module} [module] The module to run in.
      * @returns {{promise: Promise<any[]>, t: Thread}|Promise<any[]>} The promise returned by {@linkcode Thread.run} and the thread itself, if `block` is false, otherwise the promise which can be awaited.
      */
-    spawn(code, block = false, module) {
+    spawn(code, module, block = false) {
         var t = this.thread({ module, stack: this.stack });
         var promise = t.run(code);
         if (block) return promise;
         return { promise, t };
-    }
-
-    /**
-     * Find the namespace in the namespace stack.
-     * @param {number} idx The depth in the stack to look.
-     * @returns {Namespace}
-     */
-    getNamespace(idx) {
-        return this.namespaceStack[this.namespaceStack.length - 1 - idx];
-    }
-
-    /**
-     * Recursively look up the word/builder's definition, following symlinks and traversing the module tree.
-     * @param {string} word The name of the word/builder
-     * @param {'words'|'builders'} [where='words'] Words or builders.
-     * @returns {_PWordDef_}
-     */
-    resolveNamepath(word, where = 'words') {
-        var def, nps = this.namepathSeparator;
-        if (word.indexOf(nps) > -1) {
-            var s;
-            if (word.startsWith(nps)) {
-                s = word.slice(nps.length).split(nps).concat([nps]);
-            } else {
-                s = word.split(nps);
-            }
-            def = this.main.findSubmodule(s[0]);
-            for (var p of s.slice(1, -1)) {
-                def = def.findSubmodule(p);
-                if (def === undefined) break;
-            }
-            if (def !== undefined && s[s.length - 1] !== nps) {
-                def = def[where].find(s[s.length - 1]);
-            }
-        } else {
-            for (var i = 0; i < this.namespaceStack.length && def === undefined; i++) def = this.getNamespace(i)[where].find(word);
-        }
-        if (def === undefined)
-            def = this.undefinedWord(word);
-        if (type(def) === 'symbol')
-            return this.resolveNamepath(name(def), where);
-        return def;
     }
 
     /**

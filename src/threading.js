@@ -295,17 +295,17 @@ export class Thread {
         if (this.returnStack.length > this.maxDepth)
             throw new StackOverflowError('Maximum return stack length exceeded');
     }
-    
+
     enterScope() {
-        this.scopeStack.push(new Namespace());   
+        this.scopeStack.push(new Namespace());
     }
-    
+
     exitScope() {
         if (this.scopeStack.length === 0)
             throw new StackUnderflowError.withPhooStack('No scope to exit from', this.returnStack)
         this.scopeStack.pop();
     }
-    
+
     /**
      * Execute the compiled code contained in the array.
      * @param {Array} c The compiled array (returned by {@linkcode Thread.compile})
@@ -360,6 +360,48 @@ export class Thread {
      */
     async run(code, hasLockAlready = false) {
         return await this.execute(await this.compile(code, hasLockAlready), hasLockAlready);
+    }
+
+    /**
+     * Find the namespace in the namespace stack.
+     * @param {number} idx The depth in the stack to look.
+     * @returns {Namespace}
+     */
+    getScope(idx) {
+        return this.scopeStack[this.scopeStack.length - 1 - idx] || this.module;
+    }
+
+    /**
+     * Recursively look up the word/builder's definition, following symlinks and traversing the module tree.
+     * @param {string} word The name of the word/builder
+     * @param {'words'|'builders'} [where='words'] Words or builders.
+     * @returns {_PWordDef_}
+     */
+    resolveNamepath(word, where = 'words') {
+        var def, nps = this.phoo.namepathSeparator;
+        if (word.indexOf(nps) > -1) {
+            var s;
+            if (word.startsWith(nps)) {
+                s = word.slice(nps.length).split(nps).concat([nps]);
+            } else {
+                s = word.split(nps);
+            }
+            def = this.module.findSubmodule(s[0]);
+            for (var p of s.slice(1, -1)) {
+                def = def.findSubmodule(p);
+                if (def === undefined) break;
+            }
+            if (def !== undefined && s[s.length - 1] !== nps) {
+                def = def[where].find(s[s.length - 1]);
+            }
+        } else {
+            for (var i = 0; i < this.scopeStack.length && def === undefined; i++) def = this.getScope(i)[where].find(word);
+        }
+        if (def === undefined)
+            def = this.phoo.undefinedWord(word);
+        if (type(def) === 'symbol')
+            return this.resolveNamepath(name(def), where);
+        return def;
     }
 
     /**
