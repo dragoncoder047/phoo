@@ -7,7 +7,7 @@ const term = new Terminal({
 });
 term.open($('#terminal'));
 const fitter = new FitAddon.FitAddon(); // webpack glitch; should be just `new FitAddon()`
-const readline = new LocalEchoController(term, { // note: this is a monkeypatched version.
+const readline = new LocalEchoController({ // note: this is a monkeypatched version.
     historySize: Infinity,
     incompleteTest: function isIncomplete(text) {
         var words = text.split(/\s+/);
@@ -15,9 +15,13 @@ const readline = new LocalEchoController(term, { // note: this is a monkeypatche
         var count = 0;
         for (var w of words) count += weights[w] || 0;
         return count > 0;
+    },
+    tokenize: function split(text) {
+        return text.split(/\s+/);
     }
 });
 term.loadAddon(fitter);
+term.loadAddon(readline);
 fitter.fit();
 term.write('Phoo is loading... ');
 
