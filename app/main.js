@@ -23,7 +23,7 @@ term.write('Phoo is loading... ');
 
 var loading = true;
 (function load() {
-    var chars = '⠁⠂⠄⢀⠠⠐';
+    var chars = '-\\|/';
     var i = 0;
     (function test() {
         if (loading) {
