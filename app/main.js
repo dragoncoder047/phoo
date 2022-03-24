@@ -10,7 +10,7 @@ const fitter = new FitAddon.FitAddon(); // webpack glitch; should be just `new F
 const readline = new LocalEchoController(term, { // note: this is a monkeypatched version.
     historySize: Infinity,
     incompleteTest: function isIncomplete(text) {
-        var words = text.split(/\s+/);
+        var words = text.split(/(\s|\b)+/);
         var weights = { do: 1, end: -1, '[': 1, ']': -1 };
         var count = 0;
         for (var w of words) count += weights[w] || 0;
@@ -27,7 +27,7 @@ var loading = true;
     var i = 0;
     (function test() {
         if (loading) {
-            setTimeout(test, 150);
+            setTimeout(test, 100);
             term.write('\b');
             term.write(x[i]);
             if (++i == x.length) i = 0;
@@ -37,8 +37,9 @@ var loading = true;
 
 // do load
 import('../src/index.js').then(async imodule => {
+    await new Promise(r => setTimeout(r, 500));
     loading = false;
-    term.writeln('\x1b[100DWelcome to Phoo.');
+    term.writeln('\x1b[2K\x1b[20DWelcome to Phoo.');
     term.focus();
 
     const PROMPT_1 = '\x1b[34m->\x1b[0m ';
@@ -48,7 +49,7 @@ import('../src/index.js').then(async imodule => {
         runCommand(await readline.read(PROMPT_1, PROMPT_2));
     }
     function runCommand(c) {
-        term.writeln(`\x1b[31m${c}\x1b[0m`);
+        term.writeln(`\x1b[31mASI: ${c.split(/(\s|\b)+/).join(' ')}\x1b[0m`);
     }
 
     function kill() {
