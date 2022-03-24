@@ -10,7 +10,7 @@ const fitter = new FitAddon.FitAddon(); // webpack glitch; should be just `new F
 const readline = new LocalEchoController(term, { // note: this is a monkeypatched version.
     historySize: Infinity,
     incompleteTest: function isIncomplete(text) {
-        var words = text.split(/(\s|\b)+/);
+        var words = text.split(/\s+/);
         var weights = { do: 1, end: -1, '[': 1, ']': -1 };
         var count = 0;
         for (var w of words) count += weights[w] || 0;
@@ -49,7 +49,7 @@ import('../src/index.js').then(async imodule => {
         runCommand(await readline.read(PROMPT_1, PROMPT_2));
     }
     function runCommand(c) {
-        term.writeln(`\x1b[31mASI: ${c.split(/(\s|\b)+/).join(' ')}\x1b[0m`);
+        term.writeln(`\x1b[31mYou wrote:\n${c}\x1b[0m`);
     }
 
     function kill() {
