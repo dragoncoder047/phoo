@@ -23,14 +23,14 @@ term.write('Phoo is loading... ');
 
 var loading = true;
 (function load() {
-    var x = '/-\\|';
+    var chars = 'pobdoq';
     var i = 0;
     (function test() {
         if (loading) {
             setTimeout(test, 100);
             term.write('\b');
-            term.write(x[i]);
-            if (++i == x.length) i = 0;
+            term.write(chars[i]);
+            if (++i == chars.length) i = 0;
         }
     })();
 })();
