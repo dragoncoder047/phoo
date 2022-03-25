@@ -49,7 +49,7 @@ import('../src/index.js').then(async imodule => {
     var i = 0;
     while (true) {
         i++;
-        runCommand(await readline.read(`\x1b[34m[${i}]->\x1b[0m `, '\x1b[34m..\x1b[0m '));
+        runCommand(await readline.read(`\x1b[34m[${i}]->\x1b[0m `));
     }
     function runCommand(c) {
         term.writeln(`\x1b[31mYou wrote:\n${c}\x1b[0m`);
