@@ -46,11 +46,10 @@ import('../src/index.js').then(async imodule => {
     term.writeln('\x1b[2K\x1b[20DWelcome to Phoo.');
     term.focus();
 
-    const PROMPT_1 = '\x1b[34m->\x1b[0m ';
-    const PROMPT_2 = '\x1b[34m..\x1b[0m ';
-
+    var i = 0;
     while (true) {
-        runCommand(await readline.read(PROMPT_1, PROMPT_2));
+        i++;
+        runCommand(await readline.read(`\x1b[34m[${i}]->\x1b[0m `, '\x1b[34m..\x1b[0m '));
     }
     function runCommand(c) {
         term.writeln(`\x1b[31mYou wrote:\n${c}\x1b[0m`);
