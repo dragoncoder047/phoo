@@ -41,7 +41,7 @@ var loading = true;
 
 // do load
 import('../src/index.js').then(async imodule => {
-    await new Promise(r => setTimeout(r, 500));
+    await new Promise(r => setTimeout(r, 750));
     loading = false;
     term.writeln('\x1b[2K\x1b[20DWelcome to Phoo.');
     term.focus();
@@ -49,7 +49,7 @@ import('../src/index.js').then(async imodule => {
     var i = 0;
     while (true) {
         i++;
-        runCommand(await readline.read(`\x1b[34m[${i}]->\x1b[0m `));
+        runCommand(await readline.read(`\x1b[34m[${i}]-->\x1b[0m `, `\x1b[34m[${i}]...\x1b[0m `));
     }
     function runCommand(c) {
         term.writeln(`\x1b[31mYou wrote:\n${c}\x1b[0m`);
