@@ -18,8 +18,4 @@ The Phoo interpreter-compiler environment plus its (for the time being) minimali
 
 ## Credits
 
-The Phoo web app uses:
-
-* [xterm.js](https://xtermjs.org) - MIT license
-* fit addon for xterm.js - MIT license
-* [local-echo](https://github.com/wavesoft/local-echo) - Apache 2.0 license (*This is a manually built, monkeypatched version.*)
+The Phoo web app's terminal uses Jakub T. Jankiewicz's [jquery.terminal plugin](https://github.com/jcubic/jquery.terminal). MIT license.
