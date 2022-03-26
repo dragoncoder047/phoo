@@ -7,7 +7,7 @@ const term = $('body').terminal(c => run(c), {
     enabled: false,
     exit: false,
     greetings: 'Phoo is loading...',
-    prompt: () => `[[;blue;]${esc(`[${count}]`)}-->] `,
+    prompt: () => `[[;magenta;]${esc(`[${count}]`)}-->] `,
     keymap: {
         ENTER(e, original) {
             var i = next_indent_level(this.get_command());
@@ -37,7 +37,7 @@ var loading = true;
 
 // do load
 import('../src/index.js').then(async imodule => {
-    await new Promise(r => setTimeout(r, 750));
+    await new Promise(r => setTimeout(r, 1000));
     loading = false;
     term.update(0, 'Welcome to Phoo.');
     term.enable();
@@ -47,7 +47,7 @@ import('../src/index.js').then(async imodule => {
         term.echo('[[g;;]Sleeping]');
         await new Promise(r => setTimeout(r, 1000));
         if (c) {
-            term.update(-1, `\n[[;red;]You said:]\n[[;green;]${esc(c)}]`);
+            term.update(-1, `[[;red;]You said:]\n[[;green;]${esc(c)}]`);
             count++;
         }
     };
