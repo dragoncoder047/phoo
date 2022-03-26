@@ -17,7 +17,11 @@ const term = $('body').terminal(c => run(c), {
                 this.insert('\n' + ' '.repeat(4 * i));
             }
         }
-    }
+    },
+    autocompleteMenu: true,
+    async completion() {
+        return []; // TODO
+    },
 });
 
 run = () => term.error('Still loading... be patient...');
@@ -56,6 +60,7 @@ import('../src/index.js').then(async imodule => {
     loading = false;
     term.error('\nFatal error!');
     term.exception(e);
+    term.error('If this continues to occur, please [[!;;;;https://github.com/dragoncoder047/phoo/issues]report it.]');
     term.freeze();
     throw e;
 });
