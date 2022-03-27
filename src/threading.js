@@ -194,7 +194,7 @@ export class Thread {
                 await this.checkIfKilled();
                 [word, code] = (code + ' ').split(/\s+/, 2);
                 b = this.resolveNamepath(word, 'macros');
-                console.log(b, this.workStack);
+                console.log(word, b, this.workStack);
                 if (b !== undefined) {
                     this.push(a);
                     this.push(code);
