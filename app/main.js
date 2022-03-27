@@ -54,6 +54,7 @@ import('../src/index.js').then(async phoo => {
     await phoo.initBuiltins(p);
 
     run = async function runCommand(c) {
+        count++;
         await p.spawn(c).promise;
     };
 

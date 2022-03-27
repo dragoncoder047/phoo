@@ -240,18 +240,14 @@ export function naiveCompile(string) {
 /**
  * Runs the builtin modules on the Phoo instance, initializing it for basic use.
  * @param {Phoo} p The {@linkcode Phoo} instance to load onto.
- * @param {boolean} [allowImport=false] Whether to add the `import` word as well, to allow the module to import other modules. Default false to prevent unintended security issues by allowing malicious users to import (and run) evil code.
  * @returns {Promise<void>} When initialization is complete.
  */
-export async function initBuiltins(p, allowImport = false) {
+export async function initBuiltins(p) {
     if (p.mainModule.findSubmodule('__builtins__') !== null) {
-        p.namespaceStack.unshift(builtinsModule);
+        p.mainModule.submodules.set('__builtins__', builtinsModule);
         var resp = await fetch('./builtins.ph');
         if (resp.status >= 300)
             throw new ModuleNotFoundError('Fetch error');
-        p.namespaceStack.push(builtinsModule); // <<+-- these are to make sure the definitions end up in the builtins module
-        await p.run(await resp.text());        //   |
-        p.namespaceStack.pop();                // <<+
-        if (allowImport) p.namespaceStack[0].words.add('import', [meta_import]);
+        await p.spawn(await resp.text(), builtinsModule, true);
     }
 }
