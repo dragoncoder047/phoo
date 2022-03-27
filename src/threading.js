@@ -382,7 +382,7 @@ export class Thread {
         if (word.indexOf(nps) > -1) {
             var s;
             if (word.startsWith(nps)) {
-                s = word.slice(nps.length).split(nps).concat([nps]);
+                s = word.substring(nps.length).split(nps).concat([nps]);
             } else {
                 s = word.split(nps);
             }
@@ -395,7 +395,7 @@ export class Thread {
                 def = def[where].find(s[s.length - 1]);
             }
         } else {
-            for (var i = 0; i < this.scopeStack.length && def === undefined; i++) def = this.getScope(i)[where].find(word);
+            for (var i = 0; i <= this.scopeStack.length && def === undefined; i++) def = this.getScope(i)[where].find(word);
         }
         if (def === undefined && where === 'words')
             def = this.phoo.undefinedWord(word);

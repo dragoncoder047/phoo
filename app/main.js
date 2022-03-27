@@ -51,7 +51,7 @@ import('../src/index.js').then(async phoo => {
 
     run = async function runCommand(c) {
         count++;
-        await p.spawn(c).promise;
+        p.settings.stack = await p.spawn(c).promise;
     };
 
     loading = false;
@@ -63,7 +63,7 @@ import('../src/index.js').then(async phoo => {
     loading = false;
     term.error('\nFatal error!');
     term.exception(e);
-    term.echo($('<span style="color: red">If this continues to occur, please <a href="https://github.com/dragoncoder047/phoo/issues">report it.</a></span>'));
+    term.echo($('<span style="color: red; font-size: inherit;">If this continues to occur, please <a href="https://github.com/dragoncoder047/phoo/issues">report it.</a></span>'));
     term.disable();
     term.freeze();
     throw e;

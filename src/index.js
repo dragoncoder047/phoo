@@ -249,7 +249,6 @@ export async function initBuiltins(p) {
         var resp = await fetch('./lib/builtins.ph');
         if (resp.status >= 300)
             throw new ModuleNotFoundError('Fetch error');
-        p.initialScopeStack.push(builtinsModule);
         await p.spawn(await resp.text(), builtinsModule, true);
     }
 }
