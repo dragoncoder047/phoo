@@ -14,7 +14,7 @@ const term = $('body').terminal(c => run(c), {
             if (i === 0) {
                 original();
             } else {
-                this.insert('\n' + ' '.repeat(4 * i));
+                this.insert('\n' + ' '.repeat(4 * Math.max(0, i)));
             }
         }
     },
