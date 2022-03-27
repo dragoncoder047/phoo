@@ -187,7 +187,7 @@ export class Thread {
         var unlock;
         if (!hasLockAlready) unlock = await this.lock.acquire();
         var code = source.slice();
-        var origLength = this.stack.length;
+        var origLength = this.workStack.length;
         var word, b, a = [];
         try {
             while (code.length > 0) {
@@ -222,14 +222,14 @@ export class Thread {
             }
         }
         catch (e) {
-            throw BadSyntaxError.wrap(e, this.stack);
+            throw BadSyntaxError.wrap(e, this.workStack);
         }
         finally {
             if (!hasLockAlready) unlock();
             this._killed = 0;
         }
-        if (this.stack.length !== origLength)
-            throw BadNestingError.withPhooStack('During compilation: stack not returned to original length', this.stack);
+        if (this.workStack.length !== origLength)
+            throw BadNestingError.withPhooStack('During compilation: stack not returned to original length', this.workStack);
         return a;
     }
 
