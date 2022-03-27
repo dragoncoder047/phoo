@@ -199,7 +199,7 @@ export class Phoo extends BasePhoo {
 /*re*/export * from './errors.js';
 /*re*/export * from './constants.js';
 /*re*/export * from './namespace.js';
-/*re*/export * from './symbols.js';
+/*re*/export * from './constants.js';
 
 //-------------------------Helpers------------------------
 
