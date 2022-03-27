@@ -231,6 +231,7 @@ export class Thread {
         }
         if (this.workStack.length !== origLength)
             throw BadNestingError.withPhooStack('During compilation: stack not returned to original length', this.workStack);
+        console.log(a);
         return a;
     }
 
