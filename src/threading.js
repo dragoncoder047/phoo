@@ -196,7 +196,6 @@ export class Thread {
                 word = /^(\S+)/.exec(code)[0];
                 code = code.substring(word.length);
                 b = this.resolveNamepath(word, 'macros');
-                console.log(word, b, this.workStack);
                 if (b !== undefined) {
                     this.push(a);
                     this.push(code);
@@ -233,7 +232,6 @@ export class Thread {
         }
         if (this.workStack.length !== origLength)
             throw BadNestingError.withPhooStack('During compilation: stack not returned to original length', this.workStack);
-        console.log(a);
         return a;
     }
 
