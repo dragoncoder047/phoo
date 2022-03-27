@@ -37,11 +37,11 @@ export class PhooError extends Error {
      * @param {Array} stackToTrace The Phoo return stack at the time of the error.
      * @returns {PhooError}
      */
-    static withPhooStack(message, stackToTrace) {
+    static withPhooStack(message, stackToTrace = []) {
         var me = new this(message);
         var stackText = '';
         for (var item of stackToTrace) {
-            stackText += `{${item.arr[WORD_NAME_SYMBOL] || '...'} ${item.pc}}`;
+            stackText += `{${item.arr[WORD_NAME_SYMBOL] || '...'} ${item.pc}} `;
         }
         me[STACK_TRACE_SYMBOL] = stackText;
         return me;
