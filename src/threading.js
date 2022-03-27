@@ -155,7 +155,7 @@ export class Thread {
      * @returns {Promise<boolean>} Whether processing succeeded.
      */
     async compileLiteral(word, a) {
-        for (var ns of this.namespaceStack.concat([this.module]).reverse()) {
+        for (var ns of this.scopeStack.concat([this.module]).reverse()) {
             for (var [regex, code] in ns.literalizers.map) {
                 var result = regex.exec(word);
                 if (result) {
