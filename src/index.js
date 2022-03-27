@@ -244,11 +244,12 @@ export function naiveCompile(string) {
  * @returns {Promise<void>} When initialization is complete.
  */
 export async function initBuiltins(p) {
-    if (p.mainModule.findSubmodule('__builtins__') !== null) {
+    if (!p.mainModule.findSubmodule('__builtins__')) {
         p.mainModule.submodules.set('__builtins__', builtinsModule);
         var resp = await fetch('./builtins.ph');
         if (resp.status >= 300)
             throw new ModuleNotFoundError('Fetch error');
         await p.spawn(await resp.text(), builtinsModule, true);
+        p.initialScopeStack.push(builtinsModule);
     }
 }

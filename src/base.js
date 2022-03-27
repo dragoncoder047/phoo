@@ -40,6 +40,11 @@ export class BasePhoo {
          */
         this.mainModule = opts.mainModule;
         /**
+         * Start stack of scopes to start a thread with.
+         * @type {Namespace[]}
+         */
+        this.initialScopeStack = [];
+        /**
          * Whether strict mode is enabled.
          *
          * Strict mode ON:
@@ -92,7 +97,7 @@ export class BasePhoo {
      * @returns {{promise: Promise<any[]>, t: Thread}|Promise<any[]>} The promise returned by {@linkcode Thread.run} and the thread itself, if `block` is false, otherwise the promise which can be awaited.
      */
     spawn(code, module, block = false) {
-        var t = this.thread({ module, stack: this.stack });
+        var t = this.thread({ module, stack: this.stack, scopes: this.initialScopeStack });
         var promise = t.run(code);
         if (block) return promise;
         return { promise, t };
