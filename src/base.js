@@ -4,9 +4,8 @@
  */
 
 import { UnknownWordError } from './errors.js';
-import { name, type } from './utils.js';
 import { _PWordDef_, _PWordMap_ } from './threading.js';
-import { Namespace, Module } from './namespace.js';
+import { Module } from './namespace.js';
 import { Thread } from './threading.js';
 
 /**
@@ -34,12 +33,12 @@ export class BasePhoo {
          * @type {number}
          * @default 10000
          */
-        this.maxDepth = maxDepth;
+        this.maxDepth = this.settings.maxDepth;
         /**
          * The `__main__` module.
          * @type {Module}
          */
-        this.mainModule = mainModule;
+        this.mainModule = opts.mainModule;
         /**
          * Whether strict mode is enabled.
          *
@@ -63,13 +62,13 @@ export class BasePhoo {
          * @type {boolean}
          * @default true
          */
-        this.strictMode = strictMode;
+        this.strictMode = this.settings.strictMode;
         /**
          * Separator used to split name paths in modules (e.g. `math:sqrt`)
          * @type {string}
          * @default ':'
          */
-        this.namepathSeparator = namepathSeparator;
+        this.namepathSeparator = this.settings.namepathSeparator;
     }
 
     /**

@@ -62,7 +62,7 @@ import('../src/index.js').then(async phoo => {
     term.error('\nFatal error!');
     term.exception(e);
     term.error('If this continues to occur, please [[!;;;;https://github.com/dragoncoder047/phoo/issues]report it.]');
-    term.freeze();
+    term.disable();
     throw e;
 });
 

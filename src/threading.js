@@ -378,7 +378,7 @@ export class Thread {
      * @returns {_PWordDef_}
      */
     resolveNamepath(word, where = 'words') {
-        var def, nps = this.phoo.namepathSeparator;
+        var def, nps = this.phoo.settings.namepathSeparator;
         if (word.indexOf(nps) > -1) {
             var s;
             if (word.startsWith(nps)) {
