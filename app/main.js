@@ -44,10 +44,6 @@ var loading = true;
 
 // do load
 import('../src/index.js').then(async phoo => {
-    loading = false;
-    term.update(0, 'Welcome to Phoo.');
-    term.enable();
-    term.focus();
 
     p = new phoo.Phoo({ mainModule: new phoo.Module('__main__') });
 
@@ -57,6 +53,11 @@ import('../src/index.js').then(async phoo => {
         count++;
         await p.spawn(c).promise;
     };
+
+    loading = false;
+    term.update(0, 'Welcome to Phoo.');
+    term.enable();
+    term.focus();
 
 }).catch(e => {
     loading = false;
