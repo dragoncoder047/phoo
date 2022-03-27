@@ -192,7 +192,7 @@ export class Thread {
         try {
             while (code.length > 0) {
                 await this.checkIfKilled();
-                [word, code] = code.split(/\s+/, 2);
+                [word, code] = (code + ' ').split(/\s+/, 2);
                 b = this.resolveNamepath(word, 'builders');
                 if (b !== undefined) {
                     this.push(a);
@@ -397,7 +397,7 @@ export class Thread {
         } else {
             for (var i = 0; i < this.scopeStack.length && def === undefined; i++) def = this.getScope(i)[where].find(word);
         }
-        if (def === undefined)
+        if (def === undefined && where === 'words')
             def = this.phoo.undefinedWord(word);
         if (type(def) === 'symbol')
             return this.resolveNamepath(name(def), where);
