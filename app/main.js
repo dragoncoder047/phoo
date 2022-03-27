@@ -2,6 +2,7 @@
 var count = 0;
 var run;
 const esc = $.terminal.escape_brackets;
+var p;
 
 const term = $('body').terminal(c => run(c), {
     enabled: false,
@@ -13,6 +14,8 @@ const term = $('body').terminal(c => run(c), {
             var i = next_indent_level(this.get_command());
             if (i === 0) {
                 original();
+            } else if (i < 0) {
+                term.error('Too many ] / end');
             } else {
                 this.insert('\n' + ' '.repeat(4 * Math.max(0, i)));
             }
@@ -40,20 +43,18 @@ var loading = true;
 })();
 
 // do load
-import('../src/index.js').then(async imodule => {
-    await new Promise(r => setTimeout(r, 1000));
+import('../src/index.js').then(async phoo => {
     loading = false;
     term.update(0, 'Welcome to Phoo.');
     term.enable();
     term.focus();
 
+    p = new phoo.Phoo({ mainModule: new phoo.Module('__main__') });
+
+    await phoo.initBuiltins(p);
+
     run = async function runCommand(c) {
-        term.echo('[[g;;]Sleeping]');
-        await new Promise(r => setTimeout(r, 1000));
-        if (c) {
-            term.update(-1, `[[;red;]You said:]\n[[;green;]${esc(c)}]`);
-            count++;
-        }
+        await p.spawn(c).promise;
     };
 
 }).catch(e => {

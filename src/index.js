@@ -23,7 +23,7 @@ export class Phoo extends BasePhoo {
         super(opts);
         this.mainModule.words.add('import', [this.meta_import]);
     }
-    
+
     /**
      * This function implements the import system of Phoo (the word `import`).
      * @this {Thread}
@@ -198,6 +198,7 @@ export class Phoo extends BasePhoo {
 /*re*/export { word, name, w } from './utils.js';
 /*re*/export * from './errors.js';
 /*re*/export * from './constants.js';
+/*re*/export * from './namespace.js';
 
 //-------------------------Helpers------------------------
 
@@ -209,7 +210,7 @@ export class Phoo extends BasePhoo {
  * @param {string} [name] The name of the word (default: the `name` of the function)
  * @param {function} func The function (duh)
  */
- export function addFunctionAsWord(ns, inputTypes, name, func) {
+export function addFunctionAsWord(ns, inputTypes, name, func) {
     if (type(name) == 'function') { // allow name to be omitted
         func = name;
         name = func.name;
@@ -217,7 +218,7 @@ export class Phoo extends BasePhoo {
     function wordFunction() {
         this.expect(...inputTypes);
         var args = [];
-        for (var i=0; i<inputTypes.length; i++) 
+        for (var i = 0; i < inputTypes.length; i++)
             args.push(this.pop());
         this.push(func.apply(this, args));
     }
