@@ -246,7 +246,7 @@ export function naiveCompile(string) {
 export async function initBuiltins(p) {
     if (!p.mainModule.findSubmodule('__builtins__')) {
         p.mainModule.submodules.set('__builtins__', builtinsModule);
-        var resp = await fetch('../lib/builtins.ph');
+        var resp = await fetch('./lib/builtins.ph');
         if (resp.status >= 300)
             throw new ModuleNotFoundError('Fetch error');
         await p.spawn(await resp.text(), builtinsModule, true);
