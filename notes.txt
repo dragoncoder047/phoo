@@ -43,6 +43,6 @@ Thread
         exitScope()
 
 Module
-    SimpleModules for each of words, builders, literalizers
+    SimpleModules for each of words, macros, literalizers
         Map of words to definition stack
     Map of submodule name or alias name to submodule object

@@ -228,7 +228,7 @@ export function addFunctionAsWord(ns, inputTypes, name, func) {
 
 /**
  * Naively compile the string, converting each word into its corresponding symbol,
- * not invoking builders or literalizers.
+ * not invoking macros or literalizers.
  * @param {string} string
  * @returns {symbol[]}
  */

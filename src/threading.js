@@ -170,7 +170,7 @@ export class Thread {
     }
 
     /**
-     * Compile the code, but do not run it. This **will** invoke any builders and/or literalizers used.
+     * Compile the code, but do not run it. This **will** invoke any macros and/or literalizers used.
      * @param {string|Array} source The code to be compiled. If it is an array already, this will just return it unchanged.
      * @param {boolean} [hasLockAlready=false] ***FOR INTERNAL USE ONLY!!!***
      * @returns {Promise<Array>}
@@ -193,7 +193,7 @@ export class Thread {
             while (code.length > 0) {
                 await this.checkIfKilled();
                 [word, code] = (code + ' ').split(/\s+/, 2);
-                b = this.resolveNamepath(word, 'builders');
+                b = this.resolveNamepath(word, 'macros');
                 if (b !== undefined) {
                     this.push(a);
                     this.push(code);
@@ -207,7 +207,7 @@ export class Thread {
                             if (!hasLockAlready) unlock = await this.lock.acquire();
                             break;
                         default:
-                            throw new TypeMismatchError(`Unexpected ${type(source)} as builder.`);
+                            throw new TypeMismatchError(`Unexpected ${type(source)} as macro.`);
                     }
                     this.expect('string', 'array');
                     code = this.pop();
@@ -372,9 +372,9 @@ export class Thread {
     }
 
     /**
-     * Recursively look up the word/builder's definition, following symlinks and traversing the module tree.
-     * @param {string} word The name of the word/builder
-     * @param {'words'|'builders'} [where='words'] Words or builders.
+     * Recursively look up the word/macro's definition, following symlinks and traversing the module tree.
+     * @param {string} word The name of the word/macro
+     * @param {'words'|'macros'} [where='words'] Words or macros.
      * @returns {_PWordDef_}
      */
     resolveNamepath(word, where = 'words') {

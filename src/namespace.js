@@ -59,7 +59,7 @@ export class SimpleNamespace {
 }
 
 /**
- * The namespace type that Phoo usually uses, holding words, builders, and literalizers.
+ * The namespace type that Phoo usually uses, holding words, macros, and literalizers.
  */
 export class Namespace {
     constructor() {
