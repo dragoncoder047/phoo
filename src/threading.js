@@ -133,7 +133,7 @@ export class Thread {
      */
     async executeOneItem(item) {
         if (type(item) === 'symbol')
-            item = this.phoo.resolveNamepath(name(item));
+            item = this.resolveNamepath(name(item));
         if (item === 'use loose')
             this.strictMode = false;
         else if (item === 'use strict')
@@ -193,7 +193,7 @@ export class Thread {
             while (code.length > 0) {
                 await this.checkIfKilled();
                 [word, code] = code.split(/\s+/, 2);
-                b = this.phoo.resolveNamepath(word, 'builders');
+                b = this.resolveNamepath(word, 'builders');
                 if (b !== undefined) {
                     this.push(a);
                     this.push(code);
@@ -302,7 +302,7 @@ export class Thread {
 
     exitScope() {
         if (this.scopeStack.length === 0)
-            throw new StackUnderflowError.withPhooStack('No scope to exit from', this.returnStack)
+            throw new StackUnderflowError.withPhooStack('No scope to exit from', this.returnStack);
         this.scopeStack.pop();
     }
 
@@ -330,7 +330,7 @@ export class Thread {
                 var ci = c[pc];
                 if (type(ci) == 'symbol') {
                     var ciw = name(ci);
-                    ci = this.phoo.resolveNamepath(ciw);
+                    ci = this.resolveNamepath(ciw);
                 }
                 if (type(ci) === 'array') {
                     this.retPush({ pc, arr: c });
