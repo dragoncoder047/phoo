@@ -33,7 +33,7 @@ export class BasePhoo {
          * @type {number}
          * @default 10000
          */
-        this.maxDepth = this.settings.maxDepth;
+        this.settings.maxDepth = this.settings.maxDepth;
         /**
          * The `__main__` module.
          * @type {Module}
@@ -67,40 +67,13 @@ export class BasePhoo {
          * @type {boolean}
          * @default true
          */
-        this.strictMode = this.settings.strictMode;
+        this.settings.strictMode = this.settings.strictMode;
         /**
          * Separator used to split name paths in modules (e.g. `math:sqrt`)
          * @type {string}
          * @default ':'
          */
-        this.namepathSeparator = this.settings.namepathSeparator;
-    }
-
-    /**
-     * Create a new subthread.
-     * ///////@param {Module} [module] The module that this thread runs.
-     */
-    thread({ module, stack = [] }) {
-        return new Thread({
-            parent: this,
-            module: module || this.mainModule,
-            stack,
-            maxDepth: this.maxDepth
-        });
-    }
-
-    /**
-     * Run some code in a subthread.
-     * @param {string} code Code to run
-     * @param {boolean} [block=false] Wait until the thread finishes.
-     * @param {Module} [module] The module to run in.
-     * @returns {{promise: Promise<any[]>, t: Thread}|Promise<any[]>} The promise returned by {@linkcode Thread.run} and the thread itself, if `block` is false, otherwise the promise which can be awaited.
-     */
-    spawn(code, module, block = false) {
-        var t = this.thread({ module, stack: this.settings.stack, scopes: this.initialScopeStack });
-        var promise = t.run(code);
-        if (block) return promise;
-        return { promise, t };
+        this.settings.namepathSeparator = this.settings.namepathSeparator;
     }
 
     /**

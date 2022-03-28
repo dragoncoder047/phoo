@@ -72,15 +72,15 @@ export class Namespace {
 export class Scope extends Namespace {
     constructor(loaded_modules, star_modules) {
         super();
-        this.loaded_modules = [];
-        this.star_modules = [];
+        this.loadedModules = [];
+        this.starModules = [];
     }
 }
 
 /**
  * A module is a named namespace that usually encloses a file.
  */
-export class Module extends Namespace {
+export class Module extends Scope {
     /**
      * @param {string} name The name of the module
      */
@@ -90,24 +90,5 @@ export class Module extends Namespace {
          * @type {string}
          */
         this.name = name;
-        /**
-         * @type {Map<string, Module>}
-         */
-        this.submodules = new Map();
-    }
-
-    /**
-     * Look up the module in submodules
-     * @param {string} what module name
-     * @returns {Module|null}
-     */
-    findSubmodule(what) {
-        if (what == this.name) return this;
-        for (var [n, s] of this.submodules) {
-            if (n == what) return s;
-            var ss = s.findSubmodule(what);
-            if (ss) return ss;
-        }
-        return null;
     }
 }
