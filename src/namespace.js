@@ -69,6 +69,14 @@ export class Namespace {
     }
 }
 
+export class Scope extends Namespace {
+    constructor(loaded_modules, star_modules) {
+        super();
+        this.loaded_modules = [];
+        this.star_modules = [];
+    }
+}
+
 /**
  * A module is a named namespace that usually encloses a file.
  */

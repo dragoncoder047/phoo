@@ -4,14 +4,6 @@ Phoo
     
     spawn() -> thread
     thread() -> thread
-    
-    resolveNamepath() ->
-        has nps? find module:
-            split at nps
-            call module.findSubmodule() for each
-            not found -> load from network/sw cache
-        no nps? look in scope stack, top down
-        scope stack can have module from import *
 
 Thread
     clone of settings
@@ -38,11 +30,17 @@ Thread
         retPop()
     
     scope stack
-        of Namespaces
+        of Scopes
         enterScope()
         exitScope()
+        never empty
 
 Module
     SimpleModules for each of words, macros, literalizers
         Map of words to definition stack
     Map of submodule name or alias name to submodule object
+
+Scope
+    list of module names
+    list of star-import modules
+    subclass of Namespace

@@ -6,7 +6,7 @@
 
 import { PhooError, StackOverflowError, StackUnderflowError, TypeMismatchError, BadSyntaxError, BadNestingError, ExternalInterrupt } from './errors.js';
 import { w, name, type } from './utils.js';
-import { Namespace } from './namespace.js';
+import { Namespace, Scope } from './namespace.js';
 import { Threadlock } from './locks.js';
 import { Phoo } from './index.js';
 
@@ -20,13 +20,17 @@ export class Thread {
      * @param {Object} [opts]
      * @param {Phoo} [opts.parent] Owner of this thread.
      * @param {Module} [opts.module] Module this thread is handling.
-     * @param {Namespace[]} [opts.scopes] The initial namespace stack.
+     * @param {Scope[]} [opts.scopes] The initial namespace stack.
+     * @param {Module[]} [opts.starModules] Modules imported using import*.
+     * @param {Module[]} [opts.modules] Pre-imported modules.
      * @param {any[]} [opts.stack=[]] The initial items on the work stack.
      * @param {number} [opts.maxDepth=10000] The maximum return stack length before a {@linkcode StackOverflowError} error is thrown.
      */
     constructor({
         parent,
         module,
+        starModules = [],
+        modules = new Map(),
         stack = [],
         scopes = [],
         maxDepth = 10000
@@ -42,6 +46,16 @@ export class Thread {
          */
         this.module = module;
         /**
+         * Modules imported using import*.
+         * @type {Module}
+         */
+        this.starModules = starModules;
+         /**
+         * Pre-loaded modules.
+         * @type {Module}
+         */
+        this.modules = modules;
+        /**
          * Stack that working values are pushed and popped from during execution.
          * @type {Array}
          * @default []
@@ -49,7 +63,7 @@ export class Thread {
         this.workStack = stack;
         /**
          * Stack of namespace scopes.
-         * @type {Namespace[]}
+         * @type {Scope[]}
          */
         this.scopeStack = scopes;
         /**
@@ -298,7 +312,7 @@ export class Thread {
     }
 
     enterScope() {
-        this.scopeStack.push(new Namespace());
+        this.scopeStack.push(new Scope());
     }
 
     exitScope() {

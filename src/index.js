@@ -19,9 +19,20 @@ import { module as builtinsModule } from '../lib/builtins.js';
  * A Phoo interpreter.
  */
 export class Phoo extends BasePhoo {
+    /**
+     * @param {Object} [opts={}] options
+     * @param {Object} [opts.settings] Settings to start a new Thread with.
+     * @param {Array<any>} [opts.settings.stack=[]] The initial items into the stack.
+     * @param {number} [opts.settings.maxDepth=10000] The maximum return stack length before a {@linkcode StackOverflowError} error is thrown.
+     * @param {boolean} [opts.settings.strictMode=true] Enable or disable strict mode (see {@linkcode Phoo.strictMode})
+     * @param {string} [opts.settings.namepathSeparator=':'] Separator used to split name paths in modules (e.g. `math:sqrt`)
+     * @param {Module} [opts.mainModule] The global (`__main__`) module
+     * @param {Map<string, Module>} [opts.modules] The loaded modules cache.
+     */
     constructor(opts) {
         super(opts);
         this.mainModule.words.add('import', [this.meta_import]);
+        this.modules = opts.modules || new Map();
     }
 
     /**
