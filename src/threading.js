@@ -192,7 +192,8 @@ export class Thread {
         try {
             while (code.length > 0) {
                 await this.checkIfKilled();
-                [code, word] = code.trim().split(/[\s\r\n](.*)/, 2);
+                [word, code] = code.trim().split(/[\s\r\n](.*)/, 2);
+                code = code || '';
                 b = this.resolveNamepath(word, 'macros');
                 if (b !== undefined) {
                     this.push(a);
