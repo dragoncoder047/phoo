@@ -18,4 +18,5 @@ The Phoo interpreter-compiler environment plus its (for the time being) minimali
 
 ## Credits
 
-The Phoo web app's terminal uses Jakub T. Jankiewicz's [jquery.terminal plugin](https://github.com/jcubic/jquery.terminal). MIT license.
+* The Phoo web app's terminal uses Jakub T. Jankiewicz's [jquery.terminal plugin](https://github.com/jcubic/jquery.terminal). MIT license.
+* The font used is the "IBM CGA" font I found on <https://int10h.org/oldschool-pc-fonts/>. CC BY-SA 4.0 license.
