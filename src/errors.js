@@ -116,3 +116,8 @@ export class BadNestingError extends BadSyntaxError { }
  * Subclass of {@linkcode BadSyntaxError}.
  */
 export class UnexpectedEOFError extends BadSyntaxError { }
+
+
+export function stringifyReturnStack(stack) {
+    
+}
