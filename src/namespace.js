@@ -4,7 +4,7 @@
  */
 
 import { WORD_NAME_SYMBOL } from './constants.js';
-import { _PWordDef_ } from './threading.js';
+import { IPhooDefinition } from './threading.js';
 
 /**
  * A `SimpleNamespace` holds only one type of thing in a scope.
@@ -13,7 +13,7 @@ export class SimpleNamespace {
     constructor() {
         /**
          * The map of word name to definition.
-         * @type {Map<string, _PWordDef_[]>}
+         * @type {Map<string, IPhooDefinition[]>}
          * @default empty
          */
         this.map = new Map();
@@ -25,7 +25,7 @@ export class SimpleNamespace {
      * The old definition is not lost, it is just hidden by the new one
      * and will come back if the new one is forgotten (using {@linkcode forget}).
      * @param {string} name The word to add.
-     * @param {_PWordDef_} def The definition of it.
+     * @param {IPhooDefinition} def The definition of it.
      */
     add(name, def) {
         var a = this.map.get(name) || [];
@@ -37,7 +37,7 @@ export class SimpleNamespace {
     /**
      * Remove the word, reverting to the old definition if there was one.
      * @param {string} name The word whose definition to remove.
-     * @returns {_PWordDef_} The old definition, if there was one.
+     * @returns {IPhooDefinition} The old definition, if there was one.
      */
 
     forget(name) {
@@ -50,7 +50,7 @@ export class SimpleNamespace {
     /**
      * Find the definition of a word and return it.
      * @param {string} name The word to look up.
-     * @returns {_PWordDef_}
+     * @returns {IPhooDefinition}
      */
     find(name) {
         var l = this.map.get(name) || [];

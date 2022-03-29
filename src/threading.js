@@ -69,7 +69,7 @@ export class Thread {
         /**
          * Stack that outer arrays and current PC's are saved on
          * when the Phoo machine 'jumps in' to an inner array.
-         * @type {Array<_PReturnStackEntry_>}
+         * @type {Array<IPhooReturnStackEntry>}
          */
         this.returnStack = [];
         /**
@@ -297,7 +297,7 @@ export class Thread {
 
     /**
      * Pops an item of the return stack.
-     * @returns {_PReturnStackEntry_}
+     * @returns {IPhooReturnStackEntry}
      * @throws {StackUnderflow} if the stack is empty.
      */
     retPop() {
@@ -309,7 +309,7 @@ export class Thread {
 
     /**
      * Wrapper for pushing items to the return stack.
-     * @param {_PReturnStackEntry_} item The item to be pushed.
+     * @param {IPhooReturnStackEntry} item The item to be pushed.
      * @throws {StackOverflow} if the maximum stack depth is now exceeded.
      */
     retPush(item) {
@@ -376,7 +376,7 @@ export class Thread {
 
     /**
      * Invokes the compiler and then runs the compiled code, all in one call.
-     * @param {string|Array|_PProgram_} code The code to be run.
+     * @param {string|Array|IPhooRunnable} code The code to be run.
      * @param {boolean} [hasLockAlready=false] ***FOR INTERNAL USE ONLY!!!***
      * @returns {Promise<Array>} The stack after execution (same as what {@linkcode Thread.execute} returns)
      */
@@ -397,7 +397,7 @@ export class Thread {
      * Recursively look up the word/macro's definition, following symlinks and traversing the module tree.
      * @param {string} word The name of the word/macro
      * @param {'words'|'macros'} [where='words'] Words or macros.
-     * @returns {_PWordDef_}
+     * @returns {IPhooDefinition}
      */
     resolveNamepath(word, where = 'words') {
         throw 'todo';
@@ -507,31 +507,26 @@ export class Thread {
 
 /**
  * A word capable of being run by Phoo.
- * @typedef {Array|Function|Symbol|_PLiteralObject_} _PWordDef_
+ * @typedef {Array|Function|Symbol|IPhooLiteral} IPhooDefinition
  */
 /**
  * An object that will just be pushed to the stack as a literal object.
- * @typedef {any} _PLiteralObject_
- */
-/**
- * A mapping of names to their definitions.
- * @typedef {Object<string, _PWordDef_>} _PWordMap_
+ * @typedef {any} IPhooLiteral
  */
 /**
  * A program compiled and ready to be run.
- * @typedef {Array<_PWordDef_|_PProgram_>} _PProgram_
+ * @typedef {Array<IPhooDefinition|IPhooRunnable>} IPhooRunnable
  */
 
 /**
  * A return stack entry containing the current array (`arr`),
  * the index of the program counter (`pc`) and some other stuff.
- * @typedef {{pc: number, arr: Array}} _PReturnStackEntry_
+ * @typedef {{pc: number, arr: Array}} IPhooReturnStackEntry
  */
 
 // exporting dummy typedefs here to satisfy the browser module system
 // they don't parse the JSDoc comments
-export const _PWordDef_ = null;
-export const _PLiteralObject_ = null;
-export const _PWordMap_ = null;
-export const _PProgram_ = null;
-export const _PReturnStackEntry_ = null;
+export const IPhooDefinition = null;
+export const IPhooLiteral = null;
+export const IPhooRunnable = null;
+export const IPhooReturnStackEntry = null;

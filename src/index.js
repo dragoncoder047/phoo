@@ -13,7 +13,7 @@ import { BadSyntaxError, ModuleNotFoundError, TypeMismatchError, UnknownWordErro
 import { Module } from './namespace.js';
 import { type, name, word } from './utils.js';
 import { module as builtinsModule } from '../lib/builtins.js';
-import { _PWordDef_, _PWordMap_, Thread } from './threading.js';
+import { IPhooDefinition, Thread } from './threading.js';
 
 /**
  * A Phoo interpreter.
@@ -88,7 +88,7 @@ export class Phoo {
      * Called to dynamically create the definition of a word when {@linkcode Phoo.resolveNamepath}
      * otherwise fails to find it. See property [strictMode]{@linkcode Phoo.strictMode} for the behavior of this.
      * @param {string} word The word that is not defined.
-     * @returns {_PWordDef_} The temporary definition of the word.
+     * @returns {IPhooDefinition} The temporary definition of the word.
      */
     undefinedWord(word) {
         if (this.strictMode)
