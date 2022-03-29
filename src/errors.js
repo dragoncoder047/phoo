@@ -39,11 +39,7 @@ export class PhooError extends Error {
      */
     static withPhooStack(message, stackToTrace = []) {
         var me = new this(message);
-        var stackText = '';
-        for (var item of stackToTrace) {
-            stackText += `{${item.arr[WORD_NAME_SYMBOL] || '...'} ${item.pc}} `;
-        }
-        me[STACK_TRACE_SYMBOL] = stackText;
+        me[STACK_TRACE_SYMBOL] = stringifyReturnStack(stackToTrace);
         return me;
     }
 }
@@ -118,6 +114,10 @@ export class BadNestingError extends BadSyntaxError { }
 export class UnexpectedEOFError extends BadSyntaxError { }
 
 
-export function stringifyReturnStack(stack) {
-    
+export function stringifyReturnStack(stack = []) {
+    var stackText = '';
+    for (var item of stack) {
+        stackText += `{${item.arr && item.arr[WORD_NAME_SYMBOL] || '...'} ${item.pc}} `;
+    }
+    return stackText;
 }
