@@ -40,20 +40,26 @@ export class Phoo extends BasePhoo {
     createThread(module, scopes, modules, starModules, stack) {
         return new Thread({
             parent: this,
-            module: this.findModule(module) || new Module(module),
+            module: this.findModule(module) || new Module(module), // default to empty module
             stack,
             maxDepth: this.settings.maxDepth,
-
+            starModules,
+            scopes,
         });
     }
+
+    findModule(moduleName) {
+        if (this.modules.has(moduleName)) return this.modules.get(moduleName);
+        else return undefined;
+    }
+
 }
 
 
-/*re*/export { word, name, w } from './utils.js';
+/*re*/export { word, name, w, type } from './utils.js';
 /*re*/export * from './errors.js';
 /*re*/export * from './constants.js';
 /*re*/export * from './namespace.js';
-/*re*/export * from './constants.js';
 
 //-------------------------Helpers------------------------
 

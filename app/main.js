@@ -49,9 +49,19 @@ import('../src/index.js').then(async phoo => {
 
     await phoo.initBuiltins(p);
 
+    const thread = p.createThread('__main__');
+
     run = async function runCommand(c) {
+        try {
+            await thread.run(c);
+        } catch(e) {
+            count++;
+            term.error('Error! ' + e.message);
+            term.error(phoo.stringifyReturnStack(e[phoo.STACK_TRACE_SYMBOL]));
+            return;
+        }
+        term.echo('Stack: ' + thread.workStack.toString());
         count++;
-        p.settings.stack = await p.spawn(c).promise;
     };
 
     loading = false;
