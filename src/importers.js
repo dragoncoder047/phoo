@@ -4,24 +4,22 @@
  */
 
 /**
- * Base class for an ImportFinder.
+ * Base class for an finder - which locates and retrieves the Phoo code.
  */
-export class ImportFinder {
-    constructor() {
-        this.cache = new Map();
-    }
+export class Importer {
     /**
      * @param {Phoo} phoo The owner that these modules will be loaded into.
      */
     setup(phoo) {
         this.phoo = phoo;
     }
-    async find(name, thread) {
+    async find(fullName, thread) {
         throw 'override me';
     }
-    clear_cache() {
-        this.cache.clear();
-    }
+}
+
+export class FetchImporter extends Importer {
+
 }
 
 /*

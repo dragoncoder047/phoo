@@ -2,20 +2,21 @@
 var count = 0;
 var run;
 const esc = $.terminal.escape_brackets;
+const color = (text, color) => `[[;${color};]${esc(text)}]`;
 var p;
 
 const term = $('body').terminal(c => run(c), {
     enabled: false,
     exit: false,
     greetings: 'Phoo is loading...',
-    prompt: () => `[[;magenta;]${esc(`[${count}]`)}-->] `,
+    prompt: () => color(`[${count}]--> `, 'magenta'),
     keymap: {
         ENTER(e, original) {
             var i = next_indent_level(this.get_command());
             if (i === 0) {
                 original();
             } else if (i < 0) {
-                term.error('Too many ] / end');
+                term.echo(color('Too many ] / end', 'red'));
             } else {
                 this.insert('\n' + ' '.repeat(4 * Math.max(0, i)));
             }
@@ -73,7 +74,7 @@ import('../src/index.js').then(async phoo => {
     loading = false;
     term.error('\nFatal error!');
     term.exception(e);
-    term.echo($('<span style="color: red; font-size: inherit;">If this continues to occur, please <a href="https://github.com/dragoncoder047/phoo/issues">report it.</a></span>'));
+    term.echo($('<span style="color: red; font-size: 16px;">If this continues to occur, please <a href="https://github.com/dragoncoder047/phoo/issues">report it.</a></span>'));
     term.disable();
     term.freeze();
     throw e;
