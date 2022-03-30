@@ -42,6 +42,9 @@ export class Phoo {
      * @param {Importer[]} [opts.importers] The importers that will be tried to import any module.
      */
     constructor(opts) {
+        // so won't get "TypeError: can't acces property 'blah' of undefined" errors;
+        if (!opts) opts = {};
+        if (!opts.settings) opts.settings = {};
         /**
          * Start stack of scopes to start a thread with.
          * @type {Namespace[]}
@@ -57,7 +60,6 @@ export class Phoo {
          * @type {BaseImporter[]}
          */
         this.importers = opts.importers || [];
-        opts.settings = {}; // so won't get "TypeError: can't acces property 'maxDepth' of undefined" errors
         /**
          * Settings to start a new thread with.
          * @type {IPhooSettings}
