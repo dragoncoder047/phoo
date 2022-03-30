@@ -48,7 +48,7 @@ var loading = true;
     try {
         const { Phoo, initBuiltins, Module } = await import('../src/index.js');
 
-        p = new Phoo({ mainModule: new phoo.Module('__main__') });
+        p = new Phoo();
 
         await initBuiltins(p);
 
