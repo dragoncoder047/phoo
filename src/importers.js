@@ -20,7 +20,7 @@ export class BaseImporter {
     }
 }
 
-export class FetchImporter extends Importer {
+export class FetchImporter extends BaseImporter {
     constructor(basePath, fetchOptions = {}) {
         this.basePath = basePath;
         this.fetchOptions = fetchOptions;
@@ -39,7 +39,7 @@ export class FetchImporter extends Importer {
     }
 }
 
-export class ES6Importer extends Importer {
+export class ES6Importer extends BaseImporter {
     constructor(basePath, fetchOptions = {}) {
         this.basePath = basePath;
     }
