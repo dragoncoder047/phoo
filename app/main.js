@@ -12,7 +12,7 @@ const term = $('body').terminal(c => run(c), {
     prompt: () => color(`[${count}]--> `, 'magenta'),
     keymap: {
         ENTER(e, original) {
-            var i = next_indent_level(this.get_command());
+            var i = nextIndentLevel(this.get_command());
             if (i === 0) {
                 original();
             } else if (i < 0) {
@@ -44,43 +44,46 @@ var loading = true;
 })();
 
 // do load
-import('../src/index.js').then(async phoo => {
+(async () => {
+    try {
+        const { Phoo, initBuiltins, Module } = await import('../index.js');
 
-    p = new phoo.Phoo({ mainModule: new phoo.Module('__main__') });
+        p = new Phoo({ mainModule: new phoo.Module('__main__') });
 
-    await phoo.initBuiltins(p);
+        await initBuiltins(p);
 
-    const thread = p.createThread('__main__');
+        const thread = p.createThread('__main__');
 
-    run = async function runCommand(c) {
-        try {
-            await thread.run(c);
-        } catch(e) {
+        run = async function runCommand(c) {
+            try {
+                await thread.run(c);
+            } catch (e) {
+                count++;
+                term.error('Error! ' + e.message);
+                term.error(phoo.stringifyReturnStack(e[phoo.STACK_TRACE_SYMBOL]));
+                return;
+            }
+            term.echo('Stack: ' + thread.workStack.toString());
             count++;
-            term.error('Error! ' + e.message);
-            term.error(phoo.stringifyReturnStack(e[phoo.STACK_TRACE_SYMBOL]));
-            return;
-        }
-        term.echo('Stack: ' + thread.workStack.toString());
-        count++;
-    };
+        };
 
-    loading = false;
-    term.update(0, 'Welcome to Phoo.');
-    term.enable();
-    term.focus();
+        loading = false;
+        term.update(0, 'Welcome to Phoo.');
+        term.enable();
+        term.focus();
 
-}).catch(e => {
-    loading = false;
-    term.error('\nFatal error!');
-    term.exception(e);
-    term.echo($('<span style="color: red; font-size: 16px;">If this continues to occur, please <a href="https://github.com/dragoncoder047/phoo/issues">report it.</a></span>'));
-    term.disable();
-    term.freeze();
-    throw e;
-});
+    } catch (e) {
+        loading = false;
+        term.error('\nFatal error!');
+        term.exception(e);
+        term.echo($('<span style="color: red; font-size: 16px;">If this continues to occur, please <a href="https://github.com/dragoncoder047/phoo/issues">report it.</a></span>'));
+        term.disable();
+        term.freeze();
+        throw e;
+    }
+})();
 
-function next_indent_level(text) {
+function nextIndentLevel(text) {
     var count = 0;
     const levels = { do: 1, end: -1, '[': 1, ']': -1 };
     for (var word of text.split(/\s+/)) count += levels[word] || 0;

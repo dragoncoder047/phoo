@@ -3,6 +3,8 @@
  * Classes that import loaders for different types of Phoo modules.
  */
 
+import { ModuleNotFoundError } from './errors.js';
+
 /**
  * Base class for an finder - which locates and retrieves the Phoo code.
  */
@@ -19,7 +21,41 @@ export class BaseImporter {
 }
 
 export class FetchImporter extends Importer {
+    constructor(basePath, fetchOptions = {}) {
+        this.basePath = basePath;
+        this.fetchOptions = fetchOptions;
+    }
+    async find(name, currentModule) {
+        var qualName = this.phoo.qualifyName(name, currentModule);
+        if (this.phoo.modules.has(qualName))
+            return this.phoo.modules.get(qualName);
+        var path = this.basePath + this.phoo.nameToURL(qualName) + '.ph';
+        var resp = await fetch(path, this.fetchOptions);
+        if (!resp.ok)
+            throw new ModuleNotFoundError(`Module ${qualName} could not be imported`);
+        var thread = this.phoo.createThread(qualName);
+        await thread.run(await resp.text());
+        return thread.module;
+    }
+}
 
+export class ES6Importer extends Importer {
+    constructor(basePath, fetchOptions = {}) {
+        this.basePath = basePath;
+    }
+    async find(name, currentModule) {
+        var qualName = this.phoo.qualifyName(name, currentModule);
+        if (this.phoo.modules.has(qualName))
+            return this.phoo.modules.get(qualName);
+        var path = this.basePath + this.phoo.nameToURL(qualName) + '.js';
+        var mod;
+        try {
+            mod = await import(path);
+        } catch(e) {
+            throw ModuleNotFoundError.wrap(e);
+        }
+        return mod;
+    }
 }
 
 /*
@@ -30,6 +66,10 @@ import* foo -> module foo in starred modules
 importfrom foo [ bar baz ] -> module foo in loaded modules, bar and baz aliased to path
 importfrom foo bar -> same as importfrom foo [ bar ]
 import $ "/path/to/x.ph" -> some url imported as x
+
+
+
+This here is probably all dead.
 
 /**
  * This function implements the import system of Phoo (the word `import`).

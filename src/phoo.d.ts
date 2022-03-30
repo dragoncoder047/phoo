@@ -1,5 +1,8 @@
-declare module 'phoo' {
-    import { Scope, Module } from './namespace';
+/// <reference lib="dom">
+
+declare module 'index.js' {
+    import { Scope, Module } from 'namespace.js';
+    import { Importer } from 'importers.js';
 
     declare type IPhooSettings = {
         maxDepth?: number,
@@ -10,22 +13,30 @@ declare module 'phoo' {
     declare type IPhooOptions = {
         settings?: IPhooSettings,
         modules?: Map<string, Module>,
+        importers?: Importer[];
     };
 
     export declare class Phoo {
         settings: IPhooSettings;
         modules: Map<string, Module>;
+        importers: Importer[];
         constructor(opts: IPhooOptions);
         undefinedWord(word: string): IPhooRunnable;
         createThread(module: string, scopes: Scope[], modules: Module[], starModules: Module[], stack: any[]): Thread;
         findModule(moduleName: string): Module;
+        qualifyName(relativeName: string, current: Module): string;
+        nameToURL(absName: string): string;
     }
+    export { word, name, w, type } from 'utils.js';
+    export * from 'errors.js';
+    export * from 'constants.js';
+    export * from 'namespace.js';
 }
 
-declare module 'phoo/threading' {
-    import { Phoo } from 'phoo';
-    import { WORD_NAME_SYMBOL } from './constants';
-    import { Threadlock } from './locks';
+declare module 'threading.js' {
+    import { Phoo } from 'index.js';
+    import { WORD_NAME_SYMBOL } from 'constants.js';
+    import { Threadlock } from 'locks.js';
 
     declare type IThreadOptions = {
         parent: Phoo,
@@ -46,6 +57,13 @@ declare module 'phoo/threading' {
         returnStack: IReturnStackEntry[];
         maxDepth: number;
         lock: Threadlock;
+        _paused: boolean;
+        _killed: number;
+        _stepwise: boolean;
+        _outerKillResolver: PromiseResolverCallback;
+        _innerPauseResolver: PromiseResolverCallback;
+        _innerPauseRejector: PromiseRejectorCallback;
+        _outerPauseResolver: PromiseResolverCallback;
         constructor(opts: IThreadOptions);
         async executeOneItem(item: IPhooRunnable): void;
         async compileLiteral(word: string, a: IPhooRunnable[]): boolean;
@@ -76,8 +94,8 @@ declare module 'phoo/threading' {
     declare type IPhooDefinition = (Function | Symbol | IPhooRunnable) & { [WORD_NAME_SYMBOL]: string };
 }
 
-declare module 'phoo/namespace' {
-    import { IPhooDefinition } from './threading';
+declare module 'namespace.js' {
+    import { IPhooDefinition } from 'threading.js';
 
     export class SimpleNamespace<N, V> {
         map: Map<N, V[]>;
@@ -102,9 +120,9 @@ declare module 'phoo/namespace' {
     }
 }
 
-declare module 'phoo/errors' {
-    import { WORD_NAME_SYMBOL, STACK_TRACE_SYMBOL } from './constants';
-    import { IReturnStackEntry } from 'phoo/threading';
+declare module 'errors.js' {
+    import { WORD_NAME_SYMBOL, STACK_TRACE_SYMBOL } from 'constants.js';
+    import { IReturnStackEntry } from 'threading.js';
 
     export class PhooError extends Error {
         [STACK_TRACE_SYMBOL]: string;
@@ -128,7 +146,7 @@ declare module 'phoo/errors' {
     export function stringifyReturnStack(stack: IReturnStackEntry[]): string;
 }
 
-declare module 'phoo/locks' {
+declare module 'locks.js' {
     export class Threadlock {
         promise: Promise<void>;
         locks: number;
@@ -137,27 +155,39 @@ declare module 'phoo/locks' {
     }
 }
 
-declare module 'phoo/utils' {
+declare module 'utils.js' {
     export function type(obj: any, guess_containers?: boolean): string;
     export function word(word: string): Symbol;
-    export function name(word: Symbol): string;
+    export const w = word;
+    export function name(sym: Symbol): string;
     export function cloneArray(arr: T[], objects?: boolean, deep?: boolean, seen?: Map<T, T>): T[];
     export function clone(obj: T, deep?: boolean, seen?: Map<T, T>): T;
 }
 
-declare module 'phoo/importers' {
-    import { Module } from './namespace';
-    import { Phoo } from 'phoo';
-    
+declare module 'importers.js' {
+    import { Module } from 'namespace.js';
+    import { Phoo } from 'index.js';
+
     export interface Importer {
         setup(phoo: Phoo): void;
         async find(name: string, currentModule: Module): Module;
     }
 
     export class BaseImporter implements Importer { }
+
+    export class FetchImporter extends BaseImporter {
+        basePath: string;
+        fetchOptions: RequestInit;
+        constructor(basePath: string, fetchOptions: RequestInit);
+    }
+
+    export class ES6Importer extends BaseImporter {
+        basePath: string;
+        constructor(basePath: string);
+    }
 }
 
-declare module 'phoo/constants' {
+declare module 'constants.js' {
     export const WORD_NAME_SYMBOL: Symbol;
     export const STACK_TRACE_SYMBOL: Symbol;
 }

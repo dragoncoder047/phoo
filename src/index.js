@@ -13,7 +13,8 @@ import { BadSyntaxError, ModuleNotFoundError, TypeMismatchError, UnknownWordErro
 import { Module } from './namespace.js';
 import { type, name, word } from './utils.js';
 import { module as builtinsModule } from '../lib/builtins.js';
-import { IPhooDefinition, Thread } from './threading.js';
+import { IPhooDefinition, IPhooLiteral, Thread } from './threading.js';
+import { BaseImporter } from './importers.js';
 
 /**
  * A Phoo interpreter.
@@ -24,64 +25,71 @@ export class Phoo {
      * @param {Object} [opts.settings={}] Settings to start a new Thread with.
      * @param {Array<any>} [opts.settings.stack=[]] The initial items into the stack.
      * @param {number} [opts.settings.maxDepth=10000] The maximum return stack length before a {@linkcode StackOverflowError} error is thrown.
-     * @param {boolean} [opts.settings.strictMode=true] Enable or disable strict mode (see {@linkcode Phoo.strictMode})
+     * @param {boolean} [opts.settings.disableStrictMode=false] Disable strict mode (see {@linkcode Phoo.strictMode})
      * @param {string} [opts.settings.namepathSeparator=':'] Separator used to split name paths in modules (e.g. `math:sqrt`)
+     * @param {string} [opts.settings.parentDirectoryMarker='^'] Marker used to mark a parent directory in module paths (e.g. `:^:foo` from inside `bar:baz` will import `foo`).
      * @param {Map<string, Module>} [opts.modules] The loaded-modules cache.
+     * @param {Importer[]} [opts.importers] The importers that will be tried to import any module.
      */
     constructor(opts) {
-        /**
-         * Settings to start a new thread with.
-         * @type {object}
-         */
-        this.settings = {};
-        opts.settings = {}; // so won't get "TypeError: can't acces property 'maxDepth' of undefined" errors
-        /**
-         * The maximum length of {@linkcode returnStack}
-         * before a {@linkcode StackOverflowError} error is thrown.
-         * @type {number}
-         * @default 10000
-         */
-        this.settings.maxDepth = opts.settings.maxDepth || 10000;
         /**
          * Start stack of scopes to start a thread with.
          * @type {Namespace[]}
          */
         this.initialScopeStack = [];
         /**
-         * Whether strict mode is enabled.
-         *
-         * Strict mode ON:
-         *
-         * * Undefined words cause an error.
-         * * Trying to redefine a word that is already defined will also cause an error. It must be explicitly deleted first.
-         *
-         * Strict mode OFF:
-         *
-         * * Undefined words are simply looked up under the global object (i.e. `:::js globalThis`) and pushed to the stack.
-         * * Words do not need to be deleted before they are redefined.
-         *
-         * Strict mode can be turned off by including the string `:::js "use loose"`,
-         * and on again by `:::js "use strict"`.
-         *
-         * **Only turn strict mode off if you know what you are doing.**
-         * A typo leading to an undefined word will not be flagged as such, it will instead push
-         * whatever that bad key looks up on the global object (likely `:::js undefined`), and lead
-         * to all sorts of cryptic errors unrelated to what the problem actually is.
-         * @type {boolean}
-         * @default true
-         */
-        this.settings.strictMode = opts.settings.strictMode || true;
-        /**
-         * Separator used to split name paths in modules (e.g. `math:sqrt`)
-         * @type {string}
-         * @default ':'
-         */
-        this.settings.namepathSeparator = opts.settings.namepathSeparator || ':';
-        /**
          * The loaded-modules cache.
          * @type {Map<string, Module>}
          */
         this.modules = opts.modules || new Map();
+        /**
+         * Importers that will be checked to import a module.
+         * @type {BaseImporter[]}
+         */
+        this.importers = opts.importers || [];
+        opts.settings = {}; // so won't get "TypeError: can't acces property 'maxDepth' of undefined" errors
+        /**
+         * Settings to start a new thread with.
+         * @type {object}
+         */
+        this.settings = {
+            /**
+             * The maximum length of {@linkcode returnStack}
+             * before a {@linkcode StackOverflowError} error is thrown.
+             * @type {number}
+             * @default 10000
+             */
+            maxDepth: opts.settings.maxDepth || 10000,
+            /**
+             * Whether strict mode is enabled.
+             *
+             * * Strict mode ON: Undefined words throw an error.
+             * * Strict mode OFF: Undefined words are simply looked up under the global object (i.e. `:::js globalThis`) and pushed to the stack.
+             *
+             * Strict mode can be turned off by including the string `:::js "use loose"`,
+             * and on again by `:::js "use strict"`.
+             *
+             * **Only turn strict mode off if you know what you are doing.**
+             * A typo leading to an undefined word will not be flagged as such, it will instead push
+             * whatever that bad key looks up on the global object (likely `:::js undefined`), and lead
+             * to all sorts of cryptic errors unrelated to what the problem actually is.
+             * @type {boolean}
+             * @default true
+             */
+            strictMode: !opts.settings.disableStrictMode,
+            /**
+             * Separator used to split name paths in modules (e.g. `math:sqrt`)
+             * @type {string}
+             * @default ':'
+             */
+            namepathSeparator: opts.settings.namepathSeparator || ':',
+            /**
+             * Marker used to mark a parent directory in module paths (e.g. `:^:foo` from inside `bar:baz` will import `foo`).
+             * @type {string}
+             * @default '^'
+             */
+            parentDirectoryMarker: opts.settings.parentDirectoryMarker || '^',
+        };
     }
 
     /**
@@ -121,6 +129,11 @@ export class Phoo {
 
     /**
      * Create a new subthread.
+     * @param {string} module The name of the module the thread will run under.
+     * @param {Scope[]} scopes A list of scopes to start within.
+     * @param {Module[]} modules The list of already-imported modules so the user doesn't have to import them.
+     * @param {Module[]} starModules Same as modules, but no foo: prefix is needed (as if they were imported using import*).
+     * @param {IPhooLiteral[]} stack The initial items on the stack.
      */
     createThread(module, scopes, modules, starModules, stack) {
         return new Thread({
@@ -134,6 +147,13 @@ export class Phoo {
         });
     }
 
+    /**
+     * Return the module if it was laready loaded, or an empty module if it was not.
+     * 
+     * This does **not** import the module.
+     * @param {string} moduleName The name of the module.
+     * @returns {Module}
+     */
     findModule(moduleName) {
         // Modules are singletons; this ensures it.
         if (this.modules.has(moduleName)) return this.modules.get(moduleName);
@@ -144,6 +164,25 @@ export class Phoo {
         }
     }
 
+    /**
+     * Fully qualify the name into an absolute module path.
+     * Ex: Inside module `foo`, importing `:bar` will fully-qualify to `foo:bar`.
+     * @param {string} relativeName The name relative to the current module
+     * @param {Module} current The module that is importing the other module.
+     * @returns {string} The fully-qualified name.
+     */
+    qualifyName(relativeName, current) {
+        throw 'todo';
+    }
+
+    /**
+     * Turn the name into a URL that always uses slashes as the namepath separator, but without the filename extension.
+     * @param {string} name The fully-qualified path.
+     * @returns {string} The URL of the module. No filename extension (.ph or .js)
+     */
+    nameToURL(name) {
+        throw 'todo';
+    }
 }
 
 
@@ -195,11 +234,12 @@ export function naiveCompile(string) {
  * @returns {Promise<void>} When initialization is complete.
  */
 export async function initBuiltins(p) {
-    if (!p.mainModule.findSubmodule('__builtins__')) {
-        p.mainModule.submodules.set('__builtins__', builtinsModule);
+    if (!p.modules.has('__builtins__')) {
+        p.modules.set('__builtins__', builtinsModule);
         var resp = await fetch('./lib/builtins.ph');
-        if (resp.status >= 300)
+        if (!resp.ok)
             throw new ModuleNotFoundError('Fetch error');
-        await p.spawn(await resp.text(), builtinsModule, true);
+        var thread = p.createThread('__builtins__');
+        await thread.run(await resp.text());
     }
 }
