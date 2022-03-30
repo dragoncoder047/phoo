@@ -17,13 +17,23 @@ import { IPhooDefinition, IPhooLiteral, Thread } from './threading.js';
 import { BaseImporter } from './importers.js';
 
 /**
+ * Configuration options.
+ * @typedef {{stack: any[], maxDepth: number, disableStrictMode: boolean, namepathSeparator: string, parentDirectoryMarker: string}} IPhooSettings
+ */
+
+/**
+ * Configuration options.
+ * @typedef {{settings: IPhooSettings, modules: Map<string, Module>, importers: Importer}} IPhooOptions
+ */
+
+/**
  * A Phoo interpreter.
  */
 export class Phoo {
     /**
-     * @param {Object} [opts={}] options
-     * @param {Object} [opts.settings={}] Settings to start a new Thread with.
-     * @param {Array<any>} [opts.settings.stack=[]] The initial items into the stack.
+     * @param {IPhooOptions} [opts={}] options
+     * @param {IPhooSettings} [opts.settings={}] Settings to start a new Thread with.
+     * @param {any[]} [opts.settings.stack=[]] The initial items into the stack.
      * @param {number} [opts.settings.maxDepth=10000] The maximum return stack length before a {@linkcode StackOverflowError} error is thrown.
      * @param {boolean} [opts.settings.disableStrictMode=false] Disable strict mode (see {@linkcode Phoo.strictMode})
      * @param {string} [opts.settings.namepathSeparator=':'] Separator used to split name paths in modules (e.g. `math:sqrt`)
@@ -50,7 +60,7 @@ export class Phoo {
         opts.settings = {}; // so won't get "TypeError: can't acces property 'maxDepth' of undefined" errors
         /**
          * Settings to start a new thread with.
-         * @type {object}
+         * @type {IPhooSettings}
          */
         this.settings = {
             /**
@@ -108,24 +118,6 @@ export class Phoo {
             this.push(globalThis[word]);
         };
     }
-
-    // /**
-    //  * Clone this instance.
-    //  * @returns {Phoo}
-    //  */
-    // clone() {
-    //     var c = new Phoo({
-    //         // FIXME HERE
-    //         namespaces: this.namespaceStack.slice(),
-    //         stack: cloneArray(this.stack, recursive, true),
-    //         maxDepth: this.maxDepth,
-    //         moduleName: this.moduleName,
-    //         parentModule: recursive ? this.parentModule.clone(true) : this.parentModule,
-    //         strictMode: this.strictMode,
-    //     });
-    //     c.children = recursive ? this.children.map(c => c.clone(true)) : this.children.slice();
-    //     return c;
-    // }
 
     /**
      * Create a new subthread.
