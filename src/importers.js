@@ -6,14 +6,14 @@
 /**
  * Base class for an finder - which locates and retrieves the Phoo code.
  */
-export class Importer {
+export class BaseImporter {
     /**
      * @param {Phoo} phoo The owner that these modules will be loaded into.
      */
     setup(phoo) {
         this.phoo = phoo;
     }
-    async find(fullName, thread) {
+    async find(name, currentModule) {
         throw 'override me';
     }
 }

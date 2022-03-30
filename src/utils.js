@@ -29,7 +29,7 @@ export function type(obj, guess_containers = false) {
         var all_same, keys, values, keys_same, values_same;
         switch (t) {
             case 'array':
-                all_same = obj.map(type).every(i => i === obj[0]);
+                all_same = obj.map(type).every(i => i === type(obj[0], true));
                 if (all_same)
                     t = `array<${type(obj[0])}>`;
                 break;
@@ -37,15 +37,15 @@ export function type(obj, guess_containers = false) {
             case 'Map':
                 keys = obj.keys();
                 values = obj.values();
-                keys_same = keys.map(type).every(i => i === keys[0]);
-                values_same = values.map(type).every(i => i === values[0]);
+                keys_same = keys.map(type).every(i => i === type(keys[0]));
+                values_same = values.map(type).every(i => i === type(values[0]));
                 if (keys_same && values_same)
                     t = `Map<${type(keys[0])}, ${type(values[0])}>`;
                 break;
 
             case 'Set':
                 values = obj.values();
-                values_same = values.map(type).every(i => i === values[0]);
+                values_same = values.map(type).every(i => i === type(values[0]));
                 if (values_same)
                     t = `Set<${type(values[0])}>`;
         }
