@@ -46,9 +46,9 @@ var loading = true;
 // do load
 (async () => {
     try {
-        const { Phoo, initBuiltins, Module } = await import('../src/index.js');
+        const { Phoo, initBuiltins, Module, FetchImporter, ES6Importer } = await import('../src/index.js');
 
-        p = new Phoo();
+        p = new Phoo({ importers: [new FetchImporter('lib/'), new ES6Importer('lib/')] });
 
         await initBuiltins(p);
 

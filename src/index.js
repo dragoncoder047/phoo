@@ -184,6 +184,7 @@ export class Phoo {
 /*re*/export * from './errors.js';
 /*re*/export * from './constants.js';
 /*re*/export * from './namespace.js';
+/*re*/export * from './importers.js';
 
 //-------------------------Helpers------------------------
 
