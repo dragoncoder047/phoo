@@ -46,7 +46,7 @@ var loading = true;
 // do load
 (async () => {
     try {
-        const { Phoo, initBuiltins, Module } = await import('../index.js');
+        const { Phoo, initBuiltins, Module } = await import('../src/index.js');
 
         p = new Phoo({ mainModule: new phoo.Module('__main__') });
 
