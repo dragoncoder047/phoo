@@ -22,6 +22,7 @@ export class BaseImporter {
 
 export class FetchImporter extends BaseImporter {
     constructor(basePath, fetchOptions = {}) {
+        super();
         this.basePath = basePath;
         this.fetchOptions = fetchOptions;
     }
@@ -41,6 +42,7 @@ export class FetchImporter extends BaseImporter {
 
 export class ES6Importer extends BaseImporter {
     constructor(basePath, fetchOptions = {}) {
+        super();
         this.basePath = basePath;
     }
     async find(name, currentModule) {
