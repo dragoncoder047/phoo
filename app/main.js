@@ -66,7 +66,7 @@ var phooMainModule;
                 term.error(e[phoo.STACK_TRACE_SYMBOL]);
                 return;
             }
-            term.echo('Stack: ' + thread.workStack.toString());
+            term.echo('Stack: ' + stringify(thread.workStack, cize));
             count++;
         };
 
