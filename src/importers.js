@@ -3,7 +3,7 @@
  * Classes that import loaders for different types of Phoo modules.
  */
 
-import { ModuleNotFoundError } from './errors.js';
+import { ModuleNotFoundError, PhooSyntaxError } from './errors.js';
 
 /**
  * Base class for an finder - which locates and retrieves the Phoo code.
@@ -15,7 +15,7 @@ export class BaseImporter {
     setup(phoo) {
         this.phoo = phoo;
     }
-    async find(name, currentModule) {
+    async find(name, currentModule, overrideURL) {
         throw 'override me';
     }
 }
@@ -26,11 +26,10 @@ export class FetchImporter extends BaseImporter {
         this.basePath = basePath;
         this.fetchOptions = fetchOptions;
     }
-    async find(name, currentModule) {
+    async find(name, currentModule, overrideURL) {
+        if (!/.ph$/.test(overrideURL)) throw new PhooSyntaxError('Can\'t load non-Phoo module with a fetch importer');
         var qualName = this.phoo.qualifyName(name, currentModule);
-        if (this.phoo.modules.has(qualName))
-            return this.phoo.modules.get(qualName);
-        var path = this.basePath + this.phoo.nameToURL(qualName) + '.ph';
+        var path = overrideURL || this.basePath + this.phoo.nameToURL(qualName) + '.ph';
         var resp = await fetch(path, this.fetchOptions);
         if (!resp.ok)
             throw new ModuleNotFoundError(`Module ${qualName} could not be imported`);
@@ -45,11 +44,10 @@ export class ES6Importer extends BaseImporter {
         super();
         this.basePath = basePath;
     }
-    async find(name, currentModule) {
+    async find(name, currentModule, overrideURL) {
+        if (!/.js$/.test(overrideURL)) throw new PhooSyntaxError('Can\'t load non-JS module with an ES6 importer');
         var qualName = this.phoo.qualifyName(name, currentModule);
-        if (this.phoo.modules.has(qualName))
-            return this.phoo.modules.get(qualName);
-        var path = this.basePath + this.phoo.nameToURL(qualName) + '.js';
+        var path = overrideURL || this.basePath + this.phoo.nameToURL(qualName) + '.js';
         var mod;
         try {
             mod = await import(path);

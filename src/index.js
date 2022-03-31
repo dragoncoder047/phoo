@@ -166,7 +166,6 @@ export class Phoo {
      * @returns {string} The fully-qualified name.
      */
     qualifyName(relativeName, current) {
-        alert('qualify name');
         throw new ModuleNotFoundError('todo: qualify name');
     }
 
@@ -176,8 +175,31 @@ export class Phoo {
      * @returns {string} The URL of the module. No filename extension (.ph or .js)
      */
     nameToURL(name) {
-        alert('name to url');
         throw new ModuleNotFoundError('todo: name to url');
+    }
+
+    /**
+     * Import a module using the first importer that succeeds.
+     * @param {string} moduleName The name of the module
+     * @param {Module} current The current module
+     * @param {string} overrideURL The url to use instead of calculating one.
+     */
+    import(moduleName, current, overideURL) {
+        var qualName = this.phoo.qualifyName(name, currentModule);
+        if (this.phoo.modules.has(qualName))
+            return this.phoo.modules.get(qualName);
+        var lastError;
+        for (var importer of this.importers) {
+            try {
+                var mod = await importer.find(moduleName, current, overrideURL);
+                this.phoo.modules.set(qualName, mod);
+                return mod;
+            } catch (e) {
+                lastError = e;
+                continue;
+            }
+        }
+        throw lastError || new ModuleNotFoundError('No importers!');
     }
 }
 

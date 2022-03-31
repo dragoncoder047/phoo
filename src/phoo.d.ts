@@ -26,6 +26,7 @@ declare module 'index.js' {
         findModule(moduleName: string): Module;
         qualifyName(relativeName: string, current: Module): string;
         nameToURL(absName: string): string;
+        import(moduleName: string, current: Module, overrideURL: string): Module;
     }
     export { word, name, w, type } from 'utils.js';
     export * from 'errors.js';
@@ -170,7 +171,7 @@ declare module 'importers.js' {
 
     export interface Importer {
         setup(phoo: Phoo): void;
-        async find(name: string, currentModule: Module): Module;
+        async find(name: string, currentModule: Module, overrideURL?: string): Module;
     }
 
     export class BaseImporter implements Importer { }
