@@ -117,7 +117,7 @@ export class UnexpectedEOFError extends BadSyntaxError { }
 export function stringifyReturnStack(stack = []) {
     var stackText = '';
     for (var item of stack) {
-        stackText += `{${item.arr && item.arr[WORD_NAME_SYMBOL] || '...'} ${item.pc}} `;
+        stackText += `{${item.arr && item.arr[WORD_NAME_SYMBOL] || '...'} ${item.pc || NaN}} `;
     }
     return stackText;
 }

@@ -46,7 +46,7 @@ var loading = true;
 // do load
 (async () => {
     try {
-        const { Phoo, initBuiltins, Module, FetchImporter, ES6Importer } = await import('../src/index.js');
+        const { Phoo, initBuiltins, Module, FetchImporter, ES6Importer, STACK_TRACE_SYMBOL } = await import('../src/index.js');
 
         p = new Phoo({ importers: [new FetchImporter('lib/'), new ES6Importer('lib/')] });
 
@@ -76,6 +76,11 @@ var loading = true;
         loading = false;
         term.error('\nFatal error!');
         term.exception(e);
+        if (e[STACK_TRACE_SYMBOL]) {
+            term.error('Phoo stack trace:');
+            term.error(e[STACK_TRACE_SYMBOL]);
+            term.echo();
+        }
         term.echo($('<span style="color: red; font-size: 16px;">If this continues to occur, please <a href="https://github.com/dragoncoder047/phoo/issues">report it.</a></span>'));
         term.disable();
         term.freeze();
