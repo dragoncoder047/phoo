@@ -23,6 +23,7 @@ export class PhooError extends Error {
      */
     static wrap(otherError, stackToTrace = null) {
         var me;
+        if (type(otherError) === 'string') otherError = { message: otherError }; // make it work with throwing a string
         if (stackToTrace !== null)
             me = this.withPhooStack(otherError.message, stackToTrace);
         else
