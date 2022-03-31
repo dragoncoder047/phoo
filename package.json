@@ -1,0 +1,14 @@
+{
+    "name": "phoo",
+    "description": "The Phoo programming language.",
+    "version": "0.1.0",
+    "author": "dragoncoder047 <101021094+dragoncoder047@users.noreply.github.com>",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dragoncoder047/phoo.git"
+    },
+    "license": "GPL-3.0-only",
+    "main": "src/index.js",
+    "browser": true,
+    "private": true
+}
