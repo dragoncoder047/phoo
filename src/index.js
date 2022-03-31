@@ -2,11 +2,6 @@
  * @fileoverview
  * Main import file for Phoo.
  * Also includes some helpers at the bottom.
- * Contains functions defining the import system of Phoo, and for starting a fresh new Phoo instance.
- *
- * This module assumes a browser environment (i.e., the [`Fetch`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
- * and [`import()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#:~:text=There%20is%20also%20a%20function-like%20dynamic%20import()) APIs),
- * so you will need to edit this file if you are using Nodejs.
  */
 
 import { PhooSyntaxError, ModuleNotFoundError, TypeMismatchError, UnknownWordError } from './errors.js';
