@@ -81,6 +81,10 @@ var loading = true;
             term.error(e[STACK_TRACE_SYMBOL]);
             term.echo();
         }
+        if (thread.workStack) {
+            term.echo('Thread work stack:');
+            term.echo(JSON.stringify(thread.workStack));
+        }
         term.echo($('<span style="color: red; font-size: 16px;">If this continues to occur, please <a href="https://github.com/dragoncoder047/phoo/issues">report it.</a></span>'));
         term.disable();
         term.freeze();
