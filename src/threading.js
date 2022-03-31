@@ -4,7 +4,7 @@
  * for often-used Phoo constructs.
  */
 
-import { PhooError, StackOverflowError, StackUnderflowError, TypeMismatchError, BadSyntaxError, BadNestingError, ExternalInterrupt } from './errors.js';
+import { PhooError, StackOverflowError, StackUnderflowError, TypeMismatchError, PhooSyntaxError, BadNestingError, ExternalInterrupt } from './errors.js';
 import { w, name, type } from './utils.js';
 import { Namespace, Scope } from './namespace.js';
 import { Threadlock } from './locks.js';
@@ -237,7 +237,7 @@ export class Thread {
             }
         }
         catch (e) {
-            throw BadSyntaxError.wrap(e, this.workStack);
+            throw PhooSyntaxError.wrap(e, this.workStack);
         }
         finally {
             if (!hasLockAlready) unlock();

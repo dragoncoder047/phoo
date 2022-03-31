@@ -151,7 +151,7 @@ async function meta_import() {
             // import * from $ '/path/to/module.ph'
             w2n = await nextSymStr();
             if (w2n !== 'from')
-                throw new BadSyntaxError('import: expected \'from\' after \'import *\'');
+                throw new PhooSyntaxError('import: expected \'from\' after \'import *\'');
             w3 = await next(/symbol|array|string/);
             if (type(w3) !== 'array') w3 = [w3];
             for (var m of w3) {
@@ -212,7 +212,7 @@ async function meta_import() {
         // import $ '/path/to/module.ph' as module
         w2n = await nextSymStr();
         if (w2n !== 'as')
-            throw new BadSyntaxError('import: expected \'as\' after \'import <url>\'');
+            throw new PhooSyntaxError('import: expected \'as\' after \'import <url>\'');
         w3n = await nextSymStr();
         await importFromURL(w1, `urlimport-${w1}`, w3n);
     } else if (type(w1) === 'array') {

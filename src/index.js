@@ -9,7 +9,7 @@
  * so you will need to edit this file if you are using Nodejs.
  */
 
-import { BadSyntaxError, ModuleNotFoundError, TypeMismatchError, UnknownWordError } from './errors.js';
+import { PhooSyntaxError, ModuleNotFoundError, TypeMismatchError, UnknownWordError } from './errors.js';
 import { Module } from './namespace.js';
 import { type, name, word } from './utils.js';
 import { module as builtinsModule } from '../lib/builtins.js';

@@ -140,9 +140,9 @@ declare module 'errors.js' {
     export class RaceConditionError extends PhooError { }
     export class ExternalInterrupt extends PhooError { }
     export class TypeMismatchError extends PhooError { }
-    export class BadSyntaxError extends PhooError { }
-    export class BadNestingError extends BadSyntaxError { }
-    export class UnexpectedEOFError extends BadSyntaxError { }
+    export class PhooSyntaxError extends PhooError { }
+    export class BadNestingError extends PhooSyntaxError { }
+    export class UnexpectedEOFError extends PhooSyntaxError { }
     export function stringifyReturnStack(stack: IReturnStackEntry[]): string;
 }
 

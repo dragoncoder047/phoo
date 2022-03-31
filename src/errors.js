@@ -99,19 +99,19 @@ export class TypeMismatchError extends PhooError { }
 /**
  * Error raised when there is an issue with syntax in a Phoo program.
  */
-export class BadSyntaxError extends PhooError { }
+export class PhooSyntaxError extends PhooError { }
 
 /**
  * Error raised when there is an issue with brackets.
- * Subclass of {@linkcode BadSyntaxError}.
+ * Subclass of {@linkcode PhooSyntaxError}.
  */
-export class BadNestingError extends BadSyntaxError { }
+export class BadNestingError extends PhooSyntaxError { }
 
 /**
  * Error raised when the input stream abruptly ends, but more data was expected.
- * Subclass of {@linkcode BadSyntaxError}.
+ * Subclass of {@linkcode PhooSyntaxError}.
  */
-export class UnexpectedEOFError extends BadSyntaxError { }
+export class UnexpectedEOFError extends PhooSyntaxError { }
 
 
 export function stringifyReturnStack(stack = []) {
