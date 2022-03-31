@@ -33,9 +33,6 @@ const term = $('body').terminal(c => run(c), {
 
 run = () => term.error('Still loading... be patient...');
 
-term.echo('Testing....');
-term.echo(stringify({ 'foo': [0, 1n, false, null, undefined], [Symbol('foo')]: 'bar\x1b' }, cize));
-
 var loading = true;
 (function () {
     var chars = '-\\|/';
@@ -66,7 +63,7 @@ var phooMainModule;
             } catch (e) {
                 count++;
                 term.error('Error! ' + e.message);
-                term.error(phoo.stringifyReturnStack(e[phoo.STACK_TRACE_SYMBOL]));
+                term.error(e[phoo.STACK_TRACE_SYMBOL]);
                 return;
             }
             term.echo('Stack: ' + thread.workStack.toString());
@@ -87,7 +84,7 @@ var phooMainModule;
         term.echo();
         term.echo('Thread work stack:');
         term.echo(stringify(thread.workStack));
-        term.echo($('<span style="color: red; font-size: 16px;">If this continues to occur, please <a href="https://github.com/dragoncoder047/phoo/issues">report it.</a></span>'));
+        term.echo($('If this continues to occur, please <a href="https://github.com/dragoncoder047/phoo/issues">report it.</a>'));
         term.disable();
         term.freeze();
         throw e;
