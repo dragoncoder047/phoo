@@ -221,7 +221,7 @@ async function meta_import() {
         w2n = await nextSymStr();
         if (w2n !== 'from') {
             backup();
-            for (var m in w1) { /* jshint ignore:line * /
+            for (var m of w1) { /* jshint ignore:line * /
                 switch (type(m)) {
                     case 'symbol':
                         await importFromName(name(m));
