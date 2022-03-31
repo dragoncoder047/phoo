@@ -184,7 +184,7 @@ export class Phoo {
      * @param {Module} current The current module
      * @param {string} overrideURL The url to use instead of calculating one.
      */
-    import(moduleName, current, overideURL) {
+    async import(moduleName, current, overideURL) {
         var qualName = this.phoo.qualifyName(name, currentModule);
         if (this.phoo.modules.has(qualName))
             return this.phoo.modules.get(qualName);
