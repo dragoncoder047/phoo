@@ -237,6 +237,7 @@ export class Thread {
             }
         }
         catch (e) {
+            throw e;
             throw PhooSyntaxError.wrap(e, this.workStack);
         }
         finally {
