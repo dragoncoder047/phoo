@@ -166,6 +166,7 @@ export class Phoo {
      * @returns {string} The fully-qualified name.
      */
     qualifyName(relativeName, current) {
+        alert('qualify name');
         throw new ModuleNotFoundError('todo: qualify name');
     }
 
@@ -175,6 +176,7 @@ export class Phoo {
      * @returns {string} The URL of the module. No filename extension (.ph or .js)
      */
     nameToURL(name) {
+        alert('name to url');
         throw new ModuleNotFoundError('todo: name to url');
     }
 }

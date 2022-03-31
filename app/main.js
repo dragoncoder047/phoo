@@ -4,8 +4,8 @@ import stringify from './stringify.js';
 var count = 0;
 var run;
 const esc = $.terminal.escape_brackets;
-const cize = (text, color) => `[[;${color};]${esc(text)}]`;
-const color = (text, color) => cize(esc(text), color);
+const naiveColorize = (text, color) => `[[;${color};]${esc(text)}]`;
+const color = (text, color) => naiveColorize(esc(text), color);
 var p;
 
 const term = $('body').terminal(c => run(c), {
@@ -61,10 +61,10 @@ var loading = true;
             } catch (e) {
                 count++;
                 term.error('Error! ' + type(e) !== 'string' ? e.message : e);
-                term.error(e[STACK_TRACE_SYMBOL]);
+                term.error(e[STACK_TRACE_SYMBOL] || 'oops no stack trace');
                 return;
             }
-            term.echo('Stack: ' + stringify(thread.workStack, cize));
+            term.echo('Stack: ' + stringify(thread.workStack, naiveColorize));
             count++;
         };
 
