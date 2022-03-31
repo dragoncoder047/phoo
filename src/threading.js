@@ -400,7 +400,6 @@ export class Thread {
      * @returns {IPhooDefinition}
      */
     resolveNamepath(word, where = 'words') {
-        throw 'todo';
         for (var i = 0; i <= this.scopeStack.length && def === undefined; i++) def = this.getScope(i)[where].find(word);
         if (def === undefined && where === 'words')
             def = this.phoo.undefinedWord(word);
