@@ -1,4 +1,4 @@
-import { Phoo, initBuiltins, Module, FetchImporter, ES6Importer, STACK_TRACE_SYMBOL } from '../src/index.js';
+import { Phoo, initBuiltins, Module, FetchImporter, ES6Importer, STACK_TRACE_SYMBOL, type } from '../src/index.js';
 import stringify from './stringify.js';
 
 var count = 0;
@@ -60,7 +60,7 @@ var loading = true;
                 await thread.run(c);
             } catch (e) {
                 count++;
-                term.error('Error! ' + e.message);
+                term.error('Error! ' + type(e) !== 'string' ? e.message : e);
                 term.error(e[STACK_TRACE_SYMBOL]);
                 return;
             }
@@ -79,7 +79,6 @@ var loading = true;
         term.exception(e);
         term.error('Phoo stack trace:');
         term.error(e[STACK_TRACE_SYMBOL]);
-        term.echo();
         term.echo('Thread work stack:');
         term.echo(stringify(thread.workStack));
         term.echo($('If this continues to occur, please <a href="https://github.com/dragoncoder047/phoo/issues">report it.</a>'));
