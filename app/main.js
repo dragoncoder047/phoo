@@ -1,8 +1,11 @@
+import { Phoo, initBuiltins, Module, FetchImporter, ES6Importer, STACK_TRACE_SYMBOL } from '../src/index.js';
+import stringify from './stringify.js';
 
 var count = 0;
 var run;
 const esc = $.terminal.escape_brackets;
-const color = (text, color) => `[[;${color};]${esc(text)}]`;
+const cize = (text, color) => `[[;${color};]${esc(text)}]`;
+const color = (text, color) => cize(esc(text), color);
 var p;
 
 const term = $('body').terminal(c => run(c), {
@@ -43,11 +46,11 @@ var loading = true;
     })();
 })();
 
+var phooMainModule;
+
 // do load
 (async () => {
     try {
-        const { Phoo, initBuiltins, Module, FetchImporter, ES6Importer, STACK_TRACE_SYMBOL } = await import('../src/index.js');
-
         p = new Phoo({ importers: [new FetchImporter('lib/'), new ES6Importer('lib/')] });
 
         await initBuiltins(p);
@@ -69,6 +72,8 @@ var loading = true;
 
         loading = false;
         term.update(0, 'Welcome to Phoo.');
+        term.echo('Testing....');
+        term.echo(stringify({'foo': [0, 1n, false, null, undefined], [Symbol('foo')]: 'bar\x1b'}, cize));
         term.enable();
         term.focus();
 
@@ -76,15 +81,11 @@ var loading = true;
         loading = false;
         term.error('\nFatal error!');
         term.exception(e);
-        if (e[STACK_TRACE_SYMBOL]) {
-            term.error('Phoo stack trace:');
-            term.error(e[STACK_TRACE_SYMBOL]);
-            term.echo();
-        }
-        if (thread.workStack) {
-            term.echo('Thread work stack:');
-            term.echo(JSON.stringify(thread.workStack));
-        }
+        term.error('Phoo stack trace:');
+        term.error(e[STACK_TRACE_SYMBOL]);
+        term.echo();
+        term.echo('Thread work stack:');
+        term.echo(JSON.stringify(thread.workStack));
         term.echo($('<span style="color: red; font-size: 16px;">If this continues to occur, please <a href="https://github.com/dragoncoder047/phoo/issues">report it.</a></span>'));
         term.disable();
         term.freeze();
