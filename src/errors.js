@@ -4,6 +4,7 @@
  */
 
 import { WORD_NAME_SYMBOL, STACK_TRACE_SYMBOL } from "./constants.js";
+import { type } from "./utils.js";
 
 /**
  * Generic error thrown when something goes wrong with a Phoo program.
