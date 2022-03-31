@@ -437,3 +437,11 @@ to phoo [ compile run ]
 to new! [ [] swap new ]
 
 to !!todo!! [ $ 'todo' die ]
+
+to import do
+    ]'[ false ]do-import[
+end
+
+to import* do
+    ]'[ true ]do-import[
+end
