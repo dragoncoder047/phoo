@@ -46,8 +46,6 @@ var loading = true;
     })();
 })();
 
-var phooMainModule;
-
 // do load
 (async () => {
     try {
@@ -63,7 +61,7 @@ var phooMainModule;
             } catch (e) {
                 count++;
                 term.error('Error! ' + e.message);
-                term.error(e[phoo.STACK_TRACE_SYMBOL]);
+                term.error(e[STACK_TRACE_SYMBOL]);
                 return;
             }
             term.echo('Stack: ' + stringify(thread.workStack, cize));
