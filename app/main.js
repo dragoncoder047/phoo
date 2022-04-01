@@ -39,7 +39,7 @@ const term = $('body').terminal(c => run(c), {
                 'foo.ph',
             ];
         }
-        return list.map(x => text + x);
+        return list;
     },
 });
 
