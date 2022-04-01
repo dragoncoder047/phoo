@@ -27,7 +27,7 @@ const term = $('body').terminal(c => run(c), {
     },
     autocompleteMenu: true,
     async completion() {
-        var text = this.get_command(), list;
+        var text = this.get_command(), list = [];
         if (text === '') {
             list = [
                 '%run ',

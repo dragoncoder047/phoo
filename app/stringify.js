@@ -2,6 +2,7 @@ import { type } from '../src/utils.js';
 
 
 export default function stringify(obj, colorize = x => x) {
+    console.debug('stringifying a ' + type(obj));
     switch (type(obj)) {
         case 'number': return colorize(obj, 'blue');
         case 'boolean': return colorize(obj, 'magenta');
@@ -42,5 +43,5 @@ function stringy(string) {
     // replace nonprintable characters
     string = string.replace(/[\u0100-\uFFFF]/g, match => `\\u${match.charCodeAt(0).toString(16).padStart(4, '0')}`);
     string = string.replace(/[\u00FFFF-\u10FFFF]/g, match => `\\u{${match.charCodeAt(0).toString(16)}}`);
-    return string;
+    return "'" + string + "'";
 }
