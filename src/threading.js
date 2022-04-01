@@ -206,7 +206,7 @@ export class Thread {
         try {
             while (code.length > 0) {
                 await this.checkIfKilled();
-                [word, code] = code.trim().split(/[\s\r\n](.*)/s, 2); /*jshint ignore:line*/
+                [, word, code] = /(\S+)\s(.+)/s.exec(code.trim()); /*jshint ignore:line*/
                 code = code || '';
                 b = this.resolveNamepath(word, 'macros');
                 if (b !== undefined) {
