@@ -7,6 +7,8 @@
         "type": "git",
         "url": "https://github.com/dragoncoder047/phoo.git"
     },
+    "bugs": "https://github.com/dragoncoder047/phoo/issues",
+    "homepage": "https://github.com/dragoncoder047/phoo#readme",
     "license": "GPL-3.0-only",
     "main": "src/index.js",
     "browser": true,
