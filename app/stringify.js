@@ -39,7 +39,7 @@ function stringy(string) {
     string = string.replaceAll("'", "\\'");
     // replace nonprintable characters < \x20
     const cabbrev = { 0: '0', 7: 'a', 8: 'b', 9: 't', 10: 'n', 11: 'v', 12: 'f', 13: 'r' };
-    string = string.replace(/[\x00-\xFF]/g, match => cabbrev[match] ? `\\${cabbrev[match]}` : `\\x${match.charCodeAt(0).toString(16).padStart(2, '0')}`);
+    string = string.replace(/[\x00-\xFF]/g, match => cabbrev[match.charCodeAt(0)] ? `\\${cabbrev[match.charCodeAt(0)]}` : `\\x${match.charCodeAt(0).toString(16).padStart(2, '0')}`);
     // replace nonprintable characters
     string = string.replace(/[\u0100-\uFFFF]/g, match => `\\u${match.charCodeAt(0).toString(16).padStart(4, '0')}`);
     string = string.replace(/[\u00FFFF-\u10FFFF]/g, match => `\\u{${match.charCodeAt(0).toString(16)}}`);
