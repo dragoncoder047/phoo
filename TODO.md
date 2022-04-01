@@ -22,7 +22,7 @@
     * [ ] jquery (DOM)
 * Ideas:
     * [ ] Use literalizer `$foo` to make variables and `->` (using `]'[`) to set them
-    * [ ] Getter: `.prop`, setter: `->.prop`, caller `.prop()`, no-arg caller `.prop@`
+    * [X] Getter: `.prop`, setter: `.prop=`, caller `.prop()`, no-arg caller `.prop@`
     * [ ] Create different type of block (maybe using `{}` instead of using `[]`) that records its depth when entering and cleans up stack when an error is propagating
         * [ ] maybe just have `{}` make an 'anonymous function'-ish thing?
     * [ ] Type system: `typedef`:
