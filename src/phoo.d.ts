@@ -58,13 +58,6 @@ declare module 'threading.js' {
         returnStack: IReturnStackEntry[];
         maxDepth: number;
         lock: Threadlock;
-        _paused: boolean;
-        _killed: number;
-        _stepwise: boolean;
-        _outerKillResolver: PromiseResolverCallback;
-        _innerPauseResolver: PromiseResolverCallback;
-        _innerPauseRejector: PromiseRejectorCallback;
-        _outerPauseResolver: PromiseResolverCallback;
         constructor(opts: IThreadOptions);
         async executeOneItem(item: IPhooRunnable): void;
         async compileLiteral(word: string, a: IPhooRunnable[]): boolean;
@@ -81,12 +74,6 @@ declare module 'threading.js' {
         async run(source: string | any[] | IPhooRunnable[], hasLockAlready?: boolean): any[];
         getScope(idx: number): Scope;
         resolveNamepath(word: string, where: 'words' | 'macros'): IPhooDefinition;
-        checkIfKilled(): void;
-        async kill(): void;
-        checkForPaused(): void;
-        async pause(): void;
-        async step(): void;
-        resume(): void;
     }
 
     declare type IPhooRunnable = Function | IPhooLiteral | IPhooRunnable[];

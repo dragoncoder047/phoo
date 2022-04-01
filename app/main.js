@@ -27,7 +27,19 @@ const term = $('body').terminal(c => run(c), {
     },
     autocompleteMenu: true,
     async completion() {
-        return []; // TODO
+        var text = this.get_command(), list;
+        if (text === '') {
+            list = [
+                '%run ',
+                '%edit ',
+            ];
+        } else if (/^%[a-z]+\s/.test(text)) {
+            list = [
+                '%browse',
+                'foo.ph',
+            ];
+        }
+        return list;
     },
 });
 
@@ -61,8 +73,7 @@ var loading = true;
             } catch (e) {
                 count++;
                 term.error('Error! ' + type(e) !== 'string' ? e.message : e);
-                term.error(e[STACK_TRACE_SYMBOL] || 'oops no stack trace');
-                return;
+                term.error(e[STACK_TRACE_SYMBOL] || 'oops, no stack trace');
             }
             term.echo('Stack: ' + stringify(thread.workStack, naiveColorize));
             count++;

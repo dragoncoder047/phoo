@@ -6,10 +6,14 @@
 
 import { PhooError, StackOverflowError, StackUnderflowError, TypeMismatchError, PhooSyntaxError, BadNestingError, ExternalInterrupt } from './errors.js';
 import { w, name, type } from './utils.js';
-import { Namespace, Scope } from './namespace.js';
+import { Scope } from './namespace.js';
 import { Threadlock } from './locks.js';
 import { Phoo } from './index.js';
 
+/**
+ * Configuration options.
+ * @typedef {{parent: Phoo, module: Module, scopes: Scope[], starModules: Module[], modules: Module[], stack: any[], maxDepth: number}} IThreadOptions
+ */
 
 /**
  * this is the actual compiler/runner for the code
@@ -17,7 +21,7 @@ import { Phoo } from './index.js';
 export class Thread {
 
     /**
-     * @param {Object} [opts]
+     * @param {IThreadOptions} [opts]
      * @param {Phoo} [opts.parent] Owner of this thread.
      * @param {Module} [opts.module] Module this thread is handling.
      * @param {Scope[]} [opts.scopes] The initial namespace stack.
@@ -30,7 +34,7 @@ export class Thread {
         parent,
         module,
         starModules = [],
-        modules = new Map(),
+        modules = [],
         stack = [],
         scopes = [],
         maxDepth = 10000
@@ -47,12 +51,12 @@ export class Thread {
         this.module = module;
         /**
          * Modules imported using import*.
-         * @type {Module}
+         * @type {Module[]}
          */
         this.starModules = starModules;
          /**
          * Pre-loaded modules.
-         * @type {Module}
+         * @type {Module[]}
          */
         this.modules = modules;
         /**
@@ -79,58 +83,6 @@ export class Thread {
          * @default 10000
          */
         this.maxDepth = maxDepth;
-        /**
-         * Internal flag indicating if the current thread is paused.
-         * @type {boolean}
-         * @private
-         */
-        this._paused = false;
-        /**
-         * Internal flag changed when {@linkcode Thread.kill} is called
-         * to indicate to the running thread that it should abort itself.
-         *
-         * 0 = normal, 1 = kill just this thread, 2 = force-kill child threads too.
-         * @type {0|1|2}
-         * @private
-         */
-        this._killed = 0;
-        /**
-         * Internal flag indicating that the current thread,
-         * although it is running, it should re-pause itself and
-         * only run one step.
-         * @type {boolean}
-         * @private
-         */
-        this._stepwise = false;
-        /**
-         * Promise-resolver callback used to notify {@linkcode Thread.kill}
-         * that termination has finished.
-         * @type {PromiseResolverCallback}
-         * @private
-         */
-        this._outerKillResolver = null;
-        /**
-         * Promise-resolver callback used to notify {@linkcode Thread.checkForPaused}
-         * to continue on running.
-         * @type {PromiseResolverCallback}
-         * @private
-         */
-        this._innerPauseResolver = null;
-        /**
-         * Promise-rejector callback used to deliberately crash
-         * {@linkcode Thread.checkForPaused} if {@linkcode Thread.kill} is
-         * called while the thread is paused.
-         * @type {PromiseRejectorCallback}
-         * @private
-         */
-        this._innerPauseRejector = null;
-        /**
-         * Promise-resolver callback used to notify {@linkcode Thread.pause}
-         * that the thread has been paused successfully.
-         * @type {PromiseResolverCallback}
-         * @private
-         */
-        this._outerPauseResolver = null;
         /**
          * @type {Threadlock}
          * @private
@@ -205,8 +157,7 @@ export class Thread {
         var word, b, a = [];
         try {
             while (code.length > 0) {
-                await this.checkIfKilled();
-                [, word, code] = /(\S+)\s(.+)/s.exec(code.trim()); /*jshint ignore:line*/
+                [word, code] = code.trim().split(/[\s\r\n](.*)/s, 2); /*jshint ignore:line*/
                 code = code || '';
                 b = this.resolveNamepath(word, 'macros');
                 if (b !== undefined) {
@@ -340,8 +291,6 @@ export class Thread {
         var pc = 0;
         try {
             while (true) {
-                await this.checkIfKilled();
-                await this.checkForPaused();
                 if (pc >= c.length) {
                     if (this.returnStack.length == 0) break;
                     var entry = this.retPop();
@@ -387,7 +336,7 @@ export class Thread {
     /**
      * Find the namespace in the namespace stack.
      * @param {number} idx The depth in the stack to look.
-     * @returns {Namespace}
+     * @returns {Scope}
      */
     getScope(idx) {
         return this.scopeStack[this.scopeStack.length - 1 - idx] || this.module;
@@ -407,101 +356,6 @@ export class Thread {
         if (type(def) === 'symbol')
             return this.resolveNamepath(name(def), where);
         return def;
-    }
-
-    /**
-     * Should be called periodically during long tasks
-     * to allow the user or controlling system to abort
-     * execution of code. If {@linkcode Thread.kill} has been called,
-     * this will throw an error. Otherwise, it does nothing.
-     * You can catch the error if you need to clean up, but you should
-     * re-throw it after cleanup is complete.
-     */
-    async checkIfKilled() {
-        if (this._killed) {
-            if (this._outerKillResolver !== null) {
-                this._outerKillResolver();
-                this._outerKillResolver = null;
-            }
-            throw new ExternalInterrupt();
-        }
-    }
-
-    /**
-     * Stop this thread from executing.
-     * Resolves when termination has completed.
-     * @returns {Promise<void>}
-     */
-    async kill() {
-        var self = this;
-        if (!this.lock.locked) return; // not running
-        else if (this._paused && this._innerPauseRejector !== null) {
-            this._innerPauseRejector();
-            this._innerPauseRejector = null;
-            return;
-        }
-
-        await new Promise(r => {
-            self._outerKillResolver = r;
-            self._killed = true;
-        });
-    }
-
-    /**
-     * Call this to alow execution to be paused in a long task.
-     * For time-sensitive tasks, do not use this.
-     */
-    async checkForPaused() {
-        if (!this._paused) return; // not paused
-        var self = this;
-        await new Promise((res, rej) => {
-            self._innerPauseResolver = res;
-            self._innerPauseRejector = rej;
-            if (self._outerPauseResolver !== null) {
-                self._outerPauseResolver();
-                self._outerPauseResolver = null;
-            }
-        });
-    }
-    /**
-     * Pause this thread from executing.
-     * Resolves when pause is complete.
-     * @returns {Promise<void>}
-     */
-    async pause() {
-        if (this._paused) return; // already paused
-        this._stepwise = true;
-        var self = this;
-        await new Promise(r => {
-            self._outerPauseResolver = r;
-            self._paused = true;
-        });
-    }
-
-    /**
-     * Step the thread one step.
-     * If the thread is not paused, automatically calls {@linkcode Thread.pause}.
-     * Resolves once the thread has completed the step.
-     * @returns {Promise<void>}
-     */
-    async step() {
-        if (!this._paused) await this.pause();
-        var self = this;
-        await new Promise(r => {
-            self._outerPauseResolver = r;
-            self._innerPauseResolver(); // let it go, but don't set paused state variable back
-        });
-    }
-    /**
-     * Resumes execution of the thread if it was paused.
-     */
-    resume() {
-        if ((this._stepwise || this._paused) && this._innerPauseResolver !== null) {
-            this._stepwise = false;
-            this._paused = false;
-            this._innerPauseResolver();
-            this._innerPauseResolver = null;
-        }
     }
 }
 
