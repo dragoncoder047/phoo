@@ -33,10 +33,10 @@ const term = $('body').terminal(c => run(c), {
                 '%run ',
                 '%edit ',
             ];
-        } else if (/^%[a-z]+\s$/.test(text)) {
+        } else if (/^%[a-z]+/.test(text)) {
             return [
-                '%browse',
-                'foo.ph',
+                text + '%browse',
+                text + 'foo.ph',
             ];
         }
         return []; // TODO
