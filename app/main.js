@@ -43,6 +43,8 @@ const term = $('body').terminal(c => run(c), {
     },
 });
 
+term.syntax('phoo');
+
 run = () => term.error('Still loading... be patient...');
 
 var loading = true;
