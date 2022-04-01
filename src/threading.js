@@ -34,7 +34,7 @@ export class Thread {
         parent,
         module,
         starModules = [],
-        modules = new Map(),
+        modules = [],
         stack = [],
         scopes = [],
         maxDepth = 10000
@@ -51,12 +51,12 @@ export class Thread {
         this.module = module;
         /**
          * Modules imported using import*.
-         * @type {Module}
+         * @type {Module[]}
          */
         this.starModules = starModules;
          /**
          * Pre-loaded modules.
-         * @type {Module}
+         * @type {Module[]}
          */
         this.modules = modules;
         /**
