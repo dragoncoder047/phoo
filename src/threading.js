@@ -10,6 +10,10 @@ import { Scope } from './namespace.js';
 import { Threadlock } from './locks.js';
 import { Phoo } from './index.js';
 
+/**
+ * Configuration options.
+ * @typedef {{parent: Phoo, module: Module, scopes: Scope[], starModules: Module[], modules: Module[], stack: any[], maxDepth: number}} IThreadOptions
+ */
 
 /**
  * this is the actual compiler/runner for the code
@@ -17,7 +21,7 @@ import { Phoo } from './index.js';
 export class Thread {
 
     /**
-     * @param {Object} [opts]
+     * @param {IThreadOptions} [opts]
      * @param {Phoo} [opts.parent] Owner of this thread.
      * @param {Module} [opts.module] Module this thread is handling.
      * @param {Scope[]} [opts.scopes] The initial namespace stack.
