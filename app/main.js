@@ -27,19 +27,19 @@ const term = $('body').terminal(c => run(c), {
     },
     autocompleteMenu: true,
     async completion() {
-        var text = this.get_command();
+        var text = this.get_command(), list;
         if (text === '') {
-            return [
+            list = [
                 '%run ',
                 '%edit ',
             ];
         } else if (/^%[a-z]+/.test(text)) {
-            return [
-                text + '%browse',
-                text + 'foo.ph',
+            list = [
+                '%browse',
+                'foo.ph',
             ];
         }
-        return []; // TODO
+        return list.map(x => text + x);
     },
 });
 
