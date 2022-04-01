@@ -137,7 +137,7 @@ export class Phoo {
     }
 
     /**
-     * Return the module if it was laready loaded, or an empty module if it was not.
+     * Return the module if it was already loaded, or an empty module if it was not.
      * 
      * This does **not** import the module.
      * @param {string} moduleName The name of the module.
