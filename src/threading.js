@@ -6,7 +6,7 @@
 
 import { PhooError, StackOverflowError, StackUnderflowError, TypeMismatchError, PhooSyntaxError, BadNestingError, ExternalInterrupt } from './errors.js';
 import { w, name, type } from './utils.js';
-import { Namespace, Scope } from './namespace.js';
+import { Scope } from './namespace.js';
 import { Threadlock } from './locks.js';
 import { Phoo } from './index.js';
 
@@ -332,7 +332,7 @@ export class Thread {
     /**
      * Find the namespace in the namespace stack.
      * @param {number} idx The depth in the stack to look.
-     * @returns {Namespace}
+     * @returns {Scope}
      */
     getScope(idx) {
         return this.scopeStack[this.scopeStack.length - 1 - idx] || this.module;
