@@ -31,7 +31,7 @@ export class SimpleNamespace {
         var a = this.map.get(name) || [];
         a.push(def);
         this.map.set(name, a);
-        def[WORD_NAME_SYMBOL] = name;
+        if (type(def) !== 'symbol') def[WORD_NAME_SYMBOL] = name;
     }
 
     /**
