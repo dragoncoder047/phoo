@@ -159,6 +159,7 @@ export class Thread {
             while (code.length > 0) {
                 [, word, code] = /(\S+)([\s\S]*)$/s.exec(code.trim()); /*jshint ignore:line*/
                 console.debug(word);
+                if (!source.trim().endsWith(code.trim())) throw new PhooError('Bad regex');
                 b = this.resolveNamepath(word, 'macros');
                 if (b !== undefined) {
                     this.push(a);
