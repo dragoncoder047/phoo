@@ -158,6 +158,7 @@ export class Thread {
         try {
             while (code.length > 0) {
                 [, word, code] = /(\S+)(.*)/s.exec(code.trim()); /*jshint ignore:line*/
+                console.debug(word);
                 b = this.resolveNamepath(word, 'macros');
                 if (b !== undefined) {
                     this.push(a);
