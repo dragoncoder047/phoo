@@ -172,7 +172,7 @@ export class Thread {
                             if (!hasLockAlready) unlock = await this.lock.acquire();
                             break;
                         default:
-                            throw new TypeMismatchError(`Unexpected ${type(source)} as macro.`);
+                            throw new TypeMismatchError(`Unexpected ${type(b)} as macro.`);
                     }
                     this.expect('string', 'array');
                     code = this.pop();
