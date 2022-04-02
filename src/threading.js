@@ -157,7 +157,7 @@ export class Thread {
         var word, b, a = [];
         try {
             while (code.length > 0) {
-                [, word, code] = /(\S+)(.*)/s.exec(code.trim()); /*jshint ignore:line*/
+                [, word, code] = /(\S+)([\s\S]*)$/s.exec(code.trim()); /*jshint ignore:line*/
                 console.debug(word);
                 b = this.resolveNamepath(word, 'macros');
                 if (b !== undefined) {
