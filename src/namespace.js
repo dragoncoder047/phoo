@@ -5,6 +5,7 @@
 
 import { WORD_NAME_SYMBOL } from './constants.js';
 import { IPhooDefinition } from './threading.js';
+import { type } from './utils.js';
 
 /**
  * A `SimpleNamespace` holds only one type of thing in a scope.
