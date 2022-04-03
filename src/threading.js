@@ -158,9 +158,9 @@ export class Thread {
         try {
             while (code.length > 0) {
                 // https://stackoverflow.com/questions/10272773/split-string-on-the-first-white-space-occurrence
-                [word, code] = code.trim().split(/(?<=^\S+)\s/); /*jshint ignore:line*/
+                [word, code] = code.trim().split(/(?<=^\S+)\s/);
                 console.debug(word);
-                if (!source.trim().endsWith(code.trim())) throw new PhooError('Bad regex');
+                code = code || '';
                 b = this.resolveNamepath(word, 'macros');
                 if (b !== undefined) {
                     this.push(a);
