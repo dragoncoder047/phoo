@@ -1,4 +1,5 @@
-import web:permissions as _p
+import web:permissions
+alias _p web:permissions
 
 to can-write? do
     $ "clipboard-write" _p:query
