@@ -205,16 +205,17 @@ export class Thread {
     /**
      * 'Expects' the objects on top of the stack, and throws if they aren't the right type.
      * If the first argument is a number, asserts that there are at least that many items on the stack to begin.
-     * @param {string|RegExp|number} ...types The types to check against
+     * @param {string|RegExp|number} ...args The types to check against
      * @throws {TypeMismatchError} if any of the items don't match
      * @throws {StackUnderflowError} if there are too few items on the stack.
      */
-    expect(...types) {
-        if (type(types[0]) === 'number') {
-            if (this.workStack.length < types[0])
-                throw new StackUnderflowError(`Expected at least ${types[0]} items on stack, got ${this.workStack.length}`);
-            types = types.slice(1);
-        }
+    expect(...args) {
+        var types;
+        if (type(args[0]) === 'number') {
+            if (this.workStack.length < args[0])
+                throw new StackUnderflowError(`Expected at least ${args[0]} items on stack, got ${this.workStack.length}`);
+            types = args.slice(1);
+        } else types = args.slice();
         for (var index = 0; index < types.length; index++) {
             var item = this.peek(index);
             var eType = types[index];
