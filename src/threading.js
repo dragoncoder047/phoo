@@ -122,7 +122,7 @@ export class Thread {
      */
     async compileLiteral(word, a) {
         for (var ns of this.scopeStack.concat([this.module]).reverse()) {
-            for (var [regex, code] in ns.literalizers.map) {
+            for (var [regex, code] of ns.literalizers.map) {
                 var result = regex.exec(word);
                 if (result) {
                     this.push(result);
