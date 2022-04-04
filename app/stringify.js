@@ -11,26 +11,27 @@ export default function stringify(obj, colorize = x => x) {
         case 'array': return `[${obj.map(item => stringify(item, colorize)).join(', ')}]`;
         case 'regexp': return colorize(`/${obj.source}/`, 'red');
         case 'undefined': return colorize('undefined', 'gray');
-        case 'symbol': return colorize(`Symbol.for(${stringy(Symbol.keyFor(obj))})`, 'lime');
-        case 'Map': return colorize(`new Map(${stringify([...obj.entries()], colorize)})`, 'orange');
-        case 'Set': return colorize(`new Set(${stringify([...obj.values()], colorize)})`, 'yellow');
+        case 'symbol': return colorize(`@@${stringy(Symbol.keyFor(obj))}`, 'lime');
+        case 'Map': return colorize(`Map {${[...obj.entries()].map(i => stringify(i[0], colorize) + ' => ' + stringify(i[1], colorize)).join(', ')}}`, 'orange');
+        case 'Set': return colorize(`Set {${[...obj.values()].map(i => stringify(i, colorize)).join(', ')}}`, 'yellow');
         default:
             if (obj === null) return colorize('null', 'purple');
-            var pairs = [], key$, prop$, itm;
-            var items = Object.getOwnPropertyNames(obj);
-            var itemSymbols = Object.getOwnPropertySymbols(obj);
-            for (itm of items) {
-                prop$ = stringify(obj[itm]);
-                if (/^[$_a-z][$_a-z0-9]*/i.test(itm)) key$ = itm;
-                else key$ = `[${stringy(itm)}]`;
-                pairs.push([key$, prop$]);
-            }
-            for (itm of itemSymbols) {
-                prop$ = stringify(obj[itm]);
-                key$ = strigify(itm);
-                pairs.push([key$, prop$]);
-            }
-            return `{ ${pairs.map(p => p[0] + ': ' + p[1]).join(', ')} }`;
+            // var pairs = [], key$, prop$, itm;
+            // var items = Object.getOwnPropertyNames(obj);
+            // var itemSymbols = Object.getOwnPropertySymbols(obj);
+            // for (itm of items) {
+            //     prop$ = stringify(obj[itm]);
+            //     if (/^[$_a-z][$_a-z0-9]*/i.test(itm)) key$ = itm;
+            //     else key$ = `[${stringy(itm)}]`;
+            //     pairs.push([key$, prop$]);
+            // }
+            // for (itm of itemSymbols) {
+            //     prop$ = stringify(obj[itm]);
+            //     key$ = strigify(itm);
+            //     pairs.push([key$, prop$]);
+            // }
+            // return `{ ${pairs.map(p => p[0] + ': ' + p[1]).join(', ')} }`;
+            return colorize(obj.toString(), 'tan');
     }
 }
 
