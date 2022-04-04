@@ -165,6 +165,7 @@ export class Thread {
                 if (b !== undefined) {
                     this.push(a);
                     this.push(code);
+                    var oldCode = code;
                     switch (type(b)) {
                         case 'function':
                             await b.call(this);
@@ -179,6 +180,7 @@ export class Thread {
                     }
                     this.expect('string', 'array');
                     code = this.pop();
+                    if (!oldCode.endsWith(code)) throw 'bad regex in builder';
                     a = this.pop();
                 }
                 else { // try looking up in literals
