@@ -180,7 +180,6 @@ export class Thread {
                     }
                     this.expect('string', 'array');
                     code = this.pop();
-                    if (!oldCode.endsWith(code)) throw 'bad regex in builder';
                     a = this.pop();
                 }
                 else { // try looking up in literals
