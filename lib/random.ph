@@ -1,5 +1,6 @@
-import [ log exp sqrt ] from math
-import * from _random
+import math
+alias log math:log alias exp math:exp alias sqrt math:sqrt
+import* _random
 
 /* cSpell:ignore fbelow ibelow */
 to fbelow [ random * ]
