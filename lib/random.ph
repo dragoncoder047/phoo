@@ -27,7 +27,7 @@ to choices do
     nip
 end
 
-def normal do
+to normal do
     do
         random dup random
         0.5 - / [ 4 0.5 exp * 2 sqrt / ] const *
@@ -39,4 +39,4 @@ def normal do
     * +
 end
 
-def expo [ 1 random - log negate / ]
+to expo [ 1 random - log negate / ]
