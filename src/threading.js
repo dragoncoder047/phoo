@@ -220,7 +220,7 @@ export class Thread {
             var eType = types[index];
             var gType = type(item);
             if ((type(eType) === 'string' && eType !== gType) || (type(eType) === 'regexp' && !eType.test(gType)))
-                throw new TypeMismatchError(`Expected ${eType} on stack, got ${gType}: ${item}`);
+                throw new TypeMismatchError(`Expected ${eType} on stack, got ${gType}: ${type(item) === 'symbol' ? name(item) : item}`);
         }
     }
 
