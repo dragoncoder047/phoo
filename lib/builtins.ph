@@ -62,7 +62,6 @@ end
 to unpack [ witheach noop ]
 
 to dip.hold [ stack ]
-protect dip.hold
 to dip [ dip.hold put ]'[ run dip.hold take ]
 
 to abs [ dup 0 < if negate ]
@@ -148,7 +147,6 @@ to until [ not if ]again[ ]
 to while [ not if ]done[ ]
 
 to switch.arg [ stack ]
-protect switch.arg
 
 to switch [ switch.arg put ]
 
@@ -175,9 +173,6 @@ to recurse [ ]this[ run ]
 to times.start [ stack ]
 to times.count [ stack ]
 to times.action [ stack ]
-protect times.start
-protect times.action
-protect times.count
 
 to times do
     ]'[ times.action put
@@ -272,7 +267,6 @@ to reflect do
 end
 
 to with.hold [ stack ]
-protect with.hold
 
 to makewith do
     nested
@@ -313,8 +307,6 @@ end
 
 to mi.tidyup [ stack ]
 to mi.result [ stack ]
-protect mi.tidyup
-protect mi.result
 
 to matchitem do
     mi.tidyup put
@@ -349,7 +341,6 @@ end
 to found? [ len < ]
 
 to sort.test [ stack ]
-protect sort.test
 
 to sortwith do
     ]'[ sort.test put
@@ -445,3 +436,13 @@ end
 to import* do
     ]'[ true ]do-import[
 end
+
+protect dip.hold
+protect switch.arg
+protect times.start
+protect times.action
+protect times.count
+protect with.hold
+protect mi.tidyup
+protect mi.result
+protect sort.test
