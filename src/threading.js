@@ -6,7 +6,7 @@
 
 import { PhooError, StackOverflowError, StackUnderflowError, TypeMismatchError, PhooSyntaxError, BadNestingError, ExternalInterrupt } from './errors.js';
 import { w, name, type } from './utils.js';
-import { Scope } from './namespace.js';
+import { Scope, Module } from './namespace.js';
 import { Threadlock } from './locks.js';
 import { Phoo } from './index.js';
 
@@ -379,7 +379,7 @@ export class Thread {
 /**
  * A return stack entry containing the current array (`arr`),
  * the index of the program counter (`pc`) and some other stuff.
- * @typedef {{pc: number, arr: Array}} IPhooReturnStackEntry
+ * @typedef {{pc: number, arr: Array, mod: Module}} IPhooReturnStackEntry
  */
 
 // exporting dummy typedefs here to satisfy the browser module system

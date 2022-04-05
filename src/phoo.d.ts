@@ -8,6 +8,7 @@ declare module 'index.js' {
         maxDepth?: number,
         strictMode?: boolean,
         namepathSeparator?: string,
+        parentDirectoryMarker?: string,
     };
 
     declare type IPhooOptions = {
@@ -78,8 +79,8 @@ declare module 'threading.js' {
 
     declare type IPhooRunnable = Function | IPhooLiteral | IPhooRunnable[];
     declare type IPhooLiteral = number | string | Promise<any> | Symbol;
-    declare type IReturnStackEntry = { pc: number; arr: IPhooRunnable[] };
-    declare type IPhooDefinition = (Function | Symbol | IPhooRunnable) & { [WORD_NAME_SYMBOL]: string };
+    declare type IReturnStackEntry = { pc: number; arr: IPhooRunnable[], mod: Module };
+    declare type IPhooDefinition = IPhooRunnable & { [WORD_NAME_SYMBOL]: string };
 }
 
 declare module 'namespace.js' {
@@ -148,8 +149,8 @@ declare module 'utils.js' {
     export function word(word: string): Symbol;
     export const w = word;
     export function name(sym: Symbol): string;
-    export function cloneArray(arr: T[], objects?: boolean, deep?: boolean, seen?: Map<T, T>): T[];
-    export function clone(obj: T, deep?: boolean, seen?: Map<T, T>): T;
+    export function cloneArray<T>(arr: T[], objects?: boolean, deep?: boolean, seen?: Map<T, T>): T[];
+    export function clone<T>(obj: T, deep?: boolean, seen?: Map<T, T>): T;
 }
 
 declare module 'importers.js' {
