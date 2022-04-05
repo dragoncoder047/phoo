@@ -291,12 +291,13 @@ export class Thread {
      */
     async execute(c, hasLockAlready = false) {
         var unlock;
+        var stopDepth = this.returnStack.length;
         if (!hasLockAlready) unlock = await this.lock.acquire();
         var pc = 0;
         try {
             while (true) {
                 if (pc >= c.length) {
-                    if (this.returnStack.length == 0) break;
+                    if (this.returnStack.length === stopDepth) break;
                     var entry = this.retPop();
                     pc = entry.pc + 1;
                     c = entry.arr;
@@ -378,7 +379,7 @@ export class Thread {
 
 /**
  * A return stack entry containing the current array (`arr`),
- * the index of the program counter (`pc`) and some other stuff.
+ * the index of the program counter (`pc`) and the module the word is defined in (`mod`).
  * @typedef {{pc: number, arr: Array, mod: Module}} IPhooReturnStackEntry
  */
 
