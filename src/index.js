@@ -73,9 +73,6 @@ export class Phoo {
              * * Strict mode ON: Undefined words throw an error.
              * * Strict mode OFF: Undefined words are simply looked up under the global object (i.e. `:::js globalThis`) and pushed to the stack.
              *
-             * Strict mode can be turned off by including the string `:::js "use loose"`,
-             * and on again by `:::js "use strict"`.
-             *
              * **Only turn strict mode off if you know what you are doing.**
              * A typo leading to an undefined word will not be flagged as such, it will instead push
              * whatever that bad key looks up on the global object (likely `:::js undefined`), and lead

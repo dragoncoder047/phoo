@@ -52,7 +52,7 @@ declare module 'threading.js' {
 
     export declare class Thread {
         phoo: Phoo;
-        module: Module;
+        get module(): Module;
         starModules: Module[];
         workStack: any[];
         scopeStack: Scope[];

@@ -45,16 +45,11 @@ export class Thread {
          */
         this.phoo = parent;
         /**
-         * The module that this thread writes to.
-         * @type {Module}
-         */
-        this.module = module;
-        /**
          * Modules imported using import*.
          * @type {Module[]}
          */
         this.starModules = starModules;
-         /**
+        /**
          * Pre-loaded modules.
          * @type {Module[]}
          */
@@ -75,7 +70,7 @@ export class Thread {
          * when the Phoo machine 'jumps in' to an inner array.
          * @type {Array<IPhooReturnStackEntry>}
          */
-        this.returnStack = [];
+        this.returnStack = [{ pc: 0, arr: [], mod: module }];
         /**
          * The maximum length of {@linkcode Thread.returnStack}
          * before a {@linkcode StackOverflowError} error is thrown.
@@ -91,19 +86,24 @@ export class Thread {
     }
 
     /**
+     * Return the current module, at the top of the return stack.
+     */
+    get module() {
+        if (this.returnStack.length === 0)
+            throw new StackUnderflowError('Expected item with module on return stack!');
+        return this.returnStack[this.returnStack.length - 1].mod;
+    }
+
+    /**
      * Callback when a non-array is encountered
      * during execution. Functions are simply called.
      * 
-     * See property [strictMode]{@linkcode Phoo.strictMode} for the behavior of this.
+     * See {@linkcode Phoo.strictMode} for the behavior of this.
      * @param {any} item Thing to be dealt with.
      */
     async executeOneItem(item) {
         if (type(item) === 'symbol')
             item = this.resolveNamepath(name(item));
-        if (item === 'use loose')
-            this.strictMode = false;
-        else if (item === 'use strict')
-            this.strictMode = true;
         else if (type(item) === 'function') {
             await item.call(this);
         }
@@ -172,7 +172,7 @@ export class Thread {
                             break;
                         case 'array':
                             if (!hasLockAlready) unlock();
-                            await this.execute(b, forceNoLock);
+                            await this.execute(b, hasLockAlready);
                             if (!hasLockAlready) unlock = await this.lock.acquire();
                             break;
                         default:
@@ -195,7 +195,6 @@ export class Thread {
         }
         finally {
             if (!hasLockAlready) unlock();
-            this._killed = 0;
         }
         if (this.workStack.length !== origLength)
             throw BadNestingError.withPhooStack('During compilation: stack not returned to original length', this.workStack);
@@ -215,7 +214,9 @@ export class Thread {
             if (this.workStack.length < args[0])
                 throw new StackUnderflowError(`Expected at least ${args[0]} items on stack, got ${this.workStack.length}`);
             types = args.slice(1);
-        } else types = args.slice();
+        }
+        else
+            types = args.slice();
         for (var index = 0; index < types.length; index++) {
             var item = this.peek(index);
             var eType = types[index];
@@ -309,7 +310,7 @@ export class Thread {
                     ci = this.resolveNamepath(ciw);
                 }
                 if (type(ci) === 'array') {
-                    this.retPush({ pc, arr: c });
+                    this.retPush({ pc, arr: c, mod: this.module });
                     c = ci;
                     pc = -1;
                 } else
@@ -323,7 +324,6 @@ export class Thread {
         }
         finally {
             if (!hasLockAlready) unlock();
-            this._killed = 0;
         }
         return this.workStack;
     }
