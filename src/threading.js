@@ -359,7 +359,7 @@ export class Thread {
             if (macro) def = this.getScope(i).macros.find(word);
             else def = this.getScope(i).words.find(word);
         }
-        if (def === undefined && where === 'words')
+        if (def === undefined && !macro)
             def = this.phoo.undefinedWord(word);
         if (type(def) === 'symbol')
             return this.resolveNamepath(name(def), macro);
