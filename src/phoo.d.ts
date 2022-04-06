@@ -74,7 +74,7 @@ declare module 'threading.js' {
         async execute(c: IPhooRunnable, hasLockAlready?: boolean): any[];
         async run(source: string | any[] | IPhooRunnable[], hasLockAlready?: boolean): any[];
         getScope(idx: number): Scope;
-        resolveNamepath(word: string, where: 'words' | 'macros'): IPhooDefinition;
+        resolveNamepath(word: string, macro?: boolean): IPhooDefinition;
     }
 
     declare type IPhooRunnable = Function | IPhooLiteral | IPhooRunnable[];

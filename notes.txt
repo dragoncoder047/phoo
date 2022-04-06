@@ -6,14 +6,15 @@ Phoo
     thread() -> thread
 
 Thread
-    clone of settings
+
+    ///// note: this is ahead of what I currently have. May not work, may have to roll it back.
+
+    clone of settings (via ref to parent)
     own scope stack
-    current module - defs get written here if scope stack is empty
 
     ref to parent Phoo
     
-    run() <=> execute(compile()) (instance is threadlocked when running anything)
-    pause(), step(), resume() debugging commands
+    run() <=> while(true){tick()} (instance is threadlocked when running anything)
     
     inside word function:
         this refers to thread instance
@@ -25,22 +26,16 @@ Thread
         expect()
     
     return stack
-        of entries: pc: number, arr: array
+        of entries:
+            pc: number
+            arr: array
+            mod: module
+            modules: module array
+            starModules: module array
         retPush()
         retPop()
-    
-    scope stack
-        of Scopes
-        enterScope()
-        exitScope()
         never empty
 
 Module
     SimpleModules for each of words, macros, literalizers
         Map of words to definition stack
-    Map of submodule name or alias name to submodule object
-
-Scope
-    list of module names
-    list of star-import modules
-    subclass of Namespace

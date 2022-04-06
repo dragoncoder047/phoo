@@ -395,12 +395,6 @@ to try do
     1 ]cjump[
 end
 
-to in_scope do
-    self .enterScope@
-    ]'[ run
-    self .exitScope@
-end
-
 to to-do [ stack ]
 
 to new-do [ ' done swap put ]

@@ -161,7 +161,7 @@ export class Thread {
                 [word, code] = code.trim().split(/(?<=^\S+)\s/);
                 console.debug(word);
                 code = code || '';
-                b = this.resolveNamepath(word, 'macros');
+                b = this.resolveNamepath(word, true);
                 if (b !== undefined) {
                     this.push(a);
                     this.push(code);
@@ -350,16 +350,19 @@ export class Thread {
     /**
      * Recursively look up the word/macro's definition, following symlinks and traversing the module tree.
      * @param {string} word The name of the word/macro
-     * @param {'words'|'macros'} [where='words'] Words or macros.
+     * @param {boolean} [macro=false] Words or macros.
      * @returns {IPhooDefinition}
      */
-    resolveNamepath(word, where = 'words') {
+    resolveNamepath(word, macro = false) {
         var def;
-        for (var i = 0; i <= this.scopeStack.length && def === undefined; i++) def = this.getScope(i)[where].find(word);
+        for (var i = 0; i <= this.scopeStack.length && def === undefined; i++) {
+            if (macro) def = this.getScope(i).macros.find(word);
+            else def = this.getScope(i).words.find(word);
+        }
         if (def === undefined && where === 'words')
             def = this.phoo.undefinedWord(word);
         if (type(def) === 'symbol')
-            return this.resolveNamepath(name(def), where);
+            return this.resolveNamepath(name(def), macro);
         return def;
     }
 }
