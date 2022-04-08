@@ -222,7 +222,7 @@ export class Thread {
             var eType = types[index];
             var gType = type(item);
             if ((type(eType) === 'string' && eType !== gType) || (type(eType) === 'regexp' && !eType.test(gType)))
-                throw TypeMismatchError.withPhooStack(`Expected ${eType} on stack, got ${gType}: ${type(item) === 'symbol' ? name(item) : item}`, this.workStack);
+                throw TypeMismatchError.withPhooStack(`Expected ${eType} on stack, got ${gType}: ${type(item) === 'symbol' ? name(item) : item}`, this.returnStack);
         }
     }
 
