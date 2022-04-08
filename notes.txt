@@ -25,6 +25,8 @@ Thread
         pop()
         expect()
     
+    current state: return stack entry.
+
     return stack
         of entries:
             pc: number
