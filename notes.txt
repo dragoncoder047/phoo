@@ -36,7 +36,6 @@ Thread
             starModules: module array
         retPush()
         retPop()
-        never empty
 
 Module
     SimpleModules for each of words, macros, literalizers
