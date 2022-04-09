@@ -1,5 +1,5 @@
-import _fmath as f
-import _imath as i
+import _fmath alias _fmath f
+import _imath alias _imath i
 
 to _M [ stack ]
 window .Math _M put // get the global Math object

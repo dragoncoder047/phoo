@@ -9,12 +9,12 @@ to ibelow [ fbelow ~ ~ ]
 
 to randrange [ over - ibelow + ]
 
-to choose [ dup # ibelow peek ]
+to choose [ dup len ibelow peek ]
 
 to shuffle do
     [] swap dup
-    # times do
-        dup # ibelow pluck
+    len times do
+        dup len ibelow pluck
         nested rot concat swap
     end
     drop
@@ -31,7 +31,7 @@ end
 to normal do
     do
         random dup random
-        0.5 - / [ 4 0.5 exp * 2 sqrt / ] const *
+        0.5 - / [ 4 0.5 exp * 2 sqrt / ] /* const */ *
         dup dup * 4 /
         rot
         log negate
