@@ -167,7 +167,7 @@ export class Thread {
      */
     async executeOneItem(item) {
         if (type(item) === 'symbol')
-            item = this.resolveNamepath(name(item));
+            await this.executeOneItem(this.resolveNamepath(name(item)));
         else if (type(item) === 'function') {
             await item.call(this);
         }
@@ -218,7 +218,6 @@ export class Thread {
             default:
                 return [source]; // just wrap it
         }
-        var unlock;
         var code = source.slice();
         var origLength = this.workStack.length;
         var word, b, a = [];
@@ -281,11 +280,15 @@ export class Thread {
     /**
      * Invokes the compiler and then runs the compiled code, all in one call.
      * @param {string|Array|IPhooRunnable} code The code to be run.
-     * @returns {Promise<Array>} The stack after execution (same as what {@linkcode Thread.execute} returns)
+     * @returns {Promise<Array>} The stack after execution
      */
     async run(code) {
-        // FIXME
-        return await this.execute(await this.compile(code));
+        var compiled = await this.compile(code);
+        const origDepth = this.returnStack.length;
+        this.retPush(this.state);
+        this.state = { pc: 0, arr: compiled, modules: this.currentModules, mod: this.currentModule, starModules: this.currentStarModules };
+        while (this.returnStack.length > origDepth) await this.tick();
+        return this.workStack;
     }
 
     /**
@@ -294,6 +297,7 @@ export class Thread {
      * @returns {Scope}
      */
     getScope(idx) {
+        throw 'todo';
         return this.scopeStack[this.scopeStack.length - 1 - idx] || this.module;
     }
 
