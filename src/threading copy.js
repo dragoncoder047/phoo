@@ -4,7 +4,7 @@
  * for often-used Phoo constructs.
  */
 
-import { PhooError, StackOverflowError, StackUnderflowError, TypeMismatchError, PhooSyntaxError, BadNestingError, ExternalInterrupt } from './errors.js';
+import { PhooError, StackOverflowError, StackUnderflowError, TypeMismatchError, PhooSyntaxError, BadNestingError, ExternalInterrupt, ModuleNotFoundError } from './errors.js';
 import { w, name, type } from './utils.js';
 import { Scope, Module } from './namespace.js';
 import { Threadlock } from './locks.js';
@@ -166,13 +166,21 @@ export class Thread {
      * @param {any} item Thing to be dealt with.
      */
     async executeOneItem(item) {
-        if (type(item) === 'symbol')
-            await this.executeOneItem(this.resolveNamepath(name(item)));
+        var module;
+        if (type(item) === 'symbol') {
+            {def: item, module} = this.resolveNamepath(name(item));
+        }
         else if (type(item) === 'function') {
             await item.call(this);
         }
         else if (type(item) === 'array') {
-            var newState = { pc: -1, arr: item, modules: this.currentModules, mod: this.currentModule, starModules: this.currentStarModules };
+            var newState = {
+                pc: -1,
+                arr: item,
+                modules: module.loadedModules || this.currentModules,
+                mod: module || this.currentModule,
+                starModules: module.starModules || this.currentStarModules
+            };
             this.retPush(this.state);
             this.state = newState;
         }
@@ -292,32 +300,43 @@ export class Thread {
     }
 
     /**
-     * Find the namespace in the namespace stack.
-     * @param {number} idx The depth in the stack to look.
-     * @returns {Scope}
-     */
-    getScope(idx) {
-        throw 'todo';
-        return this.scopeStack[this.scopeStack.length - 1 - idx] || this.module;
-    }
-
-    /**
      * Recursively look up the word/macro's definition, following symlinks and traversing the module tree.
      * @param {string} word The name of the word/macro
      * @param {boolean} [macro=false] Words or macros.
-     * @returns {IPhooDefinition}
+     * @returns {{def: IPhooDefinition, module: Module}}
      */
     resolveNamepath(word, macro = false) {
-        var def;
-        for (var i = 0; i <= this.scopeStack.length && def === undefined; i++) {
-            if (macro) def = this.getScope(i).macros.find(word);
-            else def = this.getScope(i).words.find(word);
+        throw 'todo';
+        var def, module;
+        if (word.indexOf(this.phoo.settings.namepathSeparator) === -1) {
+            if (macro) {
+                def = this.currentModule.macros.find(word);
+                if (def === undefined) {
+                    for (var mm of this.currentStarModules) {
+                        def = mm.macros.find(word);
+                        if (def !== undefined) break;
+                    }
+                }
+            }
+            else {
+                def = this.currentModule.words.find(word);
+                if (def === undefined) {
+                    for (var mm of this.currentStarModules) {
+                        def = mm.words.find(word);
+                        if (def !== undefined) break;
+                    }
+                }
+            }
+        }
+        else {
+            var qualName = this.phoo.qualifyName(word, this.currentModule);
+            throw 'todo';
         }
         if (def === undefined && !macro)
             def = this.phoo.undefinedWord(word);
         if (type(def) === 'symbol')
             return this.resolveNamepath(name(def), macro);
-        return def;
+        return {def, module: module || this.currentModule};
     }
 }
 
