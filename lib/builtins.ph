@@ -1,3 +1,9 @@
+to #pragma do
+    ]'[ name
+    self .phoo .settings
+    ]'[ set
+end
+
 to try.prt [ stack [ ] ]
 
 to protect do

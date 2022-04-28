@@ -168,7 +168,7 @@ export class Thread {
     async executeOneItem(item) {
         var module;
         if (type(item) === 'symbol') {
-            {def: item, module} = this.resolveNamepath(name(item));
+            ({def: item, module} = this.resolveNamepath(name(item)));
         }
         else if (type(item) === 'function') {
             await item.call(this);
