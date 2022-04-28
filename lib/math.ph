@@ -1,5 +1,5 @@
-import _fmath alias _fmath f
-import _imath alias _imath i
+import $ "_fmath.js" f
+import $ "_imath.js" i
 
 to _M [ stack ]
 window .Math _M put // get the global Math object

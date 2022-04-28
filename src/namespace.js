@@ -84,8 +84,9 @@ export class Scope extends Namespace {
 export class Module extends Scope {
     /**
      * @param {string} name The name of the module
+     * @param {string} filename The file associated with this module
      */
-    constructor(name) {
+    constructor(name, filename) {
         super();
         /**
          * @type {string}

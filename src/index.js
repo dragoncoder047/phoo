@@ -77,6 +77,9 @@ export class Phoo {
              * A typo leading to an undefined word will not be flagged as such, it will instead push
              * whatever that bad key looks up on the global object (likely `:::js undefined`), and lead
              * to all sorts of cryptic errors unrelated to what the problem actually is.
+             * 
+             * Strict mode can be turned off with `:::phoo #pragma strictMode false`
+             * and back on with `:::phoo #pragma strictMode true`.
              * @type {boolean}
              * @default true
              */
@@ -117,7 +120,7 @@ export class Phoo {
      * Create a new subthread.
      * @param {string} module The name of the module the thread will run under.
      * @param {Scope[]} scopes A list of scopes to start within.
-     * @param {Module[]} modules The list of already-imported modules so the user doesn't have to import them.
+     * @param {Map<symbol, Module>} modules The list of already-imported modules so the user doesn't have to import them.
      * @param {Module[]} starModules Same as modules, but no foo: prefix is needed (as if they were imported using import*).
      * @param {IPhooLiteral[]} stack The initial items on the stack.
      */

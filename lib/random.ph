@@ -1,6 +1,6 @@
-import math
+import $ "math.ph" math
 alias log math:log alias exp math:exp alias sqrt math:sqrt
-import* _random
+import* $ "_random.js"
 
 /* cSpell:ignore fbelow ibelow */
 to fbelow [ random * ]
