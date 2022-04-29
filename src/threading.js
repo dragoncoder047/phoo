@@ -177,7 +177,7 @@ export class Thread {
                 arr: item,
                 modules: module && module.loadedModules || this.currentModules,
                 mod: module || this.currentModule,
-                starModules: module.starModules || this.currentStarModules
+                starModules: module && module.starModules || this.currentStarModules
             };
             this.retPush(this.state);
             this.state = newState;
