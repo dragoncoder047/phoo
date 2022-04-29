@@ -32,6 +32,11 @@ const term = $('body').terminal(c => run(c), {
 });
 
 $.terminal.syntax('phoo');
+$.terminal.prism_formatters = {
+    prompt: false,
+    echo: false,
+    command: true,
+};
 
 run = () => term.error('Still loading... be patient...');
 
