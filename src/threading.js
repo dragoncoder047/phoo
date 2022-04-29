@@ -175,7 +175,7 @@ export class Thread {
             var newState = {
                 pc: -1,
                 arr: item,
-                modules: module.loadedModules || this.currentModules,
+                modules: module && module.loadedModules || this.currentModules,
                 mod: module || this.currentModule,
                 starModules: module.starModules || this.currentStarModules
             };
