@@ -164,8 +164,7 @@ export class Thread {
      * See {@linkcode Phoo.strictMode} for the behavior of this.
      * @param {any} item Thing to be dealt with.
      */
-    async executeOneItem(item) {
-        var module;
+    async executeOneItem(item, module) {
         if (type(item) === 'symbol') {
             ({def: item, module} = this.resolveNamepath(name(item)));
         }
@@ -227,23 +226,22 @@ export class Thread {
         }
         var code = source.slice();
         var origLength = this.workStack.length;
-        var word, b, a = [];
+        var word, module, b, a = [];
         try {
             while (code.length > 0) {
                 // https://stackoverflow.com/questions/10272773/split-string-on-the-first-white-space-occurrence
                 [word, code] = code.trim().split(/(?<=^\S+)\s/);
                 code = code || '';
-                b = this.resolveNamepath(word, true);
+                ({def: b, module} = this.resolveNamepath(word, true));
                 if (b !== undefined) {
                     this.push(a);
                     this.push(code);
-                    var oldCode = code;
                     switch (type(b)) {
                         case 'function':
                             await b.call(this);
                             break;
                         case 'array':
-                            await this.execute(b);
+                            await this.executeOneItem(b, module);
                             break;
                         default:
                             throw new TypeMismatchError(`Unexpected ${type(b)} as macro.`);
