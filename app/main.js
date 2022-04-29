@@ -13,18 +13,6 @@ const term = $('body').terminal(c => run(c), {
     exit: false,
     greetings: 'Phoo is loading...',
     prompt: () => color(`[${count}]--> `, 'magenta'),
-    keymap: {
-        ENTER(e, original) {
-            var i = nextIndentLevel(this.get_command());
-            if (i === 0) {
-                original();
-            } else if (i < 0) {
-                term.echo(color('Too many ] / end', 'red'));
-            } else {
-                this.insert('\n' + ' '.repeat(4 * Math.max(0, i)));
-            }
-        }
-    },
     autocompleteMenu: true,
     async completion() {
         var text = this.get_command(), list = [];
@@ -100,10 +88,3 @@ var loading = true;
         throw e;
     }
 })();
-
-function nextIndentLevel(text) {
-    var count = 0;
-    const levels = { do: 1, end: -1, '[': 1, ']': -1 };
-    for (var word of text.split(/\s+/)) count += levels[word] || 0;
-    return count;
-}
