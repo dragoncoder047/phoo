@@ -5,7 +5,7 @@ var count = 0;
 var run;
 const esc = $.terminal.escape_brackets;
 const naiveColorize = (text, color) => `[[;${color};]${esc(text)}]`;
-const color = (text, color) => `<${color}>${text}</${color}>`;
+const color = (text, color) => `<${color}>${esc(text)}</${color}>`;
 var p;
 
 const term = $('body').terminal(c => run(c), {
