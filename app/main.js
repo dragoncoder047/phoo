@@ -12,7 +12,7 @@ const term = $('body').terminal(c => run(c), {
     enabled: false,
     exit: false,
     greetings: 'Phoo is loading...',
-    prompt: () => color(`[${count}]--> `, 'magenta'),
+    prompt: () => color(`${count}--> `, 'magenta'),
     autocompleteMenu: true,
     async completion() {
         var text = this.get_command(), list = [];
@@ -64,7 +64,7 @@ var loading = true;
 
         run = async function runCommand(c) {
             try {
-                term.echo(naiveColorize('[DEBUG] Words: ', 'green') + stringify(p.modules, color));
+                term.echo(naiveColorize('[DEBUG] Words: ', 'green') + stringify(p.modules, naiveColorize));
                 await thread.run(c);
             } catch (e) {
                 count++;
