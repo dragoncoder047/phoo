@@ -1,5 +1,3 @@
-import $ "_builtins.js"
-
 to #pragma do
     ]'[ name
     self .phoo .settings
