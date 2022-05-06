@@ -5,14 +5,14 @@ var count = 0;
 var run;
 const esc = $.terminal.escape_brackets;
 const naiveColorize = (text, color) => `[[;${color};]${esc(text)}]`;
-const color = (text, color) => `<${color}>${esc(text)}</${color}>`;
+const color = (text, color) => naiveColorize(esc(text, color));
 var p;
 
 const term = $('body').terminal(c => run(c), {
     enabled: false,
     exit: false,
     greetings: 'Phoo is loading...',
-    prompt: () => color(`${count}--> `, 'magenta'),
+    prompt: () => color(`[${count}]--> `, 'magenta'),
     autocompleteMenu: true,
     async completion() {
         var text = this.get_command(), list = [];
