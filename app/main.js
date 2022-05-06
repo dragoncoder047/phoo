@@ -64,11 +64,12 @@ var loading = true;
 
         run = async function runCommand(c) {
             try {
+                term.echo(naiveColorize('[DEBUG] Running: ' + c, 'green'));
                 await thread.run(c);
             } catch (e) {
                 count++;
                 term.error('Error! ' + type(e) !== 'string' ? e.message : e);
-                term.error(e[STACK_TRACE_SYMBOL] || 'oops, no stack trace');
+                term.error(e[STACK_TRACE_SYMBOL] || 'Oops, no stack trace!');
             }
             term.echo('Stack: ' + stringify(thread.workStack, naiveColorize));
             count++;
@@ -87,7 +88,8 @@ var loading = true;
         term.error(e[STACK_TRACE_SYMBOL]);
         term.echo('Thread work stack:');
         term.echo(stringify(thread.workStack));
-        term.echo($('If this continues to occur, please <a href="https://github.com/dragoncoder047/phoo/issues">report it.</a>'));
+        term.echo('If this continues to occur, please report it:');
+        term.echo('https://github.com/dragoncoder047/phoo/issues');
         term.disable();
         term.freeze();
         throw e;
