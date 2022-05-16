@@ -11,7 +11,7 @@ export default function stringify(obj, colorize = x => x) {
         case 'array': return `[${obj.map(item => stringify(item, colorize)).join(', ')}]`;
         case 'regexp': return colorize(`/${obj.source}/`, 'red');
         case 'undefined': return colorize('undefined', 'gray');
-        case 'symbol': return colorize(`@@${stringy(Symbol.keyFor(obj))}`, 'lime');
+        case 'symbol': return colorize(`@@${Symbol.keyFor(obj)}`, 'lime');
         case 'Map': return colorize(`Map {${[...obj.entries()].map(i => stringify(i[0], colorize) + ' => ' + stringify(i[1], colorize)).join(', ')}}`, 'orange');
         case 'Set': return colorize(`Set {${[...obj.values()].map(i => stringify(i, colorize)).join(', ')}}`, 'yellow');
         default:
@@ -31,18 +31,23 @@ export default function stringify(obj, colorize = x => x) {
                 pairs.push([key$, prop$]);
             }
             return `{ ${pairs.map(p => p[0] + ': ' + p[1]).join(', ')} }`;
-            // return colorize(obj.toString(), 'tan');
+        // return colorize(obj.toString(), 'tan');
     }
 }
 
 function stringy(string) {
-    // replace single quotes
-    string = string.replaceAll("'", "\\'");
-    // replace nonprintable characters < \x20
-    const cabbrev = { 0: '0', 7: 'a', 8: 'b', 9: 't', 10: 'n', 11: 'v', 12: 'f', 13: 'r' };
-    string = string.replaceAll(/[\x00-\x1F\x7F-\xFF]/g, match => cabbrev[match.charCodeAt(0)] ? `\\${cabbrev[match.charCodeAt(0)]}` : `\\x${match.charCodeAt(0).toString(16).padStart(2, '0')}`);
-    // replace nonprintable characters
-    string = string.replaceAll(/[\u0100-\uFFFF]/g, match => `\\u${match.charCodeAt(0).toString(16).padStart(4, '0')}`);
-    string = string.replaceAll(/[\u00FFFF-\u10FFFF]/g, match => `\\u{${match.charCodeAt(0).toString(16)}}`);
-    return "'" + string + "'";
+    var escaped = [...string].map(char => {
+        const cc = char.charCodeAt(0);
+        // replace single quotes
+        if (char === "'") return "\\'";
+        // printable: no need to escape
+        if (0x20 <= cc && cc <= 0x7F) return char;
+        // replace nonprintable characters < \x20
+        const cabbrev = { 0: '0', 7: 'a', 8: 'b', 9: 't', 10: 'n', 11: 'v', 12: 'f', 13: 'r' };
+        if (cabbrev[cc] !== undefined) return '\\' + cabbrev[cc];
+        if ((0 < cc && cc < 0x1F) || (0x7F < cc && cc <= 0xFF)) return '\\x' + cc.toString(16).padStart(2, '0');
+        if (0x0100 < cc && cc < 0xFFFF) return '\\u' + cc.toString(16).padStart(4, '0');
+        return '\\u{' + cc.toString(16) + '}';
+    }).join('');
+    return "'" + escaped + "'";
 }
