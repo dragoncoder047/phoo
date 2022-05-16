@@ -183,8 +183,8 @@ export class Thread {
         if (type(item) === 'symbol') {
             item = this.lookup(name(item));
         }
-        console.debug('executing a', type(item), (type(item) === 'function' ? ': ' + item.name : ''));
         if (type(item) === 'function') {
+            console.debug('executing function', item.name);
             await item.call(this);
         }
         else if (type(item) === 'array') {
@@ -240,7 +240,7 @@ export class Thread {
             while (code.length > 0) {
                 // https://stackoverflow.com/questions/10272773/split-string-on-the-first-white-space-occurrence
                 [word, code] = code.trim().split(/(?<=^\S+)\s/);
-                console.debug('word:', word)
+                //console.debug('word:', word)
                 code = code || '';
                 b = this.lookup(word, true);
                 if (b !== undefined) {
