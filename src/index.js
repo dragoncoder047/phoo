@@ -13,12 +13,12 @@ import { BaseImporter } from './importers.js';
 
 /**
  * Configuration options.
- * @typedef {{stack: any[], maxDepth: number, disableStrictMode: boolean, namepathSeparator: string, parentDirectoryMarker: string}} IPhooSettings
+ * @typedef {{stack: any[], maxDepth: number, disableStrictMode: boolean}} IPhooSettings
  */
 
 /**
  * Configuration options.
- * @typedef {{settings: IPhooSettings, modules: Map<string, Module>, importers: Importer}} IPhooOptions
+ * @typedef {{settings: IPhooSettings, importers: Importer[]}} IPhooOptions
  */
 
 /**
@@ -31,9 +31,6 @@ export class Phoo {
      * @param {any[]} [opts.settings.stack=[]] The initial items into the stack.
      * @param {number} [opts.settings.maxDepth=10000] The maximum return stack length before a {@linkcode StackOverflowError} error is thrown.
      * @param {boolean} [opts.settings.disableStrictMode=false] Disable strict mode (see {@linkcode Phoo.strictMode})
-     * @param {string} [opts.settings.namepathSeparator=':'] Separator used to split name paths in modules (e.g. `math:sqrt`)
-     * @param {string} [opts.settings.parentDirectoryMarker='^'] Marker used to mark a parent directory in module paths (e.g. `:^:foo` from inside `bar:baz` will import `foo`).
-     * @param {Map<string, Module>} [opts.modules] The loaded-modules cache.
      * @param {Importer[]} [opts.importers] The importers that will be tried to import any module.
      */
     constructor(opts) {
@@ -41,20 +38,15 @@ export class Phoo {
         if (!opts) opts = {};
         if (!opts.settings) opts.settings = {};
         /**
-         * Start stack of scopes to start a thread with.
-         * @type {Namespace[]}
-         */
-        this.initialScopeStack = [];
-        /**
-         * The loaded-modules cache.
-         * @type {Map<string, Module>}
-         */
-        this.modules = opts.modules || new Map();
-        /**
          * Importers that will be checked to import a module.
          * @type {BaseImporter[]}
          */
         this.importers = opts.importers || [];
+        /**
+         * Cache of all threads created, by name.
+         * @type {Map<string, Module>}
+         */
+        this.threadCache = new Map();
         /**
          * Settings to start a new thread with.
          * @type {IPhooSettings}
@@ -84,30 +76,23 @@ export class Phoo {
              * @default true
              */
             strictMode: !opts.settings.disableStrictMode,
-            /**
-             * Separator used to split name paths in modules (e.g. `math:sqrt`)
-             * @type {string}
-             * @default ':'
-             */
-            namepathSeparator: opts.settings.namepathSeparator || ':',
-            /**
-             * Marker used to mark a parent directory in module paths (e.g. `:^:foo` from inside `bar:baz` will import `foo`).
-             * @type {string}
-             * @default '^'
-             */
-            parentDirectoryMarker: opts.settings.parentDirectoryMarker || '^',
         };
     }
 
     /**
-     * Called to dynamically create the definition of a word when {@linkcode Phoo.resolveNamepath}
+     * Called to dynamically create the definition of a word when lookup
      * otherwise fails to find it. See property [strictMode]{@linkcode Phoo.strictMode} for the behavior of this.
      * @param {string} word The word that is not defined.
      * @returns {IPhooDefinition} The temporary definition of the word.
      */
     undefinedWord(word) {
         if (this.strictMode)
-            throw UnknownWordError.withPhooStack(`Word ${word} does not exist`, this.returnStack);
+            /**
+             * @this Thread
+             */
+            return function () {
+                throw UnknownWordError.withPhooStack(`Word ${word} does not exist`, this.returnStack);
+            }
         /**
          * @this Thread
          */
@@ -124,77 +109,19 @@ export class Phoo {
      * @param {Module[]} starModules Same as modules, but no foo: prefix is needed (as if they were imported using import*).
      * @param {IPhooLiteral[]} stack The initial items on the stack.
      */
-    createThread(module, scopes, modules, starModules, stack) {
+    createThread(module, stack) {
+        var m;
+        if (this.threadCache.has(module)) m = this.threadCache.get(module);
+        else {
+            m = new Module(module);
+            this.threadCache.set(module, m);
+        }
         return new Thread({
             parent: this,
-            module: this.findModule(module),
+            module: m,
             stack,
             maxDepth: this.settings.maxDepth,
-            starModules,
-            scopes,
-            modules,
         });
-    }
-
-    /**
-     * Return the module if it was already loaded, or an empty module if it was not.
-     * 
-     * This does **not** import the module.
-     * @param {string} moduleName The name of the module.
-     * @returns {Module}
-     */
-    findModule(moduleName) {
-        // Modules are singletons; this ensures it.
-        if (this.modules.has(moduleName)) return this.modules.get(moduleName);
-        else {
-            var module = new Module(moduleName);
-            this.modules.set(moduleName, module);
-            return module;
-        }
-    }
-
-    /**
-     * Fully qualify the name into an absolute module path.
-     * Ex: Inside module `foo`, importing `:bar` will fully-qualify to `foo:bar`.
-     * @param {string} relativeName The name relative to the current module
-     * @param {Module} current The module that is importing the other module.
-     * @returns {string} The fully-qualified name.
-     */
-    qualifyName(relativeName, current) {
-        throw new ModuleNotFoundError('todo: qualify name');
-    }
-
-    /**
-     * Turn the name into a URL that always uses slashes as the namepath separator, but without the filename extension.
-     * @param {string} name The fully-qualified path.
-     * @returns {string} The URL of the module. No filename extension (.ph or .js)
-     */
-    nameToURL(name) {
-        throw new ModuleNotFoundError('todo: name to url');
-    }
-
-    /**
-     * Import a module using the first importer that succeeds.
-     * @param {string} moduleName The name of the module
-     * @param {Module} current The current module
-     * @param {string} overrideURL The url to use instead of calculating one.
-     */
-    async import(moduleName, current, overideURL) {
-        var qualName = this.phoo.qualifyName(name, currentModule);
-        if (this.phoo.modules.has(qualName))
-            return this.phoo.modules.get(qualName);
-        var lastError;
-        for (var importer of this.importers) {
-            try {
-                var mod = await importer.find(moduleName, current, overrideURL);
-                this.phoo.modules.set(qualName, mod);
-                return mod;
-            } catch (e) {
-                lastError = e;
-                continue;
-            }
-        }
-        throw lastError || new ModuleNotFoundError('No importers!');
     }
 }
 
@@ -243,17 +170,15 @@ export function naiveCompile(string) {
 // cSpell:ignore symstr
 
 /**
- * Runs the builtin modules on the Phoo instance, initializing it for basic use.
- * @param {Phoo} p The {@linkcode Phoo} instance to load onto.
+ * Runs the builtin modules on the Phoo thread, initializing it for basic use.
+ * @param {Thread} t The thread to load onto.
  * @returns {Promise<void>} When initialization is complete.
  */
-export async function initBuiltins(p) {
-    if (!p.modules.has('__builtins__')) {
-        p.modules.set('__builtins__', builtinsModule);
-        var resp = await fetch('./lib/builtins.ph');
-        if (!resp.ok)
-            throw new ModuleNotFoundError('Fetch error');
-        var thread = p.createThread('__builtins__');
-        await thread.run(await resp.text());
-    }
+export async function initBuiltins(t) {
+    throw 'todo';
+    t.modules.set('__builtins__', builtinsModule);
+    var resp = await fetch('./lib/builtins.ph');
+    if (!resp.ok)
+        throw new ModuleNotFoundError('Fetch error');
+    await t.run(await resp.text());
 }

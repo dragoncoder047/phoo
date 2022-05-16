@@ -1,34 +1,23 @@
-import { Phoo, initBuiltins, Module, FetchImporter, ES6Importer, STACK_TRACE_SYMBOL, type } from '../src/index.js';
+import { Phoo, initBuiltins, FetchImporter, ES6Importer, STACK_TRACE_SYMBOL, type } from '../src/index.js';
 import stringify from './stringify.js';
 
 var count = 0;
 var run;
 const esc = $.terminal.escape_brackets;
 const naiveColorize = (text, color) => `[[;${color};]${esc(text)}]`;
-const color = (text, color) => naiveColorize(esc(text, color));
-var p;
+const color = (text, color) => naiveColorize(esc(text), color);
+var p, thread;
 
 const term = $('body').terminal(c => run(c), {
     enabled: false,
     exit: false,
     greetings: 'Phoo is loading...',
     prompt: () => color(`[${count}]--> `, 'magenta'),
-    autocompleteMenu: true,
-    async completion() {
-        var text = this.get_command(), list = [];
-        if (text === '') {
-            list = [
-                '%run ',
-                '%edit ',
-            ];
-        } else if (/^%[a-z]+\s/.test(text)) {
-            list = [
-                '%browse',
-                'foo.ph',
-            ];
-        }
-        return list;
-    },
+    // autocompleteMenu: true,
+    // async completion() {
+    //     var text = this.get_command(), list = [];
+    //     AAAAAAAAAAAA
+    // },
 });
 
 $.terminal.syntax('phoo');
@@ -60,7 +49,7 @@ var loading = true;
 
         await initBuiltins(p);
 
-        const thread = p.createThread('__main__');
+        thread = p.createThread('__main__');
 
         run = async function runCommand(c) {
             try {

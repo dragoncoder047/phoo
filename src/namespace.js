@@ -70,13 +70,8 @@ export class Namespace {
     }
 }
 
-export class Scope extends Namespace {
-    constructor(loaded_modules, star_modules) {
-        super();
-        this.loadedModules = [];
-        this.starModules = [];
-    }
-}
+// TODO: Remove this.
+export class Scope extends Namespace { }
 
 /**
  * A module is a named namespace that usually encloses a file.
@@ -84,9 +79,8 @@ export class Scope extends Namespace {
 export class Module extends Scope {
     /**
      * @param {string} name The name of the module
-     * @param {string} filename The file associated with this module
      */
-    constructor(name, filename) {
+    constructor(name) {
         super();
         /**
          * @type {string}

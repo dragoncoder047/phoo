@@ -1,10 +1,10 @@
-to assert do
+to permissions.assert do
     not if do
         $ "Permission denied by user." die
     end
 end
 
-to query do
+to permissions.query do
     {} tuck .name=
     nested
     window .navigator .permissions .query() await

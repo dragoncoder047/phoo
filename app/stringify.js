@@ -16,22 +16,22 @@ export default function stringify(obj, colorize = x => x) {
         case 'Set': return colorize(`Set {${[...obj.values()].map(i => stringify(i, colorize)).join(', ')}}`, 'yellow');
         default:
             if (obj === null) return colorize('null', 'purple');
-            // var pairs = [], key$, prop$, itm;
-            // var items = Object.getOwnPropertyNames(obj);
-            // var itemSymbols = Object.getOwnPropertySymbols(obj);
-            // for (itm of items) {
-            //     prop$ = stringify(obj[itm]);
-            //     if (/^[$_a-z][$_a-z0-9]*/i.test(itm)) key$ = itm;
-            //     else key$ = `[${stringy(itm)}]`;
-            //     pairs.push([key$, prop$]);
-            // }
-            // for (itm of itemSymbols) {
-            //     prop$ = stringify(obj[itm]);
-            //     key$ = strigify(itm);
-            //     pairs.push([key$, prop$]);
-            // }
-            // return `{ ${pairs.map(p => p[0] + ': ' + p[1]).join(', ')} }`;
-            return colorize(obj.toString(), 'tan');
+            var pairs = [], key$, prop$, itm;
+            var items = Object.getOwnPropertyNames(obj);
+            var itemSymbols = Object.getOwnPropertySymbols(obj);
+            for (itm of items) {
+                prop$ = stringify(obj[itm]);
+                if (/^[$_a-z][$_a-z0-9]*/i.test(itm)) key$ = itm;
+                else key$ = `[${stringy(itm)}]`;
+                pairs.push([key$, prop$]);
+            }
+            for (itm of itemSymbols) {
+                prop$ = stringify(obj[itm]);
+                key$ = strigify(itm);
+                pairs.push([key$, prop$]);
+            }
+            return `{ ${pairs.map(p => p[0] + ': ' + p[1]).join(', ')} }`;
+            // return colorize(obj.toString(), 'tan');
     }
 }
 

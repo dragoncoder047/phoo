@@ -1,21 +1,20 @@
-import web:permissions
-alias _p web:permissions
+use web/permissions
 
-to can-write? do
-    $ "clipboard-write" _p:query
+to clip.can-copy? do
+    $ "clipboard-write" permissions.query
 end
 
-to can-read? do
-    $ "clipboard-read" _p:query
+to clip.can-read? do
+    $ "clipboard-read" permissions.query
 end
 
-to read do
-    can-read? _p:assert
+to clip.share do
+    clip.can-read? permissions.assert
     window .navigator .clipboard .readText@ await
 end
 
-to write do
-    can-write? _p:assert
+to clip.put do
+    clip.can-copy? permissions.assert
     nested
     window .navigator .clipboard .writeText() await drop
 end

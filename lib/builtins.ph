@@ -12,6 +12,12 @@ to protect do
     try.prt put
 end
 
+to in_scope do
+    self .enterScope@
+    ]'[ run
+    self .exitScope@
+end
+
 to noop [ ]
 
 to alias to
@@ -429,12 +435,8 @@ to new! [ [] swap new ]
 
 to !!todo!! [ $ 'todo' die ]
 
-to import do
-    ]'[ false ]do-import[
-end
-
-to import* do
-    ]'[ true ]do-import[
+to use do
+    ]'[ ]import[
 end
 
 protect dip.hold

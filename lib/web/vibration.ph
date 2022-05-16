@@ -3,6 +3,6 @@ to vibrate do
     navigator .vibrate() drop
 end
 
-to stop-vibrate do
+to vibrate.stop do
     0 vibrate
 end

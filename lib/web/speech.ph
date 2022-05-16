@@ -1,8 +1,8 @@
-to get-voices do
+to speech.get-voices do
     window .speechSynthesis .getVoices@
 end
 
-to speak do
+to speech.speak do
     nested
     window .SpeechSynthesisUtterance new()
     // TODO - add pitch, rate, etc.

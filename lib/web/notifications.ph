@@ -1,7 +1,6 @@
-import web:permissions
-alias _p web:permissions
+use web/permissions
 
-to has-permission? do
+to notifications.can? do
     window .Notification .requestPermission@ await
     switch do
         $ "granted" case true
@@ -11,8 +10,8 @@ to has-permission? do
     end
 end
 
-to send do // options, title --> notification object
-    has-permission? _p:assert
+to notification.send do // options, title --> notification object
+    notifications.can? permissions.assert
     over $ "string" isa? if do
         dip do
             {} tuck
@@ -23,6 +22,6 @@ to send do // options, title --> notification object
     window .Notification new()
 end
 
-to hide do
+to notification.hide do
     window .Notification .hide@ drop
 end

@@ -12,7 +12,7 @@ import { Phoo } from './index.js';
 
 /**
  * Configuration options.
- * @typedef {{parent: Phoo, module: Module, starModules: Module[], modules: Map<symbol, Module>, stack: any[], maxDepth: number}} IThreadOptions
+ * @typedef {{parent: Phoo, module: Module, stack: any[], scopes: Scope[], maxDepth: number}} IThreadOptions
  */
 
 /**
@@ -27,13 +27,12 @@ export class Thread {
      * @param {Module[]} [opts.starModules] Modules imported using import*.
      * @param {Map<symbol, Module>} [opts.modules] Pre-imported modules.
      * @param {any[]} [opts.stack=[]] The initial items on the work stack.
+     * @param {Scope[]} [opts.scopes=[]] The initial items on the scope stack.
      * @param {number} [opts.maxDepth=10000] The maximum return stack length before a {@linkcode StackOverflowError} error is thrown.
      */
     constructor({
         parent,
         module,
-        starModules = [],
-        modules = new Map(),
         stack = [],
         scopes = [],
         maxDepth = 10000
@@ -44,6 +43,11 @@ export class Thread {
          */
         this.phoo = parent;
         /**
+         * The module this thread runs in
+         * @type {Module}
+         */
+        this.module = module;
+        /**
          * Stack that working values are pushed and popped from during execution.
          * @type {Array}
          * @default []
@@ -52,14 +56,20 @@ export class Thread {
         /**
          * Stack that outer arrays and current PC's are saved on
          * when the Phoo machine 'jumps in' to an inner array.
-         * @type {Array<IPhooReturnStackEntry>}
+         * @type {IPhooReturnStackEntry[]}
          */
         this.returnStack = [];
+        /**
+         * Stack that outer arrays and current PC's are saved on
+         * when the Phoo machine 'jumps in' to an inner array.
+         * @type {Scope[]}
+         */
+        this.scopeStack = [];
         /**
          * Current execution state.
          * @type {IPhooReturnStackEntry}
          */
-        this.state = { arr: [], pc: NaN, mod: module, modules, starModules };
+        this.state = { arr: [], pc: NaN };
         /**
          * The maximum length of {@linkcode Thread.returnStack}
          * before a {@linkcode StackOverflowError} error is thrown.
@@ -69,15 +79,6 @@ export class Thread {
         this.maxDepth = maxDepth;
     }
 
-    get currentModule() {
-        return this.state.mod;
-    }
-    get currentModules() {
-        return this.state.modules;
-    }
-    get currentStarModules() {
-        return this.state.starModules;
-    }
     // HELPER PUSHPOP METHODS
 
     /**
@@ -152,6 +153,20 @@ export class Thread {
         if (this.returnStack.length > this.maxDepth)
             throw new StackOverflowError('Maximum return stack length exceeded');
     }
+    /**
+     * Push a new scope onto the scope stack.
+     */
+    enterScope() {
+        this.scopeStack.push(new Scope());
+    }
+    /**
+     * Pop a scope from the scope stack.
+     */
+    exitScope() {
+        if (this.scopeStack.length === 0)
+            throw StackUnderflowError.withPhooStack('No scope to exit from', this.returnStack);
+        this.scopeStack.pop();
+    }
 
     // EXECUTION METHODS
 
@@ -164,9 +179,9 @@ export class Thread {
      * See {@linkcode Phoo.strictMode} for the behavior of this.
      * @param {any} item Thing to be dealt with.
      */
-    async executeOneItem(item, module) {
+    async executeOneItem(item) {
         if (type(item) === 'symbol') {
-            ({def: item, module} = this.resolveNamepath(name(item)));
+            item = this.lookup(name(item));
         }
         else if (type(item) === 'function') {
             await item.call(this);
@@ -175,9 +190,6 @@ export class Thread {
             var newState = {
                 pc: -1,
                 arr: item,
-                modules: module && module.loadedModules || this.currentModules,
-                mod: module || this.currentModule,
-                starModules: module && module.starModules || this.currentStarModules
             };
             this.retPush(this.state);
             this.state = newState;
@@ -192,22 +204,18 @@ export class Thread {
      * the match result, runs the corresponding code, and pushes the
      * top value on the stack to the compiled array.
      * @param {string} word The word to be converted.
-     * @param {Array} a The current array being compiled.
-     * @returns {Promise<boolean>} Whether processing succeeded.
+     * @returns {Promise<{succeeded: boolean, result: any}>}
      */
-    async compileLiteral(word, a) {
-        for (var ns of this.returnStack.flatMap(e => e.modules.values().concat(e.starModules)).reverse()) {
-            for (var [regex, code] of ns.literalizers.map) {
-                var result = regex.exec(word);
-                if (result) {
-                    this.push(result);
-                    await this.run(code);
-                    a.push(this.pop());
-                    return true;
-                }
+    async compileLiteral(word) {
+        for (var [regex, code] of this.module.literalizers.map) {
+            var result = regex.exec(word);
+            if (result) {
+                this.push(result);
+                await this.run(code);
+                return { succeeded: true, result: this.pop() };
             }
         }
-        return false;
+        return { succeeded: false };
     }
 
     /**
@@ -232,7 +240,7 @@ export class Thread {
                 // https://stackoverflow.com/questions/10272773/split-string-on-the-first-white-space-occurrence
                 [word, code] = code.trim().split(/(?<=^\S+)\s/);
                 code = code || '';
-                ({def: b, module} = this.resolveNamepath(word, true));
+                b = this.lookup(word, true);
                 if (b !== undefined) {
                     this.push(a);
                     this.push(code);
@@ -241,7 +249,7 @@ export class Thread {
                             await b.call(this);
                             break;
                         case 'array':
-                            await this.executeOneItem(b, module);
+                            await this.executeOneItem(b);
                             break;
                         default:
                             throw new TypeMismatchError(`Unexpected ${type(b)} as macro.`);
@@ -251,10 +259,8 @@ export class Thread {
                     a = this.pop();
                 }
                 else { // try looking up in literals
-                    var succeeded = await this.compileLiteral(word, a);
-                    if (!succeeded) {
-                        a.push(w(word));
-                    }
+                    var { succeeded, result } = await this.compileLiteral(word, a);
+                    a.push(succeeded ? result : w(word));
                 }
             }
         }
@@ -291,48 +297,36 @@ export class Thread {
         var compiled = await this.compile(code);
         const origDepth = this.returnStack.length;
         this.retPush(this.state);
-        this.state = { pc: 0, arr: compiled, modules: this.currentModules, mod: this.currentModule, starModules: this.currentStarModules };
+        this.state = { pc: 0, arr: compiled };
         while (this.returnStack.length > origDepth) await this.tick();
         return this.workStack;
     }
 
     /**
-     * Recursively look up the word/macro's definition, following symlinks and traversing the module tree.
+     * Recursively look up the word/macro's definition, following symlinks.
      * @param {string} word The name of the word/macro
      * @param {boolean} [macro=false] Words or macros.
-     * @returns {{def: IPhooDefinition, module: Module}}
+     * @returns {IPhooDefinition}
      */
-    resolveNamepath(word, macro = false) {
-        var def, module;
-        if (word.indexOf(this.phoo.settings.namepathSeparator) === -1) {
-            if (macro) {
-                def = this.currentModule.macros.find(word);
-                if (def === undefined) {
-                    for (var mm of this.currentStarModules) {
-                        def = mm.macros.find(word);
-                        if (def !== undefined) break;
-                    }
-                }
-            }
-            else {
-                def = this.currentModule.words.find(word);
-                if (def === undefined) {
-                    for (var mm of this.currentStarModules) {
-                        def = mm.words.find(word);
-                        if (def !== undefined) break;
-                    }
-                }
-            }
-        }
-        else {
-            var qualName = this.phoo.qualifyName(word, this.currentModule);
+    lookup(word, macro = false) {
+        var def;
+        for (var mm of this.scopeStack) {
             throw 'todo';
         }
         if (def === undefined && !macro)
             def = this.phoo.undefinedWord(word);
         if (type(def) === 'symbol')
-            return this.resolveNamepath(name(def), macro);
-        return {def, module: module || this.currentModule};
+            def = this.lookup(name(def), macro);
+        return def;
+    }
+
+    /**
+     * Peek into the scope stack.
+     * @param {number} [depth=0] How far down to look.
+     */
+    getScope(depth = 0) {
+        if (depth >= this.scopeStack.length) return this.module;
+        return this.scopeStack[this.scopeStack.length - 1 - depth]
     }
 }
 
@@ -351,8 +345,8 @@ export class Thread {
 
 /**
  * A return stack entry containing the current array (`arr`),
- * the index of the program counter (`pc`) and the module the word is defined in (`mod`).
- * @typedef {{pc: number, arr: Array, mod: Module, modules: Map<symbol, Module>, starModules: Module[]}} IPhooReturnStackEntry
+ * and the index of the program counter (`pc`).
+ * @typedef {{pc: number, arr: Array}} IPhooReturnStackEntry
  */
 
 // exporting dummy typedefs here to satisfy the browser module system
