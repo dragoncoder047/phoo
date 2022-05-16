@@ -439,7 +439,7 @@ to use do
     ]'[ ]import[
 end
 
-1 2 3n 36#hexatrigesimal true false null undefined $ "foo""bar"
+1 0x20 3n 36#hexatrigesimal-n true false null undefined $ "foo""bar"
 $ "this is a test." die
 
 protect dip.hold
