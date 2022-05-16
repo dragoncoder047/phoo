@@ -238,7 +238,7 @@ to stuff [ split rot nested swap join join ]
 
 to behead [ 0 pluck ]
 
-to join [ 2dup $ 'string' isa? dip [ $ 'string' isa? end and iff .. else concat ]
+to join [ 2dup $ 'string' isa? dip [ $ 'string' isa? end and iff ++ else concat ]
 
 to of do
     dip do
@@ -268,7 +268,7 @@ end
 
 to reverse$ do
     dup $ 'string' isa? if do
-        $ '' swap witheach [ swap .. ]
+        $ '' swap witheach [ swap ++ ]
     end
 end
 
