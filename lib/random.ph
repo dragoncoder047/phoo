@@ -2,15 +2,15 @@ use math
 use _random
 
 /* cSpell:ignore fbelow ibelow */
-to fbelow [ random * ]
+to ramdom.fbelow [ random * ]
 
-to ibelow [ fbelow ~ ~ ]
+to random.ibelow [ fbelow ~ ~ ]
 
-to randrange [ over - ibelow + ]
+to random.range [ over - ibelow + ]
 
-to choose [ dup len ibelow peek ]
+to random.choose [ dup len ibelow peek ]
 
-to shuffle do
+to random.shuffle do
     [] swap dup
     len times do
         dup len ibelow pluck
@@ -19,15 +19,15 @@ to shuffle do
     drop
 end
 
-to sample [ dip shuffle split drop ]
+to random.sample [ dip shuffle split drop ]
 
-to choices do
+to random.choices do
     0 swap of
     map [ drop dup choose ]
     nip
 end
 
-to normal do
+to random.normaldist do
     do
         random dup random
         0.5 - / [ 4 0.5 exp * 2 sqrt / ] /* const */ *
@@ -39,4 +39,4 @@ to normal do
     * +
 end
 
-to expo [ 1 random - log negate / ]
+to random.expodist [ 1 random - log negate / ]
