@@ -49,6 +49,13 @@ var loading = true;
 
         thread = p.createThread('__main__');
 
+        // patch console to show debug messages in terminal 
+
+        window.console.debug = function patched(...items) {
+            var joined = items.map(x => x.toString()).join(' ');
+            term.echo(naiveColorize(`[DEBUG] ${joined}`, 'lime'));
+        }
+
         await initBuiltins(thread);
 
         run = async function runCommand(c) {
