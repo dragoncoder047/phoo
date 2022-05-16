@@ -183,7 +183,7 @@ export class Thread {
         if (type(item) === 'symbol') {
             item = this.lookup(name(item));
         }
-        console.debug('executing a', type(item), (type(item) === 'symbol' ? ': ' + Symbol.keyFor(item) : type(item) === 'function' ? ': ' + item.name : ''));
+        console.debug('executing a', type(item), (type(item) === 'function' ? ': ' + item.name : ''));
         if (type(item) === 'function') {
             await item.call(this);
         }

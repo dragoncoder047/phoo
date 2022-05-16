@@ -439,6 +439,8 @@ to use do
     ]'[ ]import[
 end
 
+$ "this is a test." die
+
 protect dip.hold
 protect switch.arg
 protect times.start
