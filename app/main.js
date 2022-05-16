@@ -47,9 +47,9 @@ var loading = true;
     try {
         p = new Phoo({ loaders: [new FetchLoader('lib/'), new ES6Loader('lib/')] });
 
-        await initBuiltins(p);
-
         thread = p.createThread('__main__');
+
+        await initBuiltins(thread);
 
         run = async function runCommand(c) {
             try {
