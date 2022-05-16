@@ -15,7 +15,7 @@ export class BaseLoader {
     setup(phoo) {
         this.phoo = phoo;
     }
-    async find(name, currentModule, overrideURL) {
+    async load(name, thread) {
         throw 'override me';
     }
 }
@@ -26,35 +26,31 @@ export class FetchLoader extends BaseLoader {
         this.basePath = basePath;
         this.fetchOptions = fetchOptions;
     }
-    async find(name, currentModule, overrideURL) {
-        if (!/.ph$/.test(overrideURL)) throw new PhooSyntaxError('Can\'t load non-Phoo module with a fetch loader');
-        var qualName = this.phoo.qualifyName(name, currentModule);
-        var path = overrideURL || this.basePath + this.phoo.nameToURL(qualName) + '.ph';
+    async load(name, thread) {
+        var path = this.basePath + name + '.ph';
         var resp = await fetch(path, this.fetchOptions);
         if (!resp.ok)
-            throw new ModuleNotFoundError(`Module ${qualName} could not be imported`);
-        var thread = this.phoo.createThread(qualName);
+            throw new ModuleNotFoundError(`Module ${name} could not be loaded`);
         await thread.run(await resp.text());
-        return thread.module;
     }
 }
 
 export class ES6Loader extends BaseLoader {
-    constructor(basePath, fetchOptions = {}) {
+    constructor(basePath) {
         super();
         this.basePath = basePath;
     }
-    async find(name, currentModule, overrideURL) {
-        if (!/.js$/.test(overrideURL)) throw new PhooSyntaxError('Can\'t load non-JS module with an ES6 loader');
-        var qualName = this.phoo.qualifyName(name, currentModule);
-        var path = overrideURL || this.basePath + this.phoo.nameToURL(qualName) + '.js';
+    async load(name, thread) {
+        var path = this.basePath + name + '.js';
         var mod;
         try {
-            mod = await import(path);
-        } catch(e) {
+            mod = (await import(path)).module;
+            if (mod === undefined)
+                throw new ModuleNotFoundError(`Module ${path} did not export 'module' name as it should`);
+        } catch (e) {
             throw ModuleNotFoundError.wrap(e);
         }
-        return mod;
+        thread.getScope(0).copyFrom(mod);
     }
 }
 

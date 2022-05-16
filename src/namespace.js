@@ -14,7 +14,7 @@ export class SimpleNamespace {
     constructor() {
         /**
          * The map of word name to definition.
-         * @type {Map<string, IPhooDefinition[]>}
+         * @type {Map<string, IPhooDefinition[][]>}
          * @default empty
          */
         this.map = new Map();
@@ -38,7 +38,7 @@ export class SimpleNamespace {
     /**
      * Remove the word, reverting to the old definition if there was one.
      * @param {string} name The word whose definition to remove.
-     * @returns {IPhooDefinition} The old definition, if there was one.
+     * @returns {IPhooDefinition?} The old definition, if there was one.
      */
 
     forget(name) {
@@ -51,11 +51,22 @@ export class SimpleNamespace {
     /**
      * Find the definition of a word and return it.
      * @param {string} name The word to look up.
-     * @returns {IPhooDefinition}
+     * @returns {IPhooDefinition?}
      */
     find(name) {
         var l = this.map.get(name) || [];
         return l[l.length - 1];
+    }
+    /**
+     * Copy the entries from the other namespace into this. Only the top entry of the other
+     * is copied, but any old definitions on this one still remain.
+     * @param {SimpleNamespace} otherNS The namespace to copy from into this one.
+     */
+    copyFrom(otherNS) {
+        for (var [key, vals] of otherNS.map) {
+            var val = vals[vals.length - 1];
+            this.add(key, val);
+        }
     }
 }
 
@@ -70,8 +81,13 @@ export class Namespace {
     }
 }
 
-// TODO: Remove this.
-export class Scope extends Namespace { }
+export class Scope extends Namespace {
+    copyFrom(module) {
+        this.words.copyFrom(module.words);
+        this.macros.copyFrom(module.macros);
+        this.literalizers.copyFrom(module.literalizers);
+    }
+}
 
 /**
  * A module is a named namespace that usually encloses a file.

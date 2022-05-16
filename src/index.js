@@ -7,7 +7,7 @@
 import { PhooSyntaxError, ModuleNotFoundError, TypeMismatchError, UnknownWordError } from './errors.js';
 import { Module } from './namespace.js';
 import { type, name, word } from './utils.js';
-import { module as builtinsModule } from '../lib/builtins.js';
+import { module as builtinsModule } from '../lib/_builtins.js';
 import { IPhooDefinition, IPhooLiteral, Thread } from './threading.js';
 import { BaseLoader } from './loaders.js';
 
@@ -123,6 +123,11 @@ export class Phoo {
             maxDepth: this.settings.maxDepth,
         });
     }
+    /**
+     * Load the module onto the thread.
+     * @param {string} module The name of the module that is to be loaded
+     * @param {Thread} thread The thread to load onto.
+     */
 }
 
 
@@ -175,8 +180,7 @@ export function naiveCompile(string) {
  * @returns {Promise<void>} When initialization is complete.
  */
 export async function initBuiltins(t) {
-    throw 'todo';
-    t.modules.set('__builtins__', builtinsModule);
+    t.module.copyFrom(builtinsModule);
     var resp = await fetch('./lib/builtins.ph');
     if (!resp.ok)
         throw new ModuleNotFoundError('Fetch error');

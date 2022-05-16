@@ -311,8 +311,11 @@ export class Thread {
     lookup(word, macro = false) {
         var def;
         for (var mm of this.scopeStack) {
-            throw 'todo';
+            def = mm[macro ? 'macros' : 'words'].find(word);
+            if (def !== undefined) break;
         }
+        if (def === undefined)
+            def = this.module[macro ? 'macros' : 'words'].find(word);
         if (def === undefined && !macro)
             def = this.phoo.undefinedWord(word);
         if (type(def) === 'symbol')

@@ -7,8 +7,6 @@ declare module 'index.js' {
     declare type IPhooSettings = {
         maxDepth?: number,
         strictMode?: boolean,
-        namepathSeparator?: string,
-        parentDirectoryMarker?: string,
     };
 
     declare type IPhooOptions = {
@@ -23,11 +21,8 @@ declare module 'index.js' {
         loaders: Loader[];
         constructor(opts: IPhooOptions);
         undefinedWord(word: string): IPhooRunnable;
-        createThread(module: string, scopes: Scope[], modules: Module[], starModules: Module[], stack: any[]): Thread;
-        findModule(moduleName: string): Module;
-        qualifyName(relativeName: string, current: Module): string;
-        nameToURL(absName: string): string;
-        import(moduleName: string, current: Module, overrideURL: string): Module;
+        createThread(module: string, stack: any[]): Thread;
+        import(moduleName: string, thread: Thread);
     }
     export { word, name, w, type } from 'utils.js';
     export * from 'errors.js';
@@ -52,34 +47,32 @@ declare module 'threading.js' {
 
     export declare class Thread {
         phoo: Phoo;
-        get module(): Module;
-        starModules: Module[];
         workStack: any[];
         scopeStack: Scope[];
         returnStack: IReturnStackEntry[];
         maxDepth: number;
         lock: Threadlock;
         constructor(opts: IThreadOptions);
-        async executeOneItem(item: IPhooRunnable): void;
+        async executeOneItem(item: IPhooRunnable);
         async compileLiteral(word: string, a: IPhooRunnable[]): boolean;
         async compile(source: string | any[] | IPhooRunnable[], hasLockAlready?: boolean): IPhooRunnable[];
-        expect(...types: (string | RegExp | number)[]): void;
+        expect(...types: (string | RegExp | number)[]);
         pop(depth: number): any;
         peek(depth: number): any;
-        push(item: any): void;
+        push(item: any);
         retPop(): IReturnStackEntry;
-        retPush(item: IReturnStackEntry): void;
-        enterScope(): void;
-        exitScope(): void;
+        retPush(item: IReturnStackEntry);
+        enterScope();
+        exitScope();
         async execute(c: IPhooRunnable, hasLockAlready?: boolean): any[];
         async run(source: string | any[] | IPhooRunnable[], hasLockAlready?: boolean): any[];
         getScope(idx: number): Scope;
-        resolveNamepath(word: string, macro?: boolean): IPhooDefinition;
+        lookup(word: string, macro?: boolean): IPhooDefinition;
     }
 
     declare type IPhooRunnable = Function | IPhooLiteral | IPhooRunnable[];
     declare type IPhooLiteral = number | string | Promise<any> | Symbol;
-    declare type IReturnStackEntry = { pc: number; arr: IPhooRunnable[], mod: Module };
+    declare type IReturnStackEntry = { pc: number; arr: IPhooRunnable[], };
     declare type IPhooDefinition = IPhooRunnable & { [WORD_NAME_SYMBOL]: string };
 }
 
@@ -88,9 +81,10 @@ declare module 'namespace.js' {
 
     export class SimpleNamespace<N, V> {
         map: Map<N, V[]>;
-        add(name: N, def: V): void;
-        forget(name: N): V | undefined;
-        find(name: N): V | undefined;
+        add(name: N, def: V);
+        forget(name: N): V?;
+        find(name: N): V?;
+        copyFrom(otherNS: SimpleNamespace);
     }
 
     export class Namespace {
@@ -100,8 +94,7 @@ declare module 'namespace.js' {
     }
 
     export class Scope extends Namespace {
-        loadedModules: Module[];
-        starModules: Module[];
+        copyFrom(other: Scope);
     }
 
     export class Module extends Scope {
@@ -158,8 +151,8 @@ declare module 'loaders.js' {
     import { Phoo } from 'index.js';
 
     export interface Loader {
-        setup(phoo: Phoo): void;
-        async find(name: string, currentModule: Module, overrideURL?: string): Module;
+        setup(phoo: Phoo);
+        async load(name: string, thread: Thread);
     }
 
     export class BaseLoader implements Loader { }
@@ -167,7 +160,7 @@ declare module 'loaders.js' {
     export class FetchLoader extends BaseLoader {
         basePath: string;
         fetchOptions: RequestInit;
-        constructor(basePath: string, fetchOptions: RequestInit);
+        constructor(basePath: string, fetchOptions?: RequestInit);
     }
 
     export class ES6Loader extends BaseLoader {
