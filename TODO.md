@@ -12,7 +12,7 @@
     * [X] Fix bug in `execute`: record return stack depth and return when it gets back to that, not when it gets to 0
     * [X] Have separate `thread` and have that manage threads (each have own work and return stacks, but shared ~~namespaces~~ modules)
     * [ ] Namespacing:
-        * [ ] Instead of having tree of nested Phoo interpreters, have a `sys.modules` map &agrave; la Python
+        * [ ] ~~Instead of having tree of nested Phoo interpreters, have a `sys.modules` map &agrave; la Python~~
         * [ ] Namespace stack for modules, classes, etc.
 * [ ] Web app
 * [ ] Modules:

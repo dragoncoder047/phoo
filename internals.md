@@ -8,14 +8,14 @@ A the highest level a Phoo system looks like this:
 * A `Phoo` instance, which acts as the global "manager" for controlling and executing code.
 * One or more `Thread`s that actually do the compiling and running of the code.
 * `Scopes`s that the threads jump in and out of, fetch definitions from, and write new definitions to while running code.
-* `Importer`s attached to the main Phoo manager instance that fetch external modules from wherever they are stored (filesystem, network, RAM, etc) so they can be run.
+* `Loader`s attached to the main Phoo manager instance that fetch external modules from wherever they are stored (filesystem, network, RAM, etc) so they can be run.
 
 In code, the simplest example looks like this:
 
 ```js
-import { Phoo, initBuiltins, FetchImporter, ES6Importer } from 'phoo/src/index.js';
+import { Phoo, initBuiltins, FetchLoader, ES6Loader } from 'phoo/src/index.js';
 async function main() {
-    const p = new Phoo({ importers: [new FetchImporter('lib/'), new ES6Importer('lib/')] });
+    const p = new Phoo({ loaders: [new FetchLoader('lib/'), new ES6Loader('lib/')] });
     const thread = p.createThread('__main__');
     await initBuiltins(thread);
     await thread.run(/* some code as a string */);

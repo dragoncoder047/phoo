@@ -2,7 +2,7 @@
 
 declare module 'index.js' {
     import { Scope, Module } from 'namespace.js';
-    import { Importer } from 'importers.js';
+    import { Loader } from 'loaders.js';
 
     declare type IPhooSettings = {
         maxDepth?: number,
@@ -14,13 +14,13 @@ declare module 'index.js' {
     declare type IPhooOptions = {
         settings?: IPhooSettings,
         modules?: Map<string, Module>,
-        importers?: Importer[];
+        loaders?: Loader[];
     };
 
     export declare class Phoo {
         settings: IPhooSettings;
         modules: Map<string, Module>;
-        importers: Importer[];
+        loaders: Loader[];
         constructor(opts: IPhooOptions);
         undefinedWord(word: string): IPhooRunnable;
         createThread(module: string, scopes: Scope[], modules: Module[], starModules: Module[], stack: any[]): Thread;
@@ -153,24 +153,24 @@ declare module 'utils.js' {
     export function clone<T>(obj: T, deep?: boolean, seen?: Map<T, T>): T;
 }
 
-declare module 'importers.js' {
+declare module 'loaders.js' {
     import { Module } from 'namespace.js';
     import { Phoo } from 'index.js';
 
-    export interface Importer {
+    export interface Loader {
         setup(phoo: Phoo): void;
         async find(name: string, currentModule: Module, overrideURL?: string): Module;
     }
 
-    export class BaseImporter implements Importer { }
+    export class BaseLoader implements Loader { }
 
-    export class FetchImporter extends BaseImporter {
+    export class FetchLoader extends BaseLoader {
         basePath: string;
         fetchOptions: RequestInit;
         constructor(basePath: string, fetchOptions: RequestInit);
     }
 
-    export class ES6Importer extends BaseImporter {
+    export class ES6Loader extends BaseLoader {
         basePath: string;
         constructor(basePath: string);
     }

@@ -8,7 +8,7 @@ import { ModuleNotFoundError, PhooSyntaxError } from './errors.js';
 /**
  * Base class for an finder - which locates and retrieves the Phoo code.
  */
-export class BaseImporter {
+export class BaseLoader {
     /**
      * @param {Phoo} phoo The owner that these modules will be loaded into.
      */
@@ -20,14 +20,14 @@ export class BaseImporter {
     }
 }
 
-export class FetchImporter extends BaseImporter {
+export class FetchLoader extends BaseLoader {
     constructor(basePath, fetchOptions = {}) {
         super();
         this.basePath = basePath;
         this.fetchOptions = fetchOptions;
     }
     async find(name, currentModule, overrideURL) {
-        if (!/.ph$/.test(overrideURL)) throw new PhooSyntaxError('Can\'t load non-Phoo module with a fetch importer');
+        if (!/.ph$/.test(overrideURL)) throw new PhooSyntaxError('Can\'t load non-Phoo module with a fetch loader');
         var qualName = this.phoo.qualifyName(name, currentModule);
         var path = overrideURL || this.basePath + this.phoo.nameToURL(qualName) + '.ph';
         var resp = await fetch(path, this.fetchOptions);
@@ -39,13 +39,13 @@ export class FetchImporter extends BaseImporter {
     }
 }
 
-export class ES6Importer extends BaseImporter {
+export class ES6Loader extends BaseLoader {
     constructor(basePath, fetchOptions = {}) {
         super();
         this.basePath = basePath;
     }
     async find(name, currentModule, overrideURL) {
-        if (!/.js$/.test(overrideURL)) throw new PhooSyntaxError('Can\'t load non-JS module with an ES6 importer');
+        if (!/.js$/.test(overrideURL)) throw new PhooSyntaxError('Can\'t load non-JS module with an ES6 loader');
         var qualName = this.phoo.qualifyName(name, currentModule);
         var path = overrideURL || this.basePath + this.phoo.nameToURL(qualName) + '.js';
         var mod;

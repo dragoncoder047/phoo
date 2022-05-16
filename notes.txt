@@ -1,13 +1,9 @@
 Phoo
-    Settings = stack, recursionlimit, strict, nps
-    Main module
-    
-    spawn() -> thread
-    thread() -> thread
+    Settings = recursionlimit, strictMode
+    createThread(name)
+    loaders
 
 Thread
-
-    ///// note: this is ahead of what I currently have. May not work, may have to roll it back.
 
     clone of settings (via ref to parent)
     own scope stack
@@ -31,11 +27,12 @@ Thread
         of entries:
             pc: number
             arr: array
-            mod: module
-            modules: module array
-            starModules: module array
         retPush()
         retPop()
+    
+    scope stack:
+        enterScope()
+        exitScope()
 
 Module
     SimpleModules for each of words, macros, literalizers

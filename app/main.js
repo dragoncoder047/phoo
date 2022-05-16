@@ -1,4 +1,4 @@
-import { Phoo, initBuiltins, FetchImporter, ES6Importer, STACK_TRACE_SYMBOL, type } from '../src/index.js';
+import { Phoo, initBuiltins, FetchLoader, ES6Loader, STACK_TRACE_SYMBOL, type } from '../src/index.js';
 import stringify from './stringify.js';
 
 var count = 0;
@@ -45,7 +45,7 @@ var loading = true;
 // do load
 (async () => {
     try {
-        p = new Phoo({ importers: [new FetchImporter('lib/'), new ES6Importer('lib/')] });
+        p = new Phoo({ loaders: [new FetchLoader('lib/'), new ES6Loader('lib/')] });
 
         await initBuiltins(p);
 

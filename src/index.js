@@ -9,7 +9,7 @@ import { Module } from './namespace.js';
 import { type, name, word } from './utils.js';
 import { module as builtinsModule } from '../lib/builtins.js';
 import { IPhooDefinition, IPhooLiteral, Thread } from './threading.js';
-import { BaseImporter } from './importers.js';
+import { BaseLoader } from './loaders.js';
 
 /**
  * Configuration options.
@@ -18,7 +18,7 @@ import { BaseImporter } from './importers.js';
 
 /**
  * Configuration options.
- * @typedef {{settings: IPhooSettings, importers: Importer[]}} IPhooOptions
+ * @typedef {{settings: IPhooSettings, loaders: Loader[]}} IPhooOptions
  */
 
 /**
@@ -31,17 +31,17 @@ export class Phoo {
      * @param {any[]} [opts.settings.stack=[]] The initial items into the stack.
      * @param {number} [opts.settings.maxDepth=10000] The maximum return stack length before a {@linkcode StackOverflowError} error is thrown.
      * @param {boolean} [opts.settings.disableStrictMode=false] Disable strict mode (see {@linkcode Phoo.strictMode})
-     * @param {Importer[]} [opts.importers] The importers that will be tried to import any module.
+     * @param {Loader[]} [opts.loaders] The loaders that will be tried to import any module.
      */
     constructor(opts) {
         // so won't get "TypeError: can't acces property 'blah' of undefined" errors;
         if (!opts) opts = {};
         if (!opts.settings) opts.settings = {};
         /**
-         * Importers that will be checked to import a module.
-         * @type {BaseImporter[]}
+         * Loaders that will be checked to import a module.
+         * @type {BaseLoader[]}
          */
-        this.importers = opts.importers || [];
+        this.loaders = opts.loaders || [];
         /**
          * Cache of all threads created, by name.
          * @type {Map<string, Module>}
@@ -130,7 +130,7 @@ export class Phoo {
 /*re*/export * from './errors.js';
 /*re*/export * from './constants.js';
 /*re*/export * from './namespace.js';
-/*re*/export * from './importers.js';
+/*re*/export * from './loaders.js';
 
 //-------------------------Helpers------------------------
 
