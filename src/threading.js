@@ -184,7 +184,7 @@ export class Thread {
         if (type(item) === 'symbol')
             item = this.lookup(name(item));
         if (type(item) === 'function') {
-            console.debug('executing function', item[WORD_NAME_SYMBOL]);
+            //console.debug('executing function', item[WORD_NAME_SYMBOL]);
             await item.call(this);
         }
         else if (type(item) === 'array') {

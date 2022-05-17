@@ -64,7 +64,7 @@ var loading = true;
             } catch (e) {
                 count++;
                 term.error('Error! ' + type(e) !== 'string' ? e.message : e);
-                term.error(e[STACK_TRACE_SYMBOL] || 'Oops, no stack trace!');
+                term.error(e[STACK_TRACE_SYMBOL] || 'No stack trace');
             }
             term.echo('Stack: ' + stringify(thread.workStack, naiveColorize));
             count++;

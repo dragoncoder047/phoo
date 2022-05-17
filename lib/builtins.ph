@@ -440,6 +440,7 @@ to use do
 end
 
 1 0x20 3n 36#hexatrigesimal-n true false null undefined $ "foo""bar"
+$ "regexp"r
 $ "this is a test." die
 
 protect dip.hold
