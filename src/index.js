@@ -128,6 +128,21 @@ export class Phoo {
      * @param {string} module The name of the module that is to be loaded
      * @param {Thread} thread The thread to load onto.
      */
+    import(module, thread) {
+        var lastErr = null;
+        var ok;
+        for (var ld of this.loaders) {
+            ok = true;
+            try {
+                ld.load(module, thread);
+            } catch(e) {
+                lastErr = e;
+                ok = false;
+            }
+            if (ok) break;
+        }
+        if (!ok) throw lastErr;
+    }
 }
 
 

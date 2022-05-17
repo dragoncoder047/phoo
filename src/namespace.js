@@ -82,6 +82,12 @@ export class Namespace {
 }
 
 export class Scope extends Namespace {
+    constructor() {
+        /**
+         * @type {string[]}
+         */
+        this.imported_modules = [];
+    }
     copyFrom(module) {
         this.words.copyFrom(module.words);
         this.macros.copyFrom(module.macros);

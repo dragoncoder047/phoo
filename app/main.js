@@ -59,7 +59,6 @@ var loading = true;
 
         run = async function runCommand(c) {
             try {
-                term.echo(naiveColorize('[DEBUG] Words: ', 'green') + stringify(p.modules, naiveColorize));
                 await thread.run(c);
             } catch (e) {
                 count++;

@@ -94,6 +94,7 @@ declare module 'namespace.js' {
     }
 
     export class Scope extends Namespace {
+        imported_modules: string[];
         copyFrom(other: Scope);
     }
 
