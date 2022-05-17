@@ -30,7 +30,7 @@ export default function stringify(obj, colorize = x => x) {
                 key$ = strigify(itm);
                 pairs.push([key$, prop$]);
             }
-            return `{ ${pairs.map(p => p[0] + ': ' + p[1]).join(', ')} }`;
+            return `${type(obj)} { ${pairs.map(p => p[0] + ': ' + p[1]).join(', ')} }`;
         // return colorize(obj.toString(), 'tan');
     }
 }
