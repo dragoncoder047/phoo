@@ -17,3 +17,7 @@ body {
     font-size: 1em;
     line-height: 1.25em;
 }
+
+.terminal .terminal-output div.raw {
+    font-size: 1em;
+}
