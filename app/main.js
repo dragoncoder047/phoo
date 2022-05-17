@@ -12,7 +12,7 @@ const term = $('body').terminal(c => run(c), {
     enabled: false,
     exit: false,
     greetings: 'Phoo is loading...',
-    prompt: () => color(`[${count}]--> `, 'magenta'),
+    prompt: () => naiveColorize(`[${count}]--> `, 'magenta'),
     // autocompleteMenu: true,
     // async completion() {
     //     var text = this.get_command(), list = [];
