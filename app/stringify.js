@@ -45,8 +45,8 @@ function stringy(string) {
         // replace nonprintable characters < \x20
         const cabbrev = { 0: '0', 7: 'a', 8: 'b', 9: 't', 10: 'n', 11: 'v', 12: 'f', 13: 'r' };
         if (cabbrev[cc] !== undefined) return '\\' + cabbrev[cc];
-        if ((0 < cc && cc < 0x1F) || (0x7F < cc && cc <= 0xFF)) return '\\x' + cc.toString(16).padStart(2, '0');
-        if (0x0100 < cc && cc < 0xFFFF) return '\\u' + cc.toString(16).padStart(4, '0');
+        if (cc <= 0xFF) return '\\x' + cc.toString(16).padStart(2, '0');
+        if (cc <= 0xFFFF) return '\\u' + cc.toString(16).padStart(4, '0');
         return '\\u{' + cc.toString(16) + '}';
     }).join('');
     return "'" + escaped + "'";

@@ -50,11 +50,9 @@ var loading = true;
         thread = p.createThread('__main__');
 
         // patch console to show debug messages in terminal 
-        var debuglog = [];
         window.console.debug = function patched(...items) {
             var joined = items.map(x => x.toString()).join(' ');
-            debuglog.push(joined);
-            if (debuglog.length > 10) debuglog.shift();
+            term.echo(naiveColorize(`[DEBUG] ${joined}`, 'lime'));
         }
 
         await initBuiltins(thread);
@@ -85,8 +83,6 @@ var loading = true;
         term.error(e[STACK_TRACE_SYMBOL]);
         term.echo('Thread work stack:');
         term.echo(stringify(thread.workStack));
-        term.echo(`Last ${debuglog.length} debug log messages:`);
-        for (var msg of debuglog) term.echo(naiveColorize(msg, 'lime'));
         term.echo('If this continues to occur, please report it:');
         term.echo('https://github.com/dragoncoder047/phoo/issues');
         term.disable();
