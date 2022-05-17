@@ -5,12 +5,7 @@ var count = 0;
 var run;
 const esc = $.terminal.escape_brackets;
 const naiveColorize = (text, color) => `[[;${color};]${esc(text)}]`;
-const color = (text, color) => {
-    var x = document.createElement('span');
-    x.innerText = text;
-    x.style.color = color;
-    return x;
-};
+const color = (text, color) => `<span style="color:${color}">${text}</span>`;
 var p, thread;
 
 const term = $('body').terminal(c => run(c), {
@@ -70,7 +65,7 @@ var loading = true;
                 term.error('Error! ' + type(e) !== 'string' ? e.message : e);
                 term.error(e[STACK_TRACE_SYMBOL] || 'No stack trace');
             }
-            term.echo('Stack: ' + stringify(thread.workStack, color));
+            term.echo('Stack: ' + stringify(thread.workStack, color), { raw: true });
             count++;
         };
 
@@ -86,7 +81,7 @@ var loading = true;
         term.error('Phoo stack trace:');
         term.error(e[STACK_TRACE_SYMBOL]);
         term.echo('Thread work stack:');
-        term.echo(stringify(thread.workStack, color));
+        term.echo(stringify(thread.workStack, color), { raw: true });
         term.echo('If this continues to occur, please report it:');
         term.echo('https://github.com/dragoncoder047/phoo/issues');
         term.disable();
