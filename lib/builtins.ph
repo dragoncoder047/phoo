@@ -453,7 +453,7 @@ to use do
     ]'[ ]import[
 end
 
-1 0x20 3n 36#hexatrigesimal-n tuck * true false null undefined $ zstringzzwithzzdelimitersz
+10 0x20 * 3n 36#hexatrigesimal-n tuck true false and null undefined $ zstringzzwithzzdelimitersz
 $ >(1?12?)*>r temp put temp
 $ FTESTF $ %!% ++ die
 
