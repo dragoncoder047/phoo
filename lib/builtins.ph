@@ -453,7 +453,7 @@ to use do
     ]'[ ]import[
 end
 
-1 2 3 rot
+' a ' b ' c rot
 $ FTESTF $ %!% ++ die
 
 protect dip.hold
