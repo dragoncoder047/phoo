@@ -38,16 +38,16 @@ export default function stringify(obj, colorize = x => x) {
 function stringy(string) {
     var escaped = [...string].map(char => {
         const cc = char.charCodeAt(0);
-        // replace single quotes
-        if (char === "'") return "\\'";
+        // replace double quotes
+        if (char === '"') return '\\"';
         // printable: no need to escape
-        if (0x20 <= cc && cc <= 0x7F) return char;
+        if (31 < cc && cc < 128) return char;
         // replace nonprintable characters < \x20
         const cabbrev = { 0: '0', 7: 'a', 8: 'b', 9: 't', 10: 'n', 11: 'v', 12: 'f', 13: 'r' };
         if (cabbrev[cc] !== undefined) return '\\' + cabbrev[cc];
-        if (cc <= 0xFF) return '\\x' + cc.toString(16).padStart(2, '0');
-        if (cc <= 0xFFFF) return '\\u' + cc.toString(16).padStart(4, '0');
+        if (cc < 256) return '\\x' + cc.toString(16).padStart(2, '0');
+        if (cc < 65536) return '\\u' + cc.toString(16).padStart(4, '0');
         return '\\u{' + cc.toString(16) + '}';
     }).join('');
-    return "'" + escaped + "'";
+    return '"' + escaped + '"';
 }
