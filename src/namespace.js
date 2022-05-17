@@ -83,6 +83,7 @@ export class Namespace {
 
 export class Scope extends Namespace {
     constructor() {
+        super();
         /**
          * @type {string[]}
          */
