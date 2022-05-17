@@ -23,7 +23,7 @@
 export function type(obj, guess_containers = false) {
     var t = typeof obj;
     if (t == 'object') t = Array.isArray(obj) ? 'array' : 'object';
-    if (t == 'object' && obj.constructor === RegExp) t = 'regexp';
+    if (t == 'object' && obj !== null && obj.constructor === RegExp) t = 'regexp';
     if (t == 'object' && obj !== null && obj.constructor !== Object) t = obj.constructor.name;
     if (guess_containers) {
         var all_same, keys, values, keys_same, values_same;
