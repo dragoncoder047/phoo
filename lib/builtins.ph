@@ -453,8 +453,7 @@ to use do
     ]'[ ]import[
 end
 
-true 3 of $ "not on stack"
-$ "on temp stack" temp put temp
+1 2 3 rot
 $ FTESTF $ %!% ++ die
 
 protect dip.hold
