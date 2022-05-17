@@ -453,8 +453,8 @@ to use do
     ]'[ ]import[
 end
 
-10 0x20 * 3n 36#hexatrigesimal-n tuck true false and null undefined $ zstringzzwithzzdelimitersz
-$ >(1?12?)*>r temp put temp
+true 3 of $ "not on stack"
+$ "on temp stack" temp put temp
 $ FTESTF $ %!% ++ die
 
 protect dip.hold
