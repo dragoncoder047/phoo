@@ -454,7 +454,7 @@ to use do
 end
 
 1 0x20 3n 36#hexatrigesimal-n tuck * true false null undefined $ zstringzzwithzzdelimitersz
-$ >(1?12?)*>r
+$ >(1?12?)*>r temp put temp
 $ FTESTF $ %!% ++ die
 
 protect dip.hold
