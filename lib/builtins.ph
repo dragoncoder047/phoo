@@ -454,6 +454,7 @@ to use do
 end
 
 ' a ' b ' c rot
+' a ' b ' c unrot 3 pack
 $ FTESTF $ %!% ++ die
 
 protect dip.hold
