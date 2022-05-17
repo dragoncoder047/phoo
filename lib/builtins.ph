@@ -205,6 +205,20 @@ to i [ times.count copy ]
 
 to i^ [ times.start copy i 1+ - ]
 
+to j do
+    times.count temp move
+    i
+    temp times.count move
+end
+
+to j^ do
+    times.start temp move
+    times.count temp move
+    i^
+    temp times.count move
+    temp times.start move
+end
+
 to step [ times.count take 1+ swap - times.count put ]
 
 to restart [ times.start copy times.count replace ]
