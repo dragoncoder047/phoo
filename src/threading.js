@@ -9,6 +9,7 @@ import { w, name, type } from './utils.js';
 import { Scope, Module } from './namespace.js';
 import { Threadlock } from './locks.js';
 import { Phoo } from './index.js';
+import { WORD_NAME_SYMBOL } from './constants.js';
 
 /**
  * Configuration options.
@@ -180,11 +181,10 @@ export class Thread {
      * @param {any} item Thing to be dealt with.
      */
     async executeOneItem(item) {
-        if (type(item) === 'symbol') {
+        if (type(item) === 'symbol')
             item = this.lookup(name(item));
-        }
         if (type(item) === 'function') {
-            console.debug('executing function', item.name);
+            console.debug('executing function', item[WORD_NAME_SYMBOL]);
             await item.call(this);
         }
         else if (type(item) === 'array') {
