@@ -102,8 +102,10 @@ export class Thread {
             var item = this.peek(index);
             var eType = types[index];
             var gType = type(item);
-            if ((type(eType) === 'string' && eType !== gType) || (type(eType) === 'regexp' && !eType.test(gType)))
-                throw TypeMismatchError.withPhooStack(`Expected ${eType} on stack, got ${gType}: ${type(item) === 'symbol' ? name(item) : item}`, this.returnStack);
+            if ((type(eType) === 'string' && eType !== gType) || (type(eType) === 'regexp' && !eType.test(gType))) {
+                const ss = x => type(x) === 'symbol' ? name(x) : type(x) === 'array' ? x.map(ss).toString() : x.toString();
+                throw TypeMismatchError.withPhooStack(`Expected ${eType} on stack, got ${gType}: ${ss(item)}`, this.returnStack);
+            }
         }
     }
 
