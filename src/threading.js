@@ -103,7 +103,7 @@ export class Thread {
             var eType = types[index];
             var gType = type(item);
             if ((type(eType) === 'string' && eType !== gType) || (type(eType) === 'regexp' && !eType.test(gType))) {
-                const ss = x => type(x) === 'symbol' ? name(x) : type(x) === 'array' ? x.map(ss).toString() : x.toString();
+                const ss = x => type(x) === 'array' ? JSON.stringify(x.map(ss)) : x.toString();
                 throw TypeMismatchError.withPhooStack(`Expected ${eType} on stack, got ${gType}: ${ss(item)}`, this.returnStack);
             }
         }
