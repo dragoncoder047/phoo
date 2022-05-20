@@ -88,6 +88,9 @@ export class Thread {
      * @param {string|RegExp|number} ...args The types to check against
      * @throws {TypeMismatchError} if any of the items don't match
      * @throws {StackUnderflowError} if there are too few items on the stack.
+     * @example
+     * this.push(11); this.push('foo'); this.push(/ab+c?/)
+     * this.expect(3, 'number', 'string', 'regexp');
      */
     expect(...args) {
         var types;
