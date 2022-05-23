@@ -1,24 +1,24 @@
 // WOW, this is really old
-
-!!todo!!
+import { term } from './main.js';
+import { Module } from '../src/namespace.js';
 
 function (p) {
     var o = p.pop();
-    return print(type(o) == 'string' ? o : deep_repr(o, {sub: new Map([[p, 'self']])}));
+    return print(type(o) == 'string' ? o : deep_repr(o, { sub: new Map([[p, 'self']]) }));
 } is print
 
 function (p) {
     var o = p.pop();
-    return print(type(o) == 'string' ? o : deep_repr(o, {sub: new Map([[p, 'self']])}), true);
-} is print-html
+    return print(type(o) == 'string' ? o : deep_repr(o, { sub: new Map([[p, 'self']]) }), true);
+} is print - html
 
-function (p, cArr, {nextChar}) {
-    p.builders.$(p, cArr, {nextChar});
+function (p, cArr, { nextChar }) {
+    p.builders.$(p, cArr, { nextChar });
     cArr.push(Symbol.for('print'));
 } builds say
 
-function (p, cArr, {nextChar}) {
-    p.builders.$(p, cArr, {nextChar});
+function (p, cArr, { nextChar }) {
+    p.builders.$(p, cArr, { nextChar });
     cArr.push(Symbol.for('print-html'));
 } builds html
 
@@ -31,22 +31,22 @@ function (p) {
 } is confirm
 
 // ]input[ is defined in main.js
-[ print ]input[ await dup print nl ] is input
+[print]input[await dup print nl ] is input
 
 // cSpell:ignore inputbox
 function (p) {
     p.push(prompt(p.pop('string')));
 } is inputbox
 
-[ 10 chr print ] is nl
+[10 chr print ] is nl
 
-[ 32 chr print ] is sp
+[32 chr print ] is sp
 
 function () {
     clear_console();
 } is cc
 
-async-function (p) {
+async - function (p) {
     if (!'Notification' in window) p.bail('Notifications are not supported');
     if (Notification.permission == 'default') await Notification.requestPermission();
     if (Notification.permission != 'granted') p.bail('Permission denied for notifications');
@@ -63,13 +63,13 @@ function () {
     show_cursor();
 } is sc
 
-async-function (p) {
+async - function (p) {
     var d = p.pop('>num');
     await new Promise(r => setTimeout(r, d));
 } is wait
 
 // cSpell:ignore stacksize
-[ stacksize while drop again ] is drop-all
+[stacksize while drop again ] is drop - all
 
 // cSpell:ignore repr
 function (p) {
@@ -83,12 +83,12 @@ function (p) {
 
 [
     [
-        try [ PINQ ]
-        [
-            say "Error: "
-            . message print
+        try [PINQ]
+[
+    say "Error: "
+        .message print
         ]
-        echostack
+echostack
     ]
     $ '> ' input again
 ] is shell
@@ -98,4 +98,8 @@ function () {
     window.open('../../pinq/doc/std', '_blank');
 } is ?
 
-[ ? ] is help
+    [ ?] is help
+
+export default async function loadShellModule() {
+    return null;
+}

@@ -1,4 +1,5 @@
 import { Phoo, initBuiltins, FetchLoader, ES6Loader, STACK_TRACE_SYMBOL, type } from '../src/index.js';
+import loadShellModule from './shell_module.js';
 import stringify from './stringify.js';
 
 var count = 0;
@@ -9,7 +10,7 @@ const naiveColorize = (text, color) => `[[;${color};]${esc(text)}]`;
 const color = (text, color) => `<span style="color:${color};font-size:inherit">${text}</span>`;
 var p, thread;
 
-const term = $('body').terminal(c => run(c), {
+export const term = $('body').terminal(c => run(c), {
     enabled: false,
     exit: false,
     greetings: 'Phoo is loading...',
@@ -57,6 +58,7 @@ var loading = true;
         }
 
         await initBuiltins(thread);
+        await loadShellModule(thread);
 
         run = async function runCommand(c) {
             try {
