@@ -7,13 +7,13 @@ export default function stringify(obj, colorize = x => x) {
         case 'number': return colorize(obj, 'blue');
         case 'boolean': return colorize(obj, 'magenta');
         case 'string': return colorize(stringy(obj), 'green');
-        case 'bigint': return colorize(obj.toString() + 'n', 'pink');
+        case 'bigint': return colorize(obj.toString() + 'n', 'purple');
         case 'array': return `[${obj.map(item => stringify(item, colorize)).join(', ')}]`;
-        case 'regexp': return colorize(`/${obj.source}/`, 'red');
+        case 'regexp': return colorize(`/${obj.source}/`, 'pink');
         case 'undefined': return colorize('undefined', 'gray');
-        case 'symbol': return colorize(`@@${Symbol.keyFor(obj)}`, 'lime');
+        case 'symbol': return colorize(`@@${Symbol.keyFor(obj)}`, 'yellow');
         case 'Map': return colorize(`Map {${[...obj.entries()].map(i => stringify(i[0], colorize) + ' => ' + stringify(i[1], colorize)).join(', ')}}`, 'orange');
-        case 'Set': return colorize(`Set {${[...obj.values()].map(i => stringify(i, colorize)).join(', ')}}`, 'yellow');
+        case 'Set': return colorize(`Set {${[...obj.values()].map(i => stringify(i, colorize)).join(', ')}}`, 'lime');
         default:
             if (obj === null) return colorize('null', 'purple');
             var pairs = [], key$, prop$, itm;
