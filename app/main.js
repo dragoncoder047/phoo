@@ -52,8 +52,8 @@ var loading = true;
 
         // patch console to show debug messages in terminal 
         window.console.debug = function patched(...items) {
-            var joined = items.map(x => x.toString()).join(' ');
-            term.echo(naiveColorize(`[DEBUG] ${joined}`, 'lime'));
+            var joined = items.map(x => type(x) === 'string' ? x : stringify(x, color)).join(' ');
+            term.echo(color(`[DEBUG] ${joined}`, 'lime'));
         }
 
         await initBuiltins(thread);
