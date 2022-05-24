@@ -31,6 +31,7 @@ export class PhooError extends Error {
             me = new this(otherError.message);
         me.stack += '\n\nThe above error was caused by the following error:\n\n';
         me.stack += otherError.stack;
+        me.cause = otherError;
         return me;
     }
     /**
