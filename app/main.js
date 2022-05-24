@@ -6,7 +6,7 @@ var count = 0;
 var run;
 const esc = $.terminal.escape_brackets;
 const naiveColorize = (text, color) => `[[;${color};]${esc(text)}]`;
-// TODO: fix font size getting bigger
+// TODO: #5 fix font size getting bigger
 const color = (text, color) => `<span style="color:${color};font-size:inherit">${text}</span>`;
 var p, thread;
 
@@ -69,7 +69,7 @@ var loading = true;
                 term.error(type(e) !== 'string' ? e.message : e);
                 term.error(e[STACK_TRACE_SYMBOL] || 'Error retrieving stack trace');
             }
-            term.echo('Stack: ' + color(stringify(thread.workStack, color), 'inherit'), { raw: true });
+            term.echo('Stack: ' + color(stringify(thread.workStack, color), 'inherit'), { raw: true }); // #5 getting bigger.
             count++;
         };
 
