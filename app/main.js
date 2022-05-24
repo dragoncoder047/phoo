@@ -64,8 +64,8 @@ var loading = true;
             try {
                 await thread.run(c);
             } catch (e) {
-                count++;
-                term.error('Error! ' + type(e) !== 'string' ? e.message : e);
+                term.error('Error!');
+                term.error(type(e) !== 'string' ? e.message : e);
                 term.error(e[STACK_TRACE_SYMBOL] || 'No stack trace');
             }
             term.echo('Stack: ' + color(stringify(thread.workStack, color), 'inherit'), { raw: true });
