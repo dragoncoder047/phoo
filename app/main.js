@@ -76,6 +76,7 @@ var loading = true;
         term.update(0, 'Welcome to Phoo.');
         term.enable();
         term.focus();
+        term.echo('Strict mode is ' + (p.settings.strictMode ? 'ON' : 'OFF'));
 
     } catch (e) {
         loading = false;
