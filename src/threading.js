@@ -305,7 +305,12 @@ export class Thread {
         const origDepth = this.returnStack.length;
         this.retPush(this.state);
         this.state = { pc: 0, arr: compiled };
-        while (this.returnStack.length > origDepth) await this.tick();
+        try {
+            while (this.returnStack.length > origDepth) await this.tick();
+        } catch (e) {
+            while (this.returnStack.length > origDepth) this.retPop();
+            throw e;
+        }
         return this.workStack;
     }
 
