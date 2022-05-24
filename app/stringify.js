@@ -13,6 +13,7 @@ export default function stringify(obj, colorize = x => x, max_depth = 5) {
         case 'regexp': return colorize(`/${obj.source}/`, 'pink');
         case 'undefined': return colorize('undefined', 'gray');
         case 'symbol': return colorize(`@@${Symbol.keyFor(obj)}`, 'yellow');
+        case 'function': return colorize(`function ${obj.name}`, 'red');
         case 'Map': return colorize(`Map {${[...obj.entries()].map(i => stringify(i[0], colorize, max_depth - 1) + ' => ' + stringify(i[1], colorize, max_depth - 1)).join(', ')}}`, 'orange');
         case 'Set': return colorize(`Set {${[...obj.values()].map(i => stringify(i, colorize, max_depth - 1)).join(', ')}}`, 'lime');
         default:
