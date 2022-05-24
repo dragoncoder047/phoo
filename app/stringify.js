@@ -1,7 +1,7 @@
 import { type } from '../src/utils.js';
 
 
-export default function stringify(obj, colorize = x => x, max_depth = 5) {
+export default function stringify(obj, colorize = x => x, max_depth = 4) {
     if (max_depth === 0) return colorize('...', 'gray');
     //console.debug('stringifying a ' + type(obj));
     switch (type(obj)) {
