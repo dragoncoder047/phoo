@@ -7,7 +7,6 @@
 import { PhooError, StackOverflowError, StackUnderflowError, TypeMismatchError, PhooSyntaxError, BadNestingError, ExternalInterrupt, ModuleNotFoundError } from './errors.js';
 import { w, name, type } from './utils.js';
 import { Scope, Module } from './namespace.js';
-import { Threadlock } from './locks.js';
 import { Phoo } from './index.js';
 import { WORD_NAME_SYMBOL } from './constants.js';
 

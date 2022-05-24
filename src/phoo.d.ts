@@ -129,15 +129,6 @@ declare module 'errors.js' {
     export function stringifyReturnStack(stack: IReturnStackEntry[]): string;
 }
 
-declare module 'locks.js' {
-    export class Threadlock {
-        promise: Promise<void>;
-        locks: number;
-        async acquire(): () => void;
-        get locked(): boolean;
-    }
-}
-
 declare module 'utils.js' {
     export function type(obj: any, guess_containers?: boolean): string;
     export function word(word: string): Symbol;
