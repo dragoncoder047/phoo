@@ -52,10 +52,10 @@ var loading = true;
         thread = p.createThread('__main__');
 
         // patch console to show debug messages in terminal 
-        window.console.debug = function patched(...items) {
-            var joined = items.map(x => type(x) === 'string' ? x : stringify(x, color)).join(' ');
-            term.echo(color(`[DEBUG] ${joined}`, 'lime'), { raw: true });
-        }
+        // window.console.debug = function patched(...items) {
+        //     var joined = items.map(x => type(x) === 'string' ? x : stringify(x, color)).join(' ');
+        //     term.echo(color(`[DEBUG] ${joined}`, 'lime'), { raw: true });
+        // }
 
         await initBuiltins(thread);
         thread.getScope(0).copyFrom(shell_module);
