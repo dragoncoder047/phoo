@@ -2,7 +2,7 @@ import { type } from '../src/utils.js';
 
 
 export default function stringify(obj, colorize = x => x) {
-    console.debug('stringifying a ' + type(obj));
+    //console.debug('stringifying a ' + type(obj));
     switch (type(obj)) {
         case 'number': return colorize(obj, 'blue');
         case 'boolean': return colorize(obj, 'magenta');

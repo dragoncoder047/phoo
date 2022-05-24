@@ -86,19 +86,22 @@ export class Phoo {
      * @returns {IPhooDefinition} The temporary definition of the word.
      */
     undefinedWord(word) {
-        if (this.strictMode)
+        if (this.strictMode) {
             /**
              * @this Thread
              */
             return function () {
                 throw UnknownWordError.withPhooStack(`Word ${word} does not exist`, this.returnStack);
-            }
-        /**
-         * @this Thread
-         */
-        else return function () {
-            this.push(globalThis[word]);
-        };
+            };
+        }
+        else {
+            /**
+             * @this Thread
+             */
+            return function () {
+                this.push(globalThis[word]);
+            };
+        }
     }
 
     /**
@@ -135,7 +138,7 @@ export class Phoo {
             ok = true;
             try {
                 ld.load(module, thread);
-            } catch(e) {
+            } catch (e) {
                 lastErr = e;
                 ok = false;
             }
