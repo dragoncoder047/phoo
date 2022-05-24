@@ -14,6 +14,7 @@ export const term = $('body').terminal(c => run(c), {
     enabled: false,
     exit: false,
     greetings: 'Phoo is loading...',
+    clear: false,
     prompt: () => naiveColorize(`(${count})--> `, 'magenta'),
     // autocompleteMenu: true,
     // async completion() {
