@@ -1,33 +1,34 @@
 import { type } from '../src/utils.js';
 
 
-export default function stringify(obj, colorize = x => x) {
+export default function stringify(obj, colorize = x => x, max_depth = 5) {
+    if (max_depth === 0) return colorize('...', 'gray');
     //console.debug('stringifying a ' + type(obj));
     switch (type(obj)) {
         case 'number': return colorize(obj, 'blue');
         case 'boolean': return colorize(obj, 'magenta');
         case 'string': return colorize(stringy(obj), 'green');
         case 'bigint': return colorize(obj.toString() + 'n', 'purple');
-        case 'array': return `[${obj.map(item => stringify(item, colorize)).join(', ')}]`;
+        case 'array': return `[${obj.map(item => stringify(item, colorize, max_depth - 1)).join(', ')}]`;
         case 'regexp': return colorize(`/${obj.source}/`, 'pink');
         case 'undefined': return colorize('undefined', 'gray');
         case 'symbol': return colorize(`@@${Symbol.keyFor(obj)}`, 'yellow');
-        case 'Map': return colorize(`Map {${[...obj.entries()].map(i => stringify(i[0], colorize) + ' => ' + stringify(i[1], colorize)).join(', ')}}`, 'orange');
-        case 'Set': return colorize(`Set {${[...obj.values()].map(i => stringify(i, colorize)).join(', ')}}`, 'lime');
+        case 'Map': return colorize(`Map {${[...obj.entries()].map(i => stringify(i[0], colorize, max_depth - 1) + ' => ' + stringify(i[1], colorize, max_depth - 1)).join(', ')}}`, 'orange');
+        case 'Set': return colorize(`Set {${[...obj.values()].map(i => stringify(i, colorize, max_depth - 1)).join(', ')}}`, 'lime');
         default:
             if (obj === null) return colorize('null', 'purple');
             var pairs = [], key$, prop$, itm;
             var items = Object.getOwnPropertyNames(obj);
             var itemSymbols = Object.getOwnPropertySymbols(obj);
             for (itm of items) {
-                prop$ = stringify(obj[itm]);
+                prop$ = stringify(obj[itm], colorize, max_depth - 1);
                 if (/^[$_a-z][$_a-z0-9]*/i.test(itm)) key$ = itm;
                 else key$ = `[${stringy(itm)}]`;
                 pairs.push([key$, prop$]);
             }
             for (itm of itemSymbols) {
-                prop$ = stringify(obj[itm]);
-                key$ = strigify(itm);
+                prop$ = stringify(obj[itm], colorize, max_depth - 1);
+                key$ = stringify(itm, colorize, max_depth - 1);
                 pairs.push([key$, prop$]);
             }
             return `${type(obj)} { ${pairs.map(p => p[0] + ': ' + p[1]).join(', ')} }`;
