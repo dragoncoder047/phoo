@@ -61,8 +61,15 @@ var loading = true;
         await initBuiltins(thread);
         thread.getScope(0).copyFrom(shell_module);
 
+        var linesBuffer = [];
         run = async function runCommand(c) {
+            if (c) {
+                linesBuffer.push(c);
+                return;
+            }
             try {
+                c = linesBuffer.join('\n');
+                linesBuffer = [];
                 await thread.run(c);
             } catch (e) {
                 term.error('Error!');
