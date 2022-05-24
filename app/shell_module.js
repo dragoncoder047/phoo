@@ -25,6 +25,7 @@ module.words.add('prompt', function p() {
 });
 
 module.words.add('input', async function i() {
+    term.resume();
     this.push(await term.read(this.pop()));
 });
 
