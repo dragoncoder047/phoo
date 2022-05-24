@@ -1,105 +1,44 @@
 // WOW, this is really old
 import { term } from './main.js';
 import { Module } from '../src/namespace.js';
+import { naiveCompile } from '../src/index.js';
+export const module = new Module('__shell__');
 
-function (p) {
-    var o = p.pop();
-    return print(type(o) == 'string' ? o : deep_repr(o, { sub: new Map([[p, 'self']]) }));
-} is print
+module.words.add('echo', function ech() {
+    term.echo(this.pop());
+});
 
-function (p) {
-    var o = p.pop();
-    return print(type(o) == 'string' ? o : deep_repr(o, { sub: new Map([[p, 'self']]) }), true);
-} is print - html
+module.words.add('echo-html', function echh() {
+    term.echo(this.pop(), { raw: true });
+});
 
-function (p, cArr, { nextChar }) {
-    p.builders.$(p, cArr, { nextChar });
-    cArr.push(Symbol.for('print'));
-} builds say
+module.words.add('alert', function a() {
+    alert(this.pop());
+});
 
-function (p, cArr, { nextChar }) {
-    p.builders.$(p, cArr, { nextChar });
-    cArr.push(Symbol.for('print-html'));
-} builds html
+module.words.add('confirm', function c() {
+    this.push(confirm(this.pop()));
+});
 
-function (p) {
-    alert(p.pop('string'));
-} is alert
+module.words.add('prompt', function p() {
+    this.push(prompt(this.pop()));
+});
 
-function (p) {
-    p.push(confirm(p.pop('string')));
-} is confirm
+module.words.add('nl', function nl() {
+    term.echo();
+});
 
-// ]input[ is defined in main.js
-[print]input[await dup print nl ] is input
+module.words.add('sp', function sp() {
+    term.echo(' ', { newline: false });
+});
 
-// cSpell:ignore inputbox
-function (p) {
-    p.push(prompt(p.pop('string')));
-} is inputbox
+module.words.add('cc', function cc() {
+    term.clear();
+});
 
-[10 chr print ] is nl
+module.words.add('delay', async function d() {
+    var x = this.pop();
+    await new Promise(r => setTimeout(r, x));
+});
 
-[32 chr print ] is sp
-
-function () {
-    clear_console();
-} is cc
-
-async - function (p) {
-    if (!'Notification' in window) p.bail('Notifications are not supported');
-    if (Notification.permission == 'default') await Notification.requestPermission();
-    if (Notification.permission != 'granted') p.bail('Permission denied for notifications');
-    var body = p.pop('string');
-    var title = p.pop('string');
-    new Notification(title, { body });
-} is notify
-
-function () {
-    hide_cursor();
-} is hc
-
-function () {
-    show_cursor();
-} is sc
-
-async - function (p) {
-    var d = p.pop('>num');
-    await new Promise(r => setTimeout(r, d));
-} is wait
-
-// cSpell:ignore stacksize
-[stacksize while drop again ] is drop - all
-
-// cSpell:ignore repr
-function (p) {
-    p.push(deep_repr(p.pop()));
-} is repr
-
-function (p) {
-    var s = p.work_stack;
-    print(`\nStack: (${s.length}) ${deep_repr(s)}\n`);
-} is echostack // cSpell:ignore echostack
-
-[
-    [
-        try [PINQ]
-[
-    say "Error: "
-        .message print
-        ]
-echostack
-    ]
-    $ '> ' input again
-] is shell
-
-function () {
-    // cSpell:ignore pinq
-    window.open('../../pinq/doc/std', '_blank');
-} is ?
-
-    [ ?] is help
-
-export default async function loadShellModule() {
-    return null;
-}
+module.words.add('emptystack', naiveCompile('stacksize while drop again'));

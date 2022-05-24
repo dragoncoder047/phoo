@@ -1,5 +1,5 @@
 import { Phoo, initBuiltins, FetchLoader, ES6Loader, STACK_TRACE_SYMBOL, type } from '../src/index.js';
-import loadShellModule from './shell_module.js';
+import { module as shell_module } from './shell_module.js';
 import stringify from './stringify.js';
 
 var count = 0;
@@ -58,7 +58,7 @@ var loading = true;
         }
 
         await initBuiltins(thread);
-        await loadShellModule(thread);
+        thread.getScope(0).copyFrom(shell_module);
 
         run = async function runCommand(c) {
             try {
