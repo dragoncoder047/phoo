@@ -453,10 +453,6 @@ to use do
     ]'[ ]import[
 end
 
-' a ' b ' c rot
-' a ' b ' c unrot 3 pack
-$ FTESTF $ %!% ++ die
-
 protect dip.hold
 protect switch.arg
 protect times.start
