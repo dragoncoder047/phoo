@@ -66,7 +66,7 @@ var loading = true;
             } catch (e) {
                 term.error('Error!');
                 term.error(type(e) !== 'string' ? e.message : e);
-                term.error(e[STACK_TRACE_SYMBOL] || 'No stack trace');
+                term.error(e[STACK_TRACE_SYMBOL] || 'Error retrieving stack trace');
             }
             term.echo('Stack: ' + color(stringify(thread.workStack, color), 'inherit'), { raw: true });
             count++;
