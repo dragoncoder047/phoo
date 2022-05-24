@@ -24,6 +24,10 @@ module.words.add('prompt', function p() {
     this.push(prompt(this.pop()));
 });
 
+module.words.add('input', async function i() {
+    this.push(await term.read(this.pop()));
+});
+
 module.words.add('nl', function nl() {
     term.echo();
 });
