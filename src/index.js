@@ -135,7 +135,7 @@ export class Phoo {
         var lastErr = null;
         var ok;
         for (var ld of this.loaders) {
-            console.debug('Inside Phoo.import');
+            //console.debug('Inside Phoo.import');
             ok = true;
             try {
                 await ld.load(module, thread);

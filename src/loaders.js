@@ -29,7 +29,7 @@ export class FetchLoader extends BaseLoader {
     async load(name, thread) {
         var path = this.basePath + name + '.ph';
         var resp = await fetch(path, this.fetchOptions);
-        console.debug('Fetched module', name, 'PH');
+        //console.debug('Fetched module', name, 'PH');
         if (!resp.ok)
             throw new ModuleNotFoundError(`Module ${name} could not be loaded`);
         await thread.run(await resp.text());
