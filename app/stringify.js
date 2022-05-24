@@ -13,7 +13,7 @@ export default function stringify(obj, colorize = x => x, max_depth = 4) {
         case 'regexp': return colorize(`/${obj.source}/`, 'pink');
         case 'undefined': return colorize('undefined', 'gray');
         case 'symbol': return colorize(`@@${Symbol.keyFor(obj)}`, 'yellow');
-        case 'function': return colorize(`${obj.prototype !== undefined ? 'class' : 'function'} ${obj.name}`, 'red');
+        case 'function': return colorize(`${is_constructor(obj) ? 'class' : 'function'} ${obj.name}`, 'red');
         case 'Map': return colorize(`Map {${[...obj.entries()].map(i => stringify(i[0], colorize, max_depth - 1) + ' => ' + stringify(i[1], colorize, max_depth - 1)).join(', ')}}`, 'orange');
         case 'Set': return colorize(`Set {${[...obj.values()].map(i => stringify(i, colorize, max_depth - 1)).join(', ')}}`, 'lime');
         default:
@@ -52,4 +52,14 @@ function stringy(string) {
         return '\\u{' + cc.toString(16) + '}';
     }).join('');
     return '"' + escaped + '"';
+}
+
+// https://stackoverflow.com/questions/40922531/how-to-check-if-a-javascript-function-is-a-constructor
+function is_constructor(f) {
+    try {
+        Reflect.construct(String, [], f);
+    } catch (e) {
+        return false;
+    }
+    return true;
 }
