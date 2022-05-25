@@ -59,7 +59,7 @@ var loading = true;
 
         // patch console to show debug messages in terminal 
         window.console.debug = function patched(...items) {
-            var joined = items.map(x => type(x) === 'string' ? x : stringify(x, color)).join(' ');
+            var joined = items.map(x => type(x) === 'string' ? x : stringify(x, { colorize: color })).join(' ');
             term.echo(color(`[DEBUG] ${joined}`, 'lime'), { raw: true });
         }
 
@@ -75,7 +75,10 @@ var loading = true;
                 if (type(e) === 'string') term.error(e);
                 else term.exception(e);
             }
-            term.echo('Stack: ' + color(stringify(thread.workStack, color), 'inherit'), { raw: true }); // #5 getting bigger.
+            var options = { colorize: color };
+            if (p.settings.prettyprint)
+                options.indent = p.settings.prettyindent || '  ';
+            term.echo('Stack: ' + color(stringify(thread.workStack, options), 'inherit'), { raw: true }); // #5 getting bigger.
             count++;
         };
 
@@ -94,7 +97,7 @@ var loading = true;
         term.error('Phoo stack trace:');
         term.error(e[STACK_TRACE_SYMBOL]);
         term.echo('Thread work stack:');
-        term.echo(color(stringify(thread.workStack, color), 'inherit'), { raw: true });
+        term.echo(color(stringify(thread.workStack, { colorize: color }), 'inherit'), { raw: true });
         term.echo('If this continues to occur, please report it:');
         term.echo('https://github.com/dragoncoder047/phoo/issues');
         term.disable();

@@ -1,39 +1,90 @@
 import { type } from '../src/utils.js';
 
+const DEFAULT_PALETTE = {
+    max_depth_exceeded: 'gray',
+    number: 'blue',
+    boolean: 'magenta',
+    string: 'green',
+    bigint: 'purple',
+    regexp: 'pink',
+    undefined: 'gray',
+    symbol: 'yellow',
+    function: 'red',
+    class: 'red',
+    Map: 'orange',
+    Set: 'lime',
+    null: 'purple'
+};
 
-export default function stringify(obj, colorize = x => x, max_depth = 4) {
-    if (max_depth === 0) return colorize('...', 'gray');
+export default function stringify(obj, { colorize = x => x, max_depth = 5, palette = DEFAULT_PALETTE, indent = false }) {
+    if (max_depth === 0)
+        return colorize('...', palette.max_depth_exceeded);
+    const options = { colorize, max_depth: max_depth - 1, palette, indent };
     //console.debug('stringifying a ' + type(obj));
+    var inner;
     switch (type(obj)) {
-        case 'number': return colorize(obj, 'blue');
-        case 'boolean': return colorize(obj, 'magenta');
-        case 'string': return colorize(stringy(obj), 'green');
-        case 'bigint': return colorize(obj.toString() + 'n', 'purple');
-        case 'array': return `[${obj.map(item => stringify(item, colorize, max_depth - 1)).join(', ')}]`;
-        case 'regexp': return colorize(`/${obj.source}/`, 'pink');
-        case 'undefined': return colorize('undefined', 'gray');
-        case 'symbol': return colorize(`@@${Symbol.keyFor(obj)}`, 'yellow');
-        case 'function': return colorize(`${is_constructor(obj) ? 'class' : 'function'} ${obj.name}`, 'red');
-        case 'Map': return colorize(`Map {${[...obj.entries()].map(i => stringify(i[0], colorize, max_depth - 1) + ' => ' + stringify(i[1], colorize, max_depth - 1)).join(', ')}}`, 'orange');
-        case 'Set': return colorize(`Set {${[...obj.values()].map(i => stringify(i, colorize, max_depth - 1)).join(', ')}}`, 'lime');
+        case 'number':
+            return colorize(obj, palette.number);
+        case 'boolean':
+            return colorize(obj, palette.boolean);
+        case 'string':
+            return colorize(stringy(obj), palette.string);
+        case 'bigint':
+            return colorize(obj.toString() + 'n', palette.bigint);
+        case 'array':
+            inner = obj.map(item => stringify(item, options));
+            if (!indent) {
+                return '[' + inner.join(', ') + ']';
+            }
+            else {
+                return '[\n' + indent_lines(inner.join(',\n'), indent) + '\n]';
+            }
+        case 'regexp':
+            return colorize(`/${obj.source}/`, palette.regexp);
+        case 'undefined':
+            return colorize('undefined', palette.undefined);
+        case 'symbol':
+            return colorize(`Symbol(${Symbol.keyFor(obj)})`, palette.symbol);
+        case 'function':
+            return colorize(`${is_constructor(obj) ? 'class' : 'function'} ${obj.name}`, palette[is_constructor(obj) ? 'class' : 'function']);
+        case 'Map':
+            inner = [...obj.entries()].map(i => stringify(i[0], options) + ' => ' + stringify(i[1], options));
+            if (!indent)
+                return colorize('Map {' + inner.join(', ') + '}', palette.Map);
+            else
+                return colorize('Map {' + indent_lines(inner.join(',\n'), indent) + '\n}', palette.Map);
+        case 'Set':
+            inner = [...obj.entries()].map(i => i => stringify(i, options));
+            if (!indent)
+                return colorize('Set {' + inner.join(', ') + '}', palette.Set);
+            else
+                return colorize('Set {' + indent_lines(inner.join(',\n'), indent) + '\n}', palette.Set);
         default:
-            if (obj === null) return colorize('null', 'purple');
+            if (obj === null)
+                return colorize('null', palette.null);
             var pairs = [], key$, prop$, itm;
             var items = Object.getOwnPropertyNames(obj);
             var itemSymbols = Object.getOwnPropertySymbols(obj);
             for (itm of items) {
-                prop$ = stringify(obj[itm], colorize, max_depth - 1);
+                prop$ = stringify(obj[itm], options);
                 if (/^[$_a-z][$_a-z0-9]*/i.test(itm)) key$ = itm;
                 else key$ = `[${stringy(itm)}]`;
                 pairs.push([key$, prop$]);
             }
             for (itm of itemSymbols) {
-                prop$ = stringify(obj[itm], colorize, max_depth - 1);
-                key$ = stringify(itm, colorize, max_depth - 1);
+                prop$ = stringify(obj[itm], options);
+                key$ = stringify(itm, options);
                 pairs.push([key$, prop$]);
             }
-            return `${type(obj)} { ${pairs.map(p => p[0] + ': ' + p[1]).join(', ')} }`;
-        // return colorize(obj.toString(), 'tan');
+            inner = pairs.map(p => p[0] + ': ' + p[1]);
+            if (!indent)
+                inner = type(obj) + ' { ' + inner.join(', ') + ' }';
+            else
+                inner = type(obj) + ' {\n' + indent_lines(inner.join(',\n')) + '\n}';
+            if (palette[type(obj)])
+                return colorize(inner, palette[type(obj)]);
+            else
+                return inner;
     }
 }
 
@@ -62,4 +113,8 @@ function is_constructor(f) {
         return false;
     }
     return true;
+}
+
+function indent_lines(text, indent = '  ') {
+    return text.split('\n').map(line => indent + line).join('\n');
 }
