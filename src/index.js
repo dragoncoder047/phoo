@@ -133,9 +133,9 @@ export class Phoo {
      */
     async import(module, thread) {
         var lastErr = null;
+        console.debug('Trying to import', module);
         var ok;
         for (var ld of this.loaders) {
-            //console.debug('Inside Phoo.import');
             ok = true;
             try {
                 await ld.load(module, thread);
