@@ -47,6 +47,11 @@ var loading = true;
 
 // do load
 (async () => {
+    // fetch current version
+    const version = (await (await fetch('package.json')).json()).version;
+    // fetch latest Git hash
+    const hash = (await (await fetch('https://api.github.com/repos/dragoncoder047/phoo/commits')).json())[0].sha;
+
     try {
         p = new Phoo({ loaders: [new FetchLoader('lib/'), new ES6Loader('lib/')] });
 
@@ -78,6 +83,7 @@ var loading = true;
         term.update(0, 'Welcome to Phoo.');
         term.enable();
         term.focus();
+        term.echo(`Version ${version} (${hash.substring(0, 7)})`);
         term.echo('Strict mode is ' + (p.settings.strictMode ? 'ON' : 'OFF'));
         term.echo('Press Shift+Enter for multiple lines.');
 
