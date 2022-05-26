@@ -8,7 +8,7 @@ module.words.add('echo', function ech() {
     term.echo(this.pop());
 });
 
-module.words.add('echo-html', function echh() {
+module.words.add('recho', function rech() {
     term.echo(this.pop(), { raw: true });
 });
 

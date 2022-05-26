@@ -73,7 +73,10 @@ var loading = true;
                 term.error('Error!');
                 term.error(e[STACK_TRACE_SYMBOL] || '(No stack trace)');
                 if (type(e) === 'string') term.error(e);
-                else term.exception(e);
+                else {
+                    term.error(`${e.name}: ${e.message}`);
+                    term.error(`<details><summary>View JS stack trace</summary><div>${e.stack}</div></details>`, { raw: true });
+                }
             }
             var options = { colorize: color };
             if (p.settings.prettyprint)
