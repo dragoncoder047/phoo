@@ -75,7 +75,7 @@ var loading = true;
                 if (type(e) === 'string') term.error(e);
                 else {
                     term.error(`${e.name}: ${e.message}`);
-                    term.error(`<details><summary>View JS stack trace</summary><div>${e.stack}</div></details>`, { raw: true });
+                    term.echo(`<details><summary>View JS stack trace</summary><div>${e.stack}</div></details>`, { raw: true, finialize(div) { $(div).css('color', 'red'); } });
                 }
             }
             var options = { colorize: color };
