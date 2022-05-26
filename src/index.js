@@ -86,7 +86,7 @@ export class Phoo {
      * @returns {IPhooDefinition} The temporary definition of the word.
      */
     undefinedWord(word) {
-        if (this.strictMode) {
+        if (this.settings.strictMode) {
             throw UnknownWordError.withPhooStack(`Word ${word} does not exist`, this.returnStack);
         }
         else {
