@@ -25,10 +25,16 @@ export default function stringify(obj, { colorize = x => x, max_depth = 5, palet
     switch (type(obj)) {
         case 'number':
             return colorize(obj, palette.number);
+        case 'Number':
+            return `Number {${stringify(obj.valueOf(), options)}}`;
         case 'boolean':
             return colorize(obj, palette.boolean);
+        case 'Boolean':
+            return `Boolean {${stringify(obj.valueOf(), options)}}`
         case 'string':
             return colorize(stringy(obj), palette.string);
+        case 'String':
+            return `String {${stringify(obj.valueOf(), options)}}`
         case 'bigint':
             return colorize(obj.toString() + 'n', palette.bigint);
         case 'array':
@@ -54,7 +60,7 @@ export default function stringify(obj, { colorize = x => x, max_depth = 5, palet
                 return colorize('Map {empty}', palette.Map);
             inner = [...obj.entries()].map(i => stringify(i[0], options) + ' => ' + stringify(i[1], options));
             if (!indent)
-                return colorize('Map {' + inner.join(', ') + '}', palette.Map);
+                return colorize('Map { ' + inner.join(', ') + ' }', palette.Map);
             else
                 return colorize('Map {\n' + indent_lines(inner.join(',\n'), indent) + '\n}', palette.Map);
         case 'Set':
@@ -62,7 +68,7 @@ export default function stringify(obj, { colorize = x => x, max_depth = 5, palet
                 return colorize('Set {empty}', palette.Set);
             inner = [...obj.entries()].map(i => stringify(i, options));
             if (!indent)
-                return colorize('Set {' + inner.join(', ') + '}', palette.Set);
+                return colorize('Set { ' + inner.join(', ') + ' }', palette.Set);
             else
                 return colorize('Set {\n' + indent_lines(inner.join(',\n'), indent) + '\n}', palette.Set);
         default:
@@ -119,13 +125,13 @@ function stringy(string) {
 }
 
 // https://stackoverflow.com/questions/40922531/how-to-check-if-a-javascript-function-is-a-constructor
+const handler = { construct() { return handler } } // Must return ANY object, so reuse one
 function is_constructor(f) {
     try {
-        Reflect.construct(String, [], f);
+        return !!(new (new Proxy(f, handler))());
     } catch (e) {
         return false;
     }
-    return true;
 }
 
 function indent_lines(text, indent = '  ') {
