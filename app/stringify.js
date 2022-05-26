@@ -56,7 +56,7 @@ export default function stringify(obj, { colorize = x => x, max_depth = 5, palet
             if (!indent)
                 return colorize('Map {' + inner.join(', ') + '}', palette.Map);
             else
-                return colorize('Map {' + indent_lines(inner.join(',\n'), indent) + '\n}', palette.Map);
+                return colorize('Map {\n' + indent_lines(inner.join(',\n'), indent) + '\n}', palette.Map);
         case 'Set':
             if (!obj.size)
                 return colorize('Set {empty}', palette.Set);
@@ -64,7 +64,7 @@ export default function stringify(obj, { colorize = x => x, max_depth = 5, palet
             if (!indent)
                 return colorize('Set {' + inner.join(', ') + '}', palette.Set);
             else
-                return colorize('Set {' + indent_lines(inner.join(',\n'), indent) + '\n}', palette.Set);
+                return colorize('Set {\n' + indent_lines(inner.join(',\n'), indent) + '\n}', palette.Set);
         default:
             if (obj === null)
                 return colorize('null', palette.null);
