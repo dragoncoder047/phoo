@@ -81,6 +81,8 @@ var loading = true;
             var options = { colorize: color };
             if (p.settings.prettyprint)
                 options.indent = p.settings.prettyindent || '  ';
+            if (p.settings.maxreprdepth)
+                options.max_depth = p.settings.maxreprdepth;
             term.echo(`Stack: <span style="white-space:pre;">${stringify(thread.workStack, options)}</span>`, { raw: true }); // #5 getting bigger.
             count++;
         };

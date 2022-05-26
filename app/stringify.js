@@ -32,6 +32,8 @@ export default function stringify(obj, { colorize = x => x, max_depth = 5, palet
         case 'bigint':
             return colorize(obj.toString() + 'n', palette.bigint);
         case 'array':
+            if (!obj.length)
+                return '[]';
             inner = obj.map(item => stringify(item, options));
             if (!indent) {
                 return '[' + inner.join(', ') + ']';
@@ -48,12 +50,16 @@ export default function stringify(obj, { colorize = x => x, max_depth = 5, palet
         case 'function':
             return colorize(`${is_constructor(obj) ? 'class' : 'function'} ${obj.name}`, palette[is_constructor(obj) ? 'class' : 'function']);
         case 'Map':
+            if (!obj.size)
+                return colorize('Map {empty}', palette.Map);
             inner = [...obj.entries()].map(i => stringify(i[0], options) + ' => ' + stringify(i[1], options));
             if (!indent)
                 return colorize('Map {' + inner.join(', ') + '}', palette.Map);
             else
                 return colorize('Map {' + indent_lines(inner.join(',\n'), indent) + '\n}', palette.Map);
         case 'Set':
+            if (!obj.size)
+                return colorize('Set {empty}', palette.Set);
             inner = [...obj.entries()].map(i => i => stringify(i, options));
             if (!indent)
                 return colorize('Set {' + inner.join(', ') + '}', palette.Set);
@@ -77,10 +83,15 @@ export default function stringify(obj, { colorize = x => x, max_depth = 5, palet
                 pairs.push([key$, prop$]);
             }
             inner = pairs.map(p => p[0] + ': ' + p[1]);
-            if (!indent)
-                inner = type(obj) + ' { ' + inner.join(', ') + ' }';
+            var tt = type(obj);
+            if (tt === 'object')
+                tt = '';
             else
-                inner = type(obj) + ' {\n' + indent_lines(inner.join(',\n')) + '\n}';
+                tt += ' ';
+            if (!indent)
+                inner = tt + '{ ' + inner.join(', ') + ' }';
+            else
+                inner = tt + '{\n' + indent_lines(inner.join(',\n')) + '\n}';
             if (palette[type(obj)])
                 return colorize(inner, palette[type(obj)]);
             else
