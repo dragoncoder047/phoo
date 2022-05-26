@@ -60,7 +60,7 @@ export default function stringify(obj, { colorize = x => x, max_depth = 5, palet
         case 'Set':
             if (!obj.size)
                 return colorize('Set {empty}', palette.Set);
-            inner = [...obj.entries()].map(i => i => stringify(i, options));
+            inner = [...obj.entries()].map(i => stringify(i, options));
             if (!indent)
                 return colorize('Set {' + inner.join(', ') + '}', palette.Set);
             else
