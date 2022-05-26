@@ -75,7 +75,15 @@ var loading = true;
                 if (type(e) === 'string') term.error(e);
                 else {
                     term.error(`${e.name}: ${e.message}`);
-                    term.echo(`<details><summary>View JS stack trace</summary><div>${e.stack}</div></details>`, { raw: true, finialize(div) { $(div).css('color', 'red'); } });
+                    term.echo(`<details><summary>View JS stack trace</summary><div>${e.stack}</div></details>`, {
+                        raw: true,
+                        finialize(div) {
+                            $(div).css({
+                                color: 'red',
+                                'white-space': 'pre',
+                            });
+                        }
+                    });
                 }
             }
             var options = { colorize: color };
