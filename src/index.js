@@ -87,12 +87,7 @@ export class Phoo {
      */
     undefinedWord(word) {
         if (this.strictMode) {
-            /**
-             * @this Thread
-             */
-            return function () {
-                throw UnknownWordError.withPhooStack(`Word ${word} does not exist`, this.returnStack);
-            };
+            throw UnknownWordError.withPhooStack(`Word ${word} does not exist`, this.returnStack);
         }
         else {
             /**
