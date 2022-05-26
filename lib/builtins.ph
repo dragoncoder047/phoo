@@ -1,7 +1,7 @@
 to #pragma do
     ]'[ name
     self .phoo .settings
-    ]'[ $ "test" die set
+    ]'[ rot swap unrot set
 end
 
 to try.prt [ stack [ ] ]
