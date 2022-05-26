@@ -88,6 +88,8 @@ export default function stringify(obj, { colorize = x => x, max_depth = 5, palet
                 tt = '';
             else
                 tt += ' ';
+            if (!inner.length)
+                return tt + '{}';
             if (!indent)
                 inner = tt + '{ ' + inner.join(', ') + ' }';
             else
