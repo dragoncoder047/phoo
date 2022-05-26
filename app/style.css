@@ -14,10 +14,10 @@ body {
 .cmd,
 .terminal .terminal-output div div,
 .cmd .prompt {
-    font-size: 1em;
-    line-height: 1.25em;
+    font-size: 16px;
+    line-height: 20px;
 }
 
 .terminal .terminal-output div.raw {
-    font-size: 1em;
+    font-size: 16px;
 }
