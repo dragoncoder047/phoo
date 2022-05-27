@@ -144,7 +144,7 @@ declare module 'loaders.js' {
 
     export interface Loader {
         setup(phoo: Phoo);
-        async load(name: string, thread: Thread);
+        async load(name: string, thread: Thread): boolean;
     }
 
     export class BaseLoader implements Loader { }
