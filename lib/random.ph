@@ -2,7 +2,7 @@ use math
 use _random
 
 /* cSpell:ignore fbelow ibelow */
-to ramdom.fbelow [ random.01 * ]
+to random.fbelow [ random.01 * ]
 
 to random.ibelow [ random.fbelow ~ ~ ]
 
