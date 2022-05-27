@@ -127,20 +127,17 @@ export class Phoo {
      * @param {Thread} thread The thread to load onto.
      */
     async import(module, thread) {
-        var lastErr = null;
         console.debug('Trying to import', module);
-        var ok;
         for (var ld of this.loaders) {
-            ok = true;
+            var done;
             try {
-                await ld.load(module, thread);
-            } catch (e) {
-                lastErr = e;
-                ok = false;
+                done = await ld.load(module, thread);
+            } catch(e) {
+                throw PhooError.wrap(e, this.returnStack);
             }
-            if (ok) break;
+            if (done) return;
         }
-        if (!ok) throw lastErr;
+        throw ModuleNotFoundError.withPhooStack(`Module ${module} could not be loaded`, this.returnStack);
     }
 }
 
