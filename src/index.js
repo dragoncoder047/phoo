@@ -4,7 +4,7 @@
  * Also includes some helpers at the bottom.
  */
 
-import { PhooSyntaxError, ModuleNotFoundError, TypeMismatchError, UnknownWordError } from './errors.js';
+import { PhooError, PhooSyntaxError, ModuleNotFoundError, TypeMismatchError, UnknownWordError } from './errors.js';
 import { Module } from './namespace.js';
 import { type, name, word } from './utils.js';
 import { module as builtinsModule } from '../lib/_builtins.js';
