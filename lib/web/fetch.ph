@@ -1,11 +1,11 @@
 to fetchText do
     nested
-    window .fetch() await
+    window swap .fetch() await
     .text@ await
 end
 
 to fetchJSON do
     nested
-    window .fetch() await
+    window swap .fetch() await
     .json@ await
 end
