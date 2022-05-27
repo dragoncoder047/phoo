@@ -53,7 +53,7 @@ var loading = true;
     const hash = (await (await fetch('https://api.github.com/repos/dragoncoder047/phoo/commits')).json())[0].sha;
 
     try {
-        p = new Phoo({ loaders: [new FetchLoader('../lib/'), new ES6Loader('../lib/')] });
+        p = new Phoo({ loaders: [new FetchLoader('lib/'), new ES6Loader('../lib/')] });
 
         thread = p.createThread('__main__');
 
