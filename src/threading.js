@@ -275,7 +275,7 @@ export class Thread {
             throw PhooSyntaxError.wrap(e, this.returnStack);
         }
         if (this.workStack.length !== origLength)
-            throw BadNestingError.withPhooStack('During compilation: stack not returned to original length', this.workStack);
+            throw BadNestingError.withPhooStack('One or more unmatched brackets', this.workStack);
         return a;
     }
 
