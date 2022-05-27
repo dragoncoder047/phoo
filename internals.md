@@ -15,7 +15,7 @@ In code, the simplest example looks like this:
 ```js
 import { Phoo, initBuiltins, FetchLoader, ES6Loader } from 'phoo/src/index.js';
 async function main() {
-    const p = new Phoo({ loaders: [new FetchLoader('lib/'), new ES6Loader('lib/')] });
+    const p = new Phoo({ loaders: [new FetchLoader('../lib/'), new ES6Loader('../lib/')] });
     const thread = p.createThread('__main__');
     await initBuiltins(thread);
     await thread.run(/* some code as a string */);
@@ -24,7 +24,7 @@ async function main() {
 main()
 ```
 
-Line 1 imports the required functions from the Phoo source code. Line 3 creates the Phoo manager class. Line 4 creates a thread (the name of `__main__` is only a convention borrowed from Python; it doesn't have to be that) and line 5 sets up the builtin library on the thread. Then line 6 runs whatever code needs to be run. The rest of it is up to you!
+Line 1 imports the required functions from the Phoo source code. Line 3 creates the Phoo manager class. (Do note the paths passed to the loaders -- **they're relative to the `src/` directory!**) Line 4 creates a thread (the name of `__main__` is only a convention borrowed from Python; it doesn't have to be that) and line 5 sets up the builtin library on the thread. Then line 6 runs whatever code needs to be run. The rest of it is up to you!
 
 ## Inside the `Thread`
 
