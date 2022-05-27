@@ -39,7 +39,7 @@ end
 macro // do
     dup $ '' = not while
     behead
-    dup 10 chr = dip [ 13 chr = ] or until
+    dup [ 10 chr ] const = dip [ [ 13 chr ] const = ] or until
 end
 
 to dup [ 0 pick ]

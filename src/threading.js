@@ -239,26 +239,27 @@ export class Thread {
         }
         var code = source.slice();
         var origLength = this.workStack.length;
-        var word, module, b, a = [];
+        var word, module, m, a = [];
         try {
             while (code.length > 0) {
                 // https://stackoverflow.com/questions/10272773/split-string-on-the-first-white-space-occurrence
                 [word, code] = code.trim().split(/(?<=^\S+)\s/);
                 //console.debug('word:', word)
                 code = code || '';
-                b = this.lookup(word, true);
-                if (b !== undefined) {
+                m = this.lookup(word, true);
+                if (m !== undefined) {
                     this.push(a);
                     this.push(code);
-                    switch (type(b)) {
+                    switch (type(m)) {
                         case 'function':
-                            await b.call(this);
+                            await m.call(this);
                             break;
                         case 'array':
-                            await this.executeOneItem(b);
+                            console.debug('Got Phoo Macro', word);
+                            await this.executeOneItem(m);
                             break;
                         default:
-                            throw new TypeMismatchError(`Unexpected ${type(b)} as macro.`);
+                            throw new TypeMismatchError(`Unexpected ${type(m)} as macro.`);
                     }
                     this.expect('string', 'array');
                     code = this.pop();
