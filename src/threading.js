@@ -266,7 +266,7 @@ export class Thread {
                     a = this.pop();
                 }
                 else { // try looking up in literals
-                    var { succeeded, result } = await this.compileLiteral(word, a);
+                    var { succeeded, result } = await this.compileLiteral(word);
                     a.push(succeeded ? result : w(word));
                 }
             }
