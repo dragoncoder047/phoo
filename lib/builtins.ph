@@ -24,7 +24,7 @@ to alias to
 
 macro const do
     dip do
-        [] = iff
+        dup len 0 = iff
             $ 'const: need something before to precompile' die
         dup take run
         nested
