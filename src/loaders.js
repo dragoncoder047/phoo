@@ -50,6 +50,7 @@ export class ES6Loader extends BaseLoader {
             if (mod === undefined)
                 return false;
         } catch (e) {
+            if (e.message && /failed to fetch/i.test(e.message)) return false;
             throw ModuleNotFoundError.wrap(e);
         }
         thread.getScope(0).copyFrom(mod);
