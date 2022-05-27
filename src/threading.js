@@ -95,7 +95,7 @@ export class Thread {
         var types;
         if (type(args[0]) === 'number') {
             if (this.workStack.length < args[0])
-                throw new StackUnderflowError(`Expected at least ${args[0]} items on stack, got ${this.workStack.length}`);
+                throw StackUnderflowError.withPhooStack(`Expected at least ${args[0]} items on stack, got ${this.workStack.length}`, this.returnStack);
             types = args.slice(1);
         }
         else
@@ -116,7 +116,7 @@ export class Thread {
      */
     pop(depth = 0) {
         if (this.workStack.length < (depth + 1))
-            throw new StackUnderflowError(`Expected at least ${depth + 1} items on stack, got ${this.workStack.length}`);
+            throw StackUnderflowError.withPhooStack(`Expected at least ${depth + 1} items on stack, got ${this.workStack.length}`, this.returnStack);
         return this.workStack.splice(this.workStack.length - depth - 1, 1)[0];
     }
 

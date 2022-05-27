@@ -41,7 +41,7 @@ _const_factory LOG2E
 _const_factory LOG10E
 _const_factory SQRT2
 _const_factory SQRT1_2
-_func1_factory abs
+// omitting abs
 _func1_factory acos
 _func1_factory acosh
 _func1_factory asin
@@ -64,8 +64,8 @@ _func1_factory log
 _func1_factory log1p
 _func1_factory log10
 _func1_factory log2
-_funca_factory max
-_funca_factory min
+// omitting max
+// omitting min
 _func2_factory pow
 // omitting random
 _func1_factory round
