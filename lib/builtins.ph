@@ -13,9 +13,9 @@ to protect do
 end
 
 to in_scope do
-    self .enterScope@
+    self .enterScope@ drop
     ]'[ run
-    self .exitScope@
+    self .exitScope@ drop
 end
 
 to noop [ ]
