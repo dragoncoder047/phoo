@@ -72,10 +72,11 @@ var loading = true;
             } catch (e) {
                 term.error('Error!');
                 term.error(e[STACK_TRACE_SYMBOL] || '(No stack trace)');
-                if (type(e) === 'string') term.error(e);
-                else {
+                try {
                     term.error(`${e.name}: ${e.message}`);
                     term.echo(`<details><summary style="color:red">View JS stack trace</summary><pre>${e.stack}</pre></details>`, { raw: true });
+                } catch(e) {
+                    term.error(e);
                 }
             }
             if (thread.workStack.length) {

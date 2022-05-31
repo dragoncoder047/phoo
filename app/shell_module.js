@@ -1,4 +1,3 @@
-// WOW, this is really old
 import { term } from './main.js';
 import { Module } from '../src/namespace.js';
 import { naiveCompile } from '../src/index.js';
