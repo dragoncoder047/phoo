@@ -2,7 +2,7 @@ use _fmath
 use _imath
 
 to _M [ stack ]
-window .Math _M put // get the global Math object
+window .Math _M put /* get the global Math object */
 to Math [ _M share ]
 
 to _const_factory do 
@@ -41,7 +41,7 @@ _const_factory LOG2E
 _const_factory LOG10E
 _const_factory SQRT2
 _const_factory SQRT1_2
-// omitting abs
+/* omitting abs */
 _func1_factory acos
 _func1_factory acosh
 _func1_factory asin
@@ -64,10 +64,10 @@ _func1_factory log
 _func1_factory log1p
 _func1_factory log10
 _func1_factory log2
-// omitting max
-// omitting min
+/* omitting max */
+/* omitting min */
 _func2_factory pow
-// omitting random
+/* omitting random */
 _func1_factory round
 _func1_factory sign
 _func1_factory sin

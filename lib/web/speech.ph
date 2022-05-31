@@ -5,7 +5,7 @@ end
 to speech.speak do
     nested
     window .SpeechSynthesisUtterance new()
-    // TODO - add pitch, rate, etc.
+    /* TODO - add pitch, rate, etc. */
     dup
     nested
     window .speechSynthesis .speak() drop

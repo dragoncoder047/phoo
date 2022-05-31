@@ -1,10 +1,15 @@
-// TODO
-// https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto
+/* TODO
 
-// hashing
+https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto
 
-// signing
+hashing
 
-// encrypting
+signing
 
-// decrypting
+encrypting
+
+decrypting
+
+*/
+
+$ "NOT IMPLEMENTED" die
