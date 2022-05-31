@@ -5,7 +5,7 @@ to permissions.assert do
 end
 
 to permissions.query do
-    {} tuck .name=
+    {} tuck swap .name=
     nested
     window .navigator .permissions .query() await
     switch do

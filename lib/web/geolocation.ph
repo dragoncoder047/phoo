@@ -1,4 +1,10 @@
+to geolocation.can? do
+    window .navigator .geolocation
+    undefined !=
+end
+
 to geolocation.getpos do
-    $ "TODO: Implement functionize method" die
-    window .navigator .geolocation -------?????
+    promise 2 pack
+    window .navigator .geolocation swap .getCurrentPosition() drop
+    await
 end
