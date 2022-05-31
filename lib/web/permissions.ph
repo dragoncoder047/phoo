@@ -12,6 +12,6 @@ to permissions.query do
         $ "denied" case false
         $ "granted" case true
         $ "prompt" case undefined
-        otherwise undefined
+        default undefined
     end
 end
