@@ -6,7 +6,7 @@ to notifications.can? do
         $ "granted" case true
         $ "denied" case false
         $ "default" case undefined
-        otherwise undefined
+        default undefined
     end
 end
 
