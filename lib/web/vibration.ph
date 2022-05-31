@@ -1,6 +1,6 @@
 to vibrate do
     nested
-    navigator .vibrate() drop
+    navigator swap .vibrate() drop
 end
 
 to vibrate.stop do
