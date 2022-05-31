@@ -7,7 +7,7 @@ end
 to permissions.query do
     {} tuck swap .name=
     nested
-    window .navigator .permissions .query() await
+    window .navigator .permissions swap .query() await
     switch do
         $ "denied" case false
         $ "granted" case true
