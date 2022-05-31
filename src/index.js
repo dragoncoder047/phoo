@@ -129,7 +129,8 @@ export class Phoo {
      */
     async import(module, thread, force_reload = false) {
         if (thread.module.imported_modules.includes(module) && !force_reload) {
-            console.debug('Already imported', module)
+            console.debug('Already imported', module);
+            return;
         }
         console.debug('Trying to import', module);
         for (var ld of this.loaders) {
