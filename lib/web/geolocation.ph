@@ -4,7 +4,7 @@ to geolocation.can? do
 end
 
 to geolocation.getpos do
-    promise 2 pack
+    promise swap 2 pack
     window .navigator .geolocation swap .getCurrentPosition() drop
     await
 end
