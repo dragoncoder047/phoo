@@ -3,7 +3,7 @@ use _imath
 
 to _M [ stack ]
 window .Math _M put /* get the global Math object */
-to Math [ _M share ]
+to Math [ _M copy ]
 
 to _const_factory do 
     ]'[ Math nested
