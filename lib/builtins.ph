@@ -131,6 +131,33 @@ to bit [ dup $ 'bigint' isa? iff 1n else 1 swap << ]
 
 to immovable [ ]
 
+to var do
+    ]'[ name
+    dup
+    $ "var_" swap ++ word tuck
+    ' [ stack ] ]define[
+    $ ":" swap ++ word swap
+    nested ' [ copy ] concat ]define[
+end
+
+to var, do
+    temp put
+    ]'[ name
+    dup
+    $ "var_" swap ++ word tuck
+    ' [ stack ] temp take concat ]define[
+    $ ":" swap ++ word swap
+    nested ' [ copy ] concat ]define[
+end
+
+to is do
+    ]'[ name
+    behead drop
+    $ "var_" swap ++
+    word run
+    put
+end
+
 to stack [ immovable ]this[ ]done[ ]
 
 to release [ take drop ]
