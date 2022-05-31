@@ -19,7 +19,7 @@ to notification.send do /* options, title --> notification object */
         end
     end
     2 pack
-    window .Notification new()
+    window .Notification new
 end
 
 to notification.hide do
