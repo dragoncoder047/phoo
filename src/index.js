@@ -125,8 +125,12 @@ export class Phoo {
      * Load the module onto the thread.
      * @param {string} module The name of the module that is to be loaded
      * @param {Thread} thread The thread to load onto.
+     * @param {boolean} [force_reload=false] False if it is okay to do nothing if the module has alredy been loaded.
      */
-    async import(module, thread) {
+    async import(module, thread, force_reload = false) {
+        if (thread.module.imported_modules.includes(module) && !force_reload) {
+            console.debug('Already imported', module)
+        }
         console.debug('Trying to import', module);
         for (var ld of this.loaders) {
             var done;
@@ -135,7 +139,10 @@ export class Phoo {
             } catch(e) {
                 throw PhooError.wrap(e, this.returnStack);
             }
-            if (done) return;
+            if (done) {
+                thread.module.imported_modules.push(module);
+                return;
+            }
         }
         throw ModuleNotFoundError.withPhooStack(`Module ${module} could not be loaded`, this.returnStack);
     }

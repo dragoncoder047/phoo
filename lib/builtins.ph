@@ -452,7 +452,11 @@ to call@ [ [] swap call ]
 to !!todo!! [ $ 'todo' die ]
 
 to use do
-    ]'[ ]import[
+    ]'[ false ]import[
+end
+
+to reuse do
+    ]'[ true ]import[
 end
 
 protect dip.hold
