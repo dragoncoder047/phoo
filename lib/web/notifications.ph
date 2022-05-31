@@ -10,7 +10,7 @@ to notifications.can? do
     end
 end
 
-to notification.send do // options, title --> notification object
+to notification.send do /* options, title --> notification object */
     notifications.can? permissions.assert
     over $ "string" isa? if do
         dip do
