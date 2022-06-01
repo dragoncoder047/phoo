@@ -145,7 +145,7 @@ to var, do
     ]'[ name
     dup
     $ "var_" swap ++ word tuck
-    ' [ stack ] temp take concat ]define[
+    ' [ stack ] temp take nested concat ]define[
     $ ":" swap ++ word swap
     nested ' [ copy ] concat ]define[
 end
