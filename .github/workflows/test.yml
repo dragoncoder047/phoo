@@ -17,6 +17,9 @@ jobs:
           python3 - <<EOF
           import sys, os, glob
           files = glob.glob('**/*.test.ph')
+          if len(files) == 0:
+            print('(No tests)')
+            sys.exit(0)
           for file in files:
             print('-' * 30, file, '-' * 30)
             code = os.system('node --experimental-modules test/test_runner.js ' + file)
