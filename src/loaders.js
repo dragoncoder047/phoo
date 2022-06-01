@@ -57,3 +57,23 @@ export class ES6Loader extends BaseLoader {
         return true;
     }
 }
+
+export class NodeFSLoader extends BaseLoader {
+    constructor(basePath) {
+        super();
+        this.basePath = basePath;
+    }
+    async load(name, thread) {
+        var path = this.basePath + name + '.js';
+        var fs = await import('node:fs');
+        var text;
+        try {
+            text = fs.readFileSync(path);
+        } catch (e) {
+            // assume ENOENT
+            return false;
+        }
+        await thread.run(text);
+        return true;
+    }
+}
