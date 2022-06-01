@@ -412,11 +412,11 @@ to lower [ .toLowerCase@ ]
 
 to lower [ .toUpperCase@ ]
 
-to ++ do  [ stringify swap stringify + ]
+to ++ [ stringify swap stringify + ]
 
-to num>$ do [ nested .toString() ]
+to num>$ [ nested .toString() ]
 
-to $>num do [ 2 pack window swap .parseInt() ]
+to $>num [ 2 pack window swap .parseInt() ]
 
 to big [ nested window swap .BigInt() ]
 
