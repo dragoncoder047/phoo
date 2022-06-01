@@ -406,11 +406,19 @@ to findseq do
     2drop temp take
 end
 
+to found? [ len < ]
+
 to lower [ .toLowerCase@ ]
 
 to lower [ .toUpperCase@ ]
 
-to found? [ len < ]
+to ++ do  [ stringify swap stringify + ]
+
+to num>$ do [ nested .toString() ]
+
+to $>num do [ 2 pack window swap .parseInt() ]
+
+to big [ nested window swap .BigInt() ]
 
 to sort.test [ stack ]
 
@@ -467,6 +475,10 @@ to try do
     1 ]cjump[
 end
 
+to nestdepth [ self .returnStack .length ]
+
+to stacksize [ self .workStack .length ]
+
 to to-do [ stack ]
 
 to new-do [ ' done swap put ]
@@ -478,6 +490,8 @@ to now-do [ [ dup take unpack run again ] drop ]
 to do-now [ 1 split reverse concat now-do ]
 
 to not-do [ [ dup take ' done = until ] drop ]
+
+to chr [ nested window .String swap .fromCharCode() ]
 
 to ord [ ' [ 0 ] .charCodeAt() ]
 
