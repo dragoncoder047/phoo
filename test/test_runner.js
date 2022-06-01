@@ -13,6 +13,6 @@ const file_to_test = argv[2]; // 0 = node, 1 = this file, 2+ = real args
     thread.module.copyFrom(builtinsModule);
     await thread.run(readFileSync('lib/builtins.ph'));
     // now run test code
-    await thread.run('use test');
+    await thread.run(readFileSync('test/test.ph'));
     await thread.run(readFileSync(file_to_test));
 })();

@@ -14,9 +14,9 @@ jobs:
           node-version: 15.x
       - name: test files
         run: |
-          for file in **/*.test.ph
-          do
-            echo "--------------------------$file--------------------------"
-            node --experimental-modules test/test_runner.js $file
-          done
+          python3 - <<EOF
+          import sys, os
+          print('-' * 30, sys.argv[1], '-' * 30)
+          sys.exit(os.system('node --experimental-modules test/test_runner.js ' + sys.arv[1]))
+          EOF
         
