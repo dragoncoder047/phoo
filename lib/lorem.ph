@@ -4,15 +4,19 @@ https://github.com/sfischer13/python-lorem/blob/master/lorem/text.py
 
 use random
 
-var lorem.words
-
 $ "adipisci aliquam amet consectetur dolor dolore dolorem eius est et
 incidunt ipsum labore magnam modi neque non numquam porro quaerat qui
-quia quisquam sed sit tempora ut velit voluptatem" split$ is :lorem.words
+quia quisquam sed sit tempora ut velit voluptatem" split$
+
+var, lorem.words
+
+' [ 4 10 ] var, lorem.numwords
+' [ 5 10 ] var, lorem.numsentences
+' [ 3  6 ] var, lorem.numparagraphs
 
 to lorem.sentence do
     $ ""
-    4 10 random.range times do
+    :lorem.numwords unpack random.range times do
         :lorem.words random.choose
         $ " " ++ ++
     end
@@ -23,7 +27,7 @@ end
 
 to lorem.paragraph do
     $ ""
-    5 10 random.range times do
+    :lorem.numsentences unpack random.range times do
         lorem.sentence
         $ " " ++ ++
     end
@@ -32,7 +36,7 @@ end
 
 to lorem do
     $ ""
-    3 6 random.range times do
+    :lorem.numparagraphs unpack random.range times do
         lorem.paragraph
         $ "
 
