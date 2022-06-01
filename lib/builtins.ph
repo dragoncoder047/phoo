@@ -375,6 +375,14 @@ to matchitem do
     mi.result take
 end
 
+to find do
+    dup len unrot
+    swap nested
+    .indexOf()
+    over +
+    swap mod
+end
+
 to findwith [ ]'[ ]'[ matchitem ]
 
 to findseq do
