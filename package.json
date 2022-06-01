@@ -12,5 +12,6 @@
     "license": "GPL-3.0-only",
     "main": "src/index.js",
     "browser": true,
+    "type": "module",
     "private": true
 }

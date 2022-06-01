@@ -34,12 +34,38 @@ end
 
 to test.case do
     is :suite.case
+    false
     ]'[
     try do
         run
     end
     do
-        $ "tests failed" die
+        $ "Test case failed: " :suite.case ++ output.err
+        dup output.err
+        nip
+    end
+    dup iff do
+        :suite.fails 1+ is :suite.fails
+    end
+    else do
+        :suite.successes 1+ is :suite.successes
     end
 end
-    
+
+to assert do
+    ]'[ temp put
+    not if do
+        $ "Assertion failed! " temp take ++ die
+    end
+    temp release
+end
+
+to assert.equal do
+    ]'[ temp put
+    2dup != if do
+        stringify swap stringify swap
+        $ " == " ++ swap ++ $ " was false! " ++ temp take ++
+        die
+    end
+    temp release
+end
