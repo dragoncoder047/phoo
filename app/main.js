@@ -75,7 +75,7 @@ var loading = true;
                 try {
                     term.error(`${e.name}: ${e.message}`);
                     term.echo(`<details><summary style="color:red">View JS stack trace</summary><pre>${e.stack}</pre></details>`, { raw: true });
-                } catch(e) {
+                } catch (_) {
                     term.error(e);
                 }
             }

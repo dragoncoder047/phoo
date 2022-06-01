@@ -460,7 +460,7 @@ to do-now [ 1 split reverse concat now-do ]
 
 to not-do [ [ dup take ' done = until ] drop ]
 
-to ord [ ' [ 0 ] swap .charCodeAt() ]
+to ord [ ' [ 0 ] .charCodeAt() ]
 
 to isa? [ swap type = ]
 
