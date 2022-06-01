@@ -15,8 +15,12 @@ jobs:
       - name: test files
         run: |
           python3 - <<EOF
-          import sys, os
-          print('-' * 30, sys.argv[1], '-' * 30)
-          sys.exit(os.system('node --experimental-modules test/test_runner.js ' + sys.arv[1]))
+          import sys, os, glob
+          files = glob.glob('**/*.test.ph')
+          for file in files:
+            print('-' * 30, file, '-' * 30)
+            code = os.system('node --experimental-modules test/test_runner.js ' + file)
+            if code > 0:
+              sys.exit(1)
           EOF
         
