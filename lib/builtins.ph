@@ -495,3 +495,16 @@ protect with.hold
 protect mi.tidyup
 protect mi.result
 protect sort.test
+
+to dir do
+    self .module nested
+    self .scopeStack concat
+    [] temp put
+    witheach do
+        .words .map .keys@
+        window .Array swap nested .from()
+        temp take
+        concat temp put
+    end
+    temp take
+end
