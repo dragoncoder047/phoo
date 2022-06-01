@@ -358,6 +358,13 @@ to filter do
     fold
 end
 
+to split do
+    2dup
+    nested ' [ 0 ] swap concat .slice()
+    unrot
+    nested .slice()
+end
+
 to mi.tidyup [ stack ]
 to mi.result [ stack ]
 
