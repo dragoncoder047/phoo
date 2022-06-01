@@ -410,7 +410,7 @@ to found? [ len < ]
 
 to lower [ .toLowerCase@ ]
 
-to lower [ .toUpperCase@ ]
+to upper [ .toUpperCase@ ]
 
 to ++ [ stringify swap stringify + ]
 
