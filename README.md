@@ -20,3 +20,4 @@ The Phoo interpreter-compiler environment plus its (for the time being) minimali
 
 * The Phoo web app's terminal uses Jakub T. Jankiewicz's [jquery.terminal plugin](https://github.com/jcubic/jquery.terminal). MIT license.
 * The font used is the "IBM CGA" font I found on <https://int10h.org/oldschool-pc-fonts/>. CC BY-SA 4.0 license.
+* The `lorem` module was adapted from [@sfischer13/python-lorem](https://github.com/sfischer13/python-lorem). MIT license.
