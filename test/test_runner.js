@@ -14,5 +14,6 @@ const file_to_test = argv[2]; // 0 = node, 1 = this file, 2+ = real args
     await thread.run(readFileSync('lib/builtins.ph'));
     // now run test code
     await thread.run(readFileSync('test/test.ph'));
+    console.log('Running tests in ', file_to_test);
     await thread.run(readFileSync(file_to_test));
 })();
