@@ -69,3 +69,13 @@ to assert.equal do
     end
     temp release
 end
+
+to assert.lt do
+    ]'[ temp put
+    2dup >= if do
+        stringify swap stringify swap
+        $ " < " ++ swap ++ $ " was false! " ++ temp take ++
+        die
+    end
+    temp release
+end
