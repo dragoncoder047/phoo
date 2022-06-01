@@ -406,6 +406,10 @@ to findseq do
     2drop temp take
 end
 
+to lower [ .toLowerCase@ ]
+
+to lower [ .toUpperCase@ ]
+
 to found? [ len < ]
 
 to sort.test [ stack ]
