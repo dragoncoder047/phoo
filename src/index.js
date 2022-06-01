@@ -196,11 +196,12 @@ export function naiveCompile(string) {
 /**
  * Runs the builtin modules on the Phoo thread, initializing it for basic use.
  * @param {Thread} t The thread to load onto.
+ * @param {string} [bphp] Path to builtins Pho code (because ES6 modules can't resolve non-JS files)
  * @returns {Promise<void>} When initialization is complete.
  */
-export async function initBuiltins(t) {
+export async function initBuiltins(t, bphp = './lib/builtins.ph') {
     t.module.copyFrom(builtinsModule);
-    var resp = await fetch('./lib/builtins.ph');
+    var resp = await fetch(bphp);
     if (!resp.ok)
         throw new ModuleNotFoundError('Fetch error');
     await t.run(await resp.text());

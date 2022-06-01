@@ -17,7 +17,7 @@ import { Phoo, initBuiltins, FetchLoader, ES6Loader } from 'phoo/src/index.js';
 async function main() {
     const p = new Phoo({ loaders: [new FetchLoader('lib/'), new ES6Loader('../lib/')] });
     const thread = p.createThread('__main__');
-    await initBuiltins(thread);
+    await initBuiltins(thread, '/path/to/builtins.ph');
     await thread.run(/* some code as a string */);
     /* now do something with thread.workStack */
 }
