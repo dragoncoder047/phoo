@@ -72,12 +72,8 @@ var loading = true;
             } catch (e) {
                 term.error('Error!');
                 term.error(e[STACK_TRACE_SYMBOL] || '(No stack trace)');
-                try {
-                    term.error(`${e.name}: ${e.message}`);
-                    term.echo(`<details><summary style="color:red">View JS stack trace</summary><pre>${e.stack}</pre></details>`, { raw: true });
-                } catch (_) {
-                    term.error(e);
-                }
+                term.error(e.toString());
+                if (e.stack) term.echo(`<details><summary style="color:red">View JS stack trace</summary><pre>${e.stack}</pre></details>`, { raw: true });
             }
             if (thread.workStack.length) {
                 var options = { colorize: color };
