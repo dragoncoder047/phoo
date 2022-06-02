@@ -1,4 +1,5 @@
 @import url('/static/css/fonts.css');
+
 body {
     background: black;
     font-size: 16px;
@@ -20,4 +21,8 @@ body {
 
 .terminal .terminal-output div.raw {
     font-size: 16px;
+}
+
+.terminal * {
+    font-family: var(--font);
 }
