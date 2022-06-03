@@ -1092,46 +1092,148 @@ to try do
     1 ]cjump[
 end
 
+/* >>
+word> nestdepth
+description> puts the current recursion depth on the stack.
+sed> -- n
+*/
 to nestdepth [ self .returnStack .length ]
 
+/* >>
+word> stacksize
+description> puts the number of items on the stack, on the stack.
+sed> -- n
+*/
 to stacksize [ self .workStack .length ]
 
+/* >>
+word> to-do
+description> to-do is a general purpose ancillary [[stack]].
+sed> -- a
+*/
 to to-do [ stack ]
 
+/* >>
+word> new-do
+description> initializes the [[stack]] a as a to-do stack by putting [[done]] on it.
+sed> a --
+*/
 to new-do [ ' done swap put ]
 
+/* >>
+word> add-to
+description> puts the action c and its arguments xxx* (the number of which is n) on the to-do stack a.
+sed> xxx* c n a --
+*/
 to add-to [ dip [ 1+ pack ] put ]
 
+/* >>
+word> now-do
+description> runs all the queued items on the to-do stack, until it hits the [[done]] put there by [[new-to]].
+sed> a --
+*/
 to now-do [ [ dup take unpack run again ] drop ]
 
+/* >>
+word> do-now
+description> same as [[now-do]] but does the items in reverse order.
+sed> a --
+*/
 to do-now [ 1 split reverse concat now-do ]
 
+/* >>
+word> not-do
+description> removes all the queued items from the to-do stack a without running them.
+sed> a --
+*/
 to not-do [ [ dup take ' done = until ] drop ]
 
+/* >>
+word> chr
+description> returns the character with the Unicode code point n.
+sed> n -- s
+*/
 to chr [ nested window .String swap .fromCharCode() ]
 
+/* >>
+word> ord
+description> reverse of [[chr]], it gets the code point of the character
+sed> s -- n
+*/
 to ord [ ' [ 0 ] .charCodeAt() ]
 
+/* >>
+word> isa?
+description> true if item a's [[type]] is the same as s.
+sed> a s -- t
+*/
 to isa? [ swap type = ]
 
-to isoneof? [ [] unrot witheach [ dip dup isa? swap dip concat ] drop false swap witheach or ]
+/* >>
+word> isoneof
+description> same as [[isa?]] but accepts an array of types, which will succeed if any of them is the [[type]] of a.
+sed> a ss -- t
+*/
+to isoneof? [ dip type ' [ over = ] map nip ' or fold ]
 
+/* >>
+word> stringify
+description> converts a to a string.
+sed> a -- s
+*/
 to stringify [ .toString@ ]
 
+/* >>
+word> arrayify
+description> converts a to an array.
+sed> x -- a
+*/
 to arrayify [ dup $ 'array' isa? not if nested ]
 
+/* >>
+word> phoo
+description> compile and run the code.
+sed> c --
+*/
 to phoo [ compile run ]
 
+/* >>
+word> new@
+description> Constructs the function f by calling it with no arguments.
+sed> f -- o
+*/
 to new@ [ [] swap new ]
 
+/* >>
+word> call@
+description> Calls the function f with no arguments.
+sed> f -- r
+*/
 to call@ [ [] swap call ]
 
+/* >>
+word> !!todo!!
+description> Throws `'todo'`.
+sed> --
+*/
 to !!todo!! [ $ 'todo' die ]
 
+/* >>
+word> use
+lookahead> path/to/module
+description> Imports the module, skipping if it was already imported.
+sed> --
+*/
 to use do
     ]'[ false ]import[
 end
 
+/* >>
+word> reuse
+lookahead> path/to/module
+description> Imports the module, force-reloading it even if it is already loaded.
+sed> --
+*/
 to reuse do
     ]'[ true ]import[
 end
@@ -1146,6 +1248,11 @@ protect mi.tidyup
 protect mi.result
 protect sort.test
 
+/* >>
+word> dir
+description> Returns a list of the names of all the available words in this scope.
+sed> -- a
+*/
 to dir do
     self .module nested
     self .scopeStack concat
