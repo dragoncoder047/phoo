@@ -436,25 +436,101 @@ sed> -- a
 */
 to temp [ stack ]
 
+/* >>
+word> done
+description> jumps immediately to the end of the array.
+sed> --
+example>
+    [ foo bar done baz ]
+    // foo bar will run, baz will not
+*/
 to done [ ]done[ ]
 
+/* >>
+word> again
+description> jumps immediately to the start of the array.
+sed> --
+example>
+    [ foo bar again baz ]
+    // foo bar will run infinitely
+*/
 to again [ ]again[ ]
 
+/* >>
+word> if
+description> if the top of stack is false, skips the next item
+sed> t --
+example>
+    [ foo bar if baz ]
+    // if bar returns false, baz will be skipped
+*/
 to if [ 1 ]cjump[ ]
+
+/* >>
+word> iff
+description> if the top of stack is false, skips the next two items
+sed> t --
+example>
+    [ foo iff bar baz ]
+    // if foo returns false, bar baz will be skipped
+*/
 to iff [ 2 ]cjump[ ]
 
+/* >>
+word> else
+description> unconditionally skips the next item
+sed> --
+example>
+    [ foo else bar baz ]
+    // bar will not run.
+*/
 to else [ false 1 ]cjump[ ]
 
+/* >>
+word> until
+description> if the top of stack is false, jumps back to the start of the array.
+sed> t --
+example>
+    [ foo bar baz until ]
+    // repeats foo bar baz until baz returns true.
+*/
 to until [ not if ]again[ ]
 
+/* >>
+word> while
+description> if the top of stack is false, jumps to the end of the array.
+sed> t --
+example>
+    [ foo while baz again ]
+    // runs foo at least once, then repeats bar foo until foo returns false
+*/
 to while [ not if ]done[ ]
 
 to switch.arg [ stack ]
 
+/* >>
+word> switch
+description> begins a switch staement: puts the value to be switched upon in a temporary stack (not [[temp]]).
+sed> v --
+see-also> case default
+*/
 to switch [ switch.arg put ]
 
+/* >>
+word> default
+description> ends a switch staement: empties the switch value from the stack it is stored on.
+sed> v --
+see-also> switch case
+*/
 to default [ switch.arg release ]
 
+/* >>
+word> case
+lookahead> action
+description> if the value on the stack is not the switch value, skips action. If it is, runs action and then jumps to the end of the array (skipping the other cases and the [[default]]).
+sed> v --
+see-also> switch default
+*/
 to case do
     switch.arg copy
     != [ 4 ]cjump[ ]
@@ -463,12 +539,36 @@ to case do
     ]'[ run ]done[
 end
 
+/* >>
+word> '
+lookahead> value
+description> puts the value following it on the stack instead of running it.
+sed> -- v
+example>
+    [ 1 2 3 ] // results in 3 items on the stack
+    ' [ 1 2 3 ] // results in 1 item, the array [1, 2, 3]
+*/
 to ' [ ]'[ ]
 
+/* >>
+word> run
+description> runs the item on the stack as code.
+sed> c --
+*/
 to run [ ]run[ ]
 
+/* >>
+word> this
+description> puts a reference to the current array on the stack.
+sed> -- a
+*/
 to this [ ]this[ ]
 
+/* >>
+word> table
+description> placed at the start of a word, turns it into a lookup table. Takes the n-th item after the `table` and puts it on the stack, and then skips everything after it.
+sed> n -- i
+*/
 to table [ immovable dup -1 > + ]this[ swap peek ]done[ ]
 
 to recurse [ ]this[ run ]
