@@ -1,2 +1,3 @@
 *.ph linguist-language=Forth
 app/jqt linguist-vendored
+docs/ linguist-documentation
