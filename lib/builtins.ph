@@ -571,12 +571,23 @@ sed> n -- i
 */
 to table [ immovable dup -1 > + ]this[ swap peek ]done[ ]
 
+/* >>
+word> recurse
+description> causes the current array to run itself again.
+sed> --
+*/
 to recurse [ ]this[ run ]
 
 to times.start [ stack ]
 to times.count [ stack ]
 to times.action [ stack ]
 
+/* >>
+word> times
+lookahead> block
+description> runs body the specified numbe of times.
+sed> n --
+*/
 to times do
     ]'[ times.action put
     dup times.start put
@@ -592,16 +603,36 @@ to times do
     times.start release
 end
 
+/* >>
+word> i
+description> inside of a [[times]] loop, gets the number of iterations left to do after this one.
+sed> -- n
+*/
 to i [ times.count copy ]
 
+/* >>
+word> i^
+description> inside of a [[times]] loop, gets the number of iterations done since the loop started.
+sed> -- n
+*/
 to i^ [ times.start copy i 1+ - ]
 
+/* >>
+word> j
+description> inside of a doubly nested [[times]] loop, gets the number of iterations left to do in the **outer** loop after this one.
+sed> -- n
+*/
 to j do
     times.count temp move
     i
     temp times.count move
 end
 
+/* >>
+word> j^
+description> inside of a doubly nested [[times]] loop, gets the number of iterations done by the **outer** loop since the loop started.
+sed> -- n
+*/
 to j^ do
     times.start temp move
     times.count temp move
@@ -610,18 +641,56 @@ to j^ do
     temp times.start move
 end
 
+/* >>
+word> step
+description> adds n to the current [[times]] loop's iteration counter. 
+sed> n --
+*/
 to step [ times.count take 1+ swap - times.count put ]
 
+/* >>
+word> restart
+description> sets the current [[times]] loop's iteration counter to the original value it started at, restarting the loop. 
+sed> --
+*/
 to restart [ times.start copy times.count replace ]
 
+/* >>
+word> break
+description> sets the current [[times]] loop's iteration counter to 0, causing the loop to end after this iteration is done.
+sed> --
+*/
 to break [ 0 times.count replace ]
 
-to printable? [ ord 32 > ]
+/* >>
+word> printable
+description> given a character c, treurns true or false whether it is in the printable region of ASCII (i.e. greater than 31).
+sed> c -- t
+*/
+to printable? [ ord 31 > ]
 
+/* >>
+word> trim
+description> trims the leading whitespace from a string.
+sed> s -- t
+*/
 to trim [ dup findwith printable? noop split nip ]
 
+/* >>
+word> nextword
+description> given a string that does not start with whitespace, returns the first word and the rest of the string.
+sed> s -- r w
+s> string
+r> remainder of string
+w> first word
+*/
 to nextword [ dup findwith [ printable? not ] noop split swap ]
 
+/* >>
+word> split$
+description> splits a string s into an array a of individual words.
+sed> s -- a
+*/
 to split$ do
     [] swap
     do
@@ -633,18 +702,54 @@ to split$ do
     drop
 end
 
+/* >>
+word> nested
+description> puts an item in its own array.
+sed> i -- a
+*/
 to nested [ [] tuck put ]
 
+/* >>
+word> len
+description> gets the length of the array or string.
+sed> a -- l
+*/
 to len [ .length ]
 
+/* >>
+word> pluck
+description> pulls the i-th item out of the array a and returns the shortened array and the item.
+sed> a n -- a i
+see-also> stuff
+*/
 to pluck [ split 1 split swap dip join 0 peek ]
 
+/* >>
+word> stuff
+description> reverse of [[pluck]], it puts the item back.
+sed> a i n -- a
+*/
 to stuff [ split rot nested swap join join ]
 
+/* >>
+word> behead
+description> returns the first item of the array a, and the rest. The original array is not mutated.
+sed> a -- a i
+*/
 to behead [ 0 pluck ]
 
+/* >>
+word> join
+description> joins two arrays or strings, selecting between [[++]] and `concat` depending on the type of the arguments.
+sed> a b -- ab
+*/
 to join [ 2dup $ 'string' isa? dip [ $ 'string' isa? end and iff ++ else concat ]
 
+/* >>
+word> of
+description> makes an array with n x's in it.
+sed> x n -- a 
+*/
 to of do
     dip do
         dup $ 'string' isa? iff $ '' else []
@@ -665,18 +770,33 @@ to of do
     2drop join
 end
 
+/* >>
+word> reverse
+description> reverses the array
+sed> arr -- rra 
+*/
 to reverse do
     dup $ 'array' isa? if do
         [] swap witheach [ nested swap concat ]
     end
 end
 
+/* >>
+word> reverse$
+description> [[reverse]] but for strings.
+sed> x -- x 
+*/
 to reverse$ do
     dup $ 'string' isa? if do
         $ '' swap witheach [ swap ++ ]
     end
 end
 
+/* >>
+word> reflect
+description> [[reverse]] but digs down into sub-arrays and reflects them too.
+sed> x -- x 
+*/
 to reflect do
     dup $ 'array' isa? if do
         [] swap witheach [ reflect nested swap concat ]
@@ -685,6 +805,15 @@ end
 
 to with.hold [ stack ]
 
+/* >>
+word> makewith
+description>
+    places the code in a loop and returns the generated code.
+    
+    The returned code takes an array or string on the stack and calls the original code passed 
+    to `makewith` with each item of the array or string.
+sed> c -- l 
+*/
 to makewith do
     nested
     ' [ dup with.hold put len times ]
@@ -695,8 +824,34 @@ to makewith do
     concat
 end
 
+/* >>
+word> witheach
+lookahead> block
+description> takes an array or string and runs block for each item in it.
+sed> a -- 
+*/
 to witheach [ ]'[ makewith run ]
 
+/* >>
+word> fold
+description>
+    takes a function and an array and reduces the array by calling the function with pairs of the items from the array:
+
+        ' [ 1   2   3   4   5   6   7   8   9   0 ] ' a fold
+            |   |   |   |   |   |   |   |   |   |
+            '>a<'   |   |   |   |   |   |   |   |
+              '-->a<'   |   |   |   |   |   |   |
+                  '-->a<'   |   |   |   |   |   |
+                      '-->a<'   |   |   |   |   |
+                          '-->a<'   |   |   |   |
+                              '-->a<'   |   |   |
+                                  '-->a<'   |   |
+                                      '-->a<'   |
+                                          '-->a<'
+                                              |
+                                              result
+sed> a r -- s
+*/
 to fold do
     over [] = iff drop done
     dip do
@@ -706,8 +861,18 @@ to fold do
     nested join run
 end
 
+/* >>
+word> foldr
+description> same as [[fold]] but applies the operation in reverse order.
+sed> a r -- s
+*/
 to foldr [ dip reverse fold ]
 
+/* >>
+word> map
+description> passes each item of array a through function r and concatentates the returned values.
+sed> a r -- s
+*/
 to map do
     ' [ [ ] ] rot join swap
     nested
@@ -715,6 +880,11 @@ to map do
     fold
 end
 
+/* >>
+word> filter
+description> passes each item of array a through function r and returns the items for which r returns true.
+sed> a r -- s
+*/
 to filter do
     ' [ [ ] ] rot join swap
     nested ' dup swap join
@@ -722,6 +892,11 @@ to filter do
     fold
 end
 
+/* >>
+word> split
+description> splits the array between the n-th and n+1-th items and returns the parts, second half on top.
+sed> a n -- x y
+*/
 to split do
     2dup
     nested ' [ 0 ] swap concat .slice()
@@ -732,6 +907,14 @@ end
 to mi.tidyup [ stack ]
 to mi.result [ stack ]
 
+/* >>
+word> matchitem
+description> uses the provided functions to find an item. returns the index of the first found item
+sed> a f c -- i
+a> array to search
+f> criteria function to test if item matches
+c> cleanup function to clean the stack
+*/
 to matchitem do
     mi.tidyup put
     over len mi.result put
@@ -746,6 +929,11 @@ to matchitem do
     mi.result take
 end
 
+/* >>
+word> find
+description> finds the first index where item x occurs in the array a.
+sed> a x -- i
+*/
 to find do
     dup len unrot
     swap nested
@@ -754,6 +942,12 @@ to find do
     swap mod
 end
 
+/* >>
+word> findwith
+lookahead> criteria cleanup
+description> same as [[matchitem]] but uses lookahead for cleanup and criteria.
+sed> a -- i
+*/
 to findwith [ ]'[ ]'[ matchitem ]
 
 to findseq do
@@ -770,22 +964,65 @@ to findseq do
     2drop temp take
 end
 
+/* >>
+word> found?
+description> true if i is a valid index into array a.
+sed> a i -- t
+example>
+    to has-foo? [ dup $ "foo" find found? ]
+*/
 to found? [ len < ]
 
+/* >>
+word> lower
+description> turns a string lowercase
+sed> s -- s
+*/
 to lower [ .toLowerCase@ ]
 
+/* >>
+word> upper
+description> turns a string uppercase
+sed> s -- s
+*/
 to upper [ .toUpperCase@ ]
 
+/* >>
+word> ++
+description> concatenates 2 items after casting both to string type.
+sed> s1 s2 -- s1s2
+*/
 to ++ [ stringify swap stringify + ]
 
+/* >>
+word> num>$
+description> writes number x in base n
+sed> x n -- s
+*/
 to num>$ [ nested .toString() ]
 
+/* >>
+word> $>num
+description> parses string s as a number in base n.
+sed> s n -- x
+*/
 to $>num [ 2 pack window swap .parseInt() ]
 
+/* >>
+word> big
+description> turns number n into a `BigInt`.
+sed> n -- b
+*/
 to big [ nested window swap .BigInt() ]
 
 to sort.test [ stack ]
 
+/* >>
+word> sortwith
+lookahead> comp
+description> using comparator comp, sorts the array. Does not mutate the array.
+sed> a -- s
+*/
 to sortwith do
     ]'[ sort.test put
     [] swap witheach do
@@ -797,12 +1034,28 @@ to sortwith do
     sort.test release
 end
 
+/* >>
+word> sort
+description> sort an array of numbers
+sed> a -- s
+*/
 to sort [ sortwith > ]
 
+/* >>
+word> sort$
+description> sort an array of strings
+sed> a -- s
+*/
 to sort$ [ sortwith $> ]
 
 to try.hist [ stack ]
 
+/* >>
+word> try
+lookahead> block except
+description> runs block, and if it threw an error, runs except with the error on the stack. If block ran fine, skips except.
+sed> --
+*/
 to try do
     {} try.hist put
     try.prt copy
