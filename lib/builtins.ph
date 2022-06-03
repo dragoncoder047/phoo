@@ -1,3 +1,11 @@
+/* >>
+word> #pragma
+lookahead> flag value
+description> sets the settings flag specified.
+sed> --
+example>
+    #pragma strictMode false
+*/
 to #pragma do
     ]'[ name
     self .phoo .settings
@@ -12,16 +20,38 @@ to protect do
     try.prt put
 end
 
+/* >>
+word> in_scope
+lookahead> block
+description> runs the code with a new entry on the scope stack.
+sed> --
+*/
 to in_scope do
     self .enterScope@ drop
     ]'[ run
     self .exitScope@ drop
 end
 
+/* >>
+word> noop
+description> no-op.
+sed> --
+*/
 to noop [ ]
 
+/* >>
+word> alias
+lookahead> x y
+description> aliases x to mean y.
+sed> --
+*/
 to alias to
 
+/* >>
+macro> const
+description> precomputes a value.
+sed> -- v
+*/
 macro const do
     dip do
         dup len 0 = iff
@@ -32,38 +62,108 @@ macro const do
     end
 end
 
+/* >>
+macro> now!
+description> runs code during compilation. *(#6 - doesn't work)*
+sed> --
+*/
 macro now! do
     dip [ dup take run ]
 end
 
+/* >>
+macro> //
+description> line comment *(#6 - doesn't work)*
+sed> --
+*/
 macro // do
     dup $ '' = not while
     behead
     dup [ 10 chr ] const = dip [ [ 13 chr ] const = ] or until
 end
 
+/* >>
+word> dup
+description> duplicates top item
+sed> a -- a a
+*/
 to dup [ 0 pick ]
 
+/* >>
+word> over
+description> copies second item to top
+sed> b a -- b a b
+*/
 to over [ 1 pick ]
 
+/* >>
+word> swap
+description> swaps top two
+sed> b a -- a b
+*/
 to swap [ 1 roll ]
 
+/* >>
+word> rot
+description> pulls third to top
+sed> a b c -- b c a
+*/
 to rot [ 2 roll ]
 
+/* >>
+word> unrot
+description> pushes top down to third
+sed> a b c -- c a b
+*/
 to unrot [ rot rot ]
 
+/* >>
+word> nip
+description> removes second stack item
+sed> a b -- b
+*/
 to nip [ swap drop ]
 
+/* >>
+word> tuck
+description> copies first item to third
+sed> a b -- b a b
+*/
 to tuck [ dup unrot ]
 
+/* >>
+word> 2dup
+description> [[dup]]s two items as a pair.
+sed> a b -- a b a b
+*/
 to 2dup [ over over ]
 
+/* >>
+word> 2drop
+description> [[drop]]s two items as a pair.
+sed> a b --
+*/
 to 2drop [ drop drop ]
 
+/* >>
+word> 2swap
+description> [[swap]]s two pairs of items.
+sed> a b c d -- c d a b
+*/
 to 2swap [ rot dip rot ]
 
+/* >>
+word> 2over
+description> [[over]]s two pairs of items.
+sed> a b c d -- a b c d a b
+*/
 to 2over [ dip [ dip 2dup ] 2swap ]
 
+/* >>
+word> pack
+description> takes n and then puts n items into an array.
+sed> *a n -- a
+*/
 to pack do
     [] swap times do
         swap nested concat
@@ -71,35 +171,112 @@ to pack do
     reverse
 end
 
+/* >>
+word> unpack
+description> reverse of [[pack]], it flattens an array onto the stack.
+sed> a -- i j k ...
+*/
 to unpack [ witheach noop ]
 
 to dip.hold [ stack ]
+
+/* >>
+word> dip
+lookahead> op
+description> dips the top item out of the array, runs the block, and puts the item back.
+sed> a -- a
+*/
 to dip [ dip.hold put ]'[ run dip.hold take ]
 
+/* >>
+word> abs
+description> absolute value of a number.
+sed> n -- |n|
+*/
 to abs [ dup 0 < if negate ]
 
+/* >>
+word> -
+description> subtracts top from second.
+sed> a b -- a-b
+*/
 to - [ negate + ]
 
+/* >>
+word> /~
+description> Flooring division.
+sed> a b -- floor(a/b)
+*/
 to /~ [ /mod drop ]
 
+/* >>
+word> mod
+description> modulo.
+sed> a b -- a%b
+*/
 to mod [ /mod nip ]
 
+/* >>
+word> !=
+description> not equals.
+sed> a b -- t
+*/
 to != [ = not ]
 
+/* >>
+word> <=
+description> less than or equal to.
+sed> a b -- a<=b
+*/
 to <= [ 2dup swap > dip = or ]
 
+/* >>
+word> <
+description> less than.
+sed> a b -- a<b
+*/
 to < [ swap > ]
 
+/* >>
+word> >=
+description> greater than or equal to.
+sed> a b -- a>=b
+*/
 to >= [ swap <= ]
 
+/* >>
+word> min
+description> lesser of two value.
+sed> a b -- v
+*/
 to min [ 2dup > if swap drop ]
 
+/* >>
+word> max
+description> larger of two value.
+sed> a b -- v
+*/
 to max [ 2dup < if swap drop ]
 
+/* >>
+word> clamp
+description> clamps x to $l\gte x\gt u$.
+sed> l u x -- v
+*/
 to clamp [ rot min max ]
 
+/* >>
+word> within
+description> true if $l\gte x\gt u$.
+sed> l u x -- t
+*/
 to within [ rot tuck > unrot > not and ]
 
+/* >>
+word> $<
+description> true if s1 comes before s2 in the dictionary.
+sed> s1 s2 -- s1<s2
+*/
 to $< do
     do
         dup  $ '' = iff
@@ -115,31 +292,78 @@ to $< do
     unrot 2drop
 end
 
+/* >>
+word> $>
+description> true if s1 comes after s2 in the dictionary.
+sed> s1 s2 -- s1>s2
+*/
 to $> [ swap $< ]
 
+/* >>
+word> not
+description> boolean inverse.
+sed> t -- t
+*/
 to not [ dup nand ]
 
+/* >>
+word> and
+description> boolean and.
+sed> t t -- t
+*/
 to and [ nand not ]
 
+/* >>
+word> or
+description> boolean or.
+sed> t t -- t
+*/
 to or [ not swap not nand ]
 
+/* >>
+word> xor
+description> boolean xor.
+sed> t t -- t
+*/
 to xor [ not swap not != ]
 
+/* >>
+word> >>
+description> shift a right by n places.
+sed> a n -- b
+*/
 to >> [ negate << ]
 
+/* >>
+word> bit
+description> $2^n$
+sed> n -- b
+*/
 to bit [ dup $ 'bigint' isa? iff 1n else 1 swap << ]
 
 to immovable [ ]
 
+/* >>
+word> var
+lookahead> name
+description> declares a new variable, initialized to `undefined`.
+sed> --
+*/
 to var do
     ]'[ name
     dup
     $ "var_" swap ++ word tuck
-    ' [ stack ] ]define[
+    ' [ stack undefined ] ]define[
     $ ":" swap ++ word swap
     nested ' [ copy ] concat ]define[
 end
 
+/* >>
+word> var,
+lookahead> name
+description> declares a new variable, initialized to top stack value.
+sed> v --
+*/
 to var, do
     temp put
     ]'[ name
@@ -150,26 +374,66 @@ to var, do
     nested ' [ copy ] concat ]define[
 end
 
+/* >>
+word> is
+lookahead> name
+description> puts a value into a variable.
+sed> v --
+*/
 to is do
     ]'[ name
-    behead drop
     $ "var_" swap ++
     word run
     put
 end
 
+/* >>
+word> stack
+description> placed at the start of a word, makes the word an ancillary stack.
+sed> -- a
+*/
 to stack [ immovable ]this[ ]done[ ]
 
+/* >>
+word> release
+description> removes the first item from an array and discards it. Mutates the array.
+sed> a --
+*/
 to release [ take drop ]
 
+/* >>
+word> copy
+description> copies the last item of the array a onto the stack.
+sed> a -- i
+*/
 to copy [ dup take dup rot put ]
 
+/* >>
+word> replace
+description> replaces the last item on the array a with i
+sed> i a --
+*/
 to replace [ dup release put ]
 
+/* >>
+word> replace
+description> moves the last item from the array b to the array a.
+sed> a b --
+*/
 to move [ swap take swap put ]
 
+/* >>
+word> tally
+description> adds n to the last item of the array a.
+sed> n a --
+*/
 to tally [ dup take rot + swap put ]
 
+/* >>
+word> temp
+description> temp is a general purpose ancillary [[stack]].
+sed> -- a
+*/
 to temp [ stack ]
 
 to done [ ]done[ ]

@@ -33,7 +33,7 @@ to test.suite do
 end
 
 to test.case do
-    is :suite.case
+    is suite.case
     false
     ]'[
     try do
@@ -45,10 +45,10 @@ to test.case do
         nip
     end
     dup iff do
-        :suite.fails 1+ is :suite.fails
+        :suite.fails 1+ is suite.fails
     end
     else do
-        :suite.successes 1+ is :suite.successes
+        :suite.successes 1+ is suite.successes
     end
 end
 
