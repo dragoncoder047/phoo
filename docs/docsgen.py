@@ -8,7 +8,7 @@ COMMENT_RE = re.compile(r'/\* >>\n(?P<body>[\s\S]+?)\n\*/', re.M)
 def findComments(txt):
     return map(lambda match: match.group('body'), COMMENT_RE.finditer(txt))
 
-ONE_THING_RE = re.compile(r'(?P<tag>[a-z]+)>(?P<body> [^\n])')
+ONE_THING_RE = re.compile(r'(?P<tag>[a-z]+)>\s*(?P<body>[^\n]*)?')
 def parseComment(body):
     last = ''
     out = {}
@@ -17,5 +17,15 @@ def parseComment(body):
             last = match.group('tag')
             out[last] = match.group('body')
         else:
-            out[last] += line
+            out[last] += '\n' + line
     return out
+
+BAD_AN_1 = re.compile(r'(\s+)an(\s+[^aeiouy])', re.I)
+BAD_AN_2 = re.compile(r'(\s+)a(\s+[aeiouy])', re.I)
+def fix_typos(txt):
+    txt = BAD_AN_1.sub(txt, r'\1a\2')
+    txt = BAD_AN_2.sub(txt, r'\1an\2')
+    return txt.capitalize().rstrip('.') + '.'
+
+# need to finish!
+raise Exception('todo')
