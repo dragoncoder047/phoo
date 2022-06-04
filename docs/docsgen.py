@@ -82,7 +82,7 @@ all_modules = []
 
 for file in files:
     print('processing', file)
-    base = file.removesuffix('.ph').removesuffix('.js').replace('/', '').removeprefix('lib/')
+    base = file.removesuffix('.ph').removesuffix('.js').removeprefix('lib/').replace('/', '')
     with open(file) as f:
         txt = f.read()
     out_md = f'# `use {base}`\n\n'
