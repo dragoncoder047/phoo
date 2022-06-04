@@ -24,7 +24,7 @@ def parseComment(body):
 DOUBLE_BRACKET_WORD = re.compile(r'\[\[(\S+)\]\]')
 ISOLATED_WORD = r'(?<=[^a-zA-Z])(%s)(?=[^a-zA-z])'
 def inlines(text, tags):
-    words_to_codeify = list(set(tags.get('sed', '').split()) - {'--'} + set(tags.get('lookahead', '')))
+    words_to_codeify = tags.get('sed', '').replace('--', '').split() + tags.get('lookahead', '').split()
     for word in words_to_codeify:
         text = re.sub(ISOLATED_WORD % word, r'`\1`', text)
     text = DOUBLE_BRACKET_WORD.sub(r'[`\1`](#\1)', text)
