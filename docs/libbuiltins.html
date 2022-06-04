@@ -1,10 +1,10 @@
-<!DOCTYPE html><html><head><title>Phoo docs for lib/builtins.ph</title><style>code+.description{display:none;opacity:50%}code:hover+.description{display:inline-block}.shadowed{opacity:50%}</style></head><body><h2 id="#pragma"><code>#pragma</code> <em class="shadowed"><code>flag</code></em> <em class="shadowed"><code>value</code></em> (  &rarr;  )</h2>
+<!DOCTYPE html><html><head><title>Phoo docs for lib/builtins.ph</title><style>code+.description{display:none;opacity:50%}code:hover+.description{display:inline-block}.shadowed{opacity:50%}</style></head><body><h2 id="%23pragma"><code>#pragma</code> <em class="shadowed"><code>flag</code></em> <em class="shadowed"><code>value</code></em> (  &rarr;  )</h2>
 <p>Sets the settings <code>flag</code> specified.</p>
 <p>Example:</p>
 <pre><code class="language-phoo">
 #pragma strictMode false
 </code></pre>
-<h2 id="in_scope"><code>in_scope</code> <em class="shadowed"><code>block</code></em> (  &rarr;  )</h2>
+<h2 id="in%5fscope"><code>in_scope</code> <em class="shadowed"><code>block</code></em> (  &rarr;  )</h2>
 <p>Runs the code with a new entry on the scope stack.</p>
 <h2 id="noop"><code>noop</code>  (  &rarr;  )</h2>
 <p>No-op.</p>
@@ -12,9 +12,9 @@
 <p>Aliases <code>x</code> to mean <code>y</code>.</p>
 <h2 id="const"><code>const</code>  (  &rarr; <code>v</code> )</h2>
 <p>Precomputes a value.</p>
-<h2 id="now!"><code>now!</code>  (  &rarr;  )</h2>
+<h2 id="now%21"><code>now!</code>  (  &rarr;  )</h2>
 <p>Runs code during compilation. <em>(#6 - doesn&rsquo;t work)</em>.</p>
-<h2 id="//"><code>//</code>  (  &rarr;  )</h2>
+<h2 id="%2f%2f"><code>//</code>  (  &rarr;  )</h2>
 <p>Line comment <em>(#6 - doesn&rsquo;t work)</em>.</p>
 <h2 id="dup"><code>dup</code>  ( <code>a</code> &rarr; <code>a</code> <code>a</code> )</h2>
 <p>Duplicates top item.</p>
@@ -31,34 +31,34 @@
 <h2 id="tuck"><code>tuck</code>  ( <code>a</code> <code>b</code> &rarr; <code>b</code> <code>a</code> <code>b</code> )</h2>
 <p>Copies first item to third.</p>
 <h2 id="2dup"><code>2dup</code>  ( <code>a</code> <code>b</code> &rarr; <code>a</code> <code>b</code> <code>a</code> <code>b</code> )</h2>
-<p><a href="#dup"><code>dup</code></a>s two items as <code>a</code> pair.</p>
+<p><a href="#%5b%5bdup%5d%5d"><code>[[dup]]</code></a>s two items as <code>a</code> pair.</p>
 <h2 id="2drop"><code>2drop</code>  ( <code>a</code> <code>b</code> &rarr;  )</h2>
-<p><a href="#drop"><code>drop</code></a>s two items as <code>a</code> pair.</p>
+<p><a href="#%5b%5bdrop%5d%5d"><code>[[drop]]</code></a>s two items as <code>a</code> pair.</p>
 <h2 id="2swap"><code>2swap</code>  ( <code>a</code> <code>b</code> <code>c</code> <code>d</code> &rarr; <code>c</code> <code>d</code> <code>a</code> <code>b</code> )</h2>
-<p><a href="#swap"><code>swap</code></a>s two pairs of items.</p>
+<p><a href="#%5b%5bswap%5d%5d"><code>[[swap]]</code></a>s two pairs of items.</p>
 <h2 id="2over"><code>2over</code>  ( <code>a</code> <code>b</code> <code>c</code> <code>d</code> &rarr; <code>a</code> <code>b</code> <code>c</code> <code>d</code> <code>a</code> <code>b</code> )</h2>
-<p><a href="#over"><code>over</code></a>s two pairs of items.</p>
+<p><a href="#%5b%5bover%5d%5d"><code>[[over]]</code></a>s two pairs of items.</p>
 <h2 id="pack"><code>pack</code>  ( <code>*a</code> <code>n</code> &rarr; <code>a</code> )</h2>
 <p>Takes <code>n</code> and then puts <code>n</code> items into an array.</p>
 <h2 id="unpack"><code>unpack</code>  ( <code>a</code> &rarr; <code>i</code> <code>j</code> <code>k</code> <code>...</code> )</h2>
-<p>Reverse of <a href="#pack"><code>pack</code></a>, it flattens an array onto the stack.</p>
+<p>Reverse of <a href="#%5b%5bpack%5d%5d"><code>[[pack]]</code></a>, it flattens an array onto the stack.</p>
 <h2 id="dip"><code>dip</code> <em class="shadowed"><code>op</code></em> ( <code>a</code> &rarr; <code>a</code> )</h2>
 <p>Dips the top item out of the array, runs the block, and puts the item back.</p>
 <h2 id="abs"><code>abs</code>  ( <code>n</code> &rarr; <code>|n|</code> )</h2>
 <p>Absolute value of a number.</p>
-<h2 id="-"><code>-</code>  ( <code>a</code> <code>b</code> &rarr; <code>a-b</code> )</h2>
+<h2 id="%2d"><code>-</code>  ( <code>a</code> <code>b</code> &rarr; <code>a-b</code> )</h2>
 <p>Subtracts top from second.</p>
-<h2 id="/~"><code>/~</code>  ( <code>a</code> <code>b</code> &rarr; <code>floor(a/b)</code> )</h2>
+<h2 id="%2f%7e"><code>/~</code>  ( <code>a</code> <code>b</code> &rarr; <code>floor(a/b)</code> )</h2>
 <p>Flooring division.</p>
 <h2 id="mod"><code>mod</code>  ( <code>a</code> <code>b</code> &rarr; <code>a%b</code> )</h2>
 <p>Modulo.</p>
-<h2 id="!"><code>!=</code>  ( <code>a</code> <code>b</code> &rarr; <code>t</code> )</h2>
+<h2 id="%21%3d"><code>!=</code>  ( <code>a</code> <code>b</code> &rarr; <code>t</code> )</h2>
 <p>Not equals.</p>
-<h2 id="&lt;"><code>&lt;=</code>  ( <code>a</code> <code>b</code> &rarr; <code>a&lt;=b</code> )</h2>
+<h2 id="%3c%3d"><code>&lt;=</code>  ( <code>a</code> <code>b</code> &rarr; <code>a&lt;=b</code> )</h2>
 <p>Less than or equal to.</p>
-<h2 id="&lt;"><code>&lt;</code>  ( <code>a</code> <code>b</code> &rarr; <code>a&lt;b</code> )</h2>
+<h2 id="%3c"><code>&lt;</code>  ( <code>a</code> <code>b</code> &rarr; <code>a&lt;b</code> )</h2>
 <p>Less than.</p>
-<h2 id="&gt;"><code>&gt;=</code>  ( <code>a</code> <code>b</code> &rarr; <code>a&gt;=b</code> )</h2>
+<h2 id="%3e%3d"><code>&gt;=</code>  ( <code>a</code> <code>b</code> &rarr; <code>a&gt;=b</code> )</h2>
 <p>Greater than or equal to.</p>
 <h2 id="min"><code>min</code>  ( <code>a</code> <code>b</code> &rarr; <code>v</code> )</h2>
 <p>Lesser of two value.</p>
@@ -68,9 +68,9 @@
 <p>Clamps <code>x</code> to $l\gte x\gt <code>u</code>$.</p>
 <h2 id="within"><code>within</code>  ( <code>l</code> <code>u</code> <code>x</code> &rarr; <code>t</code> )</h2>
 <p>True if $l\gte x\gt <code>u</code>$.</p>
-<h2 id="$&lt;"><code>$&lt;</code>  ( <code>s1</code> <code>s2</code> &rarr; <code>s1&lt;s2</code> )</h2>
+<h2 id="%24%3c"><code>$&lt;</code>  ( <code>s1</code> <code>s2</code> &rarr; <code>s1&lt;s2</code> )</h2>
 <p>True if <code>s1</code> comes before <code>s2</code> in the dictionary.</p>
-<h2 id="$&gt;"><code>$&gt;</code>  ( <code>s1</code> <code>s2</code> &rarr; <code>s1&gt;s2</code> )</h2>
+<h2 id="%24%3e"><code>$&gt;</code>  ( <code>s1</code> <code>s2</code> &rarr; <code>s1&gt;s2</code> )</h2>
 <p>True if <code>s1</code> comes after <code>s2</code> in the dictionary.</p>
 <h2 id="not"><code>not</code>  ( <code>t</code> &rarr; <code>t</code> )</h2>
 <p>Boolean inverse.</p>
@@ -80,13 +80,13 @@
 <p>Boolean or.</p>
 <h2 id="xor"><code>xor</code>  ( <code>t</code> <code>t</code> &rarr; <code>t</code> )</h2>
 <p>Boolean xor.</p>
-<h2 id="&gt;&gt;"><code>&gt;&gt;</code>  ( <code>a</code> <code>n</code> &rarr; <code>b</code> )</h2>
+<h2 id="%3e%3e"><code>&gt;&gt;</code>  ( <code>a</code> <code>n</code> &rarr; <code>b</code> )</h2>
 <p>Shift <code>a</code> right by <code>n</code> places.</p>
 <h2 id="bit"><code>bit</code>  ( <code>n</code> &rarr; <code>b</code> )</h2>
 <p>$2^<code>n</code>$.</p>
 <h2 id="var"><code>var</code> <em class="shadowed"><code>name</code></em> (  &rarr;  )</h2>
 <p>Declares a new variable, initialized to <code>undefined</code>.</p>
-<h2 id="var,"><code>var,</code> <em class="shadowed"><code>name</code></em> ( <code>v</code> &rarr;  )</h2>
+<h2 id="var%2c"><code>var,</code> <em class="shadowed"><code>name</code></em> ( <code>v</code> &rarr;  )</h2>
 <p>Declares a new variable, initialized to top stack value.</p>
 <h2 id="is"><code>is</code> <em class="shadowed"><code>name</code></em> ( <code>v</code> &rarr;  )</h2>
 <p>Puts a value into a variable.</p>
@@ -103,7 +103,7 @@
 <h2 id="tally"><code>tally</code>  ( <code>n</code> <code>a</code> &rarr;  )</h2>
 <p>Adds <code>n</code> to the last item of the array <code>a</code>.</p>
 <h2 id="temp"><code>temp</code>  (  &rarr; <code>a</code> )</h2>
-<p>Temp is <code>a</code> general purpose ancillary <a href="#stack"><code>stack</code></a>.</p>
+<p>Temp is <code>a</code> general purpose ancillary <a href="#%5b%5bstack%5d%5d"><code>[[stack]]</code></a>.</p>
 <h2 id="done"><code>done</code>  (  &rarr;  )</h2>
 <p>Jumps immediately to the end of the array.</p>
 <p>Example:</p>
@@ -154,15 +154,15 @@
 // runs foo at least once, then repeats bar foo until foo returns false
 </code></pre>
 <h2 id="switch"><code>switch</code>  ( <code>v</code> &rarr;  )</h2>
-<p>Begins a switch staement: puts the value to be switched upon in a temporary stack (not <a href="#temp"><code>temp</code></a>).</p>
+<p>Begins a switch staement: puts the value to be switched upon in a temporary stack (not <a href="#%5b%5btemp%5d%5d"><code>[[temp]]</code></a>).</p>
 <p><strong>See Also:</strong> <a href="#case"><code>case</code></a>, <a href="#default"><code>default</code></a></p>
 <h2 id="default"><code>default</code>  ( <code>v</code> &rarr;  )</h2>
 <p>Ends a switch staement: empties the switch value from the stack it is stored on.</p>
 <p><strong>See Also:</strong> <a href="#switch"><code>switch</code></a>, <a href="#case"><code>case</code></a></p>
 <h2 id="case"><code>case</code> <em class="shadowed"><code>action</code></em> ( <code>v</code> &rarr;  )</h2>
-<p>If the value on the stack is not the switch value, skips <code>action</code>. If it is, runs <code>action</code> and then jumps to the end of the array (skipping the other cases and the <a href="#default"><code>default</code></a>).</p>
+<p>If the value on the stack is not the switch value, skips <code>action</code>. If it is, runs <code>action</code> and then jumps to the end of the array (skipping the other cases and the <a href="#%5b%5bdefault%5d%5d"><code>[[default]]</code></a>).</p>
 <p><strong>See Also:</strong> <a href="#switch"><code>switch</code></a>, <a href="#default"><code>default</code></a></p>
-<h2 id="'"><code>'</code> <em class="shadowed"><code>value</code></em> (  &rarr; <code>v</code> )</h2>
+<h2 id="%27"><code>'</code> <em class="shadowed"><code>value</code></em> (  &rarr; <code>v</code> )</h2>
 <p>Puts the <code>value</code> following it on the stack instead of running it.</p>
 <p>Example:</p>
 <pre><code class="language-phoo">
@@ -180,26 +180,26 @@
 <h2 id="times"><code>times</code> <em class="shadowed"><code>block</code></em> ( <code>n</code> &rarr;  )</h2>
 <p>Runs body the specified numbe of times.</p>
 <h2 id="i"><code>i</code>  (  &rarr; <code>n</code> )</h2>
-<p>Inside of a <a href="#times"><code>times</code></a> loop, gets the number of iterations left to do after this one.</p>
-<h2 id="i^"><code>i^</code>  (  &rarr; <code>n</code> )</h2>
-<p>Inside of a <a href="#times"><code>times</code></a> loop, gets the number of iterations done since the loop started.</p>
+<p>Inside of a <a href="#%5b%5btimes%5d%5d"><code>[[times]]</code></a> loop, gets the number of iterations left to do after this one.</p>
+<h2 id="i%5e"><code>i^</code>  (  &rarr; <code>n</code> )</h2>
+<p>Inside of a <a href="#%5b%5btimes%5d%5d"><code>[[times]]</code></a> loop, gets the number of iterations done since the loop started.</p>
 <h2 id="j"><code>j</code>  (  &rarr; <code>n</code> )</h2>
-<p>Inside of a doubly nested <a href="#times"><code>times</code></a> loop, gets the number of iterations left to do in the <strong>outer</strong> loop after this one.</p>
-<h2 id="j^"><code>j^</code>  (  &rarr; <code>n</code> )</h2>
-<p>Inside of a doubly nested <a href="#times"><code>times</code></a> loop, gets the number of iterations done by the <strong>outer</strong> loop since the loop started.</p>
+<p>Inside of a doubly nested <a href="#%5b%5btimes%5d%5d"><code>[[times]]</code></a> loop, gets the number of iterations left to do in the <strong>outer</strong> loop after this one.</p>
+<h2 id="j%5e"><code>j^</code>  (  &rarr; <code>n</code> )</h2>
+<p>Inside of a doubly nested <a href="#%5b%5btimes%5d%5d"><code>[[times]]</code></a> loop, gets the number of iterations done by the <strong>outer</strong> loop since the loop started.</p>
 <h2 id="step"><code>step</code>  ( <code>n</code> &rarr;  )</h2>
-<p>Adds <code>n</code> to the current <a href="#times"><code>times</code></a> loop&rsquo;s iteration counter.</p>
+<p>Adds <code>n</code> to the current <a href="#%5b%5btimes%5d%5d"><code>[[times]]</code></a> loop&rsquo;s iteration counter.</p>
 <h2 id="restart"><code>restart</code>  (  &rarr;  )</h2>
-<p>Sets the current <a href="#times"><code>times</code></a> loop&rsquo;s iteration counter to the original value it started at, restarting the loop.</p>
+<p>Sets the current <a href="#%5b%5btimes%5d%5d"><code>[[times]]</code></a> loop&rsquo;s iteration counter to the original value it started at, restarting the loop.</p>
 <h2 id="break"><code>break</code>  (  &rarr;  )</h2>
-<p>Sets the current <a href="#times"><code>times</code></a> loop&rsquo;s iteration counter to 0, causing the loop to end after this iteration is done.</p>
+<p>Sets the current <a href="#%5b%5btimes%5d%5d"><code>[[times]]</code></a> loop&rsquo;s iteration counter to 0, causing the loop to end after this iteration is done.</p>
 <h2 id="printable"><code>printable</code>  ( <code>c</code> &rarr; <code>t</code> )</h2>
 <p>Given a character <code>c</code>, treurns true or false whether it is in the printable region of ASCII (i.e. greater than 31).</p>
 <h2 id="trim"><code>trim</code>  ( <code>s</code> &rarr; <code>t</code> )</h2>
 <p>Trims the leading whitespace from a string.</p>
 <h2 id="nextword"><code>nextword</code>  ( <code>s</code><em class="description">string</em> &rarr; <code>r</code><em class="description">remainder of string</em> <code>w</code><em class="description">first word</em> )</h2>
 <p>Given a string that does not start with whitespace, returns the first word and the rest of the string.</p>
-<h2 id="split$"><code>split$</code>  ( <code>s</code> &rarr; <code>a</code> )</h2>
+<h2 id="split%24"><code>split$</code>  ( <code>s</code> &rarr; <code>a</code> )</h2>
 <p>Splits <code>a</code> string <code>s</code> into an array <code>a</code> of individual words.</p>
 <h2 id="nested"><code>nested</code>  ( <code>i</code> &rarr; <code>a</code> )</h2>
 <p>Puts an item in its own array.</p>
@@ -209,19 +209,19 @@
 <p>Pulls the <code>i</code>-th item out of the array <code>a</code> and returns the shortened array and the item.</p>
 <p><strong>See Also:</strong> <a href="#stuff"><code>stuff</code></a></p>
 <h2 id="stuff"><code>stuff</code>  ( <code>a</code> <code>i</code> <code>n</code> &rarr; <code>a</code> )</h2>
-<p>Reverse of <a href="#pluck"><code>pluck</code></a>, it puts the item back.</p>
+<p>Reverse of <a href="#%5b%5bpluck%5d%5d"><code>[[pluck]]</code></a>, it puts the item back.</p>
 <h2 id="behead"><code>behead</code>  ( <code>a</code> &rarr; <code>a</code> <code>i</code> )</h2>
 <p>Returns the first item of the array <code>a</code>, and the rest. The original array is not mutated.</p>
 <h2 id="join"><code>join</code>  ( <code>a</code> <code>b</code> &rarr; <code>ab</code> )</h2>
-<p>Joins two arrays or strings, selecting between <a href="#++"><code>++</code></a> and <code>concat</code> depending on the type of the arguments.</p>
+<p>Joins two arrays or strings, selecting between <a href="#%5b%5b%2b%2b%5d%5d"><code>[[++]]</code></a> and <code>concat</code> depending on the type of the arguments.</p>
 <h2 id="of"><code>of</code>  ( <code>x</code> <code>n</code> &rarr; <code>a</code> )</h2>
 <p>Makes an array with <code>n</code> <code>x</code>&lsquo;s in it.</p>
 <h2 id="reverse"><code>reverse</code>  ( <code>arr</code> &rarr; <code>rra</code> )</h2>
 <p>Reverses the array.</p>
-<h2 id="reverse$"><code>reverse$</code>  ( <code>x</code> &rarr; <code>x</code> )</h2>
-<p><a href="#reverse"><code>reverse</code></a> but for strings.</p>
+<h2 id="reverse%24"><code>reverse$</code>  ( <code>x</code> &rarr; <code>x</code> )</h2>
+<p><a href="#%5b%5breverse%5d%5d"><code>[[reverse]]</code></a> but for strings.</p>
 <h2 id="reflect"><code>reflect</code>  ( <code>x</code> &rarr; <code>x</code> )</h2>
-<p><a href="#reverse"><code>reverse</code></a> but digs down into sub-arrays and reflects them too.</p>
+<p><a href="#%5b%5breverse%5d%5d"><code>[[reverse]]</code></a> but digs down into sub-arrays and reflects them too.</p>
 <h2 id="makewith"><code>makewith</code>  ( <code>c</code> &rarr; <code>l</code> )</h2>
 <p>Places the code in a loop and returns the generated code.</p>
 <p>The returned code takes an array or string on the stack and calls the original code passed 
@@ -245,7 +245,7 @@ to <code>makewith</code> with each item of the array or string.</p>
                                       result.
 </code></pre>
 <h2 id="foldr"><code>foldr</code>  ( <code>a</code> <code>r</code> &rarr; <code>s</code> )</h2>
-<p>Same as <a href="#fold"><code>fold</code></a> but applies the operation in reverse order.</p>
+<p>Same as <a href="#%5b%5bfold%5d%5d"><code>[[fold]]</code></a> but applies the operation in reverse order.</p>
 <h2 id="map"><code>map</code>  ( <code>a</code> <code>r</code> &rarr; <code>s</code> )</h2>
 <p>Passes each item of array <code>a</code> through function <code>r</code> and concatentates the returned values.</p>
 <h2 id="filter"><code>filter</code>  ( <code>a</code> <code>r</code> &rarr; <code>s</code> )</h2>
@@ -257,8 +257,8 @@ to <code>makewith</code> with each item of the array or string.</p>
 <h2 id="find"><code>find</code>  ( <code>a</code> <code>x</code> &rarr; <code>i</code> )</h2>
 <p>Finds the first index where item <code>x</code> occurs in the array <code>a</code>.</p>
 <h2 id="findwith"><code>findwith</code> <em class="shadowed"><code>criteria</code></em> <em class="shadowed"><code>cleanup</code></em> ( <code>a</code> &rarr; <code>i</code> )</h2>
-<p>Same as <a href="#matchitem"><code>matchitem</code></a> but uses lookahead for <code>cleanup</code> and <code>criteria</code>.</p>
-<h2 id="found?"><code>found?</code>  ( <code>a</code> <code>i</code> &rarr; <code>t</code> )</h2>
+<p>Same as <a href="#%5b%5bmatchitem%5d%5d"><code>[[matchitem]]</code></a> but uses lookahead for <code>cleanup</code> and <code>criteria</code>.</p>
+<h2 id="found%3f"><code>found?</code>  ( <code>a</code> <code>i</code> &rarr; <code>t</code> )</h2>
 <p>True if <code>i</code> is <code>a</code> valid index into array <code>a</code>.</p>
 <p>Example:</p>
 <pre><code class="language-phoo">
@@ -268,11 +268,11 @@ to has-foo? [ dup $ &quot;foo&quot; find found? ]
 <p>Turns a string lowercase.</p>
 <h2 id="upper"><code>upper</code>  ( <code>s</code> &rarr; <code>s</code> )</h2>
 <p>Turns a string uppercase.</p>
-<h2 id="++"><code>++</code>  ( <code>s1</code> <code>s2</code> &rarr; <code>s1s2</code> )</h2>
+<h2 id="%2b%2b"><code>++</code>  ( <code>s1</code> <code>s2</code> &rarr; <code>s1s2</code> )</h2>
 <p>Concatenates 2 items after casting both to string type.</p>
-<h2 id="num&gt;$"><code>num&gt;$</code>  ( <code>x</code> <code>n</code> &rarr; <code>s</code> )</h2>
+<h2 id="num%3e%24"><code>num&gt;$</code>  ( <code>x</code> <code>n</code> &rarr; <code>s</code> )</h2>
 <p>Writes number <code>x</code> in base n.</p>
-<h2 id="$&gt;num"><code>$&gt;num</code>  ( <code>s</code> <code>n</code> &rarr; <code>x</code> )</h2>
+<h2 id="%24%3enum"><code>$&gt;num</code>  ( <code>s</code> <code>n</code> &rarr; <code>x</code> )</h2>
 <p>Parses string <code>s</code> as a number in base <code>n</code>.</p>
 <h2 id="big"><code>big</code>  ( <code>n</code> &rarr; <code>b</code> )</h2>
 <p>Turns number <code>n</code> into a <code>BigInt</code>.</p>
@@ -280,7 +280,7 @@ to has-foo? [ dup $ &quot;foo&quot; find found? ]
 <p>Using comparator <code>comp</code>, sorts the array. Does not mutate the array.</p>
 <h2 id="sort"><code>sort</code>  ( <code>a</code> &rarr; <code>s</code> )</h2>
 <p>Sort an array of numbers.</p>
-<h2 id="sort$"><code>sort$</code>  ( <code>a</code> &rarr; <code>s</code> )</h2>
+<h2 id="sort%24"><code>sort$</code>  ( <code>a</code> &rarr; <code>s</code> )</h2>
 <p>Sort an array of strings.</p>
 <h2 id="try"><code>try</code> <em class="shadowed"><code>block</code></em> <em class="shadowed"><code>except</code></em> (  &rarr;  )</h2>
 <p>Runs <code>block</code>, and if it threw an error, runs <code>except</code> with the error on the stack. If <code>block</code> ran fine, skips <code>except</code>.</p>
@@ -288,37 +288,37 @@ to has-foo? [ dup $ &quot;foo&quot; find found? ]
 <p>Puts the current recursion depth on the stack.</p>
 <h2 id="stacksize"><code>stacksize</code>  (  &rarr; <code>n</code> )</h2>
 <p>Puts the number of items on the stack, on the stack.</p>
-<h2 id="to-do"><code>to-do</code>  (  &rarr; <code>a</code> )</h2>
-<p>To-do is <code>a</code> general purpose ancillary <a href="#stack"><code>stack</code></a>.</p>
-<h2 id="new-do"><code>new-do</code>  ( <code>a</code> &rarr;  )</h2>
-<p>Initializes the <a href="#stack"><code>stack</code></a> <code>a</code> as <code>a</code> to-do stack by putting <a href="#done"><code>done</code></a> on it.</p>
-<h2 id="add-to"><code>add-to</code>  ( <code>xxx*</code> <code>c</code> <code>n</code> <code>a</code> &rarr;  )</h2>
+<h2 id="to%2ddo"><code>to-do</code>  (  &rarr; <code>a</code> )</h2>
+<p>To-do is <code>a</code> general purpose ancillary <a href="#%5b%5bstack%5d%5d"><code>[[stack]]</code></a>.</p>
+<h2 id="new%2ddo"><code>new-do</code>  ( <code>a</code> &rarr;  )</h2>
+<p>Initializes the <a href="#%5b%5bstack%5d%5d"><code>[[stack]]</code></a> <code>a</code> as <code>a</code> to-do stack by putting <a href="#%5b%5bdone%5d%5d"><code>[[done]]</code></a> on it.</p>
+<h2 id="add%2dto"><code>add-to</code>  ( <code>xxx*</code> <code>c</code> <code>n</code> <code>a</code> &rarr;  )</h2>
 <p>Puts the action <code>c</code> and its arguments <code>xxx*</code> (the number of which is <code>n</code>) on the to-do stack <code>a</code>.</p>
-<h2 id="now-do"><code>now-do</code>  ( <code>a</code> &rarr;  )</h2>
-<p>Runs all the queued items on the to-do stack, until it hits the <a href="#done"><code>done</code></a> put there by <a href="#new-to"><code>new-to</code></a>.</p>
-<h2 id="do-now"><code>do-now</code>  ( <code>a</code> &rarr;  )</h2>
-<p>Same as <a href="#now-do"><code>now-do</code></a> but does the items in reverse order.</p>
-<h2 id="not-do"><code>not-do</code>  ( <code>a</code> &rarr;  )</h2>
+<h2 id="now%2ddo"><code>now-do</code>  ( <code>a</code> &rarr;  )</h2>
+<p>Runs all the queued items on the to-do stack, until it hits the <a href="#%5b%5bdone%5d%5d"><code>[[done]]</code></a> put there by <a href="#%5b%5bnew%2dto%5d%5d"><code>[[new-to]]</code></a>.</p>
+<h2 id="do%2dnow"><code>do-now</code>  ( <code>a</code> &rarr;  )</h2>
+<p>Same as <a href="#%5b%5bnow%2ddo%5d%5d"><code>[[now-do]]</code></a> but does the items in reverse order.</p>
+<h2 id="not%2ddo"><code>not-do</code>  ( <code>a</code> &rarr;  )</h2>
 <p>Removes all the queued items from the to-do stack <code>a</code> without running them.</p>
 <h2 id="chr"><code>chr</code>  ( <code>n</code> &rarr; <code>s</code> )</h2>
 <p>Returns the character with the Unicode code point <code>n</code>.</p>
 <h2 id="ord"><code>ord</code>  ( <code>s</code> &rarr; <code>n</code> )</h2>
-<p>Reverse of <a href="#chr"><code>chr</code></a>, it gets the code point of the character.</p>
-<h2 id="isa?"><code>isa?</code>  ( <code>a</code> <code>s</code> &rarr; <code>t</code> )</h2>
-<p>True if item <code>a</code>&lsquo;<code>s</code> <a href="#type"><code>type</code></a> is the same as <code>s</code>.</p>
+<p>Reverse of <a href="#%5b%5bchr%5d%5d"><code>[[chr]]</code></a>, it gets the code point of the character.</p>
+<h2 id="isa%3f"><code>isa?</code>  ( <code>a</code> <code>s</code> &rarr; <code>t</code> )</h2>
+<p>True if item <code>a</code>&lsquo;<code>s</code> <a href="#%5b%5btype%5d%5d"><code>[[type]]</code></a> is the same as <code>s</code>.</p>
 <h2 id="isoneof"><code>isoneof</code>  ( <code>a</code> <code>ss</code> &rarr; <code>t</code> )</h2>
-<p>Same as <a href="#isa?"><code>isa?</code></a> but accepts an array of types, which will succeed if any of them is the <a href="#type"><code>type</code></a> of <code>a</code>.</p>
+<p>Same as <a href="#%5b%5bisa%3f%5d%5d"><code>[[isa?]]</code></a> but accepts an array of types, which will succeed if any of them is the <a href="#%5b%5btype%5d%5d"><code>[[type]]</code></a> of <code>a</code>.</p>
 <h2 id="stringify"><code>stringify</code>  ( <code>a</code> &rarr; <code>s</code> )</h2>
 <p>Converts <code>a</code> to <code>a</code> string.</p>
 <h2 id="arrayify"><code>arrayify</code>  ( <code>x</code> &rarr; <code>a</code> )</h2>
 <p>Converts <code>a</code> to an array.</p>
 <h2 id="phoo"><code>phoo</code>  ( <code>c</code> &rarr;  )</h2>
 <p>Compile and run the code.</p>
-<h2 id="new@"><code>new@</code>  ( <code>f</code> &rarr; <code>o</code> )</h2>
+<h2 id="new%40"><code>new@</code>  ( <code>f</code> &rarr; <code>o</code> )</h2>
 <p>Constructs the function <code>f</code> by calling it with no arguments.</p>
-<h2 id="call@"><code>call@</code>  ( <code>f</code> &rarr; <code>r</code> )</h2>
+<h2 id="call%40"><code>call@</code>  ( <code>f</code> &rarr; <code>r</code> )</h2>
 <p>Calls the function <code>f</code> with no arguments.</p>
-<h2 id="!!todo!!"><code>!!todo!!</code>  (  &rarr;  )</h2>
+<h2 id="%21%21todo%21%21"><code>!!todo!!</code>  (  &rarr;  )</h2>
 <p>Throws <code>'todo'</code>.</p>
 <h2 id="use"><code>use</code> <em class="shadowed"><code>path/to/module</code></em> (  &rarr;  )</h2>
 <p>Imports the module, skipping if it was already imported.</p>

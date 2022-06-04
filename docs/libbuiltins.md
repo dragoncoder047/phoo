@@ -1,6 +1,6 @@
 
 
-## `#pragma` *`flag`*{.shadowed} *`value`*{.shadowed} (  &rarr;  ) {##pragma}
+## `#pragma` *`flag`*{.shadowed} *`value`*{.shadowed} (  &rarr;  ) {#%23pragma}
 
 Sets the settings `flag` specified.
 
@@ -11,7 +11,7 @@ Example:
 #pragma strictMode false
 ```
 
-## `in_scope` *`block`*{.shadowed} (  &rarr;  ) {#in_scope}
+## `in_scope` *`block`*{.shadowed} (  &rarr;  ) {#in%5fscope}
 
 Runs the code with a new entry on the scope stack.
 
@@ -27,11 +27,11 @@ Aliases `x` to mean `y`.
 
 Precomputes a value.
 
-## `now!`  (  &rarr;  ) {#now!}
+## `now!`  (  &rarr;  ) {#now%21}
 
 Runs code during compilation. *(#6 - doesn't work)*.
 
-## `//`  (  &rarr;  ) {#//}
+## `//`  (  &rarr;  ) {#%2f%2f}
 
 Line comment *(#6 - doesn't work)*.
 
@@ -65,19 +65,19 @@ Copies first item to third.
 
 ## `2dup`  ( `a` `b` &rarr; `a` `b` `a` `b` ) {#2dup}
 
-[`dup`](#dup)s two items as `a` pair.
+[`[[dup]]`](#%5b%5bdup%5d%5d)s two items as `a` pair.
 
 ## `2drop`  ( `a` `b` &rarr;  ) {#2drop}
 
-[`drop`](#drop)s two items as `a` pair.
+[`[[drop]]`](#%5b%5bdrop%5d%5d)s two items as `a` pair.
 
 ## `2swap`  ( `a` `b` `c` `d` &rarr; `c` `d` `a` `b` ) {#2swap}
 
-[`swap`](#swap)s two pairs of items.
+[`[[swap]]`](#%5b%5bswap%5d%5d)s two pairs of items.
 
 ## `2over`  ( `a` `b` `c` `d` &rarr; `a` `b` `c` `d` `a` `b` ) {#2over}
 
-[`over`](#over)s two pairs of items.
+[`[[over]]`](#%5b%5bover%5d%5d)s two pairs of items.
 
 ## `pack`  ( `*a` `n` &rarr; `a` ) {#pack}
 
@@ -85,7 +85,7 @@ Takes `n` and then puts `n` items into an array.
 
 ## `unpack`  ( `a` &rarr; `i` `j` `k` `...` ) {#unpack}
 
-Reverse of [`pack`](#pack), it flattens an array onto the stack.
+Reverse of [`[[pack]]`](#%5b%5bpack%5d%5d), it flattens an array onto the stack.
 
 ## `dip` *`op`*{.shadowed} ( `a` &rarr; `a` ) {#dip}
 
@@ -95,11 +95,11 @@ Dips the top item out of the array, runs the block, and puts the item back.
 
 Absolute value of a number.
 
-## `-`  ( `a` `b` &rarr; `a-b` ) {#-}
+## `-`  ( `a` `b` &rarr; `a-b` ) {#%2d}
 
 Subtracts top from second.
 
-## `/~`  ( `a` `b` &rarr; `floor(a/b)` ) {#/~}
+## `/~`  ( `a` `b` &rarr; `floor(a/b)` ) {#%2f%7e}
 
 Flooring division.
 
@@ -107,19 +107,19 @@ Flooring division.
 
 Modulo.
 
-## `!=`  ( `a` `b` &rarr; `t` ) {#!=}
+## `!=`  ( `a` `b` &rarr; `t` ) {#%21%3d}
 
 Not equals.
 
-## `<=`  ( `a` `b` &rarr; `a<=b` ) {#<=}
+## `<=`  ( `a` `b` &rarr; `a<=b` ) {#%3c%3d}
 
 Less than or equal to.
 
-## `<`  ( `a` `b` &rarr; `a<b` ) {#<}
+## `<`  ( `a` `b` &rarr; `a<b` ) {#%3c}
 
 Less than.
 
-## `>=`  ( `a` `b` &rarr; `a>=b` ) {#>=}
+## `>=`  ( `a` `b` &rarr; `a>=b` ) {#%3e%3d}
 
 Greater than or equal to.
 
@@ -139,11 +139,11 @@ Clamps `x` to $l\gte x\gt `u`$.
 
 True if $l\gte x\gt `u`$.
 
-## `$<`  ( `s1` `s2` &rarr; `s1<s2` ) {#$<}
+## `$<`  ( `s1` `s2` &rarr; `s1<s2` ) {#%24%3c}
 
 True if `s1` comes before `s2` in the dictionary.
 
-## `$>`  ( `s1` `s2` &rarr; `s1>s2` ) {#$>}
+## `$>`  ( `s1` `s2` &rarr; `s1>s2` ) {#%24%3e}
 
 True if `s1` comes after `s2` in the dictionary.
 
@@ -163,7 +163,7 @@ Boolean or.
 
 Boolean xor.
 
-## `>>`  ( `a` `n` &rarr; `b` ) {#>>}
+## `>>`  ( `a` `n` &rarr; `b` ) {#%3e%3e}
 
 Shift `a` right by `n` places.
 
@@ -175,7 +175,7 @@ $2^`n`$.
 
 Declares a new variable, initialized to `undefined`.
 
-## `var,` *`name`*{.shadowed} ( `v` &rarr;  ) {#var,}
+## `var,` *`name`*{.shadowed} ( `v` &rarr;  ) {#var%2c}
 
 Declares a new variable, initialized to top stack value.
 
@@ -209,7 +209,7 @@ Adds `n` to the last item of the array `a`.
 
 ## `temp`  (  &rarr; `a` ) {#temp}
 
-Temp is `a` general purpose ancillary [`stack`](#stack).
+Temp is `a` general purpose ancillary [`[[stack]]`](#%5b%5bstack%5d%5d).
 
 ## `done`  (  &rarr;  ) {#done}
 
@@ -297,7 +297,7 @@ Example:
 
 ## `switch`  ( `v` &rarr;  ) {#switch}
 
-Begins a switch staement: puts the value to be switched upon in a temporary stack (not [`temp`](#temp)).
+Begins a switch staement: puts the value to be switched upon in a temporary stack (not [`[[temp]]`](#%5b%5btemp%5d%5d)).
 
  **See Also:** [`case`](#case), [`default`](#default)
 
@@ -309,11 +309,11 @@ Ends a switch staement: empties the switch value from the stack it is stored on.
 
 ## `case` *`action`*{.shadowed} ( `v` &rarr;  ) {#case}
 
-If the value on the stack is not the switch value, skips `action`. If it is, runs `action` and then jumps to the end of the array (skipping the other cases and the [`default`](#default)).
+If the value on the stack is not the switch value, skips `action`. If it is, runs `action` and then jumps to the end of the array (skipping the other cases and the [`[[default]]`](#%5b%5bdefault%5d%5d)).
 
  **See Also:** [`switch`](#switch), [`default`](#default)
 
-## `'` *`value`*{.shadowed} (  &rarr; `v` ) {#'}
+## `'` *`value`*{.shadowed} (  &rarr; `v` ) {#%27}
 
 Puts the `value` following it on the stack instead of running it.
 
@@ -347,31 +347,31 @@ Runs body the specified numbe of times.
 
 ## `i`  (  &rarr; `n` ) {#i}
 
-Inside of a [`times`](#times) loop, gets the number of iterations left to do after this one.
+Inside of a [`[[times]]`](#%5b%5btimes%5d%5d) loop, gets the number of iterations left to do after this one.
 
-## `i^`  (  &rarr; `n` ) {#i^}
+## `i^`  (  &rarr; `n` ) {#i%5e}
 
-Inside of a [`times`](#times) loop, gets the number of iterations done since the loop started.
+Inside of a [`[[times]]`](#%5b%5btimes%5d%5d) loop, gets the number of iterations done since the loop started.
 
 ## `j`  (  &rarr; `n` ) {#j}
 
-Inside of a doubly nested [`times`](#times) loop, gets the number of iterations left to do in the **outer** loop after this one.
+Inside of a doubly nested [`[[times]]`](#%5b%5btimes%5d%5d) loop, gets the number of iterations left to do in the **outer** loop after this one.
 
-## `j^`  (  &rarr; `n` ) {#j^}
+## `j^`  (  &rarr; `n` ) {#j%5e}
 
-Inside of a doubly nested [`times`](#times) loop, gets the number of iterations done by the **outer** loop since the loop started.
+Inside of a doubly nested [`[[times]]`](#%5b%5btimes%5d%5d) loop, gets the number of iterations done by the **outer** loop since the loop started.
 
 ## `step`  ( `n` &rarr;  ) {#step}
 
-Adds `n` to the current [`times`](#times) loop's iteration counter.
+Adds `n` to the current [`[[times]]`](#%5b%5btimes%5d%5d) loop's iteration counter.
 
 ## `restart`  (  &rarr;  ) {#restart}
 
-Sets the current [`times`](#times) loop's iteration counter to the original value it started at, restarting the loop.
+Sets the current [`[[times]]`](#%5b%5btimes%5d%5d) loop's iteration counter to the original value it started at, restarting the loop.
 
 ## `break`  (  &rarr;  ) {#break}
 
-Sets the current [`times`](#times) loop's iteration counter to 0, causing the loop to end after this iteration is done.
+Sets the current [`[[times]]`](#%5b%5btimes%5d%5d) loop's iteration counter to 0, causing the loop to end after this iteration is done.
 
 ## `printable`  ( `c` &rarr; `t` ) {#printable}
 
@@ -385,7 +385,7 @@ Trims the leading whitespace from a string.
 
 Given a string that does not start with whitespace, returns the first word and the rest of the string.
 
-## `split$`  ( `s` &rarr; `a` ) {#split$}
+## `split$`  ( `s` &rarr; `a` ) {#split%24}
 
 Splits `a` string `s` into an array `a` of individual words.
 
@@ -405,7 +405,7 @@ Pulls the `i`-th item out of the array `a` and returns the shortened array and t
 
 ## `stuff`  ( `a` `i` `n` &rarr; `a` ) {#stuff}
 
-Reverse of [`pluck`](#pluck), it puts the item back.
+Reverse of [`[[pluck]]`](#%5b%5bpluck%5d%5d), it puts the item back.
 
 ## `behead`  ( `a` &rarr; `a` `i` ) {#behead}
 
@@ -413,7 +413,7 @@ Returns the first item of the array `a`, and the rest. The original array is not
 
 ## `join`  ( `a` `b` &rarr; `ab` ) {#join}
 
-Joins two arrays or strings, selecting between [`++`](#++) and `concat` depending on the type of the arguments.
+Joins two arrays or strings, selecting between [`[[++]]`](#%5b%5b%2b%2b%5d%5d) and `concat` depending on the type of the arguments.
 
 ## `of`  ( `x` `n` &rarr; `a` ) {#of}
 
@@ -423,13 +423,13 @@ Makes an array with `n` `x`'s in it.
 
 Reverses the array.
 
-## `reverse$`  ( `x` &rarr; `x` ) {#reverse$}
+## `reverse$`  ( `x` &rarr; `x` ) {#reverse%24}
 
-[`reverse`](#reverse) but for strings.
+[`[[reverse]]`](#%5b%5breverse%5d%5d) but for strings.
 
 ## `reflect`  ( `x` &rarr; `x` ) {#reflect}
 
-[`reverse`](#reverse) but digs down into sub-arrays and reflects them too.
+[`[[reverse]]`](#%5b%5breverse%5d%5d) but digs down into sub-arrays and reflects them too.
 
 ## `makewith`  ( `c` &rarr; `l` ) {#makewith}
 
@@ -462,7 +462,7 @@ Takes `a` function and an array and reduces the array by calling the function wi
 
 ## `foldr`  ( `a` `r` &rarr; `s` ) {#foldr}
 
-Same as [`fold`](#fold) but applies the operation in reverse order.
+Same as [`[[fold]]`](#%5b%5bfold%5d%5d) but applies the operation in reverse order.
 
 ## `map`  ( `a` `r` &rarr; `s` ) {#map}
 
@@ -486,9 +486,9 @@ Finds the first index where item `x` occurs in the array `a`.
 
 ## `findwith` *`criteria`*{.shadowed} *`cleanup`*{.shadowed} ( `a` &rarr; `i` ) {#findwith}
 
-Same as [`matchitem`](#matchitem) but uses lookahead for `cleanup` and `criteria`.
+Same as [`[[matchitem]]`](#%5b%5bmatchitem%5d%5d) but uses lookahead for `cleanup` and `criteria`.
 
-## `found?`  ( `a` `i` &rarr; `t` ) {#found?}
+## `found?`  ( `a` `i` &rarr; `t` ) {#found%3f}
 
 True if `i` is `a` valid index into array `a`.
 
@@ -507,15 +507,15 @@ Turns a string lowercase.
 
 Turns a string uppercase.
 
-## `++`  ( `s1` `s2` &rarr; `s1s2` ) {#++}
+## `++`  ( `s1` `s2` &rarr; `s1s2` ) {#%2b%2b}
 
 Concatenates 2 items after casting both to string type.
 
-## `num>$`  ( `x` `n` &rarr; `s` ) {#num>$}
+## `num>$`  ( `x` `n` &rarr; `s` ) {#num%3e%24}
 
 Writes number `x` in base n.
 
-## `$>num`  ( `s` `n` &rarr; `x` ) {#$>num}
+## `$>num`  ( `s` `n` &rarr; `x` ) {#%24%3enum}
 
 Parses string `s` as a number in base `n`.
 
@@ -531,7 +531,7 @@ Using comparator `comp`, sorts the array. Does not mutate the array.
 
 Sort an array of numbers.
 
-## `sort$`  ( `a` &rarr; `s` ) {#sort$}
+## `sort$`  ( `a` &rarr; `s` ) {#sort%24}
 
 Sort an array of strings.
 
@@ -547,27 +547,27 @@ Puts the current recursion depth on the stack.
 
 Puts the number of items on the stack, on the stack.
 
-## `to-do`  (  &rarr; `a` ) {#to-do}
+## `to-do`  (  &rarr; `a` ) {#to%2ddo}
 
-To-do is `a` general purpose ancillary [`stack`](#stack).
+To-do is `a` general purpose ancillary [`[[stack]]`](#%5b%5bstack%5d%5d).
 
-## `new-do`  ( `a` &rarr;  ) {#new-do}
+## `new-do`  ( `a` &rarr;  ) {#new%2ddo}
 
-Initializes the [`stack`](#stack) `a` as `a` to-do stack by putting [`done`](#done) on it.
+Initializes the [`[[stack]]`](#%5b%5bstack%5d%5d) `a` as `a` to-do stack by putting [`[[done]]`](#%5b%5bdone%5d%5d) on it.
 
-## `add-to`  ( `xxx*` `c` `n` `a` &rarr;  ) {#add-to}
+## `add-to`  ( `xxx*` `c` `n` `a` &rarr;  ) {#add%2dto}
 
 Puts the action `c` and its arguments `xxx*` (the number of which is `n`) on the to-do stack `a`.
 
-## `now-do`  ( `a` &rarr;  ) {#now-do}
+## `now-do`  ( `a` &rarr;  ) {#now%2ddo}
 
-Runs all the queued items on the to-do stack, until it hits the [`done`](#done) put there by [`new-to`](#new-to).
+Runs all the queued items on the to-do stack, until it hits the [`[[done]]`](#%5b%5bdone%5d%5d) put there by [`[[new-to]]`](#%5b%5bnew%2dto%5d%5d).
 
-## `do-now`  ( `a` &rarr;  ) {#do-now}
+## `do-now`  ( `a` &rarr;  ) {#do%2dnow}
 
-Same as [`now-do`](#now-do) but does the items in reverse order.
+Same as [`[[now-do]]`](#%5b%5bnow%2ddo%5d%5d) but does the items in reverse order.
 
-## `not-do`  ( `a` &rarr;  ) {#not-do}
+## `not-do`  ( `a` &rarr;  ) {#not%2ddo}
 
 Removes all the queued items from the to-do stack `a` without running them.
 
@@ -577,15 +577,15 @@ Returns the character with the Unicode code point `n`.
 
 ## `ord`  ( `s` &rarr; `n` ) {#ord}
 
-Reverse of [`chr`](#chr), it gets the code point of the character.
+Reverse of [`[[chr]]`](#%5b%5bchr%5d%5d), it gets the code point of the character.
 
-## `isa?`  ( `a` `s` &rarr; `t` ) {#isa?}
+## `isa?`  ( `a` `s` &rarr; `t` ) {#isa%3f}
 
-True if item `a`'`s` [`type`](#type) is the same as `s`.
+True if item `a`'`s` [`[[type]]`](#%5b%5btype%5d%5d) is the same as `s`.
 
 ## `isoneof`  ( `a` `ss` &rarr; `t` ) {#isoneof}
 
-Same as [`isa?`](#isa?) but accepts an array of types, which will succeed if any of them is the [`type`](#type) of `a`.
+Same as [`[[isa?]]`](#%5b%5bisa%3f%5d%5d) but accepts an array of types, which will succeed if any of them is the [`[[type]]`](#%5b%5btype%5d%5d) of `a`.
 
 ## `stringify`  ( `a` &rarr; `s` ) {#stringify}
 
@@ -599,15 +599,15 @@ Converts `a` to an array.
 
 Compile and run the code.
 
-## `new@`  ( `f` &rarr; `o` ) {#new@}
+## `new@`  ( `f` &rarr; `o` ) {#new%40}
 
 Constructs the function `f` by calling it with no arguments.
 
-## `call@`  ( `f` &rarr; `r` ) {#call@}
+## `call@`  ( `f` &rarr; `r` ) {#call%40}
 
 Calls the function `f` with no arguments.
 
-## `!!todo!!`  (  &rarr;  ) {#!!todo!!}
+## `!!todo!!`  (  &rarr;  ) {#%21%21todo%21%21}
 
 Throws `'todo'`.
 

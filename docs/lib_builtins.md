@@ -1,10 +1,10 @@
 
 
-## `/*`  (  &rarr;  ) {#/*}
+## `/*`  (  &rarr;  ) {#%2f%2a}
 
 Block comment. Like C-style comments. Comments do not nest.
 
-## `$`  (  &rarr; `s`*The string (or regular expression) defined by the literal.*{.description} ) {#$}
+## `$`  (  &rarr; `s`*The string (or regular expression) defined by the literal.*{.description} ) {#%24}
 
 String builder.
 
@@ -26,7 +26,7 @@ $ 5ab*c?5rig
 
 Starts of a new sub-array.
 
-## `[`  (  &rarr;  ) {#[}
+## `[`  (  &rarr;  ) {#%5b}
 
 Same as `do`.
 
@@ -34,7 +34,7 @@ Same as `do`.
 
 End of a sub-array.
 
-## `]`  (  &rarr;  ) {#]}
+## `]`  (  &rarr;  ) {#%5d}
 
 Same as `end`.
 
@@ -54,15 +54,15 @@ Same as the Forth word `ROLL`. Takes a number `n` and **moves** the nth item to 
 
 Removes the top item from the stack.
 
-## `1+`  ( `n` &rarr; `n+1` ) {#1+}
+## `1+`  ( `n` &rarr; `n+1` ) {#1%2b}
 
 Increments a number on the top of the stack.
 
-## `1-`  ( `n` &rarr; `n-1` ) {#1-}
+## `1-`  ( `n` &rarr; `n-1` ) {#1%2d}
 
 Decrements a number on the top of the stack.
 
-## `+`  ( `a` `b` &rarr; `b+a` ) {#+}
+## `+`  ( `a` `b` &rarr; `b+a` ) {#%2b}
 
 Adds two items together using Javascript `+` operator. Note the order of addition.
 
@@ -70,27 +70,27 @@ Adds two items together using Javascript `+` operator. Note the order of additio
 
 Unary negation of top item.
 
-## `*`  ( `a` `b` &rarr; `b*a` ) {#*}
+## `*`  ( `a` `b` &rarr; `b*a` ) {#%2a}
 
 Multiply top items.
 
-## `**`  ( `b`*base*{.description} `e`*exponent*{.description} &rarr; `b**e` ) {#**}
+## `**`  ( `b`*base*{.description} `e`*exponent*{.description} &rarr; `b**e` ) {#%2a%2a}
 
 Power of top two items.
 
-## `/mod`  ( `x`*dividend*{.description} `y`*divisor*{.description} &rarr; `q`*quotient*{.description} `r`*remainder*{.description} ) {#/mod}
+## `/mod`  ( `x`*dividend*{.description} `y`*divisor*{.description} &rarr; `q`*quotient*{.description} `r`*remainder*{.description} ) {#%2fmod}
 
 Euclidean division. Remainder and quotient.
 
-## `/`  ( `a`*dividend*{.description} `b`*divisor*{.description} &rarr; `q`*quotient*{.description} ) {#/}
+## `/`  ( `a`*dividend*{.description} `b`*divisor*{.description} &rarr; `q`*quotient*{.description} ) {#%2f}
 
 Regular division (results in float).
 
-## `=`  ( `a` `b` &rarr; `t` ) {#=}
+## `=`  ( `a` `b` &rarr; `t` ) {#%3d}
 
 Equals, using Javascript `==` operator.
 
-## `>`  ( `a`*number on "larger" (left) side of expression.*{.description} `b`*number on "smaller" (right) side of expression.*{.description} &rarr; `t` ) {#>}
+## `>`  ( `a`*number on "larger" (left) side of expression.*{.description} `b`*number on "smaller" (right) side of expression.*{.description} &rarr; `t` ) {#%3e}
 
 Greater than.
 
@@ -98,23 +98,23 @@ Greater than.
 
 Boolean NAND of two arguments. True if both are false.
 
-## `~`  ( `n` &rarr; `~n` ) {#~}
+## `~`  ( `n` &rarr; `~n` ) {#%7e}
 
 Bitwise NOT of a number.
 
-## `&`  ( `a` `b` &rarr; `a&b` ) {#&}
+## `&`  ( `a` `b` &rarr; `a&b` ) {#%26}
 
 Bitwise AND of two numbers.
 
-## `|`  ( `a` `b` &rarr; `a|b` ) {#|}
+## `|`  ( `a` `b` &rarr; `a|b` ) {#%7c}
 
 Bitwise OR of two numbers.
 
-## `^`  ( `a` `b` &rarr; `a^b` ) {#^}
+## `^`  ( `a` `b` &rarr; `a^b` ) {#%5e}
 
 Bitwise XOR of two numbers.
 
-## `<<`  ( `a` `b` &rarr; `a<<b` ) {#<<}
+## `<<`  ( `a` `b` &rarr; `a<<b` ) {#%3c%3c}
 
 A bit-shifted left by B places. Negative B for shift right.
 
@@ -126,9 +126,9 @@ Pushes the item onto the end of the array.
 
 ## `take`  ( `a`*Array*{.description} &rarr; `i`*Last item of the array*{.description} ) {#take}
 
-Reverse of [`put`](#put), it takes the item out of the array. The array is mutated.
+Reverse of [`[[put]]`](#%5b%5bput%5d%5d), it takes the item out of the array. The array is mutated.
 
-## `]done[`  (  &rarr;  ) {#]done[}
+## `]done[`  (  &rarr;  ) {#%5ddone%5b}
 
 Drops the top item of the return stack, effectively causing everything else outside of the current word to be skipped.
 
@@ -140,7 +140,7 @@ Example:
 // foo and then bar are run, but baz is skipped.
 ```
 
-## `]again[`  (  &rarr;  ) {#]again[}
+## `]again[`  (  &rarr;  ) {#%5dagain%5b}
 
 Sets the return pointer of the top return stack item to -1, effectively causing everything else outside of the current word to be repeated.
 
@@ -152,7 +152,7 @@ Example:
 // runs foo bar foo bar foo bar foo bar ... infintely
 ```
 
-## `]cjump[`  ( `t`*truth value to test*{.description} `n`*how far to jump if false*{.description} &rarr;  ) {#]cjump[}
+## `]cjump[`  ( `t`*truth value to test*{.description} `n`*how far to jump if false*{.description} &rarr;  ) {#%5dcjump%5b}
 
 If the test value `t` is false, adds `n` to the top return stack entry's return pointer, effectively skipping that many items.
 
@@ -164,7 +164,7 @@ Example:
 // if ToS is false, skips foo bar baz. bam will always run
 ```
 
-## `]'[`  (  &rarr; `a` ) {#]'[}
+## `]'[`  (  &rarr; `a` ) {#%5d%27%5b}
 
 Instead of running the next item on the top return stack entry, pushes it to the stack and crements the return stack pointer.
 
@@ -176,7 +176,7 @@ Example:
 // foo will be pushed to the stack and then dropped, rendering it a noop. bar will run.
 ```
 
-## `]run[`  ( `a` &rarr;  ) {#]run[}
+## `]run[`  ( `a` &rarr;  ) {#%5drun%5b}
 
 Pushes the item to the return stack, so that it will run when the current word finishes.
 
@@ -188,11 +188,11 @@ Example:
 // if ToS is n, runs nth item of the table.
 ```
 
-## `]this[`  ( `a` &rarr;  ) {#]this[}
+## `]this[`  ( `a` &rarr;  ) {#%5dthis%5b}
 
 Pushes the top array on the return stack to the work stack, so that the word can reference its caller.
 
-## `[]`  (  &rarr; `a` ) {#[]}
+## `[]`  (  &rarr; `a` ) {#%5b%5d}
 
 Pushes `a` new, empty array to the work stack.
 
@@ -208,7 +208,7 @@ Takes the `i`-th item out of the array `a`.
 
 Puts the item into the specified index of the array, and leaves the new, mutated array.
 
-## `]sandbox[`  ( `c` &rarr; `e` ) {#]sandbox[}
+## `]sandbox[`  ( `c` &rarr; `e` ) {#%5dsandbox%5b}
 
 Runs the code under a `try` statement, and pushes the error it threw, or `false` if no error.
 
@@ -216,7 +216,7 @@ Runs the code under a `try` statement, and pushes the error it threw, or `false`
 
 Throws a `PhooError` with the message.
 
-## `]getstack[`  ( `e` &rarr; `t` ) {#]getstack[}
+## `]getstack[`  ( `e` &rarr; `t` ) {#%5dgetstack%5b}
 
 With a `PhooError` on the top, gets its Phoo stack trace.
 
@@ -252,7 +252,7 @@ Calls `a` function with the arguments.
 
 ## `new`  ( `a`*arguments array*{.description} `f`*constructor function*{.description} &rarr; `r`*new object constructed*{.description} ) {#new}
 
-Same sort as [`call`](#call), but uses Javascript `new` keyword to construct with `a` class.
+Same sort as [`[[call]]`](#%5b%5bcall%5d%5d), but uses Javascript `new` keyword to construct with a class.
 
 ## `word`  ( `s`*string*{.description} &rarr; `w`*symbol of that string*{.description} ) {#word}
 
@@ -260,13 +260,13 @@ Converts string to symbol.
 
 ## `name`  ( `w`*symbol*{.description} &rarr; `s`*string of that symbol*{.description} ) {#name}
 
-Reverse of [`word`](#word), converts symbol to string.
+Reverse of [`[[word]]`](#%5b%5bword%5d%5d), converts symbol to string.
 
 ## `resolve`  ( `w`*symbol*{.description} &rarr; `d`*definition*{.description} ) {#resolve}
 
 Looks up the definition of the word symbol.
 
-## `{}`  (  &rarr; `a` ) {#{}}
+## `{}`  (  &rarr; `a` ) {#%7b%7d}
 
 Pushes `a` new empty object.
 
@@ -278,31 +278,31 @@ Pushes a reference to the current thread.
 
 Pushes a reference to the global Javascript object (`globalThis`). Called "window" because that is its name in the browser which is what Phoo was designed for.
 
-## `]define[`  ( `n`*symbol name*{.description} `d`*definition*{.description} &rarr;  ) {#]define[}
+## `]define[`  ( `n`*symbol name*{.description} `d`*definition*{.description} &rarr;  ) {#%5ddefine%5b}
 
 Writes a new definition to the top scope using the name and definition on the stack.
 
-## `]define-macro[`  ( `n`*symbol name*{.description} `d`*definition*{.description} &rarr;  ) {#]define-macro[}
+## `]define-macro[`  ( `n`*symbol name*{.description} `d`*definition*{.description} &rarr;  ) {#%5ddefine%2dmacro%5b}
 
-Like [`]define[`](#]define[) but defines a macro.
+Like [`[[]define[]]`](#%5b%5b%5ddefine%5b%5d%5d) but defines a macro.
 
-## `]forget[`  ( `n`*symbol name*{.description} &rarr;  ) {#]forget[}
+## `]forget[`  ( `n`*symbol name*{.description} &rarr;  ) {#%5dforget%5b}
 
 Erases the definition of a word, reverting back to the old one if there was one.
 
 ## `to` *`name`*{.shadowed} *`def`*{.shadowed} (  &rarr;  ) {#to}
 
-Wrapper for [`]define[`](#]define[).
+Wrapper for [`[[]define[]]`](#%5b%5b%5ddefine%5b%5d%5d).
 
 ## `macro` *`name`*{.shadowed} *`def`*{.shadowed} (  &rarr;  ) {#macro}
 
-Wrapper for [`]define-macro[`](#]define-macro[).
+Wrapper for [`[[]define-macro[]]`](#%5b%5b%5ddefine%2dmacro%5b%5d%5d).
 
 ## `forget` *`name`*{.shadowed} (  &rarr;  ) {#forget}
 
-Wrapper for [`]forget[`](#]forget[).
+Wrapper for [`[[]forget[]]`](#%5b%5b%5dforget%5b%5d%5d).
 
-## `]import[`  ( `n`*name of the module*{.description} `r`*boolean, force-reload the module*{.description} &rarr;  ) {#]import[}
+## `]import[`  ( `n`*name of the module*{.description} `r`*boolean, force-reload the module*{.description} &rarr;  ) {#%5dimport%5b}
 
 Imports the module, force-reloading if the top is true (ignores cache).
 
