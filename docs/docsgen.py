@@ -50,9 +50,9 @@ def buildMD(tags):
     seds_r = [f'`{i.strip()}`*{tags.get(i.strip(), "")}*{{.description}}' for i in st_right]
     example = tags.get('example')
     seealsos = [f'[`{t.strip()}`](#{t.strip()})' for t in tags.get('see-also', '').split()]
-    body = f'## `{wname}` {" ".join(lookaheads)} ( {" ".join(seds_l)} &rarr; {" ".join(seds_r)} ) {{#{wname}}}\n\n{dedent(fixTypos(inlines(description, tags)))}'
+    body = f'## `{wname}` {" ".join(lookaheads)} ( {" ".join(seds_l)} &rarr; {" ".join(seds_r)} ) {{#{wname}}}\n\n{fixTypos(dedent(inlines(description, tags)).strip())}'
     if example:
-        body += f'\n\n```phoo\n{dedent(example)}\n```'
+        body += f'\n\nExample:\n\n```phoo\n{dedent(example)}\n```'
     if seealsos:
         body += f'\n\n **See Also:** {", ".join(seealsos)}'
     return body
