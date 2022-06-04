@@ -50,7 +50,7 @@ def buildMD(tags):
     seds_r = [f'`{i.strip()}`*{tags.get(i.strip(), "")}*{{.description}}' for i in st_right]
     example = tags.get('example')
     seealsos = [f'[`{t.strip()}`](#{t.strip()})' for t in tags.get('see-also', '').split()]
-    body = f'## `{wname}` {" ".join(lookaheads)} ( {" ".join(seds_l)} &rarr; {" ".join(seds_r)} )\n\n{dedent(fixTypos(inlines(description, tags)))}\n{{#{wname}}}'
+    body = f'## `{wname}` {" ".join(lookaheads)} ( {" ".join(seds_l)} &rarr; {" ".join(seds_r)} ) {{#{wname}}}\n\n{dedent(fixTypos(inlines(description, tags)))}'
     if example:
         body += f'\n\n```phoo\n{dedent(example)}\n```'
     if seealsos:
@@ -70,7 +70,7 @@ for file in files:
         txt = f.read()
     out_md = ''
     for ctext in findComments(txt):
-        out_md += buildMD(parseComment(ctext))
+        out_md += '\n\n' + buildMD(parseComment(ctext))
     with open(f'docs/{base}.md', 'w') as mdf:
         mdf.write(out_md)
     mkdP.reset()
