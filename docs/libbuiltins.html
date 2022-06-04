@@ -91,7 +91,7 @@
 <h2 id="is"><code>is</code> <em class="shadowed"><code>name</code></em> ( <code>v</code> &rarr;  )</h2>
 <p>Puts a value into a variable.</p>
 <h2 id="stack"><code>stack</code>  (  &rarr; <code>a</code> )</h2>
-<p>Placed at the start of <code>a</code> word, makes the word an ancillary stack.</p>
+<p>Placed at the start of a word, makes the word an ancillary stack.</p>
 <h2 id="release"><code>release</code>  ( <code>a</code> &rarr;  )</h2>
 <p>Removes the first item from an array and discards it. Mutates the array.</p>
 <h2 id="copy"><code>copy</code>  ( <code>a</code> &rarr; <code>i</code> )</h2>
@@ -206,7 +206,7 @@
 <h2 id="len"><code>len</code>  ( <code>a</code> &rarr; <code>l</code> )</h2>
 <p>Gets the length of the array or string.</p>
 <h2 id="pluck"><code>pluck</code>  ( <code>a</code> <code>n</code> &rarr; <code>a</code> <code>i</code> )</h2>
-<p>Pulls the <code>i</code>-th item out of the array <code>a</code> and returns the shortened array and the item.</p>
+<p>Pulls the <code>n</code>-th item out of the array <code>a</code> and returns the shortened array and the item <code>i</code>.</p>
 <p><strong>See Also:</strong> <a href="#stuff"><code>stuff</code></a></p>
 <h2 id="stuff"><code>stuff</code>  ( <code>a</code> <code>i</code> <code>n</code> &rarr; <code>a</code> )</h2>
 <p>Reverse of <a href="#pluck"><code>pluck</code></a>, it puts the item back.</p>
@@ -230,17 +230,17 @@ to <code>makewith</code> with each item of the array or string.</p>
 <p>Takes an array or string and runs <code>block</code> for each item in it.</p>
 <h2 id="fold"><code>fold</code>  ( <code>a</code> <code>r</code> &rarr; <code>s</code> )</h2>
 <p>Takes <code>a</code> function and an array and reduces the array by calling the function with pairs of the items from the array:</p>
-<pre><code>' [ 1   2   3   4   5   6   7   8   9   0 ] ' `a` fold
+<pre><code>' [ 1   2   3   4   5   6   7   8   9   0 ] ' k fold
     |   |   |   |   |   |   |   |   |   |
-    '&gt;`a`&lt;'   |   |   |   |   |   |   |   |
-      '--&gt;`a`&lt;'   |   |   |   |   |   |   |
-          '--&gt;`a`&lt;'   |   |   |   |   |   |
-              '--&gt;`a`&lt;'   |   |   |   |   |
-                  '--&gt;`a`&lt;'   |   |   |   |
-                      '--&gt;`a`&lt;'   |   |   |
-                          '--&gt;`a`&lt;'   |   |
-                              '--&gt;`a`&lt;'   |
-                                  '--&gt;`a`&lt;'
+    '&gt;k&lt;'   |   |   |   |   |   |   |   |
+      '--&gt;k&lt;'   |   |   |   |   |   |   |
+          '--&gt;k&lt;'   |   |   |   |   |   |
+              '--&gt;k&lt;'   |   |   |   |   |
+                  '--&gt;k&lt;'   |   |   |   |
+                      '--&gt;k&lt;'   |   |   |
+                          '--&gt;k&lt;'   |   |
+                              '--&gt;k&lt;'   |
+                                  '--&gt;k&lt;'
                                       |
                                       result.
 </code></pre>
@@ -309,7 +309,7 @@ to has-foo? [ dup $ &quot;foo&quot; find found? ]
 <h2 id="isoneof"><code>isoneof</code>  ( <code>a</code> <code>ss</code> &rarr; <code>t</code> )</h2>
 <p>Same as <a href="#isa%3f"><code>isa?</code></a> but accepts an array of types, which will succeed if any of them is the <a href="#type"><code>type</code></a> of <code>a</code>.</p>
 <h2 id="stringify"><code>stringify</code>  ( <code>a</code> &rarr; <code>s</code> )</h2>
-<p>Converts <code>a</code> to <code>a</code> string.</p>
+<p>Converts <code>a</code> to a string.</p>
 <h2 id="arrayify"><code>arrayify</code>  ( <code>x</code> &rarr; <code>a</code> )</h2>
 <p>Converts <code>a</code> to an array.</p>
 <h2 id="phoo"><code>phoo</code>  ( <code>c</code> &rarr;  )</h2>
@@ -325,4 +325,4 @@ to has-foo? [ dup $ &quot;foo&quot; find found? ]
 <h2 id="reuse"><code>reuse</code> <em class="shadowed"><code>path/to/module</code></em> (  &rarr;  )</h2>
 <p>Imports the module, force-reloading it even if it is already loaded.</p>
 <h2 id="dir"><code>dir</code>  (  &rarr; <code>a</code> )</h2>
-<p>Returns <code>a</code> list of the names of all the available words in this scope.</p></body></html>
+<p>Returns a list of the names of all the available words in this scope.</p></body></html>

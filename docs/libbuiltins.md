@@ -185,7 +185,7 @@ Puts a value into a variable.
 
 ## `stack`  (  &rarr; `a` ) {#stack}
 
-Placed at the start of `a` word, makes the word an ancillary stack.
+Placed at the start of a word, makes the word an ancillary stack.
 
 ## `release`  ( `a` &rarr;  ) {#release}
 
@@ -399,7 +399,7 @@ Gets the length of the array or string.
 
 ## `pluck`  ( `a` `n` &rarr; `a` `i` ) {#pluck}
 
-Pulls the `i`-th item out of the array `a` and returns the shortened array and the item.
+Pulls the `n`-th item out of the array `a` and returns the shortened array and the item `i`.
 
  **See Also:** [`stuff`](#stuff)
 
@@ -446,17 +446,17 @@ Takes an array or string and runs `block` for each item in it.
 
 Takes `a` function and an array and reduces the array by calling the function with pairs of the items from the array:
 
-    ' [ 1   2   3   4   5   6   7   8   9   0 ] ' `a` fold
+    ' [ 1   2   3   4   5   6   7   8   9   0 ] ' k fold
         |   |   |   |   |   |   |   |   |   |
-        '>`a`<'   |   |   |   |   |   |   |   |
-          '-->`a`<'   |   |   |   |   |   |   |
-              '-->`a`<'   |   |   |   |   |   |
-                  '-->`a`<'   |   |   |   |   |
-                      '-->`a`<'   |   |   |   |
-                          '-->`a`<'   |   |   |
-                              '-->`a`<'   |   |
-                                  '-->`a`<'   |
-                                      '-->`a`<'
+        '>k<'   |   |   |   |   |   |   |   |
+          '-->k<'   |   |   |   |   |   |   |
+              '-->k<'   |   |   |   |   |   |
+                  '-->k<'   |   |   |   |   |
+                      '-->k<'   |   |   |   |
+                          '-->k<'   |   |   |
+                              '-->k<'   |   |
+                                  '-->k<'   |
+                                      '-->k<'
                                           |
                                           result.
 
@@ -589,7 +589,7 @@ Same as [`isa?`](#isa%3f) but accepts an array of types, which will succeed if a
 
 ## `stringify`  ( `a` &rarr; `s` ) {#stringify}
 
-Converts `a` to `a` string.
+Converts `a` to a string.
 
 ## `arrayify`  ( `x` &rarr; `a` ) {#arrayify}
 
@@ -621,4 +621,4 @@ Imports the module, force-reloading it even if it is already loaded.
 
 ## `dir`  (  &rarr; `a` ) {#dir}
 
-Returns `a` list of the names of all the available words in this scope.
+Returns a list of the names of all the available words in this scope.
