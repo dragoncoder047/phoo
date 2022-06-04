@@ -1,3 +1,4 @@
+# `use lib/builtins`
 
 
 ## `#pragma` *`flag`*{.shadowed} *`value`*{.shadowed} (  &rarr;  ) {#%23pragma}
@@ -622,3 +623,7 @@ Imports the module, force-reloading it even if it is already loaded.
 ## `dir`  (  &rarr; `a` ) {#dir}
 
 Returns a list of the names of all the available words in this scope.
+
+---
+
+[back to index](index.html)

@@ -1,4 +1,9 @@
+# `use lib/_builtins`
 
+
+
+
+This module is the 
 
 ## `/*`  (  &rarr;  ) {#%2f%2a}
 
@@ -313,3 +318,7 @@ Pushes the pieces to a new promise.
 ## `functionize`  ( `c` &rarr; `f` ) {#functionize}
 
 Turns the code into a function, that will run the code in a subthread.
+
+---
+
+[back to index](index.html)
