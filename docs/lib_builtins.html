@@ -1,10 +1,11 @@
 <!DOCTYPE html><html><head><title>Phoo docs for lib/_builtins.js</title><style>code+.description{display:none;opacity:50%}code:hover+.description{display:inline-block}.shadowed{opacity:50%}</style></head><body><h2 id="/*"><code>/*</code>  (  &rarr;  )</h2>
 <p>Block comment. like c-style comments. comments do not nest.</p>
 <h2 id="$"><code>$</code>  (  &rarr; <code>`**{.description}</code>s`<em class="description">The string (or regular expression) defined by the literal.</em> )</h2>
-<p>string builder.</p>
+<p>String builder.</p>
 <p>first non-whitespace character after the <code>$</code> is the delimiter. the delimiter can be escaped by doubling it.</p>
 <p>the characters immediately following the end delimiter are known as the &ldquo;tag&rdquo; and affect the resultant string. the first character is the code that determines the formatting applied.</p>
 <p>currently the only one implemented is <code>r</code>, which turns the string into a regular expression. the characters after the <code>r</code> are the flags that would go at the end of it. there is no way to &ldquo;escape&rdquo; any characters other than the delimiter, but a <code>e</code> code for defining an escape character is planned. see issue <a href="https://github.com/dragoncoder047/phoo/issues/8">#8</a> for the status of that.</p>
+<p>Example:</p>
 <pre><code class="language-phoo">
 $ 5ab*c?5rig
 // puts the regular expression /ab*c?/ig.
@@ -64,30 +65,35 @@ $ 5ab*c?5rig
 <p>Reverse of <a href="#put"><code>put</code></a>, it takes the item out of the array. the array is mutated.</p>
 <h2 id="]done["><code>]done[</code>  (  &rarr;  )</h2>
 <p>Drops the top item of the return stack, effectively causing everything else outside of the current word to be skipped.</p>
+<p>Example:</p>
 <pre><code class="language-phoo">
 [ foo [ ]done[ bar ] baz ]
 // foo and then bar are run, but baz is skipped.
 </code></pre>
 <h2 id="]again["><code>]again[</code>  (  &rarr;  )</h2>
 <p>Sets the return pointer of the top return stack item to -1, effectively causing everything else outside of the current word to be repeated.</p>
+<p>Example:</p>
 <pre><code class="language-phoo">
 [ foo [ ]again[ bar ] baz ]
 // runs foo bar foo bar foo bar foo bar ... infintely
 </code></pre>
 <h2 id="]cjump["><code>]cjump[</code>  ( <code>t</code><em class="description">truth value to test</em> <code>**{.description} `n`*how far to jump if false*{.description}</code>**{.description} &rarr;  )</h2>
 <p>If the test value <code>t</code> is false, adds <code>n</code> to the top return stack entry&rsquo;s return pointer, effectively skipping that many items.</p>
+<p>Example:</p>
 <pre><code class="language-phoo">
 [ 3 ]cjump[ ] foo bar baz bam
 // if ToS is false, skips foo bar baz. bam will always run
 </code></pre>
 <h2 id="]'["><code>]'[</code>  (  &rarr; <code>`**{.description}</code>a`**{.description} )</h2>
 <p>Instead of running the next item on the top return stack entry, pushes it to the stack and crements the return stack pointer.</p>
+<p>Example:</p>
 <pre><code class="language-phoo">
 [ ]'[ drop ] foo bar
 // foo will be pushed to the stack and then dropped, rendering it a noop. bar will run.
 </code></pre>
 <h2 id="]run["><code>]run[</code>  ( <code>a</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
 <p>Pushes the item to the return stack, so that it will run when the current word finishes.</p>
+<p>Example:</p>
 <pre><code class="language-phoo">
 [ table a b c ] [ ]run[ ]
 // if ToS is n, runs nth item of the table.

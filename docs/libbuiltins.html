@@ -1,5 +1,6 @@
 <!DOCTYPE html><html><head><title>Phoo docs for lib/builtins.ph</title><style>code+.description{display:none;opacity:50%}code:hover+.description{display:inline-block}.shadowed{opacity:50%}</style></head><body><h2 id="#pragma"><code>#pragma</code> <em class="shadowed"><code>flag</code></em> <em class="shadowed"><code>value</code></em> (  &rarr;  )</h2>
 <p>Sets the settings <code>flag</code> specified.</p>
+<p>Example:</p>
 <pre><code class="language-phoo">
 #pragma strictMode false
 </code></pre>
@@ -105,42 +106,49 @@
 <p>Temp is <code>a</code> general purpose ancillary <a href="#stack"><code>stack</code></a>.</p>
 <h2 id="done"><code>done</code>  (  &rarr;  )</h2>
 <p>Jumps immediately to the end of the array.</p>
+<p>Example:</p>
 <pre><code class="language-phoo">
 [ foo bar done baz ]
 // foo bar will run, baz will not
 </code></pre>
 <h2 id="again"><code>again</code>  (  &rarr;  )</h2>
 <p>Jumps immediately to the start of the array.</p>
+<p>Example:</p>
 <pre><code class="language-phoo">
 [ foo bar again baz ]
 // foo bar will run infinitely
 </code></pre>
 <h2 id="if"><code>if</code>  ( <code>t</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
 <p>If the top of stack is false, skips the next item.</p>
+<p>Example:</p>
 <pre><code class="language-phoo">
 [ foo bar if baz ]
 // if bar returns false, baz will be skipped
 </code></pre>
 <h2 id="iff"><code>iff</code>  ( <code>t</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
 <p>If the top of stack is false, skips the next two items.</p>
+<p>Example:</p>
 <pre><code class="language-phoo">
 [ foo iff bar baz ]
 // if foo returns false, bar baz will be skipped
 </code></pre>
 <h2 id="else"><code>else</code>  (  &rarr;  )</h2>
 <p>Unconditionally skips the next item.</p>
+<p>Example:</p>
 <pre><code class="language-phoo">
 [ foo else bar baz ]
 // bar will not run.
 </code></pre>
 <h2 id="until"><code>until</code>  ( <code>t</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
 <p>If the top of stack is false, jumps back to the start of the array.</p>
+<p>Example:</p>
 <pre><code class="language-phoo">
 [ foo bar baz until ]
 // repeats foo bar baz until baz returns true.
 </code></pre>
 <h2 id="while"><code>while</code>  ( <code>t</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
 <p>If the top of stack is false, jumps to the end of the array.</p>
+<p>Example:</p>
 <pre><code class="language-phoo">
 [ foo while baz again ]
 // runs foo at least once, then repeats bar foo until foo returns false
@@ -153,6 +161,7 @@
 <p>If the value on the stack is not the <code>switch</code> value, skips <code>action</code>. if it is, runs <code>action</code> and then jumps to the end of the array (skipping the other cases and the <a href="#default"><code>default</code></a>).</p>
 <h2 id="'"><code>'</code> <em class="shadowed"><code>value</code></em> (  &rarr; <code>`**{.description}</code>v`**{.description} )</h2>
 <p>Puts the <code>value</code> following it on the stack instead of running it.</p>
+<p>Example:</p>
 <pre><code class="language-phoo">
 [ 1 2 3 ] // results in 3 items on the stack
 ' [ 1 2 3 ] // results in 1 item, the array [1, 2, 3]
@@ -176,9 +185,9 @@
 <h2 id="j^"><code>j^</code>  (  &rarr; <code>`**{.description}</code>n`**{.description} )</h2>
 <p>Inside of a doubly nested <a href="#times"><code>times</code></a> loop, gets the number of iterations done by the <strong>outer</strong> loop since the loop started.</p>
 <h2 id="step"><code>step</code>  ( <code>n</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
-<p>Adds <code>n</code> to the current <a href="#times"><code>times</code></a> loop&rsquo;s iteration counter. .</p>
+<p>Adds <code>n</code> to the current <a href="#times"><code>times</code></a> loop&rsquo;s iteration counter.</p>
 <h2 id="restart"><code>restart</code>  (  &rarr;  )</h2>
-<p>Sets the current <a href="#times"><code>times</code></a> loop&rsquo;s iteration counter to the original value it started at, restarting the loop. .</p>
+<p>Sets the current <a href="#times"><code>times</code></a> loop&rsquo;s iteration counter to the original value it started at, restarting the loop.</p>
 <h2 id="break"><code>break</code>  (  &rarr;  )</h2>
 <p>Sets the current <a href="#times"><code>times</code></a> loop&rsquo;s iteration counter to 0, causing the loop to end after this iteration is done.</p>
 <h2 id="printable"><code>printable</code>  ( <code>c</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>t</code>**{.description} )</h2>
@@ -210,13 +219,13 @@
 <h2 id="reflect"><code>reflect</code>  ( <code>x</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>x</code><strong class="description">{.description} ``</strong> )</h2>
 <p><a href="#reverse"><code>reverse</code></a> but digs down into sub-arrays and reflects them too.</p>
 <h2 id="makewith"><code>makewith</code>  ( <code>c</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>l</code><strong class="description">{.description} ``</strong> )</h2>
-<p>places the code in a loop and returns the generated code.</p>
+<p>Places the code in a loop and returns the generated code.</p>
 <p>the returned code takes an array or string on the stack and calls the original code passed 
 to <code>makewith</code> with each item of the array or string.</p>
 <h2 id="witheach"><code>witheach</code> <em class="shadowed"><code>block</code></em> ( <code>a</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> )</h2>
 <p>Takes an array or string and runs <code>block</code> for each item in it.</p>
 <h2 id="fold"><code>fold</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `r`**{.description}</code></strong> &rarr; <code>`**{.description}</code>s`**{.description} )</h2>
-<p>takes <code>a</code> function and an array and reduces the array by calling the function with pairs of the items from the array:</p>
+<p>Takes <code>a</code> function and an array and reduces the array by calling the function with pairs of the items from the array:</p>
 <pre><code>' [ 1   2   3   4   5   6   7   8   9   0 ] ' `a` fold
     |   |   |   |   |   |   |   |   |   |
     '&gt;`a`&lt;'   |   |   |   |   |   |   |   |
@@ -247,6 +256,7 @@ to <code>makewith</code> with each item of the array or string.</p>
 <p>Same as <a href="#matchitem"><code>matchitem</code></a> but uses lookahead for <code>cleanup</code> and <code>criteria</code>.</p>
 <h2 id="found?"><code>found?</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `i`**{.description}</code></strong> &rarr; <code>`**{.description}</code>t`**{.description} )</h2>
 <p>True if <code>i</code> is <code>a</code> valid index into array <code>a</code>.</p>
+<p>Example:</p>
 <pre><code class="language-phoo">
 to has-foo? [ dup $ &quot;foo&quot; find found? ]
 </code></pre>

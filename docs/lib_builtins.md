@@ -6,14 +6,15 @@ Block comment. like c-style comments. comments do not nest.
 
 ## `$`  (  &rarr; ``**{.description} `s`*The string (or regular expression) defined by the literal.*{.description} ) {#$}
 
-
-string builder.
+String builder.
 
 first non-whitespace character after the `$` is the delimiter. the delimiter can be escaped by doubling it.
 
 the characters immediately following the end delimiter are known as the "tag" and affect the resultant string. the first character is the code that determines the formatting applied.
 
 currently the only one implemented is `r`, which turns the string into a regular expression. the characters after the `r` are the flags that would go at the end of it. there is no way to "escape" any characters other than the delimiter, but a `e` code for defining an escape character is planned. see issue [#8](https://github.com/dragoncoder047/phoo/issues/8) for the status of that.
+
+Example:
 
 ```phoo
 
@@ -128,6 +129,8 @@ Reverse of [`put`](#put), it takes the item out of the array. the array is mutat
 
 Drops the top item of the return stack, effectively causing everything else outside of the current word to be skipped.
 
+Example:
+
 ```phoo
 
 [ foo [ ]done[ bar ] baz ]
@@ -137,6 +140,8 @@ Drops the top item of the return stack, effectively causing everything else outs
 ## `]again[`  (  &rarr;  ) {#]again[}
 
 Sets the return pointer of the top return stack item to -1, effectively causing everything else outside of the current word to be repeated.
+
+Example:
 
 ```phoo
 
@@ -148,6 +153,8 @@ Sets the return pointer of the top return stack item to -1, effectively causing 
 
 If the test value `t` is false, adds `n` to the top return stack entry's return pointer, effectively skipping that many items.
 
+Example:
+
 ```phoo
 
 [ 3 ]cjump[ ] foo bar baz bam
@@ -158,6 +165,8 @@ If the test value `t` is false, adds `n` to the top return stack entry's return 
 
 Instead of running the next item on the top return stack entry, pushes it to the stack and crements the return stack pointer.
 
+Example:
+
 ```phoo
 
 [ ]'[ drop ] foo bar
@@ -167,6 +176,8 @@ Instead of running the next item on the top return stack entry, pushes it to the
 ## `]run[`  ( `a`**{.description} ``**{.description} &rarr;  ) {#]run[}
 
 Pushes the item to the return stack, so that it will run when the current word finishes.
+
+Example:
 
 ```phoo
 

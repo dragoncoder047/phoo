@@ -4,6 +4,8 @@
 
 Sets the settings `flag` specified.
 
+Example:
+
 ```phoo
 
 #pragma strictMode false
@@ -213,6 +215,8 @@ Temp is `a` general purpose ancillary [`stack`](#stack).
 
 Jumps immediately to the end of the array.
 
+Example:
+
 ```phoo
 
 [ foo bar done baz ]
@@ -222,6 +226,8 @@ Jumps immediately to the end of the array.
 ## `again`  (  &rarr;  ) {#again}
 
 Jumps immediately to the start of the array.
+
+Example:
 
 ```phoo
 
@@ -233,6 +239,8 @@ Jumps immediately to the start of the array.
 
 If the top of stack is false, skips the next item.
 
+Example:
+
 ```phoo
 
 [ foo bar if baz ]
@@ -242,6 +250,8 @@ If the top of stack is false, skips the next item.
 ## `iff`  ( `t`**{.description} ``**{.description} &rarr;  ) {#iff}
 
 If the top of stack is false, skips the next two items.
+
+Example:
 
 ```phoo
 
@@ -253,6 +263,8 @@ If the top of stack is false, skips the next two items.
 
 Unconditionally skips the next item.
 
+Example:
+
 ```phoo
 
 [ foo else bar baz ]
@@ -263,6 +275,8 @@ Unconditionally skips the next item.
 
 If the top of stack is false, jumps back to the start of the array.
 
+Example:
+
 ```phoo
 
 [ foo bar baz until ]
@@ -272,6 +286,8 @@ If the top of stack is false, jumps back to the start of the array.
 ## `while`  ( `t`**{.description} ``**{.description} &rarr;  ) {#while}
 
 If the top of stack is false, jumps to the end of the array.
+
+Example:
 
 ```phoo
 
@@ -294,6 +310,8 @@ If the value on the stack is not the `switch` value, skips `action`. if it is, r
 ## `'` *`value`*{.shadowed} (  &rarr; ``**{.description} `v`**{.description} ) {#'}
 
 Puts the `value` following it on the stack instead of running it.
+
+Example:
 
 ```phoo
 
@@ -339,11 +357,11 @@ Inside of a doubly nested [`times`](#times) loop, gets the number of iterations 
 
 ## `step`  ( `n`**{.description} ``**{.description} &rarr;  ) {#step}
 
-Adds `n` to the current [`times`](#times) loop's iteration counter. .
+Adds `n` to the current [`times`](#times) loop's iteration counter.
 
 ## `restart`  (  &rarr;  ) {#restart}
 
-Sets the current [`times`](#times) loop's iteration counter to the original value it started at, restarting the loop. .
+Sets the current [`times`](#times) loop's iteration counter to the original value it started at, restarting the loop.
 
 ## `break`  (  &rarr;  ) {#break}
 
@@ -407,8 +425,7 @@ Reverses the array.
 
 ## `makewith`  ( `c`**{.description} ``**{.description} &rarr; ``**{.description} `l`**{.description} ``**{.description} ) {#makewith}
 
-
-places the code in a loop and returns the generated code.
+Places the code in a loop and returns the generated code.
 
 the returned code takes an array or string on the stack and calls the original code passed 
 to `makewith` with each item of the array or string.
@@ -419,8 +436,7 @@ Takes an array or string and runs `block` for each item in it.
 
 ## `fold`  ( `a`**{.description} ``**{.description} `r`**{.description} ``**{.description} &rarr; ``**{.description} `s`**{.description} ) {#fold}
 
-
-takes `a` function and an array and reduces the array by calling the function with pairs of the items from the array:
+Takes `a` function and an array and reduces the array by calling the function with pairs of the items from the array:
 
     ' [ 1   2   3   4   5   6   7   8   9   0 ] ' `a` fold
         |   |   |   |   |   |   |   |   |   |
@@ -467,6 +483,8 @@ Same as [`matchitem`](#matchitem) but uses lookahead for `cleanup` and `criteria
 ## `found?`  ( `a`**{.description} ``**{.description} `i`**{.description} ``**{.description} &rarr; ``**{.description} `t`**{.description} ) {#found?}
 
 True if `i` is `a` valid index into array `a`.
+
+Example:
 
 ```phoo
 
