@@ -9,7 +9,7 @@ COMMENT_RE = re.compile(r'/\* >>\n(?P<body>[\s\S]+?)\n\*/', re.M)
 def findComments(txt):
     return [match.group('body') for match in COMMENT_RE.finditer(txt)]
 
-ONE_THING_RE = re.compile(r'(?P<tag>[a-z]+)>\s*(?P<body>[^\n]*)?')
+ONE_THING_RE = re.compile(r'(?P<tag>[a-z0-9A-Z-_]+)>\s*(?P<body>[^\n]*)?')
 def parseComment(body):
     last = ''
     out = {'raw_source': body}
@@ -35,7 +35,9 @@ BAD_AN_2 = re.compile(r'(?<=\s)a(?=\s+[aeiouy])', re.I)
 def fixTypos(txt):
     txt = BAD_AN_1.sub('a', txt)
     txt = BAD_AN_2.sub('an', txt)
-    return txt.capitalize().rstrip('.') + '.'
+    txt = txt.rstrip('.') + '.'
+    txt = txt[0].capitalize() + txt[1:]
+    return txt
 
 def buildMD(tags):
     wname = tags.get('word') or tags.get('macro') or ''
