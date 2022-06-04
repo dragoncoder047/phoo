@@ -62,7 +62,7 @@ $ 5ab*c?5rig
 <p>Pushes the item onto the end of the array.</p>
 <p><strong>See Also:</strong> <a href="#take"><code>take</code></a></p>
 <h2 id="take"><code>take</code>  ( <code>a</code><em class="description">Array</em> &rarr; <code>i</code><em class="description">Last item of the array</em> )</h2>
-<p>Reverse of <a href="#%5b%5bput%5d%5d"><code>[[put]]</code></a>, it takes the item out of the array. The array is mutated.</p>
+<p>Reverse of <a href="#put"><code>put</code></a>, it takes the item out of the array. The array is mutated.</p>
 <h2 id="%5ddone%5b"><code>]done[</code>  (  &rarr;  )</h2>
 <p>Drops the top item of the return stack, effectively causing everything else outside of the current word to be skipped.</p>
 <p>Example:</p>
@@ -130,11 +130,11 @@ $ 5ab*c?5rig
 <p>Calls <code>a</code> function with the arguments.</p>
 <p><strong>See Also:</strong> <a href="#new"><code>new</code></a></p>
 <h2 id="new"><code>new</code>  ( <code>a</code><em class="description">arguments array</em> <code>f</code><em class="description">constructor function</em> &rarr; <code>r</code><em class="description">new object constructed</em> )</h2>
-<p>Same sort as <a href="#%5b%5bcall%5d%5d"><code>[[call]]</code></a>, but uses Javascript <code>new</code> keyword to construct with a class.</p>
+<p>Same sort as <a href="#call"><code>call</code></a>, but uses Javascript <code>new</code> keyword to construct with a class.</p>
 <h2 id="word"><code>word</code>  ( <code>s</code><em class="description">string</em> &rarr; <code>w</code><em class="description">symbol of that string</em> )</h2>
 <p>Converts string to symbol.</p>
 <h2 id="name"><code>name</code>  ( <code>w</code><em class="description">symbol</em> &rarr; <code>s</code><em class="description">string of that symbol</em> )</h2>
-<p>Reverse of <a href="#%5b%5bword%5d%5d"><code>[[word]]</code></a>, converts symbol to string.</p>
+<p>Reverse of <a href="#word"><code>word</code></a>, converts symbol to string.</p>
 <h2 id="resolve"><code>resolve</code>  ( <code>w</code><em class="description">symbol</em> &rarr; <code>d</code><em class="description">definition</em> )</h2>
 <p>Looks up the definition of the word symbol.</p>
 <h2 id="%7b%7d"><code>{}</code>  (  &rarr; <code>a</code> )</h2>
@@ -146,15 +146,15 @@ $ 5ab*c?5rig
 <h2 id="%5ddefine%5b"><code>]define[</code>  ( <code>n</code><em class="description">symbol name</em> <code>d</code><em class="description">definition</em> &rarr;  )</h2>
 <p>Writes a new definition to the top scope using the name and definition on the stack.</p>
 <h2 id="%5ddefine%2dmacro%5b"><code>]define-macro[</code>  ( <code>n</code><em class="description">symbol name</em> <code>d</code><em class="description">definition</em> &rarr;  )</h2>
-<p>Like <a href="#%5b%5b%5ddefine%5b%5d%5d"><code>[[]define[]]</code></a> but defines a macro.</p>
+<p>Like <a href="#%5ddefine%5b"><code>]define[</code></a> but defines a macro.</p>
 <h2 id="%5dforget%5b"><code>]forget[</code>  ( <code>n</code><em class="description">symbol name</em> &rarr;  )</h2>
 <p>Erases the definition of a word, reverting back to the old one if there was one.</p>
 <h2 id="to"><code>to</code> <em class="shadowed"><code>name</code></em> <em class="shadowed"><code>def</code></em> (  &rarr;  )</h2>
-<p>Wrapper for <a href="#%5b%5b%5ddefine%5b%5d%5d"><code>[[]define[]]</code></a>.</p>
+<p>Wrapper for <a href="#%5ddefine%5b"><code>]define[</code></a>.</p>
 <h2 id="macro"><code>macro</code> <em class="shadowed"><code>name</code></em> <em class="shadowed"><code>def</code></em> (  &rarr;  )</h2>
-<p>Wrapper for <a href="#%5b%5b%5ddefine%2dmacro%5b%5d%5d"><code>[[]define-macro[]]</code></a>.</p>
+<p>Wrapper for <a href="#%5ddefine%2dmacro%5b"><code>]define-macro[</code></a>.</p>
 <h2 id="forget"><code>forget</code> <em class="shadowed"><code>name</code></em> (  &rarr;  )</h2>
-<p>Wrapper for <a href="#%5b%5b%5dforget%5b%5d%5d"><code>[[]forget[]]</code></a>.</p>
+<p>Wrapper for <a href="#%5dforget%5b"><code>]forget[</code></a>.</p>
 <h2 id="%5dimport%5b"><code>]import[</code>  ( <code>n</code><em class="description">name of the module</em> <code>r</code><em class="description">boolean, force-reload the module</em> &rarr;  )</h2>
 <p>Imports the module, force-reloading if the top is true (ignores cache).</p>
 <h2 id="promise"><code>promise</code>  (  &rarr; <code>p</code><em class="description">the promise</em> <code>x</code><em class="description">reject callback</em> <code>r</code><em class="description">resolve callback</em> )</h2>

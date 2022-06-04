@@ -126,7 +126,7 @@ Pushes the item onto the end of the array.
 
 ## `take`  ( `a`*Array*{.description} &rarr; `i`*Last item of the array*{.description} ) {#take}
 
-Reverse of [`[[put]]`](#%5b%5bput%5d%5d), it takes the item out of the array. The array is mutated.
+Reverse of [`put`](#put), it takes the item out of the array. The array is mutated.
 
 ## `]done[`  (  &rarr;  ) {#%5ddone%5b}
 
@@ -252,7 +252,7 @@ Calls `a` function with the arguments.
 
 ## `new`  ( `a`*arguments array*{.description} `f`*constructor function*{.description} &rarr; `r`*new object constructed*{.description} ) {#new}
 
-Same sort as [`[[call]]`](#%5b%5bcall%5d%5d), but uses Javascript `new` keyword to construct with a class.
+Same sort as [`call`](#call), but uses Javascript `new` keyword to construct with a class.
 
 ## `word`  ( `s`*string*{.description} &rarr; `w`*symbol of that string*{.description} ) {#word}
 
@@ -260,7 +260,7 @@ Converts string to symbol.
 
 ## `name`  ( `w`*symbol*{.description} &rarr; `s`*string of that symbol*{.description} ) {#name}
 
-Reverse of [`[[word]]`](#%5b%5bword%5d%5d), converts symbol to string.
+Reverse of [`word`](#word), converts symbol to string.
 
 ## `resolve`  ( `w`*symbol*{.description} &rarr; `d`*definition*{.description} ) {#resolve}
 
@@ -284,7 +284,7 @@ Writes a new definition to the top scope using the name and definition on the st
 
 ## `]define-macro[`  ( `n`*symbol name*{.description} `d`*definition*{.description} &rarr;  ) {#%5ddefine%2dmacro%5b}
 
-Like [`[[]define[]]`](#%5b%5b%5ddefine%5b%5d%5d) but defines a macro.
+Like [`]define[`](#%5ddefine%5b) but defines a macro.
 
 ## `]forget[`  ( `n`*symbol name*{.description} &rarr;  ) {#%5dforget%5b}
 
@@ -292,15 +292,15 @@ Erases the definition of a word, reverting back to the old one if there was one.
 
 ## `to` *`name`*{.shadowed} *`def`*{.shadowed} (  &rarr;  ) {#to}
 
-Wrapper for [`[[]define[]]`](#%5b%5b%5ddefine%5b%5d%5d).
+Wrapper for [`]define[`](#%5ddefine%5b).
 
 ## `macro` *`name`*{.shadowed} *`def`*{.shadowed} (  &rarr;  ) {#macro}
 
-Wrapper for [`[[]define-macro[]]`](#%5b%5b%5ddefine%2dmacro%5b%5d%5d).
+Wrapper for [`]define-macro[`](#%5ddefine%2dmacro%5b).
 
 ## `forget` *`name`*{.shadowed} (  &rarr;  ) {#forget}
 
-Wrapper for [`[[]forget[]]`](#%5b%5b%5dforget%5b%5d%5d).
+Wrapper for [`]forget[`](#%5dforget%5b).
 
 ## `]import[`  ( `n`*name of the module*{.description} `r`*boolean, force-reload the module*{.description} &rarr;  ) {#%5dimport%5b}
 
