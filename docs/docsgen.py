@@ -48,8 +48,8 @@ def buildMD(tags):
         st_left, st_right = sed_text.split('--', 1)
     else:
         st_left, st_right = sed_text, ''
-    seds_l = [f'`{i.strip()}`*{tags.get(i.strip(), "")}*{{.description}}' for i in st_left.strip().split()]
-    seds_r = [f'`{i.strip()}`*{tags.get(i.strip(), "")}*{{.description}}' for i in st_right.strip().split()]
+    seds_l = [f'`{i.strip()}`' + (f'*{tags.get(i.strip(), "")}*{{.description}}' if i.strip() in tags else '') for i in st_left.strip().split()]
+    seds_r = [f'`{i.strip()}`' + (f'*{tags.get(i.strip(), "")}*{{.description}}' if i.strip() in tags else '') for i in st_right.strip().split()]
     example = tags.get('example')
     seealsos = [f'[`{t.strip()}`](#{t.strip()})' for t in tags.get('see-also', '').split()]
     body = f'## `{wname}` {" ".join(lookaheads)} ( {" ".join(seds_l)} &rarr; {" ".join(seds_r)} ) {{#{wname}}}\n\n{fixTypos(dedent(inlines(description, tags)).strip())}'
