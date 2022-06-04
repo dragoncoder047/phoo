@@ -44,24 +44,27 @@ def fixTypos(txt):
     return txt
 
 def buildMD(tags):
-    wname = tags.get('word') or tags.get('macro') or ''
-    description = tags.get('description', '')
-    lookaheads = [f'*`{xx.strip()}`*{{.shadowed}}' for xx in tags.get('lookahead', '').split()]
-    sed_text = tags.get('sed', '')
-    if '--' in sed_text:
-        st_left, st_right = sed_text.split('--', 1)
+    if 'word' in tags or 'macro' in tags:
+        wname = tags.get('word') or tags.get('macro') or ''
+        description = tags.get('description', '')
+        lookaheads = [f'*`{xx.strip()}`*{{.shadowed}}' for xx in tags.get('lookahead', '').split()]
+        sed_text = tags.get('sed', '')
+        if '--' in sed_text:
+            st_left, st_right = sed_text.split('--', 1)
+        else:
+            st_left, st_right = sed_text, ''
+        seds_l = [f'`{i.strip()}`' + (f'*{tags.get(i.strip(), "")}*{{.description}}' if i.strip() in tags else '') for i in st_left.strip().split()]
+        seds_r = [f'`{i.strip()}`' + (f'*{tags.get(i.strip(), "")}*{{.description}}' if i.strip() in tags else '') for i in st_right.strip().split()]
+        example = tags.get('example')
+        seealsos = [f'[`{t.strip()}`](#{encURI(t.strip())})' for t in tags.get('see-also', '').split()]
+        body = f'## `{wname}` {" ".join(lookaheads)} ( {" ".join(seds_l)} &rarr; {" ".join(seds_r)} ) {{#{encURI(wname)}}}\n\n{fixTypos(dedent(inlines(description, tags)).strip())}'
+        if example:
+            body += f'\n\nExample:\n\n```phoo\n{dedent(example)}\n```'
+        if seealsos:
+            body += f'\n\n **See Also:** {", ".join(seealsos)}'
+        return body
     else:
-        st_left, st_right = sed_text, ''
-    seds_l = [f'`{i.strip()}`' + (f'*{tags.get(i.strip(), "")}*{{.description}}' if i.strip() in tags else '') for i in st_left.strip().split()]
-    seds_r = [f'`{i.strip()}`' + (f'*{tags.get(i.strip(), "")}*{{.description}}' if i.strip() in tags else '') for i in st_right.strip().split()]
-    example = tags.get('example')
-    seealsos = [f'[`{t.strip()}`](#{encURI(t.strip())})' for t in tags.get('see-also', '').split()]
-    body = f'## `{wname}` {" ".join(lookaheads)} ( {" ".join(seds_l)} &rarr; {" ".join(seds_r)} ) {{#{encURI(wname)}}}\n\n{fixTypos(dedent(inlines(description, tags)).strip())}'
-    if example:
-        body += f'\n\nExample:\n\n```phoo\n{dedent(example)}\n```'
-    if seealsos:
-        body += f'\n\n **See Also:** {", ".join(seealsos)}'
-    return body
+        return dedent(tags['plain'])
 
 styles = 'code+.description{display:none;opacity:50%;font-size:75%}code:hover+.description{display:inline-block}.shadowed{opacity:50%}'
 
@@ -69,17 +72,28 @@ files = glob('lib/*.js') + glob('lib/*.ph')
 
 mkdP = Markdown(extensions=['attr_list', 'fenced_code', 'md_in_html', 'tables', 'smarty'])
 
+all_modules = []
+
 for file in files:
     print('processing', file)
-    base = file.removesuffix('.ph').removesuffix('.js').replace('/', '')
+    base = file.removesuffix('.ph').removesuffix('.js')
     with open(file) as f:
         txt = f.read()
-    out_md = ''
+    out_md = f'# `use {base}`\n'
+    base = base.replace('/', '')
     for ctext in findComments(txt):
         out_md += '\n\n' + buildMD(parseComment(ctext))
+    out_md += '\n\n---\n\n[back to index](index.html)'
     with open(f'docs/{base}.md', 'w') as mdf:
         mdf.write(out_md)
     mkdP.reset()
     html = mkdP.convert(out_md)
     with open(f'docs/{base}.html', 'w') as htf:
         htf.write(f'<!DOCTYPE html><html><head><title>Phoo docs for {file}</title><style>{styles}</style></head><body>{html}</body></html>')
+    all_modules.append(base)
+
+with open('docs/index.html', 'w') as df:
+    df.write(f'<!DOCTYPE html><html><head><title>Phoo docs index</title></head><body><h1>Phoo docs module index</h1><ul>')
+    for file in files:
+        df.write(f'<li><a href="{file}.html">{file}</a></li>')
+    df.write('</ul></body></html>')
