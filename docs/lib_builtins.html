@@ -1,10 +1,10 @@
 <!DOCTYPE html><html><head><title>Phoo docs for lib/_builtins.js</title><style>code+.description{display:none;opacity:50%}code:hover+.description{display:inline-block}.shadowed{opacity:50%}</style></head><body><h2 id="/*"><code>/*</code>  (  &rarr;  )</h2>
-<p>Block comment. like c-style comments. comments do not nest.</p>
+<p>Block comment. Like C-style comments. Comments do not nest.</p>
 <h2 id="$"><code>$</code>  (  &rarr; <code>s</code><em class="description">The string (or regular expression) defined by the literal.</em> )</h2>
 <p>String builder.</p>
-<p>first non-whitespace character after the <code>$</code> is the delimiter. the delimiter can be escaped by doubling it.</p>
-<p>the characters immediately following the end delimiter are known as the &ldquo;tag&rdquo; and affect the resultant string. the first character is the code that determines the formatting applied.</p>
-<p>currently the only one implemented is <code>r</code>, which turns the string into a regular expression. the characters after the <code>r</code> are the flags that would go at the end of it. there is no way to &ldquo;escape&rdquo; any characters other than the delimiter, but a <code>e</code> code for defining an escape character is planned. see issue <a href="https://github.com/dragoncoder047/phoo/issues/8">#8</a> for the status of that.</p>
+<p>First non-whitespace character after the <code>$</code> is the delimiter. The delimiter can be escaped by doubling it.</p>
+<p>The characters immediately following the end delimiter are known as the &ldquo;tag&rdquo; and affect the resultant string. The first character is the code that determines the formatting applied.</p>
+<p>Currently the only one implemented is <code>r</code>, which turns the string into a regular expression. The characters after the <code>r</code> are the flags that would go at the end of it. There is no way to &ldquo;escape&rdquo; any characters other than the delimiter, but a <code>e</code> code for defining an escape character is planned. See issue <a href="https://github.com/dragoncoder047/phoo/issues/8">#8</a> for the status of that.</p>
 <p>Example:</p>
 <pre><code class="language-phoo">
 $ 5ab*c?5rig
@@ -18,12 +18,12 @@ $ 5ab*c?5rig
 <p>End of a sub-array.</p>
 <h2 id="]"><code>]</code>  (  &rarr;  )</h2>
 <p>Same as <code>end</code>.</p>
-<h2><code>pick</code>  ( <code>n</code><em class="description">Depth of item to pick</em> &rarr; <code>i</code>*COPY of the item.</h2>
-<p>see-also&gt; roll*{.description} ) {#pick}</p>
-<p>Same as the forth word <code>pick</code>. takes a number <code>n</code> and <strong>copies</strong> the nth item to the top.</p>
-<h2><code>roll</code>  ( <code>n</code><em class="description">Depth of item to pick</em> &rarr; <code>i</code>*COPY of the item.</h2>
-<p>see-also&gt; pick*{.description} ) {#roll}</p>
-<p>Same as the forth word <code>roll</code>. takes a number <code>n</code> and <strong>moves</strong> the nth item to the top .</p>
+<h2 id="pick"><code>pick</code>  ( <code>n</code><em class="description">Depth of item to pick</em> &rarr; <code>i</code><em class="description">COPY of the item.</em> )</h2>
+<p>Same as the Forth word <code>PICK</code>. Takes a number <code>n</code> and <strong>copies</strong> the nth item to the top.</p>
+<p><strong>See Also:</strong> <a href="#roll"><code>roll</code></a></p>
+<h2 id="roll"><code>roll</code>  ( <code>n</code><em class="description">Depth of item to pick</em> &rarr; <code>i</code><em class="description">COPY of the item.</em> )</h2>
+<p>Same as the Forth word <code>ROLL</code>. Takes a number <code>n</code> and <strong>moves</strong> the nth item to the top .</p>
+<p><strong>See Also:</strong> <a href="#pick"><code>pick</code></a></p>
 <h2 id="drop"><code>drop</code>  ( <code>n</code>**{.description} &rarr;  )</h2>
 <p>Removes the top item from the stack.</p>
 <h2 id="1+"><code>1+</code>  ( <code>n</code><strong class="description">{.description} &rarr; <code>n+1</code></strong> )</h2>
@@ -31,7 +31,7 @@ $ 5ab*c?5rig
 <h2 id="1-"><code>1-</code>  ( <code>n</code><strong class="description">{.description} &rarr; <code>n-1</code></strong> )</h2>
 <p>Decrements a number on the top of the stack.</p>
 <h2 id="+"><code>+</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>b+a</code>**{.description} )</h2>
-<p>Adds two items together using javascript <code>+</code> operator. note the order of addition.</p>
+<p>Adds two items together using Javascript <code>+</code> operator. Note the order of addition.</p>
 <h2 id="negate"><code>negate</code>  ( <code>a</code><strong class="description">{.description} &rarr; <code>-a</code></strong> )</h2>
 <p>Unary negation of top item.</p>
 <h2><code>*</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>b*a</code>*<em>{.description} ) {#</em>}</h2>
@@ -39,30 +39,30 @@ $ 5ab*c?5rig
 <h2><code>**</code>  ( <code>b</code><em class="description">base</em> <code>e</code><em class="description">exponent</em> &rarr; <code>b**e</code><strong>{.description} ) {#</strong>}</h2>
 <p>Power of top two items.</p>
 <h2 id="/mod"><code>/mod</code>  ( <code>x</code><em class="description">dividend</em> <code>y</code><em class="description">divisor</em> &rarr; <code>q</code><em class="description">quotient</em> <code>r</code><em class="description">remainder</em> )</h2>
-<p>Euclidean division. remainder and quotient.</p>
+<p>Euclidean division. Remainder and quotient.</p>
 <h2 id="/"><code>/</code>  ( <code>a</code><em class="description">dividend</em> <code>b</code><em class="description">divisor</em> &rarr; <code>q</code><em class="description">quotient</em> )</h2>
 <p>Regular division (results in float).</p>
 <h2 id=""><code>=</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>t</code>**{.description} )</h2>
-<p>Equals, using javascript <code>==</code> operator.</p>
+<p>Equals, using Javascript <code>==</code> operator.</p>
 <h2 id="&gt;"><code>&gt;</code>  ( <code>a</code><em class="description">number on &ldquo;larger&rdquo; (left) side of expression.</em> <code>b</code><em class="description">number on &ldquo;smaller&rdquo; (right) side of expression.</em> &rarr; <code>t</code>**{.description} )</h2>
 <p>Greater than.</p>
 <h2 id="nand"><code>nand</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>t</code>**{.description} )</h2>
-<p>Boolean nand of two arguments. true if both are false.</p>
+<p>Boolean NAND of two arguments. True if both are false.</p>
 <h2 id="~"><code>~</code>  ( <code>n</code><strong class="description">{.description} &rarr; <code>~n</code></strong> )</h2>
-<p>Bitwise not of a number.</p>
+<p>Bitwise NOT of a number.</p>
 <h2 id="&amp;"><code>&amp;</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>a&amp;b</code>**{.description} )</h2>
-<p>Bitwise and of two numbers.</p>
+<p>Bitwise AND of two numbers.</p>
 <h2 id="|"><code>|</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>a|b</code>**{.description} )</h2>
-<p>Bitwise or of two numbers.</p>
+<p>Bitwise OR of two numbers.</p>
 <h2 id="^"><code>^</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>a^b</code>**{.description} )</h2>
-<p>Bitwise xor of two numbers.</p>
+<p>Bitwise XOR of two numbers.</p>
 <h2 id="&lt;&lt;"><code>&lt;&lt;</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>a&lt;&lt;b</code>**{.description} )</h2>
-<p>A bit-shifted left by b places. negative b for shift right.</p>
-<h2><code>put</code>  ( <code>i</code><em class="description">Item to push</em> <code>a</code>*Array to push onto</h2>
-<p>see-also&gt; take*{.description} &rarr;  ) {#put}</p>
+<p>A bit-shifted left by B places. Negative B for shift right.</p>
+<h2 id="put"><code>put</code>  ( <code>i</code><em class="description">Item to push</em> <code>a</code><em class="description">Array to push onto</em> &rarr;  )</h2>
 <p>Pushes the item onto the end of the array.</p>
+<p><strong>See Also:</strong> <a href="#take"><code>take</code></a></p>
 <h2 id="take"><code>take</code>  ( <code>a</code><em class="description">Array</em> &rarr; <code>i</code><em class="description">Last item of the array</em> )</h2>
-<p>Reverse of <a href="#put"><code>put</code></a>, it takes the item out of the array. the array is mutated.</p>
+<p>Reverse of <a href="#put"><code>put</code></a>, it takes the item out of the array. The array is mutated.</p>
 <h2 id="]done["><code>]done[</code>  (  &rarr;  )</h2>
 <p>Drops the top item of the return stack, effectively causing everything else outside of the current word to be skipped.</p>
 <p>Example:</p>
@@ -111,9 +111,9 @@ $ 5ab*c?5rig
 <h2 id="]sandbox["><code>]sandbox[</code>  ( <code>c</code><strong class="description">{.description} &rarr; <code>e</code></strong> )</h2>
 <p>Runs the code under a <code>try</code> statement, and pushes the error it threw, or <code>false</code> if no error.</p>
 <h2 id="die"><code>die</code>  ( <code>m</code>**{.description} &rarr;  )</h2>
-<p>Throws a <code>phooerror</code> with the message.</p>
+<p>Throws a <code>PhooError</code> with the message.</p>
 <h2 id="]getstack["><code>]getstack[</code>  ( <code>e</code><strong class="description">{.description} &rarr; <code>t</code></strong> )</h2>
-<p>With a <code>phooerror</code> on the top, gets its phoo stack trace.</p>
+<p>With a <code>PhooError</code> on the top, gets its Phoo stack trace.</p>
 <h2 id="type"><code>type</code>  ( <code>o</code><strong class="description">{.description} &rarr; <code>t</code></strong> )</h2>
 <p>Gets the type of the object.</p>
 <h2 id="compile"><code>compile</code>  ( <code>s</code><strong class="description">{.description} &rarr; <code>a</code></strong> )</h2>
@@ -121,16 +121,16 @@ $ 5ab*c?5rig
 <h2 id="time"><code>time</code>  (  &rarr; <code>t</code>**{.description} )</h2>
 <p>Pushes the system time, in milliseconds.</p>
 <h2 id="await"><code>await</code>  ( <code>p</code><strong class="description">{.description} &rarr; <code>v</code></strong> )</h2>
-<p>Awaits a <code>promise</code> and pushes the resolve value.</p>
+<p>Awaits a <code>Promise</code> and pushes the resolve value.</p>
 <h2 id="get"><code>get</code>  ( <code>o</code><em class="description">object</em> <code>k</code><em class="description">string key</em> &rarr; <code>v</code><em class="description">o.k</em> )</h2>
 <p>Object and key, looks up.</p>
 <h2 id="set"><code>set</code>  ( <code>v</code><em class="description">value to set</em> <code>o</code><em class="description">object</em> <code>k</code><em class="description">string key</em> &rarr;  )</h2>
 <p>Value, object, and key, sets the key.</p>
-<h2><code>call</code>  ( <code>a</code><em class="description">arguments array</em> <code>f</code><em class="description">function</em> &rarr; <code>r</code>*return value</h2>
-<p>see-also&gt; new*{.description} ) {#call}</p>
+<h2 id="call"><code>call</code>  ( <code>a</code><em class="description">arguments array</em> <code>f</code><em class="description">function</em> &rarr; <code>r</code><em class="description">return value</em> )</h2>
 <p>Calls <code>a</code> function with the arguments.</p>
+<p><strong>See Also:</strong> <a href="#new"><code>new</code></a></p>
 <h2 id="new"><code>new</code>  ( <code>a</code><em class="description">arguments array</em> <code>f</code><em class="description">constructor function</em> &rarr; <code>r</code><em class="description">new object constructed</em> )</h2>
-<p>Same sort as <a href="#call"><code>call</code></a>, but uses javascript <code>new</code> keyword to construct with <code>a</code> class.</p>
+<p>Same sort as <a href="#call"><code>call</code></a>, but uses Javascript <code>new</code> keyword to construct with <code>a</code> class.</p>
 <h2 id="word"><code>word</code>  ( <code>s</code><em class="description">string</em> &rarr; <code>w</code><em class="description">symbol of that string</em> )</h2>
 <p>Converts string to symbol.</p>
 <h2 id="name"><code>name</code>  ( <code>w</code><em class="description">symbol</em> &rarr; <code>s</code><em class="description">string of that symbol</em> )</h2>
@@ -142,7 +142,7 @@ $ 5ab*c?5rig
 <h2 id="self"><code>self</code>  (  &rarr; <code>t</code>**{.description} )</h2>
 <p>Pushes a reference to the current thread.</p>
 <h2 id="window"><code>window</code>  (  &rarr; <code>t</code>**{.description} )</h2>
-<p>Pushes a reference to the global javascript object (<code>globalthis</code>). called &ldquo;window&rdquo; because that is its name in the browser which is what phoo was designed for.</p>
+<p>Pushes a reference to the global Javascript object (<code>globalThis</code>). Called &ldquo;window&rdquo; because that is its name in the browser which is what Phoo was designed for.</p>
 <h2 id="]define["><code>]define[</code>  ( <code>n</code><em class="description">symbol name</em> <code>d</code><em class="description">definition</em> &rarr;  )</h2>
 <p>Writes a new definition to the top scope using the name and definition on the stack.</p>
 <h2 id="]define-macro["><code>]define-macro[</code>  ( <code>n</code><em class="description">symbol name</em> <code>d</code><em class="description">definition</em> &rarr;  )</h2>

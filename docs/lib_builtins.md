@@ -2,17 +2,17 @@
 
 ## `/*`  (  &rarr;  ) {#/*}
 
-Block comment. like c-style comments. comments do not nest.
+Block comment. Like C-style comments. Comments do not nest.
 
 ## `$`  (  &rarr; `s`*The string (or regular expression) defined by the literal.*{.description} ) {#$}
 
 String builder.
 
-first non-whitespace character after the `$` is the delimiter. the delimiter can be escaped by doubling it.
+First non-whitespace character after the `$` is the delimiter. The delimiter can be escaped by doubling it.
 
-the characters immediately following the end delimiter are known as the "tag" and affect the resultant string. the first character is the code that determines the formatting applied.
+The characters immediately following the end delimiter are known as the "tag" and affect the resultant string. The first character is the code that determines the formatting applied.
 
-currently the only one implemented is `r`, which turns the string into a regular expression. the characters after the `r` are the flags that would go at the end of it. there is no way to "escape" any characters other than the delimiter, but a `e` code for defining an escape character is planned. see issue [#8](https://github.com/dragoncoder047/phoo/issues/8) for the status of that.
+Currently the only one implemented is `r`, which turns the string into a regular expression. The characters after the `r` are the flags that would go at the end of it. There is no way to "escape" any characters other than the delimiter, but a `e` code for defining an escape character is planned. See issue [#8](https://github.com/dragoncoder047/phoo/issues/8) for the status of that.
 
 Example:
 
@@ -38,15 +38,17 @@ End of a sub-array.
 
 Same as `end`.
 
-## `pick`  ( `n`*Depth of item to pick*{.description} &rarr; `i`*COPY of the item.
-see-also> roll*{.description} ) {#pick}
+## `pick`  ( `n`*Depth of item to pick*{.description} &rarr; `i`*COPY of the item.*{.description} ) {#pick}
 
-Same as the forth word `pick`. takes a number `n` and **copies** the nth item to the top.
+Same as the Forth word `PICK`. Takes a number `n` and **copies** the nth item to the top.
 
-## `roll`  ( `n`*Depth of item to pick*{.description} &rarr; `i`*COPY of the item.
-see-also> pick*{.description} ) {#roll}
+ **See Also:** [`roll`](#roll)
 
-Same as the forth word `roll`. takes a number `n` and **moves** the nth item to the top .
+## `roll`  ( `n`*Depth of item to pick*{.description} &rarr; `i`*COPY of the item.*{.description} ) {#roll}
+
+Same as the Forth word `ROLL`. Takes a number `n` and **moves** the nth item to the top .
+
+ **See Also:** [`pick`](#pick)
 
 ## `drop`  ( `n`**{.description} &rarr;  ) {#drop}
 
@@ -62,7 +64,7 @@ Decrements a number on the top of the stack.
 
 ## `+`  ( `a`**{.description} `b`**{.description} &rarr; `b+a`**{.description} ) {#+}
 
-Adds two items together using javascript `+` operator. note the order of addition.
+Adds two items together using Javascript `+` operator. Note the order of addition.
 
 ## `negate`  ( `a`**{.description} &rarr; `-a`**{.description} ) {#negate}
 
@@ -78,7 +80,7 @@ Power of top two items.
 
 ## `/mod`  ( `x`*dividend*{.description} `y`*divisor*{.description} &rarr; `q`*quotient*{.description} `r`*remainder*{.description} ) {#/mod}
 
-Euclidean division. remainder and quotient.
+Euclidean division. Remainder and quotient.
 
 ## `/`  ( `a`*dividend*{.description} `b`*divisor*{.description} &rarr; `q`*quotient*{.description} ) {#/}
 
@@ -86,7 +88,7 @@ Regular division (results in float).
 
 ## `=`  ( `a`**{.description} `b`**{.description} &rarr; `t`**{.description} ) {#=}
 
-Equals, using javascript `==` operator.
+Equals, using Javascript `==` operator.
 
 ## `>`  ( `a`*number on "larger" (left) side of expression.*{.description} `b`*number on "smaller" (right) side of expression.*{.description} &rarr; `t`**{.description} ) {#>}
 
@@ -94,36 +96,37 @@ Greater than.
 
 ## `nand`  ( `a`**{.description} `b`**{.description} &rarr; `t`**{.description} ) {#nand}
 
-Boolean nand of two arguments. true if both are false.
+Boolean NAND of two arguments. True if both are false.
 
 ## `~`  ( `n`**{.description} &rarr; `~n`**{.description} ) {#~}
 
-Bitwise not of a number.
+Bitwise NOT of a number.
 
 ## `&`  ( `a`**{.description} `b`**{.description} &rarr; `a&b`**{.description} ) {#&}
 
-Bitwise and of two numbers.
+Bitwise AND of two numbers.
 
 ## `|`  ( `a`**{.description} `b`**{.description} &rarr; `a|b`**{.description} ) {#|}
 
-Bitwise or of two numbers.
+Bitwise OR of two numbers.
 
 ## `^`  ( `a`**{.description} `b`**{.description} &rarr; `a^b`**{.description} ) {#^}
 
-Bitwise xor of two numbers.
+Bitwise XOR of two numbers.
 
 ## `<<`  ( `a`**{.description} `b`**{.description} &rarr; `a<<b`**{.description} ) {#<<}
 
-A bit-shifted left by b places. negative b for shift right.
+A bit-shifted left by B places. Negative B for shift right.
 
-## `put`  ( `i`*Item to push*{.description} `a`*Array to push onto
-see-also> take*{.description} &rarr;  ) {#put}
+## `put`  ( `i`*Item to push*{.description} `a`*Array to push onto*{.description} &rarr;  ) {#put}
 
 Pushes the item onto the end of the array.
 
+ **See Also:** [`take`](#take)
+
 ## `take`  ( `a`*Array*{.description} &rarr; `i`*Last item of the array*{.description} ) {#take}
 
-Reverse of [`put`](#put), it takes the item out of the array. the array is mutated.
+Reverse of [`put`](#put), it takes the item out of the array. The array is mutated.
 
 ## `]done[`  (  &rarr;  ) {#]done[}
 
@@ -211,11 +214,11 @@ Runs the code under a `try` statement, and pushes the error it threw, or `false`
 
 ## `die`  ( `m`**{.description} &rarr;  ) {#die}
 
-Throws a `phooerror` with the message.
+Throws a `PhooError` with the message.
 
 ## `]getstack[`  ( `e`**{.description} &rarr; `t`**{.description} ) {#]getstack[}
 
-With a `phooerror` on the top, gets its phoo stack trace.
+With a `PhooError` on the top, gets its Phoo stack trace.
 
 ## `type`  ( `o`**{.description} &rarr; `t`**{.description} ) {#type}
 
@@ -231,7 +234,7 @@ Pushes the system time, in milliseconds.
 
 ## `await`  ( `p`**{.description} &rarr; `v`**{.description} ) {#await}
 
-Awaits a `promise` and pushes the resolve value.
+Awaits a `Promise` and pushes the resolve value.
 
 ## `get`  ( `o`*object*{.description} `k`*string key*{.description} &rarr; `v`*o.k*{.description} ) {#get}
 
@@ -241,14 +244,15 @@ Object and key, looks up.
 
 Value, object, and key, sets the key.
 
-## `call`  ( `a`*arguments array*{.description} `f`*function*{.description} &rarr; `r`*return value
-see-also> new*{.description} ) {#call}
+## `call`  ( `a`*arguments array*{.description} `f`*function*{.description} &rarr; `r`*return value*{.description} ) {#call}
 
 Calls `a` function with the arguments.
 
+ **See Also:** [`new`](#new)
+
 ## `new`  ( `a`*arguments array*{.description} `f`*constructor function*{.description} &rarr; `r`*new object constructed*{.description} ) {#new}
 
-Same sort as [`call`](#call), but uses javascript `new` keyword to construct with `a` class.
+Same sort as [`call`](#call), but uses Javascript `new` keyword to construct with `a` class.
 
 ## `word`  ( `s`*string*{.description} &rarr; `w`*symbol of that string*{.description} ) {#word}
 
@@ -272,7 +276,7 @@ Pushes a reference to the current thread.
 
 ## `window`  (  &rarr; `t`**{.description} ) {#window}
 
-Pushes a reference to the global javascript object (`globalthis`). called "window" because that is its name in the browser which is what phoo was designed for.
+Pushes a reference to the global Javascript object (`globalThis`). Called "window" because that is its name in the browser which is what Phoo was designed for.
 
 ## `]define[`  ( `n`*symbol name*{.description} `d`*definition*{.description} &rarr;  ) {#]define[}
 

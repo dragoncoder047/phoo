@@ -189,7 +189,7 @@ Placed at the start of `a` word, makes the word an ancillary stack.
 
 ## `release`  ( `a`**{.description} &rarr;  ) {#release}
 
-Removes the first item from an array and discards it. mutates the array.
+Removes the first item from an array and discards it. Mutates the array.
 
 ## `copy`  ( `a`**{.description} &rarr; `i`**{.description} ) {#copy}
 
@@ -295,17 +295,23 @@ Example:
 // runs foo at least once, then repeats bar foo until foo returns false
 ```
 
-## `switch`  ( `v`**{.description} &rarr; `see-also>`**{.description} `case`**{.description} `default`**{.description} ) {#switch}
+## `switch`  ( `v`**{.description} &rarr;  ) {#switch}
 
 Begins a switch staement: puts the value to be switched upon in a temporary stack (not [`temp`](#temp)).
 
-## `default`  ( `v`**{.description} &rarr; `see-also>`**{.description} `switch`**{.description} `case`**{.description} ) {#default}
+ **See Also:** [`case`](#case), [`default`](#default)
 
-Ends a `switch` staement: empties the `switch` value from the stack it is stored on.
+## `default`  ( `v`**{.description} &rarr;  ) {#default}
 
-## `case` *`action`*{.shadowed} ( `v`**{.description} &rarr; `see-also>`**{.description} `switch`**{.description} `default`**{.description} ) {#case}
+Ends a switch staement: empties the switch value from the stack it is stored on.
 
-If the value on the stack is not the `switch` value, skips `action`. if it is, runs `action` and then jumps to the end of the array (skipping the other cases and the [`default`](#default)).
+ **See Also:** [`switch`](#switch), [`case`](#case)
+
+## `case` *`action`*{.shadowed} ( `v`**{.description} &rarr;  ) {#case}
+
+If the value on the stack is not the switch value, skips `action`. If it is, runs `action` and then jumps to the end of the array (skipping the other cases and the [`default`](#default)).
+
+ **See Also:** [`switch`](#switch), [`default`](#default)
 
 ## `'` *`value`*{.shadowed} (  &rarr; `v`**{.description} ) {#'}
 
@@ -329,7 +335,7 @@ Puts `a` reference to the current array on the stack.
 
 ## `table`  ( `n`**{.description} &rarr; `i`**{.description} ) {#table}
 
-Placed at the start of a word, turns it into a lookup table. takes the `n`-th item after the `table` and puts it on the stack, and then skips everything after it.
+Placed at the start of a word, turns it into a lookup table. Takes the `n`-th item after the `table` and puts it on the stack, and then skips everything after it.
 
 ## `recurse`  (  &rarr;  ) {#recurse}
 
@@ -369,7 +375,7 @@ Sets the current [`times`](#times) loop's iteration counter to 0, causing the lo
 
 ## `printable`  ( `c`**{.description} &rarr; `t`**{.description} ) {#printable}
 
-Given a character `c`, treurns true or false whether it is in the printable region of ascii (i.e. greater than 31).
+Given a character `c`, treurns true or false whether it is in the printable region of ASCII (i.e. greater than 31).
 
 ## `trim`  ( `s`**{.description} &rarr; `t`**{.description} ) {#trim}
 
@@ -391,9 +397,11 @@ Puts an item in its own array.
 
 Gets the length of the array or string.
 
-## `pluck`  ( `a`**{.description} `n`**{.description} &rarr; `a`**{.description} `i`**{.description} `see-also>`**{.description} `stuff`**{.description} ) {#pluck}
+## `pluck`  ( `a`**{.description} `n`**{.description} &rarr; `a`**{.description} `i`**{.description} ) {#pluck}
 
 Pulls the `i`-th item out of the array `a` and returns the shortened array and the item.
+
+ **See Also:** [`stuff`](#stuff)
 
 ## `stuff`  ( `a`**{.description} `i`**{.description} `n`**{.description} &rarr; `a`**{.description} ) {#stuff}
 
@@ -401,7 +409,7 @@ Reverse of [`pluck`](#pluck), it puts the item back.
 
 ## `behead`  ( `a`**{.description} &rarr; `a`**{.description} `i`**{.description} ) {#behead}
 
-Returns the first item of the array `a`, and the rest. the original array is not mutated.
+Returns the first item of the array `a`, and the rest. The original array is not mutated.
 
 ## `join`  ( `a`**{.description} `b`**{.description} &rarr; `ab`**{.description} ) {#join}
 
@@ -427,7 +435,7 @@ Reverses the array.
 
 Places the code in a loop and returns the generated code.
 
-the returned code takes an array or string on the stack and calls the original code passed 
+The returned code takes an array or string on the stack and calls the original code passed 
 to `makewith` with each item of the array or string.
 
 ## `witheach` *`block`*{.shadowed} ( `a`**{.description} &rarr;  ) {#witheach}
@@ -513,11 +521,11 @@ Parses string `s` as a number in base `n`.
 
 ## `big`  ( `n`**{.description} &rarr; `b`**{.description} ) {#big}
 
-Turns number `n` into a `bigint`.
+Turns number `n` into a `BigInt`.
 
 ## `sortwith` *`comp`*{.shadowed} ( `a`**{.description} &rarr; `s`**{.description} ) {#sortwith}
 
-Using comparator `comp`, sorts the array. does not mutate the array.
+Using comparator `comp`, sorts the array. Does not mutate the array.
 
 ## `sort`  ( `a`**{.description} &rarr; `s`**{.description} ) {#sort}
 
@@ -529,7 +537,7 @@ Sort an array of strings.
 
 ## `try` *`block`*{.shadowed} *`except`*{.shadowed} (  &rarr;  ) {#try}
 
-Runs `block`, and if it threw an error, runs `except` with the error on the stack. if `block` ran fine, skips `except`.
+Runs `block`, and if it threw an error, runs `except` with the error on the stack. If `block` ran fine, skips `except`.
 
 ## `nestdepth`  (  &rarr; `n`**{.description} ) {#nestdepth}
 
@@ -565,7 +573,7 @@ Removes all the queued items from the to-do stack `a` without running them.
 
 ## `chr`  ( `n`**{.description} &rarr; `s`**{.description} ) {#chr}
 
-Returns the character with the unicode code point `n`.
+Returns the character with the Unicode code point `n`.
 
 ## `ord`  ( `s`**{.description} &rarr; `n`**{.description} ) {#ord}
 
