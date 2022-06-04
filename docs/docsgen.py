@@ -74,7 +74,7 @@ def findDependencies(txt):
 
 styles = 'code+.description{padding-left:10px;display:none;opacity:50%;font-size:75%}code:hover+.description{display:inline-block}.shadowed{opacity:50%}'
 
-files = glob('lib/*.js') + glob('lib/*.ph')
+files = glob('lib/**/*.js', recursive=True) + glob('lib/**/*.ph', recursive=True)
 
 mkdP = Markdown(extensions=['attr_list', 'fenced_code', 'md_in_html', 'tables', 'smarty'])
 
