@@ -26,7 +26,7 @@ ISOLATED_WORD = r'(?<=[^a-zA-Z])(%s)(?=[^a-zA-z])'
 def inlines(text, tags):
     words_to_codeify = tags.get('sed', '').replace('--', '').split() + tags.get('lookahead', '').split()
     for word in words_to_codeify:
-        text = re.sub(ISOLATED_WORD % word, r'`\1`', text)
+        text = re.sub(ISOLATED_WORD % re.escape(word), r'`\1`', text)
     text = DOUBLE_BRACKET_WORD.sub(r'[`\1`](#\1)', text)
     return text
 
