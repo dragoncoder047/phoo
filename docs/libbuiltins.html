@@ -10,99 +10,99 @@
 <p>No-op.</p>
 <h2 id="alias"><code>alias</code> <em class="shadowed"><code>x</code></em> <em class="shadowed"><code>y</code></em> (  &rarr;  )</h2>
 <p>Aliases <code>x</code> to mean <code>y</code>.</p>
-<h2 id="const"><code>const</code>  (  &rarr; <code>`**{.description}</code>v`**{.description} )</h2>
+<h2 id="const"><code>const</code>  (  &rarr; <code>v</code>**{.description} )</h2>
 <p>Precomputes a value.</p>
 <h2 id="now!"><code>now!</code>  (  &rarr;  )</h2>
 <p>Runs code during compilation. <em>(#6 - doesn&rsquo;t work)</em>.</p>
 <h2 id="//"><code>//</code>  (  &rarr;  )</h2>
 <p>Line comment <em>(#6 - doesn&rsquo;t work)</em>.</p>
-<h2 id="dup"><code>dup</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>a</code><strong class="description">{.description} <code>`**{.description}</code>a`</strong> )</h2>
+<h2 id="dup"><code>dup</code>  ( <code>a</code><strong class="description">{.description} &rarr; <code>a</code></strong> <code>a</code>**{.description} )</h2>
 <p>Duplicates top item.</p>
-<h2 id="over"><code>over</code>  ( <code>b</code><strong class="description">{.description} <code>**{.description} `a`**{.description}</code></strong> &rarr; <code>**{.description} `b`**{.description}</code><strong class="description">{.description} <code>a</code></strong> <code>`**{.description}</code>b`**{.description} )</h2>
+<h2 id="over"><code>over</code>  ( <code>b</code><strong class="description">{.description} <code>a</code></strong> &rarr; <code>b</code><strong class="description">{.description} <code>a</code></strong> <code>b</code>**{.description} )</h2>
 <p>Copies second item to top.</p>
-<h2 id="swap"><code>swap</code>  ( <code>b</code><strong class="description">{.description} <code>**{.description} `a`**{.description}</code></strong> &rarr; <code>**{.description} `a`**{.description}</code><strong class="description">{.description} <code>b</code></strong> )</h2>
+<h2 id="swap"><code>swap</code>  ( <code>b</code><strong class="description">{.description} <code>a</code></strong> &rarr; <code>a</code><strong class="description">{.description} <code>b</code></strong> )</h2>
 <p>Swaps top two.</p>
-<h2 id="rot"><code>rot</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> <code>c</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>b</code><strong class="description">{.description} <code>**{.description} `c`**{.description}</code></strong> <code>a</code>**{.description} )</h2>
+<h2 id="rot"><code>rot</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> <code>c</code><strong class="description">{.description} &rarr; <code>b</code></strong> <code>c</code><strong class="description">{.description} <code>a</code></strong> )</h2>
 <p>Pulls third to top.</p>
-<h2 id="unrot"><code>unrot</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> <code>c</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>c</code><strong class="description">{.description} <code>**{.description} `a`**{.description}</code></strong> <code>b</code>**{.description} )</h2>
+<h2 id="unrot"><code>unrot</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> <code>c</code><strong class="description">{.description} &rarr; <code>c</code></strong> <code>a</code><strong class="description">{.description} <code>b</code></strong> )</h2>
 <p>Pushes top down to third.</p>
-<h2 id="nip"><code>nip</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> &rarr; <code>`**{.description}</code>b`**{.description} )</h2>
+<h2 id="nip"><code>nip</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>b</code>**{.description} )</h2>
 <p>Removes second stack item.</p>
-<h2 id="tuck"><code>tuck</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> &rarr; <code>**{.description} `b`**{.description}</code><strong class="description">{.description} <code>a</code></strong> <code>`**{.description}</code>b`**{.description} )</h2>
+<h2 id="tuck"><code>tuck</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>b</code><strong class="description">{.description} <code>a</code></strong> <code>b</code>**{.description} )</h2>
 <p>Copies first item to third.</p>
-<h2 id="2dup"><code>2dup</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> &rarr; <code>**{.description} `a`**{.description}</code><strong class="description">{.description} <code>b</code></strong> <code>**{.description} `a`**{.description}</code><strong class="description">{.description} <code>b</code></strong> )</h2>
+<h2 id="2dup"><code>2dup</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>a</code><strong class="description">{.description} <code>b</code></strong> <code>a</code><strong class="description">{.description} <code>b</code></strong> )</h2>
 <p><a href="#dup"><code>dup</code></a>s two items as <code>a</code> pair.</p>
-<h2 id="2drop"><code>2drop</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> &rarr;  )</h2>
+<h2 id="2drop"><code>2drop</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr;  )</h2>
 <p><a href="#drop"><code>drop</code></a>s two items as <code>a</code> pair.</p>
-<h2 id="2swap"><code>2swap</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> <code>c</code><strong class="description">{.description} <code>**{.description} `d`**{.description}</code></strong> &rarr; <code>**{.description} `c`**{.description}</code><strong class="description">{.description} <code>d</code></strong> <code>**{.description} `a`**{.description}</code><strong class="description">{.description} <code>b</code></strong> )</h2>
+<h2 id="2swap"><code>2swap</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> <code>c</code><strong class="description">{.description} <code>d</code></strong> &rarr; <code>c</code><strong class="description">{.description} <code>d</code></strong> <code>a</code><strong class="description">{.description} <code>b</code></strong> )</h2>
 <p><a href="#swap"><code>swap</code></a>s two pairs of items.</p>
-<h2 id="2over"><code>2over</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> <code>c</code><strong class="description">{.description} <code>**{.description} `d`**{.description}</code></strong> &rarr; <code>**{.description} `a`**{.description}</code><strong class="description">{.description} <code>b</code></strong> <code>**{.description} `c`**{.description}</code><strong class="description">{.description} <code>d</code></strong> <code>**{.description} `a`**{.description}</code><strong class="description">{.description} <code>b</code></strong> )</h2>
+<h2 id="2over"><code>2over</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> <code>c</code><strong class="description">{.description} <code>d</code></strong> &rarr; <code>a</code><strong class="description">{.description} <code>b</code></strong> <code>c</code><strong class="description">{.description} <code>d</code></strong> <code>a</code><strong class="description">{.description} <code>b</code></strong> )</h2>
 <p><a href="#over"><code>over</code></a>s two pairs of items.</p>
-<h2 id="pack"><code>pack</code>  ( <code>*</code><strong class="description">{.description} <code>a</code></strong> <code>**{.description} `n`**{.description}</code><strong class="description">{.description} &rarr; <code>`**{.description}</code>a`</strong> )</h2>
+<h2 id="pack"><code>pack</code>  ( <code>*a</code><strong class="description">{.description} <code>n</code></strong> &rarr; <code>a</code>**{.description} )</h2>
 <p>Takes <code>n</code> and then puts <code>n</code> items into an array.</p>
-<h2 id="unpack"><code>unpack</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>i</code><strong class="description">{.description} <code>**{.description} `j`**{.description}</code></strong> <code>k</code><strong class="description">{.description} <code>`**{.description}</code>.<code>**{.description}</code>.<code>**{.description}</code>.`</strong> )</h2>
+<h2 id="unpack"><code>unpack</code>  ( <code>a</code><strong class="description">{.description} &rarr; <code>i</code></strong> <code>j</code><strong class="description">{.description} <code>k</code></strong> <code>...</code>**{.description} )</h2>
 <p>Reverse of <a href="#pack"><code>pack</code></a>, it flattens an array onto the stack.</p>
-<h2 id="dip"><code>dip</code> <em class="shadowed"><code>op</code></em> ( <code>a</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>a</code>**{.description} )</h2>
+<h2 id="dip"><code>dip</code> <em class="shadowed"><code>op</code></em> ( <code>a</code><strong class="description">{.description} &rarr; <code>a</code></strong> )</h2>
 <p>Dips the top item out of the array, runs the block, and puts the item back.</p>
-<h2 id="abs"><code>abs</code>  ( <code>n</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>|</code><strong class="description">{.description} <code>n</code></strong> <code>|</code>**{.description} )</h2>
+<h2 id="abs"><code>abs</code>  ( <code>n</code><strong class="description">{.description} &rarr; <code>|n|</code></strong> )</h2>
 <p>Absolute value of a number.</p>
-<h2 id="-"><code>-</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> &rarr; <code>`**{.description}</code>a<code>**{.description}</code>-<code>**{.description}</code>b`**{.description} )</h2>
+<h2 id="-"><code>-</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>a-b</code>**{.description} )</h2>
 <p>Subtracts top from second.</p>
-<h2 id="/~"><code>/~</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> &rarr; <code>`**{.description}</code>f<code>**{.description}</code>l<code>**{.description}</code>o<code>**{.description}</code>o<code>**{.description}</code>r<code>**{.description}</code>(<code>**{.description}</code>a<code>**{.description}</code>/<code>**{.description}</code>b<code>**{.description}</code>)`**{.description} )</h2>
+<h2 id="/~"><code>/~</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>floor(a/b)</code>**{.description} )</h2>
 <p>Flooring division.</p>
-<h2 id="mod"><code>mod</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> &rarr; <code>`**{.description}</code>a<code>**{.description}</code>%<code>**{.description}</code>b`**{.description} )</h2>
+<h2 id="mod"><code>mod</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>a%b</code>**{.description} )</h2>
 <p>Modulo.</p>
-<h2 id="!"><code>!=</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> &rarr; <code>`**{.description}</code>t`**{.description} )</h2>
+<h2 id="!"><code>!=</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>t</code>**{.description} )</h2>
 <p>Not equals.</p>
-<h2 id="&lt;"><code>&lt;=</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> &rarr; <code>`**{.description}</code>a<code>**{.description}</code>&lt;<code>**{.description}</code>=<code>**{.description}</code>b`**{.description} )</h2>
+<h2 id="&lt;"><code>&lt;=</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>a&lt;=b</code>**{.description} )</h2>
 <p>Less than or equal to.</p>
-<h2 id="&lt;"><code>&lt;</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> &rarr; <code>`**{.description}</code>a<code>**{.description}</code>&lt;<code>**{.description}</code>b`**{.description} )</h2>
+<h2 id="&lt;"><code>&lt;</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>a&lt;b</code>**{.description} )</h2>
 <p>Less than.</p>
-<h2 id="&gt;"><code>&gt;=</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> &rarr; <code>`**{.description}</code>a<code>**{.description}</code>&gt;<code>**{.description}</code>=<code>**{.description}</code>b`**{.description} )</h2>
+<h2 id="&gt;"><code>&gt;=</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>a&gt;=b</code>**{.description} )</h2>
 <p>Greater than or equal to.</p>
-<h2 id="min"><code>min</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> &rarr; <code>`**{.description}</code>v`**{.description} )</h2>
+<h2 id="min"><code>min</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>v</code>**{.description} )</h2>
 <p>Lesser of two value.</p>
-<h2 id="max"><code>max</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> &rarr; <code>`**{.description}</code>v`**{.description} )</h2>
+<h2 id="max"><code>max</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>v</code>**{.description} )</h2>
 <p>Larger of two value.</p>
-<h2 id="clamp"><code>clamp</code>  ( <code>l</code><strong class="description">{.description} <code>**{.description} `u`**{.description}</code></strong> <code>x</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>v</code>**{.description} )</h2>
+<h2 id="clamp"><code>clamp</code>  ( <code>l</code><strong class="description">{.description} <code>u</code></strong> <code>x</code><strong class="description">{.description} &rarr; <code>v</code></strong> )</h2>
 <p>Clamps <code>x</code> to $l\gte x\gt <code>u</code>$.</p>
-<h2 id="within"><code>within</code>  ( <code>l</code><strong class="description">{.description} <code>**{.description} `u`**{.description}</code></strong> <code>x</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>t</code>**{.description} )</h2>
+<h2 id="within"><code>within</code>  ( <code>l</code><strong class="description">{.description} <code>u</code></strong> <code>x</code><strong class="description">{.description} &rarr; <code>t</code></strong> )</h2>
 <p>True if $l\gte x\gt <code>u</code>$.</p>
-<h2 id="$&lt;"><code>$&lt;</code>  ( <code>s</code><strong class="description">{.description} <code>1</code></strong> <code>**{.description} `s`**{.description} `2`**{.description}</code><strong class="description">{.description} &rarr; <code>`**{.description}</code>s<code>**{.description}</code>1<code>**{.description}</code>&lt;<code>**{.description}</code>s<code>**{.description}</code>2`</strong> )</h2>
+<h2 id="$&lt;"><code>$&lt;</code>  ( <code>s1</code><strong class="description">{.description} <code>s2</code></strong> &rarr; <code>s1&lt;s2</code>**{.description} )</h2>
 <p>True if <code>s1</code> comes before <code>s2</code> in the dictionary.</p>
-<h2 id="$&gt;"><code>$&gt;</code>  ( <code>s</code><strong class="description">{.description} <code>1</code></strong> <code>**{.description} `s`**{.description} `2`**{.description}</code><strong class="description">{.description} &rarr; <code>`**{.description}</code>s<code>**{.description}</code>1<code>**{.description}</code>&gt;<code>**{.description}</code>s<code>**{.description}</code>2`</strong> )</h2>
+<h2 id="$&gt;"><code>$&gt;</code>  ( <code>s1</code><strong class="description">{.description} <code>s2</code></strong> &rarr; <code>s1&gt;s2</code>**{.description} )</h2>
 <p>True if <code>s1</code> comes after <code>s2</code> in the dictionary.</p>
-<h2 id="not"><code>not</code>  ( <code>t</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>t</code>**{.description} )</h2>
+<h2 id="not"><code>not</code>  ( <code>t</code><strong class="description">{.description} &rarr; <code>t</code></strong> )</h2>
 <p>Boolean inverse.</p>
-<h2 id="and"><code>and</code>  ( <code>t</code><strong class="description">{.description} <code>**{.description} `t`**{.description}</code></strong> &rarr; <code>`**{.description}</code>t`**{.description} )</h2>
+<h2 id="and"><code>and</code>  ( <code>t</code><strong class="description">{.description} <code>t</code></strong> &rarr; <code>t</code>**{.description} )</h2>
 <p>Boolean and.</p>
-<h2 id="or"><code>or</code>  ( <code>t</code><strong class="description">{.description} <code>**{.description} `t`**{.description}</code></strong> &rarr; <code>`**{.description}</code>t`**{.description} )</h2>
+<h2 id="or"><code>or</code>  ( <code>t</code><strong class="description">{.description} <code>t</code></strong> &rarr; <code>t</code>**{.description} )</h2>
 <p>Boolean or.</p>
-<h2 id="xor"><code>xor</code>  ( <code>t</code><strong class="description">{.description} <code>**{.description} `t`**{.description}</code></strong> &rarr; <code>`**{.description}</code>t`**{.description} )</h2>
+<h2 id="xor"><code>xor</code>  ( <code>t</code><strong class="description">{.description} <code>t</code></strong> &rarr; <code>t</code>**{.description} )</h2>
 <p>Boolean xor.</p>
-<h2 id="&gt;&gt;"><code>&gt;&gt;</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `n`**{.description}</code></strong> &rarr; <code>`**{.description}</code>b`**{.description} )</h2>
+<h2 id="&gt;&gt;"><code>&gt;&gt;</code>  ( <code>a</code><strong class="description">{.description} <code>n</code></strong> &rarr; <code>b</code>**{.description} )</h2>
 <p>Shift <code>a</code> right by <code>n</code> places.</p>
-<h2 id="bit"><code>bit</code>  ( <code>n</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>b</code>**{.description} )</h2>
+<h2 id="bit"><code>bit</code>  ( <code>n</code><strong class="description">{.description} &rarr; <code>b</code></strong> )</h2>
 <p>$2^<code>n</code>$.</p>
 <h2 id="var"><code>var</code> <em class="shadowed"><code>name</code></em> (  &rarr;  )</h2>
 <p>Declares a new variable, initialized to <code>undefined</code>.</p>
-<h2 id="var,"><code>var,</code> <em class="shadowed"><code>name</code></em> ( <code>v</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
+<h2 id="var,"><code>var,</code> <em class="shadowed"><code>name</code></em> ( <code>v</code>**{.description} &rarr;  )</h2>
 <p>Declares a new variable, initialized to top stack value.</p>
-<h2 id="is"><code>is</code> <em class="shadowed"><code>name</code></em> ( <code>v</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
+<h2 id="is"><code>is</code> <em class="shadowed"><code>name</code></em> ( <code>v</code>**{.description} &rarr;  )</h2>
 <p>Puts a value into a variable.</p>
-<h2 id="stack"><code>stack</code>  (  &rarr; <code>`**{.description}</code>a`**{.description} )</h2>
+<h2 id="stack"><code>stack</code>  (  &rarr; <code>a</code>**{.description} )</h2>
 <p>Placed at the start of <code>a</code> word, makes the word an ancillary stack.</p>
-<h2 id="release"><code>release</code>  ( <code>a</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
+<h2 id="release"><code>release</code>  ( <code>a</code>**{.description} &rarr;  )</h2>
 <p>Removes the first item from an array and discards it. mutates the array.</p>
-<h2 id="copy"><code>copy</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>i</code>**{.description} )</h2>
+<h2 id="copy"><code>copy</code>  ( <code>a</code><strong class="description">{.description} &rarr; <code>i</code></strong> )</h2>
 <p>Copies the last item of the array <code>a</code> onto the stack.</p>
-<h2 id="replace"><code>replace</code>  ( <code>i</code><strong class="description">{.description} <code>**{.description} `a`**{.description}</code></strong> &rarr;  )</h2>
+<h2 id="replace"><code>replace</code>  ( <code>i</code><strong class="description">{.description} <code>a</code></strong> &rarr;  )</h2>
 <p>Replaces the last item on the array <code>a</code> with i.</p>
-<h2 id="replace"><code>replace</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> &rarr;  )</h2>
+<h2 id="replace"><code>replace</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr;  )</h2>
 <p>Moves the last item from the array <code>b</code> to the array <code>a</code>.</p>
-<h2 id="tally"><code>tally</code>  ( <code>n</code><strong class="description">{.description} <code>**{.description} `a`**{.description}</code></strong> &rarr;  )</h2>
+<h2 id="tally"><code>tally</code>  ( <code>n</code><strong class="description">{.description} <code>a</code></strong> &rarr;  )</h2>
 <p>Adds <code>n</code> to the last item of the array <code>a</code>.</p>
-<h2 id="temp"><code>temp</code>  (  &rarr; <code>`**{.description}</code>a`**{.description} )</h2>
+<h2 id="temp"><code>temp</code>  (  &rarr; <code>a</code>**{.description} )</h2>
 <p>Temp is <code>a</code> general purpose ancillary <a href="#stack"><code>stack</code></a>.</p>
 <h2 id="done"><code>done</code>  (  &rarr;  )</h2>
 <p>Jumps immediately to the end of the array.</p>
@@ -118,14 +118,14 @@
 [ foo bar again baz ]
 // foo bar will run infinitely
 </code></pre>
-<h2 id="if"><code>if</code>  ( <code>t</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
+<h2 id="if"><code>if</code>  ( <code>t</code>**{.description} &rarr;  )</h2>
 <p>If the top of stack is false, skips the next item.</p>
 <p>Example:</p>
 <pre><code class="language-phoo">
 [ foo bar if baz ]
 // if bar returns false, baz will be skipped
 </code></pre>
-<h2 id="iff"><code>iff</code>  ( <code>t</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
+<h2 id="iff"><code>iff</code>  ( <code>t</code>**{.description} &rarr;  )</h2>
 <p>If the top of stack is false, skips the next two items.</p>
 <p>Example:</p>
 <pre><code class="language-phoo">
@@ -139,92 +139,92 @@
 [ foo else bar baz ]
 // bar will not run.
 </code></pre>
-<h2 id="until"><code>until</code>  ( <code>t</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
+<h2 id="until"><code>until</code>  ( <code>t</code>**{.description} &rarr;  )</h2>
 <p>If the top of stack is false, jumps back to the start of the array.</p>
 <p>Example:</p>
 <pre><code class="language-phoo">
 [ foo bar baz until ]
 // repeats foo bar baz until baz returns true.
 </code></pre>
-<h2 id="while"><code>while</code>  ( <code>t</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
+<h2 id="while"><code>while</code>  ( <code>t</code>**{.description} &rarr;  )</h2>
 <p>If the top of stack is false, jumps to the end of the array.</p>
 <p>Example:</p>
 <pre><code class="language-phoo">
 [ foo while baz again ]
 // runs foo at least once, then repeats bar foo until foo returns false
 </code></pre>
-<h2 id="switch"><code>switch</code>  ( <code>v</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>s</code><strong class="description">{.description} <code>e</code></strong> <code>e</code><strong class="description">{.description} <code>-</code></strong> <code>a</code><strong class="description">{.description} <code>l</code></strong> <code>s</code><strong class="description">{.description} <code>o</code></strong> <code>&gt;</code><strong class="description">{.description} <code>**{.description} `c`**{.description} `a`**{.description} `s`**{.description} `e`**{.description}</code></strong> <code>d</code><strong class="description">{.description} <code>e</code></strong> <code>f</code><strong class="description">{.description} <code>a</code></strong> <code>u</code><strong class="description">{.description} <code>l</code></strong> <code>t</code>**{.description} )</h2>
+<h2 id="switch"><code>switch</code>  ( <code>v</code><strong class="description">{.description} &rarr; <code>see-also&gt;</code></strong> <code>case</code><strong class="description">{.description} <code>default</code></strong> )</h2>
 <p>Begins a switch staement: puts the value to be switched upon in a temporary stack (not <a href="#temp"><code>temp</code></a>).</p>
-<h2 id="default"><code>default</code>  ( <code>v</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>s</code><strong class="description">{.description} <code>e</code></strong> <code>e</code><strong class="description">{.description} <code>-</code></strong> <code>a</code><strong class="description">{.description} <code>l</code></strong> <code>s</code><strong class="description">{.description} <code>o</code></strong> <code>&gt;</code><strong class="description">{.description} <code>**{.description} `s`**{.description} `w`**{.description} `i`**{.description} `t`**{.description} `c`**{.description} `h`**{.description}</code></strong> <code>c</code><strong class="description">{.description} <code>a</code></strong> <code>s</code><strong class="description">{.description} <code>e</code></strong> )</h2>
+<h2 id="default"><code>default</code>  ( <code>v</code><strong class="description">{.description} &rarr; <code>see-also&gt;</code></strong> <code>switch</code><strong class="description">{.description} <code>case</code></strong> )</h2>
 <p>Ends a <code>switch</code> staement: empties the <code>switch</code> value from the stack it is stored on.</p>
-<h2 id="case"><code>case</code> <em class="shadowed"><code>action</code></em> ( <code>v</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>s</code><strong class="description">{.description} <code>e</code></strong> <code>e</code><strong class="description">{.description} <code>-</code></strong> <code>a</code><strong class="description">{.description} <code>l</code></strong> <code>s</code><strong class="description">{.description} <code>o</code></strong> <code>&gt;</code><strong class="description">{.description} <code>**{.description} `s`**{.description} `w`**{.description} `i`**{.description} `t`**{.description} `c`**{.description} `h`**{.description}</code></strong> <code>d</code><strong class="description">{.description} <code>e</code></strong> <code>f</code><strong class="description">{.description} <code>a</code></strong> <code>u</code><strong class="description">{.description} <code>l</code></strong> <code>t</code>**{.description} )</h2>
+<h2 id="case"><code>case</code> <em class="shadowed"><code>action</code></em> ( <code>v</code><strong class="description">{.description} &rarr; <code>see-also&gt;</code></strong> <code>switch</code><strong class="description">{.description} <code>default</code></strong> )</h2>
 <p>If the value on the stack is not the <code>switch</code> value, skips <code>action</code>. if it is, runs <code>action</code> and then jumps to the end of the array (skipping the other cases and the <a href="#default"><code>default</code></a>).</p>
-<h2 id="'"><code>'</code> <em class="shadowed"><code>value</code></em> (  &rarr; <code>`**{.description}</code>v`**{.description} )</h2>
+<h2 id="'"><code>'</code> <em class="shadowed"><code>value</code></em> (  &rarr; <code>v</code>**{.description} )</h2>
 <p>Puts the <code>value</code> following it on the stack instead of running it.</p>
 <p>Example:</p>
 <pre><code class="language-phoo">
 [ 1 2 3 ] // results in 3 items on the stack
 ' [ 1 2 3 ] // results in 1 item, the array [1, 2, 3]
 </code></pre>
-<h2 id="run"><code>run</code>  ( <code>c</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
+<h2 id="run"><code>run</code>  ( <code>c</code>**{.description} &rarr;  )</h2>
 <p>Runs the item on the stack as code.</p>
-<h2 id="this"><code>this</code>  (  &rarr; <code>`**{.description}</code>a`**{.description} )</h2>
+<h2 id="this"><code>this</code>  (  &rarr; <code>a</code>**{.description} )</h2>
 <p>Puts <code>a</code> reference to the current array on the stack.</p>
-<h2 id="table"><code>table</code>  ( <code>n</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>i</code>**{.description} )</h2>
+<h2 id="table"><code>table</code>  ( <code>n</code><strong class="description">{.description} &rarr; <code>i</code></strong> )</h2>
 <p>Placed at the start of a word, turns it into a lookup table. takes the <code>n</code>-th item after the <code>table</code> and puts it on the stack, and then skips everything after it.</p>
 <h2 id="recurse"><code>recurse</code>  (  &rarr;  )</h2>
 <p>Causes the current array to run itself again.</p>
-<h2 id="times"><code>times</code> <em class="shadowed"><code>block</code></em> ( <code>n</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
+<h2 id="times"><code>times</code> <em class="shadowed"><code>block</code></em> ( <code>n</code>**{.description} &rarr;  )</h2>
 <p>Runs body the specified numbe of times.</p>
-<h2 id="i"><code>i</code>  (  &rarr; <code>`**{.description}</code>n`**{.description} )</h2>
+<h2 id="i"><code>i</code>  (  &rarr; <code>n</code>**{.description} )</h2>
 <p>Inside of a <a href="#times"><code>times</code></a> loop, gets the number of iterations left to do after this one.</p>
-<h2 id="i^"><code>i^</code>  (  &rarr; <code>`**{.description}</code>n`**{.description} )</h2>
+<h2 id="i^"><code>i^</code>  (  &rarr; <code>n</code>**{.description} )</h2>
 <p>Inside of a <a href="#times"><code>times</code></a> loop, gets the number of iterations done since the loop started.</p>
-<h2 id="j"><code>j</code>  (  &rarr; <code>`**{.description}</code>n`**{.description} )</h2>
+<h2 id="j"><code>j</code>  (  &rarr; <code>n</code>**{.description} )</h2>
 <p>Inside of a doubly nested <a href="#times"><code>times</code></a> loop, gets the number of iterations left to do in the <strong>outer</strong> loop after this one.</p>
-<h2 id="j^"><code>j^</code>  (  &rarr; <code>`**{.description}</code>n`**{.description} )</h2>
+<h2 id="j^"><code>j^</code>  (  &rarr; <code>n</code>**{.description} )</h2>
 <p>Inside of a doubly nested <a href="#times"><code>times</code></a> loop, gets the number of iterations done by the <strong>outer</strong> loop since the loop started.</p>
-<h2 id="step"><code>step</code>  ( <code>n</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
+<h2 id="step"><code>step</code>  ( <code>n</code>**{.description} &rarr;  )</h2>
 <p>Adds <code>n</code> to the current <a href="#times"><code>times</code></a> loop&rsquo;s iteration counter.</p>
 <h2 id="restart"><code>restart</code>  (  &rarr;  )</h2>
 <p>Sets the current <a href="#times"><code>times</code></a> loop&rsquo;s iteration counter to the original value it started at, restarting the loop.</p>
 <h2 id="break"><code>break</code>  (  &rarr;  )</h2>
 <p>Sets the current <a href="#times"><code>times</code></a> loop&rsquo;s iteration counter to 0, causing the loop to end after this iteration is done.</p>
-<h2 id="printable"><code>printable</code>  ( <code>c</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>t</code>**{.description} )</h2>
+<h2 id="printable"><code>printable</code>  ( <code>c</code><strong class="description">{.description} &rarr; <code>t</code></strong> )</h2>
 <p>Given a character <code>c</code>, treurns true or false whether it is in the printable region of ascii (i.e. greater than 31).</p>
-<h2 id="trim"><code>trim</code>  ( <code>s</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>t</code>**{.description} )</h2>
+<h2 id="trim"><code>trim</code>  ( <code>s</code><strong class="description">{.description} &rarr; <code>t</code></strong> )</h2>
 <p>Trims the leading whitespace from a string.</p>
-<h2 id="nextword"><code>nextword</code>  ( <code>s</code><em class="description">string</em> <code>**{.description} &amp;rarr;</code><em class="description"><em>{.description} <code>r</code></em>remainder of string</em> <code>`**{.description}</code>w`<em class="description">first word</em> )</h2>
+<h2 id="nextword"><code>nextword</code>  ( <code>s</code><em class="description">string</em> &rarr; <code>r</code><em class="description">remainder of string</em> <code>w</code><em class="description">first word</em> )</h2>
 <p>Given a string that does not start with whitespace, returns the first word and the rest of the string.</p>
-<h2 id="split$"><code>split$</code>  ( <code>s</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>a</code>**{.description} )</h2>
+<h2 id="split$"><code>split$</code>  ( <code>s</code><strong class="description">{.description} &rarr; <code>a</code></strong> )</h2>
 <p>Splits <code>a</code> string <code>s</code> into an array <code>a</code> of individual words.</p>
-<h2 id="nested"><code>nested</code>  ( <code>i</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>a</code>**{.description} )</h2>
+<h2 id="nested"><code>nested</code>  ( <code>i</code><strong class="description">{.description} &rarr; <code>a</code></strong> )</h2>
 <p>Puts an item in its own array.</p>
-<h2 id="len"><code>len</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>l</code>**{.description} )</h2>
+<h2 id="len"><code>len</code>  ( <code>a</code><strong class="description">{.description} &rarr; <code>l</code></strong> )</h2>
 <p>Gets the length of the array or string.</p>
-<h2 id="pluck"><code>pluck</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `n`**{.description}</code></strong> &rarr; <code>**{.description} `a`**{.description}</code><strong class="description">{.description} <code>i</code></strong> <code>**{.description} `s`**{.description} `e`**{.description} `e`**{.description} `-`**{.description} `a`**{.description} `l`**{.description} `s`**{.description} `o`**{.description} `&gt;`**{.description}</code><strong class="description">{.description} <code>s</code></strong> <code>t</code><strong class="description">{.description} <code>u</code></strong> <code>f</code><strong class="description">{.description} <code>f</code></strong> )</h2>
+<h2 id="pluck"><code>pluck</code>  ( <code>a</code><strong class="description">{.description} <code>n</code></strong> &rarr; <code>a</code><strong class="description">{.description} <code>i</code></strong> <code>see-also&gt;</code><strong class="description">{.description} <code>stuff</code></strong> )</h2>
 <p>Pulls the <code>i</code>-th item out of the array <code>a</code> and returns the shortened array and the item.</p>
-<h2 id="stuff"><code>stuff</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `i`**{.description}</code></strong> <code>n</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>a</code>**{.description} )</h2>
+<h2 id="stuff"><code>stuff</code>  ( <code>a</code><strong class="description">{.description} <code>i</code></strong> <code>n</code><strong class="description">{.description} &rarr; <code>a</code></strong> )</h2>
 <p>Reverse of <a href="#pluck"><code>pluck</code></a>, it puts the item back.</p>
-<h2 id="behead"><code>behead</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>a</code><strong class="description">{.description} <code>`**{.description}</code>i`</strong> )</h2>
+<h2 id="behead"><code>behead</code>  ( <code>a</code><strong class="description">{.description} &rarr; <code>a</code></strong> <code>i</code>**{.description} )</h2>
 <p>Returns the first item of the array <code>a</code>, and the rest. the original array is not mutated.</p>
-<h2 id="join"><code>join</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `b`**{.description}</code></strong> &rarr; <code>`**{.description}</code>a<code>**{.description}</code>b`**{.description} )</h2>
+<h2 id="join"><code>join</code>  ( <code>a</code><strong class="description">{.description} <code>b</code></strong> &rarr; <code>ab</code>**{.description} )</h2>
 <p>Joins two arrays or strings, selecting between <a href="#++"><code>++</code></a> and <code>concat</code> depending on the type of the arguments.</p>
-<h2 id="of"><code>of</code>  ( <code>x</code><strong class="description">{.description} <code>**{.description} `n`**{.description}</code></strong> &rarr; <code>**{.description} `a`**{.description}</code>**{.description} )</h2>
+<h2 id="of"><code>of</code>  ( <code>x</code><strong class="description">{.description} <code>n</code></strong> &rarr; <code>a</code>**{.description} )</h2>
 <p>Makes an array with <code>n</code> <code>x</code>&lsquo;s in it.</p>
-<h2 id="reverse"><code>reverse</code>  ( <code>a</code><strong class="description">{.description} <code>r</code></strong> <code>r</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>r</code><strong class="description">{.description} <code>r</code></strong> <code>a</code><strong class="description">{.description} ``</strong> )</h2>
+<h2 id="reverse"><code>reverse</code>  ( <code>arr</code><strong class="description">{.description} &rarr; <code>rra</code></strong> )</h2>
 <p>Reverses the array.</p>
-<h2 id="reverse$"><code>reverse$</code>  ( <code>x</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>x</code><strong class="description">{.description} ``</strong> )</h2>
+<h2 id="reverse$"><code>reverse$</code>  ( <code>x</code><strong class="description">{.description} &rarr; <code>x</code></strong> )</h2>
 <p><a href="#reverse"><code>reverse</code></a> but for strings.</p>
-<h2 id="reflect"><code>reflect</code>  ( <code>x</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>x</code><strong class="description">{.description} ``</strong> )</h2>
+<h2 id="reflect"><code>reflect</code>  ( <code>x</code><strong class="description">{.description} &rarr; <code>x</code></strong> )</h2>
 <p><a href="#reverse"><code>reverse</code></a> but digs down into sub-arrays and reflects them too.</p>
-<h2 id="makewith"><code>makewith</code>  ( <code>c</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>l</code><strong class="description">{.description} ``</strong> )</h2>
+<h2 id="makewith"><code>makewith</code>  ( <code>c</code><strong class="description">{.description} &rarr; <code>l</code></strong> )</h2>
 <p>Places the code in a loop and returns the generated code.</p>
 <p>the returned code takes an array or string on the stack and calls the original code passed 
 to <code>makewith</code> with each item of the array or string.</p>
-<h2 id="witheach"><code>witheach</code> <em class="shadowed"><code>block</code></em> ( <code>a</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> )</h2>
+<h2 id="witheach"><code>witheach</code> <em class="shadowed"><code>block</code></em> ( <code>a</code>**{.description} &rarr;  )</h2>
 <p>Takes an array or string and runs <code>block</code> for each item in it.</p>
-<h2 id="fold"><code>fold</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `r`**{.description}</code></strong> &rarr; <code>`**{.description}</code>s`**{.description} )</h2>
+<h2 id="fold"><code>fold</code>  ( <code>a</code><strong class="description">{.description} <code>r</code></strong> &rarr; <code>s</code>**{.description} )</h2>
 <p>Takes <code>a</code> function and an array and reduces the array by calling the function with pairs of the items from the array:</p>
 <pre><code>' [ 1   2   3   4   5   6   7   8   9   0 ] ' `a` fold
     |   |   |   |   |   |   |   |   |   |
@@ -240,79 +240,79 @@ to <code>makewith</code> with each item of the array or string.</p>
                                       |
                                       result.
 </code></pre>
-<h2 id="foldr"><code>foldr</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `r`**{.description}</code></strong> &rarr; <code>`**{.description}</code>s`**{.description} )</h2>
+<h2 id="foldr"><code>foldr</code>  ( <code>a</code><strong class="description">{.description} <code>r</code></strong> &rarr; <code>s</code>**{.description} )</h2>
 <p>Same as <a href="#fold"><code>fold</code></a> but applies the operation in reverse order.</p>
-<h2 id="map"><code>map</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `r`**{.description}</code></strong> &rarr; <code>`**{.description}</code>s`**{.description} )</h2>
+<h2 id="map"><code>map</code>  ( <code>a</code><strong class="description">{.description} <code>r</code></strong> &rarr; <code>s</code>**{.description} )</h2>
 <p>Passes each item of array <code>a</code> through function <code>r</code> and concatentates the returned values.</p>
-<h2 id="filter"><code>filter</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `r`**{.description}</code></strong> &rarr; <code>`**{.description}</code>s`**{.description} )</h2>
+<h2 id="filter"><code>filter</code>  ( <code>a</code><strong class="description">{.description} <code>r</code></strong> &rarr; <code>s</code>**{.description} )</h2>
 <p>Passes each item of array <code>a</code> through function <code>r</code> and returns the items for which <code>r</code> returns true.</p>
-<h2 id="split"><code>split</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `n`**{.description}</code></strong> &rarr; <code>**{.description} `x`**{.description}</code><strong class="description">{.description} <code>y</code></strong> )</h2>
+<h2 id="split"><code>split</code>  ( <code>a</code><strong class="description">{.description} <code>n</code></strong> &rarr; <code>x</code><strong class="description">{.description} <code>y</code></strong> )</h2>
 <p>Splits the array between the <code>n</code>-th and <code>n</code>+1-th items and returns the parts, second half on top.</p>
-<h2 id="matchitem"><code>matchitem</code>  ( <code>a</code><em class="description">array to search</em> <code>**{.description} `f`*criteria function to test if item matches*{.description}</code><strong class="description">{.description} <code>c</code><em class="description">cleanup function to clean the stack</em> <code>**{.description} &amp;rarr;</code></strong> <code>i</code>**{.description} )</h2>
+<h2 id="matchitem"><code>matchitem</code>  ( <code>a</code><em class="description">array to search</em> <code>f</code><em class="description">criteria function to test if item matches</em> <code>c</code><em class="description">cleanup function to clean the stack</em> &rarr; <code>i</code>**{.description} )</h2>
 <p>Uses the provided functions to find an item. returns the index of the first found item.</p>
-<h2 id="find"><code>find</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `x`**{.description}</code></strong> &rarr; <code>`**{.description}</code>i`**{.description} )</h2>
+<h2 id="find"><code>find</code>  ( <code>a</code><strong class="description">{.description} <code>x</code></strong> &rarr; <code>i</code>**{.description} )</h2>
 <p>Finds the first index where item <code>x</code> occurs in the array <code>a</code>.</p>
-<h2 id="findwith"><code>findwith</code> <em class="shadowed"><code>criteria</code></em> <em class="shadowed"><code>cleanup</code></em> ( <code>a</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>i</code>**{.description} )</h2>
+<h2 id="findwith"><code>findwith</code> <em class="shadowed"><code>criteria</code></em> <em class="shadowed"><code>cleanup</code></em> ( <code>a</code><strong class="description">{.description} &rarr; <code>i</code></strong> )</h2>
 <p>Same as <a href="#matchitem"><code>matchitem</code></a> but uses lookahead for <code>cleanup</code> and <code>criteria</code>.</p>
-<h2 id="found?"><code>found?</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `i`**{.description}</code></strong> &rarr; <code>`**{.description}</code>t`**{.description} )</h2>
+<h2 id="found?"><code>found?</code>  ( <code>a</code><strong class="description">{.description} <code>i</code></strong> &rarr; <code>t</code>**{.description} )</h2>
 <p>True if <code>i</code> is <code>a</code> valid index into array <code>a</code>.</p>
 <p>Example:</p>
 <pre><code class="language-phoo">
 to has-foo? [ dup $ &quot;foo&quot; find found? ]
 </code></pre>
-<h2 id="lower"><code>lower</code>  ( <code>s</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>s</code>**{.description} )</h2>
+<h2 id="lower"><code>lower</code>  ( <code>s</code><strong class="description">{.description} &rarr; <code>s</code></strong> )</h2>
 <p>Turns a string lowercase.</p>
-<h2 id="upper"><code>upper</code>  ( <code>s</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>s</code>**{.description} )</h2>
+<h2 id="upper"><code>upper</code>  ( <code>s</code><strong class="description">{.description} &rarr; <code>s</code></strong> )</h2>
 <p>Turns a string uppercase.</p>
-<h2 id="++"><code>++</code>  ( <code>s</code><strong class="description">{.description} <code>1</code></strong> <code>**{.description} `s`**{.description} `2`**{.description}</code><strong class="description">{.description} &rarr; <code>`**{.description}</code>s<code>**{.description}</code>1<code>**{.description}</code>s<code>**{.description}</code>2`</strong> )</h2>
+<h2 id="++"><code>++</code>  ( <code>s1</code><strong class="description">{.description} <code>s2</code></strong> &rarr; <code>s1s2</code>**{.description} )</h2>
 <p>Concatenates 2 items after casting both to string type.</p>
-<h2 id="num&gt;$"><code>num&gt;$</code>  ( <code>x</code><strong class="description">{.description} <code>**{.description} `n`**{.description}</code></strong> &rarr; <code>`**{.description}</code>s`**{.description} )</h2>
+<h2 id="num&gt;$"><code>num&gt;$</code>  ( <code>x</code><strong class="description">{.description} <code>n</code></strong> &rarr; <code>s</code>**{.description} )</h2>
 <p>Writes number <code>x</code> in base n.</p>
-<h2 id="$&gt;num"><code>$&gt;num</code>  ( <code>s</code><strong class="description">{.description} <code>**{.description} `n`**{.description}</code></strong> &rarr; <code>`**{.description}</code>x`**{.description} )</h2>
+<h2 id="$&gt;num"><code>$&gt;num</code>  ( <code>s</code><strong class="description">{.description} <code>n</code></strong> &rarr; <code>x</code>**{.description} )</h2>
 <p>Parses string <code>s</code> as a number in base <code>n</code>.</p>
-<h2 id="big"><code>big</code>  ( <code>n</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>b</code>**{.description} )</h2>
+<h2 id="big"><code>big</code>  ( <code>n</code><strong class="description">{.description} &rarr; <code>b</code></strong> )</h2>
 <p>Turns number <code>n</code> into a <code>bigint</code>.</p>
-<h2 id="sortwith"><code>sortwith</code> <em class="shadowed"><code>comp</code></em> ( <code>a</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>s</code>**{.description} )</h2>
+<h2 id="sortwith"><code>sortwith</code> <em class="shadowed"><code>comp</code></em> ( <code>a</code><strong class="description">{.description} &rarr; <code>s</code></strong> )</h2>
 <p>Using comparator <code>comp</code>, sorts the array. does not mutate the array.</p>
-<h2 id="sort"><code>sort</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>s</code>**{.description} )</h2>
+<h2 id="sort"><code>sort</code>  ( <code>a</code><strong class="description">{.description} &rarr; <code>s</code></strong> )</h2>
 <p>Sort an array of numbers.</p>
-<h2 id="sort$"><code>sort$</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>s</code>**{.description} )</h2>
+<h2 id="sort$"><code>sort$</code>  ( <code>a</code><strong class="description">{.description} &rarr; <code>s</code></strong> )</h2>
 <p>Sort an array of strings.</p>
 <h2 id="try"><code>try</code> <em class="shadowed"><code>block</code></em> <em class="shadowed"><code>except</code></em> (  &rarr;  )</h2>
 <p>Runs <code>block</code>, and if it threw an error, runs <code>except</code> with the error on the stack. if <code>block</code> ran fine, skips <code>except</code>.</p>
-<h2 id="nestdepth"><code>nestdepth</code>  (  &rarr; <code>`**{.description}</code>n`**{.description} )</h2>
+<h2 id="nestdepth"><code>nestdepth</code>  (  &rarr; <code>n</code>**{.description} )</h2>
 <p>Puts the current recursion depth on the stack.</p>
-<h2 id="stacksize"><code>stacksize</code>  (  &rarr; <code>`**{.description}</code>n`**{.description} )</h2>
+<h2 id="stacksize"><code>stacksize</code>  (  &rarr; <code>n</code>**{.description} )</h2>
 <p>Puts the number of items on the stack, on the stack.</p>
-<h2 id="to-do"><code>to-do</code>  (  &rarr; <code>`**{.description}</code>a`**{.description} )</h2>
+<h2 id="to-do"><code>to-do</code>  (  &rarr; <code>a</code>**{.description} )</h2>
 <p>To-do is <code>a</code> general purpose ancillary <a href="#stack"><code>stack</code></a>.</p>
-<h2 id="new-do"><code>new-do</code>  ( <code>a</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
+<h2 id="new-do"><code>new-do</code>  ( <code>a</code>**{.description} &rarr;  )</h2>
 <p>Initializes the <a href="#stack"><code>stack</code></a> <code>a</code> as <code>a</code> to-do stack by putting <a href="#done"><code>done</code></a> on it.</p>
-<h2 id="add-to"><code>add-to</code>  ( <code>x</code><strong class="description">{.description} <code>x</code></strong> <code>x</code><strong class="description">{.description} <code>*</code></strong> <code>**{.description} `c`**{.description}</code><strong class="description">{.description} <code>n</code></strong> <code>**{.description} `a`**{.description}</code>**{.description} &rarr;  )</h2>
+<h2 id="add-to"><code>add-to</code>  ( <code>xxx*</code><strong class="description">{.description} <code>c</code></strong> <code>n</code><strong class="description">{.description} <code>a</code></strong> &rarr;  )</h2>
 <p>Puts the action <code>c</code> and its arguments <code>xxx*</code> (the number of which is <code>n</code>) on the to-do stack <code>a</code>.</p>
-<h2 id="now-do"><code>now-do</code>  ( <code>a</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
+<h2 id="now-do"><code>now-do</code>  ( <code>a</code>**{.description} &rarr;  )</h2>
 <p>Runs all the queued items on the to-do stack, until it hits the <a href="#done"><code>done</code></a> put there by <a href="#new-to"><code>new-to</code></a>.</p>
-<h2 id="do-now"><code>do-now</code>  ( <code>a</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
+<h2 id="do-now"><code>do-now</code>  ( <code>a</code>**{.description} &rarr;  )</h2>
 <p>Same as <a href="#now-do"><code>now-do</code></a> but does the items in reverse order.</p>
-<h2 id="not-do"><code>not-do</code>  ( <code>a</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
+<h2 id="not-do"><code>not-do</code>  ( <code>a</code>**{.description} &rarr;  )</h2>
 <p>Removes all the queued items from the to-do stack <code>a</code> without running them.</p>
-<h2 id="chr"><code>chr</code>  ( <code>n</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>s</code>**{.description} )</h2>
+<h2 id="chr"><code>chr</code>  ( <code>n</code><strong class="description">{.description} &rarr; <code>s</code></strong> )</h2>
 <p>Returns the character with the unicode code point <code>n</code>.</p>
-<h2 id="ord"><code>ord</code>  ( <code>s</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>n</code>**{.description} )</h2>
+<h2 id="ord"><code>ord</code>  ( <code>s</code><strong class="description">{.description} &rarr; <code>n</code></strong> )</h2>
 <p>Reverse of <a href="#chr"><code>chr</code></a>, it gets the code point of the character.</p>
-<h2 id="isa?"><code>isa?</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `s`**{.description}</code></strong> &rarr; <code>`**{.description}</code>t`**{.description} )</h2>
+<h2 id="isa?"><code>isa?</code>  ( <code>a</code><strong class="description">{.description} <code>s</code></strong> &rarr; <code>t</code>**{.description} )</h2>
 <p>True if item <code>a</code>&lsquo;<code>s</code> <a href="#type"><code>type</code></a> is the same as <code>s</code>.</p>
-<h2 id="isoneof"><code>isoneof</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} `s`**{.description} `s`**{.description}</code></strong> &rarr; <code>`**{.description}</code>t`**{.description} )</h2>
+<h2 id="isoneof"><code>isoneof</code>  ( <code>a</code><strong class="description">{.description} <code>ss</code></strong> &rarr; <code>t</code>**{.description} )</h2>
 <p>Same as <a href="#isa?"><code>isa?</code></a> but accepts an array of types, which will succeed if any of them is the <a href="#type"><code>type</code></a> of <code>a</code>.</p>
-<h2 id="stringify"><code>stringify</code>  ( <code>a</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>s</code>**{.description} )</h2>
+<h2 id="stringify"><code>stringify</code>  ( <code>a</code><strong class="description">{.description} &rarr; <code>s</code></strong> )</h2>
 <p>Converts <code>a</code> to <code>a</code> string.</p>
-<h2 id="arrayify"><code>arrayify</code>  ( <code>x</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>a</code>**{.description} )</h2>
+<h2 id="arrayify"><code>arrayify</code>  ( <code>x</code><strong class="description">{.description} &rarr; <code>a</code></strong> )</h2>
 <p>Converts <code>a</code> to an array.</p>
-<h2 id="phoo"><code>phoo</code>  ( <code>c</code><strong class="description">{.description} ``</strong> &rarr;  )</h2>
+<h2 id="phoo"><code>phoo</code>  ( <code>c</code>**{.description} &rarr;  )</h2>
 <p>Compile and run the code.</p>
-<h2 id="new@"><code>new@</code>  ( <code>f</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>o</code>**{.description} )</h2>
+<h2 id="new@"><code>new@</code>  ( <code>f</code><strong class="description">{.description} &rarr; <code>o</code></strong> )</h2>
 <p>Constructs the function <code>f</code> by calling it with no arguments.</p>
-<h2 id="call@"><code>call@</code>  ( <code>f</code><strong class="description">{.description} <code>**{.description} &amp;rarr;</code></strong> <code>r</code>**{.description} )</h2>
+<h2 id="call@"><code>call@</code>  ( <code>f</code><strong class="description">{.description} &rarr; <code>r</code></strong> )</h2>
 <p>Calls the function <code>f</code> with no arguments.</p>
 <h2 id="!!todo!!"><code>!!todo!!</code>  (  &rarr;  )</h2>
 <p>Throws <code>'todo'</code>.</p>
@@ -320,5 +320,5 @@ to has-foo? [ dup $ &quot;foo&quot; find found? ]
 <p>Imports the module, skipping if it was already imported.</p>
 <h2 id="reuse"><code>reuse</code> <em class="shadowed"><code>path/to/module</code></em> (  &rarr;  )</h2>
 <p>Imports the module, force-reloading it even if it is already loaded.</p>
-<h2 id="dir"><code>dir</code>  (  &rarr; <code>`**{.description}</code>a`**{.description} )</h2>
+<h2 id="dir"><code>dir</code>  (  &rarr; <code>a</code>**{.description} )</h2>
 <p>Returns <code>a</code> list of the names of all the available words in this scope.</p></body></html>
