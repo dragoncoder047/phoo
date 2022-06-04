@@ -52,7 +52,7 @@ def buildMD(tags):
     if example:
         body += f'\n\n```phoo\n{dedent(example)}\n```'
     if seealsos:
-        body += f'\n\n **See Also:** {', '.join(seealsos)}'
+        body += f'\n\n **See Also:** {", ".join(seealsos)}'
     return body
 
 styles = 'code+.description{display:none;opacity:50%}code:hover+.description{display:inline-block}.shadowed{opacity:50%}'
