@@ -82,7 +82,7 @@ for file in files:
     out_md = f'# `use {base}`\n'
     base = base.replace('/', '')
     for ctext in findComments(txt):
-        out_md += '\n\n' + buildMD(parseComment(ctext))
+        out_md += '\n\n--\n\n' + buildMD(parseComment(ctext))
     out_md += '\n\n---\n\n[back to index](index.html)'
     with open(f'docs/{base}.md', 'w') as mdf:
         mdf.write(out_md)
