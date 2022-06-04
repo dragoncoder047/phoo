@@ -63,7 +63,7 @@ def buildMD(tags):
         body += f'\n\n **See Also:** {", ".join(seealsos)}'
     return body
 
-styles = 'code+.description{display:none;opacity:50%}code:hover+.description{display:inline-block}.shadowed{opacity:50%}'
+styles = 'code+.description{display:none;opacity:50%;font-size:75%}code:hover+.description{display:inline-block}.shadowed{opacity:50%}'
 
 files = glob('lib/*.js') + glob('lib/*.ph')
 
