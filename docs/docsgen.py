@@ -66,7 +66,7 @@ def buildMD(tags):
     elif 'plain' in tags:
         return dedent(tags['plain']).strip()
     elif 'hidemodule' in tags:
-        return False
+        return 'yyyyyyyyyyyyy'
 
 USE_RE = re.compile(r'(?<=\s)(?:re)?use\s([^\s]+)')
 def findDependencies(txt):
@@ -92,12 +92,10 @@ for file in files:
     cm = None
     for ctext in findComments(txt):
         cm = buildMD(parseComment(ctext))
-        if cm is False:
+        if cm == 'yyyyyyyyyyyyy':
             break
         out_md += '\n\n' + cm
-    else:
-        continue
-    if cm is False:
+    if cm == 'yyyyyyyyyyyyy':
         continue
     out_md += '\n\n---\n\n[back to index](index.html)'
     mkdP.reset()
