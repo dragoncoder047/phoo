@@ -1,3 +1,7 @@
+/* >>
+hidemodule>
+*/
+
 $ "stack ops" test.suite do
     $ "dup equal" test.case do
         1 dup

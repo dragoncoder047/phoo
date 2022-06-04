@@ -82,10 +82,11 @@ all_modules = []
 
 for file in files:
     print('processing', file)
-    base = file.removesuffix('.ph').removesuffix('.js').removeprefix('lib/').replace('/', '')
+    modulename = file.removesuffix('.ph').removesuffix('.js').removeprefix('lib/')
+    fp = modulename.replace('/', '')
     with open(file) as f:
         txt = f.read()
-    out_md = f'# `use {base}`\n\n'
+    out_md = f'# `use {modulename}`\n\n'
     if (deps := findDependencies(txt)):
         out_md += '**Dependencies:** ' + ', '.join(f"[`{d.strip()}`]({d.strip().replace('/', '')}.html)" for d in deps)
     cm = None
@@ -99,12 +100,12 @@ for file in files:
     out_md += '\n\n---\n\n[back to index](index.html)'
     mkdP.reset()
     html = mkdP.convert(out_md)
-    with open(f'docs/{base}.html', 'w') as htf:
-        htf.write(f'<!DOCTYPE html><html><head><title>Phoo docs for {file}</title><style>{styles}</style></head><body>{html}</body></html>')
-    all_modules.append(base)
+    with open(f'docs/{fp}.html', 'w') as htf:
+        htf.write(f'<!DOCTYPE html><html><head><title>Phoo docs for {modulename}</title><style>{styles}</style></head><body>{html}</body></html>')
+    all_modules.append((fp, modulename))
 
 with open('docs/index.html', 'w') as df:
     df.write(f'<!DOCTYPE html><html><head><title>Phoo docs index</title></head><body><h1>Phoo docs module index</h1><ul>')
     for m in all_modules:
-        df.write(f'<li><a href="{m}.html">{m}</a></li>')
+        df.write(f'<li><a href="{m[0]}.html">{m[1]}</a></li>')
     df.write('</ul></body></html>')
