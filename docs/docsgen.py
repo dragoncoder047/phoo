@@ -2,8 +2,7 @@ from glob import glob
 import re
 from textwrap import dedent
 from os import system
-from sys import exit
-system('pip3 install -U markdown') or exit(1)
+system('pip3 install -U markdown')
 from markdown import Markdown
 
 COMMENT_RE = re.compile(r'/\* >>\n(?P<body>[\s\S]+?)\n\*/', re.M)
