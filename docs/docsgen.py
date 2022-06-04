@@ -68,7 +68,7 @@ def buildMD(tags):
     elif 'hidemodule' in tags:
         return 'yyyyyyyyyyyyy'
 
-USE_RE = re.compile(r'(?<=\s)(?:re)?use\s(?!\S+>|do)([^\s]+)')
+USE_RE = re.compile(r'(?<=\s)(?:re)?use\s(?!\S+>|do)(\S+)')
 def findDependencies(txt):
     return [m.group(1) for m in USE_RE.finditer(txt)]
 
