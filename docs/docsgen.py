@@ -68,7 +68,7 @@ def buildMD(tags):
     elif 'hidemodule' in tags:
         return 'yyyyyyyyyyyyy'
 
-USE_RE = re.compile(r'(?<=\s)(?:re)?use\s([^\s]+)')
+USE_RE = re.compile(r'(?<=\s)(?:re)?use\s(?!\S+>|do)([^\s]+)')
 def findDependencies(txt):
     return [m.group(1) for m in USE_RE.finditer(txt)]
 
@@ -82,13 +82,12 @@ all_modules = []
 
 for file in files:
     print('processing', file)
-    base = file.removesuffix('.ph').removesuffix('.js')
+    base = file.removesuffix('.ph').removesuffix('.js').replace('/', '').removeprefix('lib/')
     with open(file) as f:
         txt = f.read()
     out_md = f'# `use {base}`\n\n'
     if (deps := findDependencies(txt)):
         out_md += '**Dependencies:** ' + ', '.join(f"[`{d.strip()}`]({d.strip().replace('/', '')}.html)" for d in deps)
-    base = base.replace('/', '')
     cm = None
     for ctext in findComments(txt):
         cm = buildMD(parseComment(ctext))

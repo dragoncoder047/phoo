@@ -3,7 +3,7 @@ plain>
 
 This module is contains the words necessary to implement the builtin functionality of Phoo, that are defined in Phoo code.
 
-The words that this module depends upon can be found on the page for [lib_builtins](lib_builtins.html) (note the underscore).
+The words that this module depends upon can be found on the page for [_builtins](_builtins.html) (note the underscore).
 */
 
 /* 
