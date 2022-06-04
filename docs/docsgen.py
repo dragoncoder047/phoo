@@ -57,7 +57,7 @@ def buildMD(tags):
         seds_r = [f'`{i.strip()}`' + (f'*{tags.get(i.strip(), "")}*{{.description}}' if i.strip() in tags else '') for i in st_right.strip().split()]
         example = tags.get('example')
         seealsos = [f'[`{t.strip()}`](#{encURI(t.strip())})' for t in tags.get('see-also', '').split()]
-        body = f'## `{wname}` {" ".join(lookaheads)} ( {" ".join(seds_l)} &rarr; {" ".join(seds_r)} ) {{#{encURI(wname)}}}\n\n{fixTypos(dedent(inlines(description, tags)).strip())}'
+        body = f'### `{wname}` {" ".join(lookaheads)} ( {" ".join(seds_l)} &rarr; {" ".join(seds_r)} ) {{#{encURI(wname)}}}\n\n{fixTypos(dedent(inlines(description, tags)).strip())}'
         if example:
             body += f'\n\nExample:\n\n```phoo\n{dedent(example)}\n```'
         if seealsos:
@@ -66,7 +66,7 @@ def buildMD(tags):
     else:
         return dedent(tags['plain'])
 
-styles = 'code+.description{display:none;opacity:50%;font-size:75%}code:hover+.description{display:inline-block}.shadowed{opacity:50%}'
+styles = 'code+.description{padding-left:10px;display:none;opacity:50%;font-size:75%}code:hover+.description{display:inline-block}.shadowed{opacity:50%}'
 
 files = glob('lib/*.js') + glob('lib/*.ph')
 
