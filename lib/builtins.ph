@@ -389,7 +389,7 @@ end
 
 /* >>
 word> stack
-description> placed at the start of a word, makes the word an ancillary stack.
+description> placed at the start of an word, makes the word an ancillary stack.
 sed> -- a
 */
 to stack [ immovable ]this[ ]done[ ]
@@ -718,7 +718,7 @@ to len [ .length ]
 
 /* >>
 word> pluck
-description> pulls the i-th item out of the array a and returns the shortened array and the item.
+description> pulls the n-th item out of the array a and returns the shortened array and the item i.
 sed> a n -- a i
 see-also> stuff
 */
@@ -837,17 +837,17 @@ word> fold
 description>
     takes a function and an array and reduces the array by calling the function with pairs of the items from the array:
 
-        ' [ 1   2   3   4   5   6   7   8   9   0 ] ' a fold
+        ' [ 1   2   3   4   5   6   7   8   9   0 ] ' k fold
             |   |   |   |   |   |   |   |   |   |
-            '>a<'   |   |   |   |   |   |   |   |
-              '-->a<'   |   |   |   |   |   |   |
-                  '-->a<'   |   |   |   |   |   |
-                      '-->a<'   |   |   |   |   |
-                          '-->a<'   |   |   |   |
-                              '-->a<'   |   |   |
-                                  '-->a<'   |   |
-                                      '-->a<'   |
-                                          '-->a<'
+            '>k<'   |   |   |   |   |   |   |   |
+              '-->k<'   |   |   |   |   |   |   |
+                  '-->k<'   |   |   |   |   |   |
+                      '-->k<'   |   |   |   |   |
+                          '-->k<'   |   |   |   |
+                              '-->k<'   |   |   |
+                                  '-->k<'   |   |
+                                      '-->k<'   |
+                                          '-->k<'
                                               |
                                               result
 sed> a r -- s
@@ -1178,7 +1178,7 @@ to isoneof? [ dip type ' [ over = ] map nip ' or fold ]
 
 /* >>
 word> stringify
-description> converts a to a string.
+description> converts a to an string.
 sed> a -- s
 */
 to stringify [ .toString@ ]
@@ -1250,7 +1250,7 @@ protect sort.test
 
 /* >>
 word> dir
-description> Returns a list of the names of all the available words in this scope.
+description> Returns an list of the names of all the available words in this scope.
 sed> -- a
 */
 to dir do
