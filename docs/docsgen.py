@@ -21,13 +21,17 @@ def parseComment(body):
             out[last] += '\n' + line
     return out
 
+BAD_CHARS_RE = re.compile(r'[^a-z0-9]', re.I)
+def encURI(x):
+    return BAD_CHARS_RE.sub(lambda m: '%' + hex(ord(m.group(0)))[2:], x)
+
 DOUBLE_BRACKET_WORD = re.compile(r'\[\[(\S+)\]\]')
 ISOLATED_WORD = r'(?<=[^a-zA-Z])(%s)(?=[^a-zA-z])'
 def inlines(text, tags):
     words_to_codeify = tags.get('sed', '').replace('--', '').split() + tags.get('lookahead', '').split()
     for word in words_to_codeify:
         text = re.sub(ISOLATED_WORD % re.escape(word), r'`\1`', text)
-    text = DOUBLE_BRACKET_WORD.sub(r'[`\1`](#\1)', text)
+    text = DOUBLE_BRACKET_WORD.sub(lambda m: f'[`{m.group(0)}`](#{encURI(m.group(0))})', text)
     return text
 
 BAD_AN_1 = re.compile(r'(?<=\s)an(?=\s+[^aeiouy])', re.I)
@@ -51,8 +55,8 @@ def buildMD(tags):
     seds_l = [f'`{i.strip()}`' + (f'*{tags.get(i.strip(), "")}*{{.description}}' if i.strip() in tags else '') for i in st_left.strip().split()]
     seds_r = [f'`{i.strip()}`' + (f'*{tags.get(i.strip(), "")}*{{.description}}' if i.strip() in tags else '') for i in st_right.strip().split()]
     example = tags.get('example')
-    seealsos = [f'[`{t.strip()}`](#{t.strip()})' for t in tags.get('see-also', '').split()]
-    body = f'## `{wname}` {" ".join(lookaheads)} ( {" ".join(seds_l)} &rarr; {" ".join(seds_r)} ) {{#{wname}}}\n\n{fixTypos(dedent(inlines(description, tags)).strip())}'
+    seealsos = [f'[`{t.strip()}`](#{encURI(t.strip())})' for t in tags.get('see-also', '').split()]
+    body = f'## `{wname}` {" ".join(lookaheads)} ( {" ".join(seds_l)} &rarr; {" ".join(seds_r)} ) {{#{encURI(wname)}}}\n\n{fixTypos(dedent(inlines(description, tags)).strip())}'
     if example:
         body += f'\n\nExample:\n\n```phoo\n{dedent(example)}\n```'
     if seealsos:
