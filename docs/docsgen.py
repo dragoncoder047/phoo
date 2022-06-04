@@ -41,14 +41,14 @@ def fixTypos(txt):
 def buildMD(tags):
     wname = tags.get('word') or tags.get('macro') or ''
     description = tags.get('description', '')
-    lookaheads = [f'*`{xx}`*{{.shadowed}}' for xx in tags.get('lookahead', '').split()]
+    lookaheads = [f'*`{xx.strip()}`*{{.shadowed}}' for xx in tags.get('lookahead', '').split()]
     sed_text = tags.get('sed', '')
     st_left, st_right = sed_text.split('--', 1)
-    seds_l = [f'`{i}`*{tags.get(i, '')}*{{.description}}' for i in st_left]
-    seds_r = [f'`{i}`*{tags.get(i, '')}*{{.description}}' for i in st_right]
+    seds_l = [f'`{i.strip()}`*{tags.get(i.strip(), "")}*{{.description}}' for i in st_left]
+    seds_r = [f'`{i.strip()}`*{tags.get(i.strip(), "")}*{{.description}}' for i in st_right]
     example = tags.get('example')
-    seealsos = [f'[`{t}`](#{t})' for t in tags.get('see-also', '').split()]
-    body = f'## `{wname}` {' '.join(lookaheads)} ( {' '.join(seds_l)} &rarr; {' '.join(seds_r)} )\n\n{dedent(fixTypos(inlines(description, tags)))}\n{{#{wname}}}'
+    seealsos = [f'[`{t.strip()}`](#{t.strip()})' for t in tags.get('see-also', '').split()]
+    body = f'## `{wname}` {" ".join(lookaheads)} ( {" ".join(seds_l)} &rarr; {" ".join(seds_r)} )\n\n{dedent(fixTypos(inlines(description, tags)))}\n{{#{wname}}}'
     if example:
         body += f'\n\n```phoo\n{dedent(example)}\n```'
     if seealsos:
