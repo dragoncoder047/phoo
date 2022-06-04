@@ -1,4 +1,12 @@
 /* >>
+plain>
+
+This module is contains the words necessary to implement the builtin functionality of Phoo, that are defined in Phoo code.
+
+The words that this module depends upon can be found on the page for [lib_builtins](lib_builtins.html) (note the underscore).
+*/
+
+/* >>
 word> #pragma
 lookahead> flag value
 description> sets the settings flag specified.
@@ -34,7 +42,7 @@ end
 
 /* >>
 word> noop
-description> no-op.
+description> a no-op.
 sed> --
 */
 to noop [ ]
@@ -49,7 +57,7 @@ to alias to
 
 /* >>
 macro> const
-description> precomputes a value.
+description> precomputes a value. *(#6 - doesn't work)*
 sed> -- v
 */
 macro const do

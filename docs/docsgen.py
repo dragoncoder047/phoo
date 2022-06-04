@@ -63,8 +63,14 @@ def buildMD(tags):
         if seealsos:
             body += f'\n\n **See Also:** {", ".join(seealsos)}'
         return body
-    else:
-        return dedent(tags['plain'])
+    elif 'plain' in tags:
+        return dedent(tags['plain']).strip()
+    elif 'hidemodule' in tags:
+        return False
+
+USE_RE = re.compile(r'(?<=\s)(?:re)?use\s([^\s]+)')
+def findDependencies(txt):
+    return [m.group(1) for m in USE_RE.finditer(txt)]
 
 styles = 'code+.description{padding-left:10px;display:none;opacity:50%;font-size:75%}code:hover+.description{display:inline-block}.shadowed{opacity:50%}'
 
@@ -79,13 +85,21 @@ for file in files:
     base = file.removesuffix('.ph').removesuffix('.js')
     with open(file) as f:
         txt = f.read()
-    out_md = f'# `use {base}`\n'
+    out_md = f'# `use {base}`\n\n'
+    if (deps := findDependencies(txt)):
+        out_md += '**Dependencies:** ' + ', '.join(f"[`{d.strip()}`]({d.strip().replace('/', '')}.html)" for d in deps)
     base = base.replace('/', '')
+    cm = None
     for ctext in findComments(txt):
-        out_md += '\n\n---\n\n' + buildMD(parseComment(ctext))
+        cm = buildMD(parseComment(ctext))
+        if cm is False:
+            break
+        out_md += '\n\n' + cm
+    else:
+        continue
+    if cm is False:
+        continue
     out_md += '\n\n---\n\n[back to index](index.html)'
-    with open(f'docs/{base}.md', 'w') as mdf:
-        mdf.write(out_md)
     mkdP.reset()
     html = mkdP.convert(out_md)
     with open(f'docs/{base}.html', 'w') as htf:
