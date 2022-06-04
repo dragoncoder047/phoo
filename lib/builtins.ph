@@ -6,6 +6,11 @@ This module is contains the words necessary to implement the builtin functionali
 The words that this module depends upon can be found on the page for [lib_builtins](lib_builtins.html) (note the underscore).
 */
 
+/* 
+dependency:
+use _builtins
+*/
+
 /* >>
 word> #pragma
 lookahead> flag value
