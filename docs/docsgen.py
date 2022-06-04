@@ -96,5 +96,5 @@ with open('docs/index.html', 'w') as df:
     df.write(f'<!DOCTYPE html><html><head><title>Phoo docs index</title></head><body><h1>Phoo docs module index</h1><ul>')
     for file in files:
         fx = file.removesuffix('.ph').removesuffix('.js').replace('/', '')
-        df.write(f'<li><a href="{file}.html">{fx}</a></li>')
+        df.write(f'<li><a href="{fx}.html">{file}</a></li>')
     df.write('</ul></body></html>')
