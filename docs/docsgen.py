@@ -42,7 +42,10 @@ def buildMD(tags):
     description = tags.get('description', '')
     lookaheads = [f'*`{xx.strip()}`*{{.shadowed}}' for xx in tags.get('lookahead', '').split()]
     sed_text = tags.get('sed', '')
-    st_left, st_right = sed_text.split('--', 1)
+    if '--' in sed_text:
+        st_left, st_right = sed_text.split('--', 1)
+    else:
+        st_left, st_right = sed_text, ''
     seds_l = [f'`{i.strip()}`*{tags.get(i.strip(), "")}*{{.description}}' for i in st_left]
     seds_r = [f'`{i.strip()}`*{tags.get(i.strip(), "")}*{{.description}}' for i in st_right]
     example = tags.get('example')
