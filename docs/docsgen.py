@@ -33,8 +33,8 @@ def inlines(text, tags):
 BAD_AN_1 = re.compile(r'(?<=\s)an(?=\s+[^aeiouy])', re.I)
 BAD_AN_2 = re.compile(r'(?<=\s)a(?=\s+[aeiouy])', re.I)
 def fixTypos(txt):
-    txt = BAD_AN_1.sub(txt, 'a')
-    txt = BAD_AN_2.sub(txt, 'an')
+    txt = BAD_AN_1.sub('a', txt)
+    txt = BAD_AN_2.sub('an', txt)
     return txt.capitalize().rstrip('.') + '.'
 
 def buildMD(tags):
