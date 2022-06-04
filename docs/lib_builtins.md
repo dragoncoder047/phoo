@@ -50,31 +50,31 @@ Same as the Forth word `ROLL`. Takes a number `n` and **moves** the nth item to 
 
  **See Also:** [`pick`](#pick)
 
-## `drop`  ( `n`**{.description} &rarr;  ) {#drop}
+## `drop`  ( `n` &rarr;  ) {#drop}
 
 Removes the top item from the stack.
 
-## `1+`  ( `n`**{.description} &rarr; `n+1`**{.description} ) {#1+}
+## `1+`  ( `n` &rarr; `n+1` ) {#1+}
 
 Increments a number on the top of the stack.
 
-## `1-`  ( `n`**{.description} &rarr; `n-1`**{.description} ) {#1-}
+## `1-`  ( `n` &rarr; `n-1` ) {#1-}
 
 Decrements a number on the top of the stack.
 
-## `+`  ( `a`**{.description} `b`**{.description} &rarr; `b+a`**{.description} ) {#+}
+## `+`  ( `a` `b` &rarr; `b+a` ) {#+}
 
 Adds two items together using Javascript `+` operator. Note the order of addition.
 
-## `negate`  ( `a`**{.description} &rarr; `-a`**{.description} ) {#negate}
+## `negate`  ( `a` &rarr; `-a` ) {#negate}
 
 Unary negation of top item.
 
-## `*`  ( `a`**{.description} `b`**{.description} &rarr; `b*a`**{.description} ) {#*}
+## `*`  ( `a` `b` &rarr; `b*a` ) {#*}
 
 Multiply top items.
 
-## `**`  ( `b`*base*{.description} `e`*exponent*{.description} &rarr; `b**e`**{.description} ) {#**}
+## `**`  ( `b`*base*{.description} `e`*exponent*{.description} &rarr; `b**e` ) {#**}
 
 Power of top two items.
 
@@ -86,35 +86,35 @@ Euclidean division. Remainder and quotient.
 
 Regular division (results in float).
 
-## `=`  ( `a`**{.description} `b`**{.description} &rarr; `t`**{.description} ) {#=}
+## `=`  ( `a` `b` &rarr; `t` ) {#=}
 
 Equals, using Javascript `==` operator.
 
-## `>`  ( `a`*number on "larger" (left) side of expression.*{.description} `b`*number on "smaller" (right) side of expression.*{.description} &rarr; `t`**{.description} ) {#>}
+## `>`  ( `a`*number on "larger" (left) side of expression.*{.description} `b`*number on "smaller" (right) side of expression.*{.description} &rarr; `t` ) {#>}
 
 Greater than.
 
-## `nand`  ( `a`**{.description} `b`**{.description} &rarr; `t`**{.description} ) {#nand}
+## `nand`  ( `a` `b` &rarr; `t` ) {#nand}
 
 Boolean NAND of two arguments. True if both are false.
 
-## `~`  ( `n`**{.description} &rarr; `~n`**{.description} ) {#~}
+## `~`  ( `n` &rarr; `~n` ) {#~}
 
 Bitwise NOT of a number.
 
-## `&`  ( `a`**{.description} `b`**{.description} &rarr; `a&b`**{.description} ) {#&}
+## `&`  ( `a` `b` &rarr; `a&b` ) {#&}
 
 Bitwise AND of two numbers.
 
-## `|`  ( `a`**{.description} `b`**{.description} &rarr; `a|b`**{.description} ) {#|}
+## `|`  ( `a` `b` &rarr; `a|b` ) {#|}
 
 Bitwise OR of two numbers.
 
-## `^`  ( `a`**{.description} `b`**{.description} &rarr; `a^b`**{.description} ) {#^}
+## `^`  ( `a` `b` &rarr; `a^b` ) {#^}
 
 Bitwise XOR of two numbers.
 
-## `<<`  ( `a`**{.description} `b`**{.description} &rarr; `a<<b`**{.description} ) {#<<}
+## `<<`  ( `a` `b` &rarr; `a<<b` ) {#<<}
 
 A bit-shifted left by B places. Negative B for shift right.
 
@@ -164,7 +164,7 @@ Example:
 // if ToS is false, skips foo bar baz. bam will always run
 ```
 
-## `]'[`  (  &rarr; `a`**{.description} ) {#]'[}
+## `]'[`  (  &rarr; `a` ) {#]'[}
 
 Instead of running the next item on the top return stack entry, pushes it to the stack and crements the return stack pointer.
 
@@ -176,7 +176,7 @@ Example:
 // foo will be pushed to the stack and then dropped, rendering it a noop. bar will run.
 ```
 
-## `]run[`  ( `a`**{.description} &rarr;  ) {#]run[}
+## `]run[`  ( `a` &rarr;  ) {#]run[}
 
 Pushes the item to the return stack, so that it will run when the current word finishes.
 
@@ -188,19 +188,19 @@ Example:
 // if ToS is n, runs nth item of the table.
 ```
 
-## `]this[`  ( `a`**{.description} &rarr;  ) {#]this[}
+## `]this[`  ( `a` &rarr;  ) {#]this[}
 
 Pushes the top array on the return stack to the work stack, so that the word can reference its caller.
 
-## `[]`  (  &rarr; `a`**{.description} ) {#[]}
+## `[]`  (  &rarr; `a` ) {#[]}
 
 Pushes `a` new, empty array to the work stack.
 
-## `concat`  ( `a`**{.description} `b`**{.description} &rarr; `ab`**{.description} ) {#concat}
+## `concat`  ( `a` `b` &rarr; `ab` ) {#concat}
 
 Concatenates two arrays. non-arrays are treated like one-element arrays.
 
-## `peek`  ( `a`**{.description} `i`**{.description} &rarr; `a[i]`**{.description} ) {#peek}
+## `peek`  ( `a` `i` &rarr; `a[i]` ) {#peek}
 
 Takes the `i`-th item out of the array `a`.
 
@@ -208,31 +208,31 @@ Takes the `i`-th item out of the array `a`.
 
 Puts the item into the specified index of the array, and leaves the new, mutated array.
 
-## `]sandbox[`  ( `c`**{.description} &rarr; `e`**{.description} ) {#]sandbox[}
+## `]sandbox[`  ( `c` &rarr; `e` ) {#]sandbox[}
 
 Runs the code under a `try` statement, and pushes the error it threw, or `false` if no error.
 
-## `die`  ( `m`**{.description} &rarr;  ) {#die}
+## `die`  ( `m` &rarr;  ) {#die}
 
 Throws a `PhooError` with the message.
 
-## `]getstack[`  ( `e`**{.description} &rarr; `t`**{.description} ) {#]getstack[}
+## `]getstack[`  ( `e` &rarr; `t` ) {#]getstack[}
 
 With a `PhooError` on the top, gets its Phoo stack trace.
 
-## `type`  ( `o`**{.description} &rarr; `t`**{.description} ) {#type}
+## `type`  ( `o` &rarr; `t` ) {#type}
 
 Gets the type of the object.
 
-## `compile`  ( `s`**{.description} &rarr; `a`**{.description} ) {#compile}
+## `compile`  ( `s` &rarr; `a` ) {#compile}
 
 Compiles the string, so that it can be run.
 
-## `time`  (  &rarr; `t`**{.description} ) {#time}
+## `time`  (  &rarr; `t` ) {#time}
 
 Pushes the system time, in milliseconds.
 
-## `await`  ( `p`**{.description} &rarr; `v`**{.description} ) {#await}
+## `await`  ( `p` &rarr; `v` ) {#await}
 
 Awaits a `Promise` and pushes the resolve value.
 
@@ -266,15 +266,15 @@ Reverse of [`word`](#word), converts symbol to string.
 
 Looks up the definition of the word symbol.
 
-## `{}`  (  &rarr; `a`**{.description} ) {#{}}
+## `{}`  (  &rarr; `a` ) {#{}}
 
 Pushes `a` new empty object.
 
-## `self`  (  &rarr; `t`**{.description} ) {#self}
+## `self`  (  &rarr; `t` ) {#self}
 
 Pushes a reference to the current thread.
 
-## `window`  (  &rarr; `t`**{.description} ) {#window}
+## `window`  (  &rarr; `t` ) {#window}
 
 Pushes a reference to the global Javascript object (`globalThis`). Called "window" because that is its name in the browser which is what Phoo was designed for.
 
@@ -310,6 +310,6 @@ Imports the module, force-reloading if the top is true (ignores cache).
 
 Pushes the pieces to a new promise.
 
-## `functionize`  ( `c`**{.description} &rarr; `f`**{.description} ) {#functionize}
+## `functionize`  ( `c` &rarr; `f` ) {#functionize}
 
 Turns the code into a function, that will run the code in a subthread.
