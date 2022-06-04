@@ -31,7 +31,7 @@ def inlines(text, tags):
     words_to_codeify = tags.get('sed', '').replace('--', '').split() + tags.get('lookahead', '').split()
     for word in words_to_codeify:
         text = re.sub(ISOLATED_WORD % re.escape(word), r'`\1`', text)
-    text = DOUBLE_BRACKET_WORD.sub(lambda m: f'[`{m.group(0)}`](#{encURI(m.group(0))})', text)
+    text = DOUBLE_BRACKET_WORD.sub(lambda m: f'[`{m.group(1)}`](#{encURI(m.group(1))})', text)
     return text
 
 BAD_AN_1 = re.compile(r'(?<=\s)an(?=\s+[^aeiouy])', re.I)
