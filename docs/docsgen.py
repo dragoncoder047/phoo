@@ -119,7 +119,7 @@ for file in miscFiles:
     file = file.removesuffix('.md') + '.html'
     with open(file, 'w') as of:
         of.write(f'<!DOCTYPE html><html><head><title>{title or file} :: Phoo docs</title><style>{styles}</style></head><body>{html}</body></html>')
-    miscFilesList.append((file, title or file))
+    miscFilesList.append((file.removeprefix('docs/'), title or file))
 
 mkdP.reset()
 print('generating index page')
