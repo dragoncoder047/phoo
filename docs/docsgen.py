@@ -105,6 +105,7 @@ for file in docFiles:
     allModulesList.append((fp, modulename))
 
 miscFiles = glob('docs/**/*.md', recursive=True)
+miscFiles.remove('docs/index.md')
 FIRST_HEADING_REGEX = re.compile(r'<([Hh][0-6])\b[^>]*>(.*?)</\1>')
 miscFilesList = []
 for file in miscFiles:
@@ -132,5 +133,5 @@ with open('docs/index.html', 'w') as df:
     if miscFilesList:
         df.write('</ul><h2>Miscallaneous pages</h2><ul>')
         for p in miscFilesList:
-            df.write(f'<li><a href="{p[0]}.html">{p[1]}</a></li>')
+            df.write(f'<li><a href="{p[0]}">{p[1]}</a></li>')
     df.write('</ul></body></html>')
