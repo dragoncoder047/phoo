@@ -74,9 +74,9 @@ This is <code>a</code> special case of <a href="#discretelog"><code>discretelog<
 probable reason: must not just rely on prime factors, but all unique factors (including non prime ones, but no need to repeat same ones), for f2 at least (for f prime factors is ok) -->
 <p>.</p>
 <h3 id="discretelog"><code>discretelog</code>  ( <code>a</code> <code>b</code> <code>m</code> &rarr; <code>r</code> )</h3>
-<p>Computes <code>r</code> such that <code>a</code><strong><code>r</code> = <code>b</code> (mod <code>m</code>).
+<p>Computes <code>r</code> such that a**<code>r</code> = <code>b</code> (mod <code>m</code>).
 This problem is of similar computational difficulty as integer factorization.
-If <code>b</code> is 1, computes <a href="#multiplicativeorder"><code>multiplicativeorder</code></a>: <code>r</code> such that <code>a</code></strong><code>r</code> = 1 (mod <code>m</code>).
+If <code>b</code> is 1, computes <a href="#multiplicativeorder"><code>multiplicativeorder</code></a>: <code>r</code> such that a**<code>r</code> = 1 (mod <code>m</code>).
 Returns <code>undefined</code> if it&rsquo;s known there is no result, -1 if it failed to compute (took too long).</p>
 <h3 id="totient"><code>totient</code>  ( <code>n</code> &rarr; <code>x</code> )</h3>
 <p>Euler&rsquo;s totient function: counts amount of positive integers &lt;= <code>n</code> that are relatively prime to <code>n</code>.</p>

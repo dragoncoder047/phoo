@@ -14,15 +14,14 @@ code:hover+.dpar,code:focus+.dpar{display:inline-block}
 <script>window.addEventListener('DOMContentLoaded',()=>void renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]}))</script>
 <script src="/static/prism.js" data-autoloader-path="https://www.jsdelivr.com/prismjs@v1.x/components/"></script>
 <script src="/static/prism-phoo.js"></script></head><body><h1><code>use math/floatingpoint</code></h1>
-<p><strong>Dependencies:</strong> <a href="this:.html"><code>this:</code></a></p>
 <h3 id="gamma"><code>gamma</code>  ( <code>n</code> &rarr; <code>Γ(n)</code> )</h3>
 <p>This is the <a href="https://en.wikipedia.org/wiki/Gamma_function">gamma function</a>
 or at least an approximation to it. For positive integer <code>n</code>, this is simply (<code>n</code>-1)!.</p>
 <p>It uses regular Javascript numbers to be able to support non-integer values, so after 200
 it overflows and returns <code>Infinity</code>.</p>
-<p>For a true factorial function, use this:</p>
-<p><code>phoo
-to ! do 1`n` swap times do i big 1+ * end end</code>.</p>
+<p>For a true factorial function, you can do this:</p>
+<pre><code class="language-phoo">to ! do 1n swap times do i big 1+ * end end
+</code></pre>
 <h3 id="loggamma"><code>loggamma</code>  ( <code>n</code> &rarr; <code>ln(Γ(n))</code> )</h3>
 <p>Natural logarithm of the gamma function.</p>
 <p><strong>See Also:</strong> <a href="#gamma"><code>gamma</code></a></p>
@@ -35,7 +34,7 @@ to ! do 1`n` swap times do i big 1+ * end end</code>.</p>
 <p><strong>See Also:</strong> <a href="#erf"><code>erf</code></a></p>
 <h3 id="besselJ"><code>besselJ</code>  ( <code>n</code> <code>x</code> &rarr; <code>J_n(x)</code> )</h3>
 <p>The <a href="https://en.wikipedia.org/wiki/Bessel_function#Bessel_functions_of_the_first_kind:_J%CE%B1">Bessel function of the first kind</a>.</p>
-<h3 id="beseelJ"><code>beseelJ</code>  ( <code>x</code> &rarr; <code>?(x)</code> )</h3>
+<h3 id="minkowski%3f"><code>minkowski?</code>  ( <code>x</code> &rarr; <code>?(x)</code> )</h3>
 <p>The <a href="https://en.wikipedia.org/wiki/Minkowski%27s_question-mark_function">Minkowski question mark function</a>.</p>
 <hr />
 <p><a href="index.html">back to index</a></p></body></html>

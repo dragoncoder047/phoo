@@ -14,7 +14,7 @@ code:hover+.dpar,code:focus+.dpar{display:inline-block}
 <script>window.addEventListener('DOMContentLoaded',()=>void renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]}))</script>
 <script src="/static/prism.js" data-autoloader-path="https://www.jsdelivr.com/prismjs@v1.x/components/"></script>
 <script src="/static/prism-phoo.js"></script></head><body><h1><code>use builtins</code></h1>
-<p><strong>Dependencies:</strong> <a href="_builtins.html"><code>_builtins</code></a>, <a href="switches....html"><code>switches...</code></a></p>
+<p><strong>Dependencies:</strong> <a href="_builtins.html"><code>_builtins</code></a></p>
 <p>This module is contains the words necessary to implement the builtin functionality of Phoo, that are defined in Phoo code.</p>
 <p>The words that this module depends upon can be found on the page for <a href="_builtins.html">_builtins</a> (note the underscore).</p>
 <h3 id="%23pragma"><code>#pragma</code> <em class="shadowed"><code>flag</code></em> <em class="shadowed"><code>value</code></em> (  &rarr;  )</h3>
@@ -194,7 +194,7 @@ to :foo [ var_foo copy ]
 <h3 id="case"><code>case</code> <em class="shadowed"><code>action</code></em> ( <code>v</code> &rarr;  )</h3>
 <p>If the value on the stack is not the switch value, skips <code>action</code>. If it is, runs <code>action</code> and then jumps to the end of the array (skipping the other cases and the <a href="#default"><code>default</code></a>).</p>
 <p><strong>See Also:</strong> <a href="#switch"><code>switch</code></a>, <a href="#default"><code>default</code></a></p>
-<h4>How to use switches&hellip;</h4>
+<h4>How to write switches&hellip;</h4>
 <p>The Phoo <code>switch</code> construct is versatile, allowing many different arrangements of
 its parts. By far the simplest is this:</p>
 <pre><code class="language-phoo">switch do
@@ -243,7 +243,7 @@ the case block (to skip any number of subsequent cases and the <code>default</co
 <h3 id="recurse"><code>recurse</code>  (  &rarr;  )</h3>
 <p>Causes the current array to run itself again.</p>
 <h3 id="times"><code>times</code> <em class="shadowed"><code>block</code></em> ( <code>n</code> &rarr;  )</h3>
-<p>Runs body the specified numbe of times.</p>
+<p>Runs <code>block</code> the specified number of times.</p>
 <h3 id="i"><code>i</code>  (  &rarr; <code>n</code> )</h3>
 <p>Inside of a <a href="#times"><code>times</code></a> loop, gets the number of iterations left to do after this one.</p>
 <h3 id="i%5e"><code>i^</code>  (  &rarr; <code>n</code> )</h3>
@@ -259,7 +259,7 @@ the case block (to skip any number of subsequent cases and the <code>default</co
 <h3 id="break"><code>break</code>  (  &rarr;  )</h3>
 <p>Sets the current <a href="#times"><code>times</code></a> loop&rsquo;s iteration counter to 0, causing the loop to end after this iteration is done.</p>
 <h3 id="printable"><code>printable</code>  ( <code>c</code> &rarr; <code>t</code> )</h3>
-<p>Given a character <code>c</code>, treurns true or false whether it is in the printable region of ASCII (i.e. greater than 31).</p>
+<p>Given a character <code>c</code>, returns true or false whether it is in the printable region of ASCII (i.e. greater than 31).</p>
 <h3 id="trim"><code>trim</code>  ( <code>s</code> &rarr; <code>t</code> )</h3>
 <p>Trims the leading whitespace from a string.</p>
 <h3 id="nextword"><code>nextword</code>  ( <code>s</code><em class="dpar">string</em> &rarr; <code>r</code><em class="dpar">remainder of string</em> <code>w</code><em class="dpar">first word</em> )</h3>
