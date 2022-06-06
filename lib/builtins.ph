@@ -397,8 +397,32 @@ to is do
     ]'[ name
     $ "var_" swap ++
     word run
-    put
+    replace
 end
+
+/* >>
+plain>
+#### A note here on variables...
+
+Under the hood, what `var` and `var,` do is dynamically define two new words,
+one being a [`stack`](#stack) called `var_`*`name`* which holds the value,
+and another one `:`*`name`* that looks up the variable. `is` simply tacks on
+"var_" to the name passed to it, which gets the stack, and then [replaces](#replace)
+the top item.
+
+`var foo` desugars into:
+
+```phoo
+to var_foo [ stack undefined ]
+to :foo [ var_foo copy ]
+```
+
+And `is foo`:
+
+```phoo
+var_foo replace
+```
+*/
 
 /* >>
 word> stack
@@ -551,6 +575,50 @@ to case do
     default
     ]'[ run ]done[
 end
+
+/* >>
+plain>
+#### How to use switches...
+
+The Phoo `switch` construct is versatile, allowing many different arrangements of
+its parts. By far the simplest is this:
+
+```phoo
+switch do
+    1 case do
+        // do something if it was 1
+    end
+    2 case do
+        // if it was 2
+    end
+    default do
+        // if it was none of the options
+    end
+end
+```
+
+That, of course, is the nicely formatted option, however, this will suffice:
+
+```phoo
+    // ... rest of block above
+    switch
+    1 case do
+        // do something if it was 1
+    end
+    2 case do
+        // if it was 2
+    end
+    default
+    // if it was none of the options
+end
+```
+
+Notice that the `switch` and `default` need not have a block after them; they serve only to initialize
+and clean up the ancillary stack that the value to be switched on is temporarily stored on.
+However, **everything** after the `default` is considered "the default action", because the behavior of
+`case` when it matches is to run the item immediately following it, and then skip **all** of the items following
+the case block (to skip any number of subsequent cases and the `default`). 
+*/
 
 /* >>
 word> '
