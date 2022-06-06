@@ -1,4 +1,4 @@
-# The Internals of Phoo
+# The Internals of Phoo (Javascript)
 
 <!-- cSpell:ignore phoo -->
 <!-- [TOC] -->
