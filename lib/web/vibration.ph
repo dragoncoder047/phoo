@@ -1,5 +1,5 @@
 to vibrate do
-    nested
+    arrayify
     window .navigator swap .vibrate() drop
 end
 
