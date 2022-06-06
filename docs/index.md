@@ -8,7 +8,7 @@ For each word, the *signature* including lookaheads that the word expects to be 
 
 For example:
 
-> ### `foo` *`bar`*{.shadowed} ( `a`*item description*{.description} &rarr; `b`*item description*{.description} `c`*item description*{.description} )
+> ### `foo` *`bar`*{.shadowed} ( `a`*item description*{.dpar} &rarr; `b`*item description*{.dpar} `c`*item description*{.dpar} )
 
 This means that the word `foo` expects one item after it (`bar`) which will be consumed in a lookahead operation, and also expect one item on the stack (`a`), and will leave two (`b` and `c`).
 
