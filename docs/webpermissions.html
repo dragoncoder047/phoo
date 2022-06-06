@@ -17,6 +17,10 @@ a:visited{color:#0ca}
 <script>window.addEventListener('DOMContentLoaded',()=>void renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]}))</script>
 <script src="/static/prism.js" data-autoloader-path="https://www.jsdelivr.com/prismjs@v1.x/components/"></script>
 <script src="/static/prism-phoo.js"></script></head><body><h1><code>use web/permissions</code></h1>
-<p><strong>TODO</strong></p>
+<h3 id="permissions%2eassert"><code>permissions.assert</code>  ( <code>t</code> &rarr;  )</h3>
+<p>If the top value is false, throws &ldquo;Permission denied by user&rdquo; error.</p>
+<h3 id="permissions%2equery"><code>permissions.query</code>  ( <code>t</code> &rarr;  )</h3>
+<p>Queries the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API">Permissions API</a>
+for the specified permission, and returns true, false, or undefined, corresponding to granted, denied, or ignored.</p>
 <hr />
 <p><a href="index.html">back to index</a></p></body></html>
