@@ -14,7 +14,7 @@ code:hover+.dpar,code:focus+.dpar{display:inline-block}
 <script>window.addEventListener('DOMContentLoaded',()=>void renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]}))</script>
 <script src="/static/prism.js" data-autoloader-path="https://www.jsdelivr.com/prismjs@v1.x/components/"></script>
 <script src="/static/prism-phoo.js"></script></head><body><h1><code>use builtins</code></h1>
-<p><strong>Dependencies:</strong> <a href="_builtins.html"><code>_builtins</code></a></p>
+<p><strong>Dependencies:</strong> <a href="_builtins.html"><code>_builtins</code></a>, <a href="switches....html"><code>switches...</code></a></p>
 <p>This module is contains the words necessary to implement the builtin functionality of Phoo, that are defined in Phoo code.</p>
 <p>The words that this module depends upon can be found on the page for <a href="_builtins.html">_builtins</a> (note the underscore).</p>
 <h3 id="%23pragma"><code>#pragma</code> <em class="shadowed"><code>flag</code></em> <em class="shadowed"><code>value</code></em> (  &rarr;  )</h3>
@@ -109,6 +109,19 @@ code:hover+.dpar,code:focus+.dpar{display:inline-block}
 <p>Declares a new variable, initialized to top stack value.</p>
 <h3 id="is"><code>is</code> <em class="shadowed"><code>name</code></em> ( <code>v</code> &rarr;  )</h3>
 <p>Puts a value into a variable.</p>
+<h4>A note here on variables&hellip;</h4>
+<p>Under the hood, what <code>var</code> and <code>var,</code> do is dynamically define two new words,
+one being a <a href="#stack"><code>stack</code></a> called <code>var_</code><em><code>name</code></em> which holds the value,
+and another one <code>:</code><em><code>name</code></em> that looks up the variable. <code>is</code> simply tacks on
+&ldquo;var_&rdquo; to the name passed to it, which gets the stack, and then <a href="#replace">replaces</a>
+the top item.</p>
+<p><code>var foo</code> desugars into:</p>
+<pre><code class="language-phoo">to var_foo [ stack undefined ]
+to :foo [ var_foo copy ]
+</code></pre>
+<p>And <code>is foo</code>:</p>
+<pre><code class="language-phoo">var_foo replace
+</code></pre>
 <h3 id="stack"><code>stack</code>  (  &rarr; <code>a</code> )</h3>
 <p>Placed at the start of a word, makes the word an ancillary stack.</p>
 <h3 id="release"><code>release</code>  ( <code>a</code> &rarr;  )</h3>
@@ -181,6 +194,39 @@ code:hover+.dpar,code:focus+.dpar{display:inline-block}
 <h3 id="case"><code>case</code> <em class="shadowed"><code>action</code></em> ( <code>v</code> &rarr;  )</h3>
 <p>If the value on the stack is not the switch value, skips <code>action</code>. If it is, runs <code>action</code> and then jumps to the end of the array (skipping the other cases and the <a href="#default"><code>default</code></a>).</p>
 <p><strong>See Also:</strong> <a href="#switch"><code>switch</code></a>, <a href="#default"><code>default</code></a></p>
+<h4>How to use switches&hellip;</h4>
+<p>The Phoo <code>switch</code> construct is versatile, allowing many different arrangements of
+its parts. By far the simplest is this:</p>
+<pre><code class="language-phoo">switch do
+    1 case do
+        // do something if it was 1
+    end
+    2 case do
+        // if it was 2
+    end
+    default do
+        // if it was none of the options
+    end
+end
+</code></pre>
+<p>That, of course, is the nicely formatted option, however, this will suffice:</p>
+<pre><code class="language-phoo">    // ... rest of block above
+    switch
+    1 case do
+        // do something if it was 1
+    end
+    2 case do
+        // if it was 2
+    end
+    default
+    // if it was none of the options
+end
+</code></pre>
+<p>Notice that the <code>switch</code> and <code>default</code> need not have a block after them; they serve only to initialize
+and clean up the ancillary stack that the value to be switched on is temporarily stored on.
+However, <strong>everything</strong> after the <code>default</code> is considered &ldquo;the default action&rdquo;, because the behavior of
+<code>case</code> when it matches is to run the item immediately following it, and then skip <strong>all</strong> of the items following
+the case block (to skip any number of subsequent cases and the <code>default</code>).</p>
 <h3 id="%27"><code>'</code> <em class="shadowed"><code>value</code></em> (  &rarr; <code>v</code> )</h3>
 <p>Puts the <code>value</code> following it on the stack instead of running it.</p>
 <p>Example:</p>
