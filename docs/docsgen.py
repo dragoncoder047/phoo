@@ -40,6 +40,7 @@ def inlines(text, tags):
 BAD_AN_1 = re.compile(r'(?<=\s)an(?=\s+[^aeiouy])', re.I)
 BAD_AN_2 = re.compile(r'(?<=\s)a(?=\s+[aeiouy])', re.I)
 def fixTypos(txt):
+    txt = txt.strip()
     txt = BAD_AN_1.sub('a', txt)
     txt = BAD_AN_2.sub('an', txt)
     txt = txt.rstrip('.') + '.'

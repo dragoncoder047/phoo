@@ -578,7 +578,7 @@ end
 
 /* >>
 plain>
-#### How to use switches...
+#### How to write switches...
 
 The Phoo `switch` construct is versatile, allowing many different arrangements of
 its parts. By far the simplest is this:
@@ -666,7 +666,7 @@ to times.action [ stack ]
 /* >>
 word> times
 lookahead> block
-description> runs body the specified numbe of times.
+description> runs block the specified number of times.
 sed> n --
 */
 to times do
@@ -745,7 +745,7 @@ to break [ 0 times.count replace ]
 
 /* >>
 word> printable
-description> given a character c, treurns true or false whether it is in the printable region of ASCII (i.e. greater than 31).
+description> given a character c, returns true or false whether it is in the printable region of ASCII (i.e. greater than 31).
 sed> c -- t
 */
 to printable? [ ord 31 > ]
