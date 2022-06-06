@@ -11,7 +11,7 @@ quia quisquam sed sit tempora ut velit voluptatem" split$
 
 /* >>
 word> :lorem.words
-description> the variable `lorem.words` is a list of words that will randomly be chosen between to generate lorem ipsum.
+description> the variable `lorem.words` is an list of words that will randomly be chosen between to generate lorem ipsum.
 sed> -- a
 */
 var, lorem.words
