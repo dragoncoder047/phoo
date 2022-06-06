@@ -101,7 +101,7 @@ end
 /* >>
 word> random.sample
 description> Returns an new array containing n randomly selected items of a, **without** replacement.
-If n >= the length of a, the returned array will be a shuffled copy of a.
+If n >= the length of a, the returned array will be an shuffled copy of a.
 sed> a n -- s
 see-also> random.choices
 */
