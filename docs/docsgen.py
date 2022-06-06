@@ -53,11 +53,11 @@ def buildMD(tags):
             st_left, st_right = sed_text.split('--', 1)
         else:
             st_left, st_right = sed_text, ''
-        seds_l = [f'`{i.strip()}`' + (f'*{tags.get(i.strip(), "")}*{{.description}}' if i.strip() in tags else '') for i in st_left.strip().split()]
-        seds_r = [f'`{i.strip()}`' + (f'*{tags.get(i.strip(), "")}*{{.description}}' if i.strip() in tags else '') for i in st_right.strip().split()]
+        seds_l = [f'`{i.strip()}`' + (f'*{tags.get(i.strip(), "")}*{{.dpar}}' if i.strip() in tags else '') for i in st_left.strip().split()]
+        seds_r = [f'`{i.strip()}`' + (f'*{tags.get(i.strip(), "")}*{{.dpar}}' if i.strip() in tags else '') for i in st_right.strip().split()]
         example = tags.get('example')
         seealsos = [f'[`{t.strip()}`](#{encURI(t.strip())})' for t in tags.get('see-also', '').split()]
-        body = f'### `{wname}` {" ".join(lookaheads)} ( {" ".join(seds_l)} &rarr; {" ".join(seds_r)} ) {{#{encURI(wname)}}}\n\n{fixTypos(dedent(inlines(description, tags)).strip())}'
+        body = f'### `{wname}` {" ".join(lookaheads)} ( {" ".join(seds_l)} &rarr; {" ".join(seds_r)} ) {{#{encURI(wname)}}}\n\n{fixTypos(dedent(inlines(description, tags)).strip())}\n{{.dwd}}'
         if example:
             body += f'\n\nExample:\n\n```phoo\n{dedent(example)}\n```'
         if seealsos:
@@ -72,7 +72,7 @@ USE_RE = re.compile(r'(?:\s|^)(?:re)?use\s(?!\S+>|do)(\S+)')
 def findDependencies(txt):
     return [m.group(1) for m in USE_RE.finditer(txt)]
 
-styles = 'code+.description{padding-left:10px;display:none;opacity:50%;font-size:75%}code:hover+.description{display:inline-block}.shadowed{opacity:50%}'
+styles = 'code+.dpar{padding-left:10px;display:none;opacity:50%;font-size:75%}code:hover+.dpar{display:inline-block}.shadowed{opacity:50%}.dwd{margin-left:3em}'
 
 files = glob('lib/**/*.js', recursive=True) + glob('lib/**/*.ph', recursive=True)
 
