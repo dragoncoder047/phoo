@@ -29,7 +29,7 @@ def encURI(x):
     return BAD_CHARS_RE.sub(lambda m: '%' + hex(ord(m.group(0)))[2:], x)
 
 DOUBLE_BRACKET_WORD = re.compile(r'\[\[(\S+)\]\]')
-ISOLATED_WORD = r'(?<=[^a-zA-Z])(%s)(?=[^a-zA-z])'
+ISOLATED_WORD = r'(?<=[^a-zA-Z'])(%s)(?=[^a-zA-z])'
 def inlines(text, tags):
     words_to_codeify = tags.get('sed', '').replace('--', '').split() + tags.get('lookahead', '').split()
     for word in words_to_codeify:
