@@ -91,12 +91,13 @@ for file in docFiles:
     if (deps := findDependencies(txt)):
         out_md += '**Dependencies:** ' + ', '.join(f"[`{d.strip()}`]({d.strip().replace('/', '')}.html)" for d in deps)
     cmt = None
-    for ctext in findComments(txt):
+    foundComments = findComments(txt)
+    for ctext in foundComments:
         cmt = buildMD(parseComment(ctext))
         if cmt == 'yyyyyyyyyyyyy':
             break
         out_md += '\n\n' + cmt
-    else:
+    if len(foundComments) == 0:
         out_md += '\n\n**TODO**'
     if cmt == 'yyyyyyyyyyyyy':
         continue
