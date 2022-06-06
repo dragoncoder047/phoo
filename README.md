@@ -16,6 +16,8 @@ The Phoo interpreter-compiler environment plus its (for the time being) minimali
 [Python]: https://www.python.org/
 [Lua]: https://www.lua.org/
 
+The documentation (which is minimal for the time being) can be found at <https://dragoncoder047.github.io/phoo/docs/index.html>.
+
 ## Credits
 
 * The Phoo web app's terminal uses Jakub T. Jankiewicz's [jquery.terminal plugin](https://github.com/jcubic/jquery.terminal). MIT license.
