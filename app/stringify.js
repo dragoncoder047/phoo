@@ -48,7 +48,7 @@ export default function stringify(obj, { colorize = x => x, max_depth = 5, palet
                 return '[\n' + indent_lines(inner.join(',\n'), indent) + '\n]';
             }
         case 'regexp':
-            return colorize(`/${obj.source}/`, palette.regexp);
+            return colorize(`/${obj.source}/${obj.flags}`, palette.regexp);
         case 'undefined':
             return colorize('undefined', palette.undefined);
         case 'symbol':
