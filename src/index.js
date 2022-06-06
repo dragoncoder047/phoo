@@ -176,7 +176,7 @@ export function addFunctionAsWord(ns, inputTypes, name, func) {
         var args = [];
         for (var i = 0; i < inputTypes.length; i++)
             args.push(this.pop());
-        this.push(func.apply(this, args));
+        this.push(func.apply(this, args.reverse()));
     }
     ns.words.add(name, wordFunction);
 }
