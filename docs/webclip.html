@@ -1,5 +1,17 @@
 <!DOCTYPE html><html><head><title>web/clip :: Phoo docs</title><style>code+.dpar{padding-left:10px;display:none;opacity:50%;font-size:75%}code:hover+.dpar,code:focus+.dpar{display:inline-block}.shadowed{opacity:50%}</style></head><body><h1><code>use web/clip</code></h1>
 <p><strong>Dependencies:</strong> <a href="webpermissions.html"><code>web/permissions</code></a></p>
+<p>This module hooks into the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API">Clipboard API</a>
+which allows Phoo to put stuff on and read from the user&rsquo;s clipboard.</p>
+<h3 id="clip%2ecan%2dcopy%3f"><code>clip.can-copy?</code>  (  &rarr; <code>t</code> )</h3>
+<p>Returns true, false, or undefined depending on whether the user has granted, denied, or
+dismissed the permission prompt for writing to the clipboard.</p>
+<h3 id="clip%2ecan%2dread%3f"><code>clip.can-read?</code>  (  &rarr; <code>t</code> )</h3>
+<p>Returns true, false, or undefined depending on whether the user has granted, denied, or
+dismissed the permission prompt for reading the clipboard.</p>
+<h3 id="clip%2eshare"><code>clip.share</code>  (  &rarr; <code>s</code> )</h3>
+<p>Reads the text currently contained on the user&rsquo;<code>s</code> clipboard.</p>
+<h3 id="clip%2eput"><code>clip.put</code>  ( <code>s</code> &rarr;  )</h3>
+<p>Puts a string onto the user&rsquo;<code>s</code> clipboard, equivalent to them selecting it and hitting copy.</p>
 <p><strong>TODO</strong></p>
 <hr />
 <p><a href="index.html">back to index</a></p></body></html>
