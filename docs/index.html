@@ -4,7 +4,7 @@
 <p>For each word, the <em>signature</em> including lookaheads that the word expects to be written after it as well as the SED (stack-effect diagram) which shows the values the word expects to be on the stack before it, and leaves on the stack after it.</p>
 <p>For example:</p>
 <blockquote>
-<h3><code>foo</code> <em class="shadowed"><code>bar</code></em> ( <code>a</code><em class="description">item description</em> &rarr; <code>b</code><em class="description">item description</em> <code>c</code><em class="description">item description</em> )</h3>
+<h3><code>foo</code> <em class="shadowed"><code>bar</code></em> ( <code>a</code><em class="dpar">item description</em> &rarr; <code>b</code><em class="dpar">item description</em> <code>c</code><em class="dpar">item description</em> )</h3>
 </blockquote>
 <p>This means that the word <code>foo</code> expects one item after it (<code>bar</code>) which will be consumed in a lookahead operation, and also expect one item on the stack (<code>a</code>), and will leave two (<code>b</code> and <code>c</code>).</p>
 <p>Usually the parameters are mentioned in the description, but there are more specific descriptions of the parameters in the SED. You can hover over or click on the parameter, and additional information will appear.</p>
