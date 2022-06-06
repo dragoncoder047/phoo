@@ -131,7 +131,7 @@ with open('docs/index.html', 'w') as df:
     for m in allModulesList:
         df.write(f'<li><a href="{m[0]}.html">{m[1]}</a></li>')
     if miscFilesList:
-        df.write('</ul><h2>Miscallaneous pages</h2><ul>')
+        df.write('</ul><h2>Miscellaneous pages</h2><ul>')
         for p in miscFilesList:
             df.write(f'<li><a href="{p[0]}">{p[1]}</a></li>')
     df.write('</ul></body></html>')
