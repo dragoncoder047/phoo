@@ -104,7 +104,7 @@ for file in docFiles:
         htf.write(f'<!DOCTYPE html><html><head><title>{modulename} :: Phoo docs</title><style>{styles}</style></head><body>{html}</body></html>')
     allModulesList.append((fp, modulename))
 
-miscFiles = glob.glob('docs/**/*.md', recursive=True)
+miscFiles = glob('docs/**/*.md', recursive=True)
 FIRST_HEADING_REGEX = re.compile(r'<([Hh][0-6])\b[^>]*>(.*?)</\1>')
 miscFilesList = []
 for file in miscFiles:
