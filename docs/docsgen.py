@@ -75,7 +75,8 @@ USE_RE = re.compile(r'(?:\s|^)(?:re)?use\s(?!\S+>|do)(\S+)')
 def findDependencies(txt):
     return [m.group(1) for m in USE_RE.finditer(txt)]
 
-styles = 'code+.dpar{padding-left:10px;display:none;opacity:50%;font-size:75%}code:hover+.dpar,code:focus+.dpar{display:inline-block}.shadowed{opacity:50%}'
+with open('docs/__header__.html') as hhhh:
+    headerContent = hhhh.read()
 
 mkdP = Markdown(extensions=['attr_list', 'fenced_code', 'md_in_html', 'tables', 'smarty'])
 
@@ -105,7 +106,7 @@ for file in docFiles:
     mkdP.reset()
     html = mkdP.convert(out_md)
     with open(f'docs/{fp}', 'w') as htf:
-        htf.write(f'<!DOCTYPE html><html><head><title>{modulename} :: Phoo docs</title><style>{styles}</style></head><body>{html}</body></html>')
+        htf.write(f'<!DOCTYPE html><html><head><title>{modulename} :: Phoo docs</title>{headerContent}</head><body>{html}</body></html>')
     allModulesList.append((fp, modulename))
 
 miscFiles = glob('docs/**/*.md', recursive=True)
@@ -124,7 +125,7 @@ for file in miscFiles:
             continue
     file = file.removesuffix('.md') + '.html'
     with open(file, 'w') as of:
-        of.write(f'<!DOCTYPE html><html><head><title>{title or file} :: Phoo docs</title><style>{styles}</style></head><body>{html}</body></html>')
+        of.write(f'<!DOCTYPE html><html><head><title>{title or file} :: Phoo docs</title>{headerContent}</head><body>{html}</body></html>')
     miscFilesList.append((file.removeprefix('docs/'), title or file))
 
 mkdP.reset()
@@ -133,7 +134,7 @@ with open('docs/index.md') as im:
     imht = mkdP.convert(im.read())
 
 with open('docs/index.html', 'w') as df:
-    df.write(f'<!DOCTYPE html><html><head><title>home :: Phoo docs</title><style>{styles}</style></head><body><h1>Phoo documentation index</h1>{imht}<h2>All modules</h2><ul>')
+    df.write(f'<!DOCTYPE html><html><head><title>home :: Phoo docs</title>{headerContent}</head><body><h1>Phoo documentation index</h1>{imht}<h2>All modules</h2><ul>')
     for mfile, mname in allModulesList:
         df.write(f'<li><a href="{mfile}">{mname}</a></li>')
     if miscFilesList:
