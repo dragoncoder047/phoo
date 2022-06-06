@@ -1,4 +1,74 @@
 <!DOCTYPE html><html><head><title>math/integer :: Phoo docs</title><style>code+.dpar{padding-left:10px;display:none;opacity:50%;font-size:75%}code:hover+.dpar,code:focus+.dpar{display:inline-block}.shadowed{opacity:50%}</style></head><body><h1><code>use math/integer</code></h1>
+<h3 id="gcd"><code>gcd</code>  ( <code>a</code> <code>b</code> &rarr; <code>n</code> )</h3>
+<p>Returns the greatest common divisor of <code>a</code> and <code>b</code>, that is, the largest number that is a factor of both.</p>
+<h3 id="lcm"><code>lcm</code>  ( <code>a</code> <code>b</code> &rarr; <code>n</code> )</h3>
+<p>Returns the least common multiple of <code>a</code> and <code>b</code>, that is, the smallest number that divides evenly by both <code>a</code> and <code>b</code>.</p>
+<p><strong>See Also:</strong> <a href="#gcd"><code>gcd</code></a></p>
+<h3 id="%25%2a%2a"><code>%**</code>  ( <code>b</code> <code>e</code> <code>m</code> &rarr; <code>x</code> )</h3>
+<p>Integer power (<code>b</code>**<code>e</code>) modulo <code>m</code>.
+Handles error cases as follows:</p>
+<ul>
+<li>Returns 0 if the output would be infinity (instead of throwing error) which happens if <code>e</code> &lt; 0 and <code>b</code> == 0.</li>
+<li>Returns 0 if <code>m</code> is &lt;= 0</li>
+<li>Returns 1 for the case of 0**0.</li>
+</ul>
+<h3 id="log%5f"><code>log_</code>  ( <code>a</code> <code>b</code> &rarr; <code>l</code> )</h3>
+<p>.</p>
+<h3 id="root%5f"><code>root_</code>  ( <code>x</code> <code>n</code> &rarr; <code>r</code> )</h3>
+<p>Computes floored integer root <code>n</code> of <code>x</code> (e.g. <code>n</code> = 2 gives sqrt, <code>n</code>=3 gives cbrt).
+That is, computes largest integer <code>r</code> such that <code>r</code>**<code>n</code> &lt;= <code>x</code>.
+<code>n</code> must be a positive integer.</p>
+<p>Returns <code>undefined</code> if result could not be computed.</p>
+<h3 id="modinv"><code>modinv</code>  ( <code>a</code> <code>b</code> &rarr; <code>i</code> )</h3>
+<p>Integer modular inverse 1/<code>a</code> modulo <code>b</code>. Edge cases: if <code>a</code> is 0 or m &lt;= 0, returns 0.</p>
+<h3 id="log2%5f"><code>log2_</code>  ( <code>x</code> &rarr; <code>y</code> )</h3>
+<p>Integer log base 2.</p>
+<h3 id="sqrt%5f"><code>sqrt_</code>  ( <code>x</code> &rarr; <code>y</code> )</h3>
+<p>Integer square root.</p>
+<h3 id="%21%25"><code>!%</code>  ( <code>n</code> <code>m</code> &rarr; <code>x</code> )</h3>
+<p>Factorial of <code>n</code> modulo <code>m</code>. Returns <code>undefined</code> on overflow.
+NOTE: can be slow for <code>n</code> &gt; 4096 especially if <code>m</code> only has large prime factors.</p>
+<h3 id="prime%3f"><code>prime?</code>  ( <code>n</code> &rarr; <code>p</code> )</h3>
+<p>Returns true if <code>n</code> is prime. For <code>n</code> &lt; 1.5 million, uses brute-force divisibilty testing;
+after that, uses the <a href="https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test">Miller-Rabin test</a>,
+which, being probablilistic, may be incorrect, especially for <code>n</code> &gt; 2^64.</p>
+<h3 id="nextprime"><code>nextprime</code>  ( <code>n</code> &rarr; <code>m</code> )</h3>
+<p>Returns the smallest prime number greater than <code>n</code>.</p>
+<h3 id="prevprime"><code>prevprime</code>  ( <code>n</code> &rarr; <code>m</code> )</h3>
+<p>Returns the largest prime number less than <code>n</code>, or <code>undefined</code> if there is no smaller prime.</p>
+<h3 id="ppow"><code>ppow</code>  ( <code>n</code> &rarr; <code>e</code> )</h3>
+<p>Returns the highest possible exponent if the number is a perfect power (&gt;= 2), or 1 if not.
+E.g. if <code>n</code> is 8, returns 3 because 2^3 is 8, if <code>n</code> is 10 returns 1.</p>
+<h3 id="smallestfactor"><code>smallestfactor</code>  ( <code>n</code> &rarr; <code>f</code> )</h3>
+<p>Returns smallest prime factor of <code>n</code>, or 0 if factorizing it takes too long.
+Can usually find the product of two 32-bit primes relatively quickly.</p>
+<p>NOTE: factorization is most difficult when <code>n</code> is a product of two different large primes.</p>
+<h3 id="pfactors"><code>pfactors</code>  ( <code>n</code> &rarr; <code>a</code> )</h3>
+<p>Returns an array of all the prime factors of <code>n</code>, repeating factors as many times as necessary.
+E.g. if <code>n</code> is 4294967296 (2^32), returns a list containg 32 2&rsquo;s. Returns an empty list if the number could not be factored.</p>
+<p><strong>See Also:</strong> <a href="#primepoly"><code>primepoly</code></a></p>
+<h3 id="primepoly"><code>primepoly</code>  ( <code>n</code> &rarr; <code>a</code> )</h3>
+<p>Returns an array of pairs, where the first element of each pair os the prime factor of <code>n</code> and the second
+is its exponent.
+E.g. if <code>n</code> is 324 (2^2*3^4), returns [ [2, 2], [3, 4] ]. Returns an empty list if the number could not be factored.</p>
+<p><strong>See Also:</strong> <a href="#pfactors"><code>pfactors</code></a></p>
+<h3 id="multiplicativeorder"><code>multiplicativeorder</code>  ( <code>a</code> <code>m</code> &rarr; <code>r</code> )</h3>
+<p>Returns smallest positive integer <code>r</code> such that <code>a</code>**<code>r</code> = 1 (mod <code>m</code>).
+This is <code>a</code> special case of <a href="#discretelog"><code>discretelog</code></a>, where b == 1, but computed in <code>a</code> different way.</p>
+<!-- TODO: doesn't work for 10007n, 1000000000000000000000007n. Answer should be: 1000000000000000000000006n
+probable reason: must not just rely on prime factors, but all unique factors (including non prime ones, but no need to repeat same ones), for f2 at least (for f prime factors is ok) -->
+<p>.</p>
+<h3 id="discretelog"><code>discretelog</code>  ( <code>a</code> <code>b</code> <code>m</code> &rarr; <code>r</code> )</h3>
+<p>Computes <code>r</code> such that <code>a</code><strong><code>r</code> = <code>b</code> (mod <code>m</code>).
+This problem is of similar computational difficulty as integer factorization.
+If <code>b</code> is 1, computes <a href="#multiplicativeorder"><code>multiplicativeorder</code></a>: <code>r</code> such that <code>a</code></strong><code>r</code> = 1 (mod <code>m</code>).
+Returns <code>undefined</code> if it&rsquo;s known there is no result, -1 if it failed to compute (took too long).</p>
+<h3 id="totient"><code>totient</code>  ( <code>n</code> &rarr; <code>x</code> )</h3>
+<p>Euler&rsquo;s totient function: counts amount of positive integers &lt;= <code>n</code> that are relatively prime to <code>n</code>.</p>
+<h3 id="residue"><code>residue</code>  ( <code>n</code> <code>p</code> &rarr; <code>r</code> )</h3>
+<p>Tonelli–Shanks algorithm for quadratic residue (square root of <code>n</code> modulo <code>p</code>). <code>p</code> must be prime.</p>
+<h3 id="nCk"><code>nCk</code>  ( <code>n</code> <code>k</code> &rarr; <code>x</code> )</h3>
+<p>The binomial coefficient, also known as <code>n</code>-choose-<code>k</code> or combinations.</p>
 <p><strong>TODO</strong></p>
 <hr />
 <p><a href="index.html">back to index</a></p></body></html>
