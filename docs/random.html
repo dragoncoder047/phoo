@@ -1,4 +1,34 @@
 <!DOCTYPE html><html><head><title>Phoo docs for random</title><style>code+.description{padding-left:10px;display:none;opacity:50%;font-size:75%}code:hover+.description{display:inline-block}.shadowed{opacity:50%}</style></head><body><h1><code>use random</code></h1>
-<p><strong>Dependencies:</strong> <a href="math.html"><code>math</code></a>, <a href="_random.html"><code>_random</code></a></p>
+<p><strong>Dependencies:</strong> <a href="math.html"><code>math</code></a></p>
+<p>The <code>random</code> module contains a seedable random number generator, which is adapted from
+Bob Jenkins&rsquo; &ldquo;A small noncryptographic PRNG&rdquo; three-rotate variant
+which can be found at <a href="https://burtleburtle.net/bob/rand/smallprng.html">https://burtleburtle.net/bob/rand/smallprng.html</a>.</p>
+<h3 id="random%2eseed"><code>random.seed</code>  ( <code>n</code> &rarr;  )</h3>
+<p>Seeds the random number generator using the number on top of the stack.</p>
+<h3 id="random%2e01"><code>random.01</code>  (  &rarr; <code>n</code> )</h3>
+<p>Returns a random floating point number in the range [0, 1).</p>
+<h3 id="random%2efbelow"><code>random.fbelow</code>  ( <code>n</code> &rarr; <code>r</code> )</h3>
+<p>Returns a random floating point number in the range [0, <code>n</code>).</p>
+<h3 id="random%2eibelow"><code>random.ibelow</code>  ( <code>n</code> &rarr; <code>r</code> )</h3>
+<p>Returns a random integer from 0 to <code>n</code>-1.</p>
+<h3 id="random%2e1in"><code>random.1in</code>  ( <code>n</code> &rarr; <code>t</code> )</h3>
+<p>Returns true 1/<code>n</code>-th of the time.</p>
+<h3 id="random%2erange"><code>random.range</code>  ( <code>a</code> <code>b</code> &rarr; <code>t</code> )</h3>
+<p>Returns a random integer from <code>a</code> to <code>b</code>-1.</p>
+<h3 id="random%2echoose"><code>random.choose</code>  ( <code>a</code> &rarr; <code>i</code> )</h3>
+<p>Returns a random item from the array <code>a</code>.</p>
+<h3 id="random%2eshuffle"><code>random.shuffle</code>  ( <code>a</code> &rarr; <code>s</code> )</h3>
+<p>Returns a new array containing the items of <code>a</code> in a random order.</p>
+<h3 id="random%2esample"><code>random.sample</code>  ( <code>a</code> <code>n</code> &rarr; <code>s</code> )</h3>
+<p>Returns a new array containing <code>n</code> randomly selected items of <code>a</code>, <strong>without</strong> replacement.
+If <code>n</code> &gt;= the length of <code>a</code>, the returned array will be <code>a</code> shuffled copy of <code>a</code>.</p>
+<p><strong>See Also:</strong> <a href="#random%2echoices"><code>random.choices</code></a></p>
+<h3 id="random%2echoices"><code>random.choices</code>  ( <code>a</code> <code>n</code> &rarr; <code>s</code> )</h3>
+<p>Returns a new array containing <code>n</code> randomly selected items of <code>a</code>, <strong>with</strong> replacement.</p>
+<p><strong>See Also:</strong> <a href="#random%2esample"><code>random.sample</code></a></p>
+<h3 id="random%2enormaldist"><code>random.normaldist</code>  ( <code>μ</code> <code>σ</code> &rarr; <code>n</code> )</h3>
+<p>Returns a number distributed in the standard normal distribution with mean <code>μ</code> and standard deviation <code>σ</code>.</p>
+<h3 id="random%2eexpodist"><code>random.expodist</code>  ( <code>λ</code> &rarr; <code>n</code> )</h3>
+<p>Returns a number distributed in the exponential distribution with mean 1/<code>λ</code>.</p>
 <hr />
 <p><a href="index.html">back to index</a></p></body></html>
