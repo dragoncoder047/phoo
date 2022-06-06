@@ -84,7 +84,7 @@ allModulesList = []
 for file in docFiles:
     print('processing', file)
     modulename = file.removesuffix('.ph').removesuffix('.js').removeprefix('lib/')
-    fp = modulename.replace('/', '')
+    fp = modulename.replace('/', '') + '.html'
     with open(file) as f:
         txt = f.read()
     out_md = f'# `use {modulename}`\n\n'
@@ -103,7 +103,7 @@ for file in docFiles:
     out_md += '\n\n---\n\n[back to index](index.html)'
     mkdP.reset()
     html = mkdP.convert(out_md)
-    with open(f'docs/{fp}.html', 'w') as htf:
+    with open(f'docs/{fp}', 'w') as htf:
         htf.write(f'<!DOCTYPE html><html><head><title>{modulename} :: Phoo docs</title><style>{styles}</style></head><body>{html}</body></html>')
     allModulesList.append((fp, modulename))
 
@@ -119,6 +119,8 @@ for file in miscFiles:
     title = FIRST_HEADING_REGEX.search(html)
     if title:
         title = title.group(2)
+        if title == 'HIDDEN':
+            continue
     file = file.removesuffix('.md') + '.html'
     with open(file, 'w') as of:
         of.write(f'<!DOCTYPE html><html><head><title>{title or file} :: Phoo docs</title><style>{styles}</style></head><body>{html}</body></html>')
@@ -131,10 +133,10 @@ with open('docs/index.md') as im:
 
 with open('docs/index.html', 'w') as df:
     df.write(f'<!DOCTYPE html><html><head><title>home :: Phoo docs</title><style>{styles}</style></head><body><h1>Phoo documentation index</h1>{imht}<h2>All modules</h2><ul>')
-    for m in allModulesList:
-        df.write(f'<li><a href="{m[0]}.html">{m[1]}</a></li>')
+    for mfile, mname in allModulesList:
+        df.write(f'<li><a href="{mfile}">{mname}</a></li>')
     if miscFilesList:
         df.write('</ul><h2>Miscellaneous pages</h2><ul>')
-        for p in miscFilesList:
-            df.write(f'<li><a href="{p[0]}">{p[1]}</a></li>')
+        for filename, pagename in miscFilesList:
+            df.write(f'<li><a href="{filename}">{pagename}</a></li>')
     df.write('</ul></body></html>')
