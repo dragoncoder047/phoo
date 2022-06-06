@@ -1,8 +1,24 @@
+/* >>
+word> maketag
+description> Given a string tag name, creates a new HTML tag.
+sed> t -- e
+t> tag name
+e> element object
+*/
 to maketag do
     nested
     window .document swap .createElement()
 end
 
+/* >>
+word> popup
+description> Creates a popup window, with the dimensions and placement specified in
+the dimensions array d. In order, the elements of d are top, left, width, and height.
+The rest are ignored.
+sed> d -- w
+d> dimensions array
+w> window object
+*/
 to popup do
     ' [ $ "about:blank" $ "_new" ] swap
     behead $ "top=" swap ++
@@ -17,12 +33,7 @@ to popup do
 end
 
 to tag.put do 
-    dup $ "string" isa? iff do
-        .innerHTML=
-    end
-    else do
-        swap nested .appendChild()
-    end
+    swap nested .append() drop
 end
 
 to pop.put do
@@ -30,7 +41,7 @@ to pop.put do
 end
 
 to tag.clear do
-    $ "" tag.put
+    $ "" .innerHTML=
 end
 
 to pop.clear do
