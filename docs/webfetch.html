@@ -1,4 +1,18 @@
-<!DOCTYPE html><html><head><title>web/fetch :: Phoo docs</title><style>code+.dpar{padding-left:10px;display:none;opacity:50%;font-size:75%}code:hover+.dpar,code:focus+.dpar{display:inline-block}.shadowed{opacity:50%}</style></head><body><h1><code>use web/fetch</code></h1>
+<!DOCTYPE html><html><head><title>web/fetch :: Phoo docs</title><style>
+body{color:white;background:black;font-family:serif}
+h1,h2,h3,h4,h5,h6{color:purple}
+code+.dpar{padding-left:10px;display:none;opacity:50%;font-size:75%}
+code:hover+.dpar,code:focus+.dpar{display:inline-block}
+.shadowed{opacity:50%}
+</style>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.css" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/copy-tex.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/copy-tex.js"></script>
+<script>window.addEventListener('DOMContentLoaded',()=>void renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]}))</script>
+<script src="/static/prism.js" data-autoloader-path="https://www.jsdelivr.com/prismjs@v1.x/components/"></script>
+<script src="/static/prism-phoo.js"></script></head><body><h1><code>use web/fetch</code></h1>
 <p>This module implements short wrappers around the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch">Fetch API</a>
 to fetch text or JSON (GET method).</p>
 <h3 id="fetchText"><code>fetchText</code>  ( <code>url</code> &rarr; <code>text</code> )</h3>

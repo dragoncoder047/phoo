@@ -1,4 +1,18 @@
-<!DOCTYPE html><html><head><title>home :: Phoo docs</title><style>code+.dpar{padding-left:10px;display:none;opacity:50%;font-size:75%}code:hover+.dpar,code:focus+.dpar{display:inline-block}.shadowed{opacity:50%}</style></head><body><h1>Phoo documentation index</h1><p>Welcome to the Phoo documentation!</p>
+<!DOCTYPE html><html><head><title>home :: Phoo docs</title><style>
+body{color:white;background:black;font-family:serif}
+h1,h2,h3,h4,h5,h6{color:purple}
+code+.dpar{padding-left:10px;display:none;opacity:50%;font-size:75%}
+code:hover+.dpar,code:focus+.dpar{display:inline-block}
+.shadowed{opacity:50%}
+</style>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.css" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/copy-tex.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/copy-tex.js"></script>
+<script>window.addEventListener('DOMContentLoaded',()=>void renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]}))</script>
+<script src="/static/prism.js" data-autoloader-path="https://www.jsdelivr.com/prismjs@v1.x/components/"></script>
+<script src="/static/prism-phoo.js"></script></head><body><h1>Phoo documentation index</h1><p>Welcome to the Phoo documentation!</p>
 <p>These pages contain the description for all the modules included in the Phoo standard distribution.</p>
 <h2>How to read (and use) this documentation</h2>
 <p>For each word, the heading shows the word&rsquo;s <em>signature</em>, including lookaheads that the word expects to be written after it as well as the SED (stack-effect diagram) of the values the word expects to be on the stack before it, and leaves on the stack after it.</p>
