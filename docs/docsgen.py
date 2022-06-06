@@ -1,9 +1,12 @@
 from glob import glob
 import re
 from textwrap import dedent
-from os import system
-system('pip3 install -U markdown')
-from markdown import Markdown
+try:
+    from markdown import Markdown
+except ModuleNotFoundError:
+    from os import system
+    system('pip3 install -U markdown')
+    from markdown import Markdown
 
 COMMENT_RE = re.compile(r'/\* >>\n(?P<body>[\s\S]+?)\n\*/', re.M)
 def findComments(txt):
