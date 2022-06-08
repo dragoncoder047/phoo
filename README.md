@@ -1,4 +1,5 @@
 # Phoo
+## Pleas note the new URL: [https://**phoo-lang**.github.io/phoo/](https://phoo-lang.github.io/phoo/)
 
 <!-- cSpell:ignore phoo -->
 
