@@ -26,3 +26,24 @@ to geolocation.getpos do
     window .navigator .geolocation swap .getCurrentPosition() drop
     await
 end
+
+/* >>
+plain>
+## Example, which prints your location:
+
+```phoo
+use web/geolocation
+
+geolocation.can? iff do
+    geolocation.getpos
+    .coords
+    dup
+    $ "Your position: " echo
+    .longitude dup 0 > iff $ "degrees N" else $ "degrees S" ++ echo
+    .latitude dup 0 > iff $ "degrees E" else $ "degrees W" ++ echo
+end
+else do
+    $ "Position not available." echo
+end
+```
+*/
