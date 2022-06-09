@@ -1276,7 +1276,7 @@ word> phoo
 description> compile and run the code.
 sed> c --
 */
-to phoo [ compile run ]
+to phoo [ nested self swap .run() await ]
 
 /* >>
 word> new@
