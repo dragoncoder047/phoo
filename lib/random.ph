@@ -27,7 +27,7 @@ description> Seeds the random number generator using the bigint on top of the st
 sed> b --
 */
 to random.seed do 
-    4058668781 is rng.a
+    4058668781n is rng.a
     dup is rng.b
     dup is rng.c
     is rng.d
@@ -42,11 +42,11 @@ sed> -- n
 to random.01 do
     :rng.a
     :rng.b tuck
-    7 rot64 - 64bits swap
+    7n rot64 - 64bits swap
     :rng.c tuck
-    13 rot64 ^  is rng.a
+    13n rot64 ^  is rng.a
     :rng.d tuck
-    37 rot64 + 64bits is rng.b
+    37n rot64 + 64bits is rng.b
     over + 64bits is rng.c
     :rng.a + 64bits
     dup is rng.d
