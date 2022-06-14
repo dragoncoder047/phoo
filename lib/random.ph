@@ -2,8 +2,9 @@
 plain>
 
 The `random` module contains a seedable random number generator, which is adapted from
-Bob Jenkins' "A small noncryptographic PRNG" three-rotate variant
-which can be found at <https://burtleburtle.net/bob/rand/smallprng.html>.
+the one used in Quackery, which is itself the 64-bit version of 
+Bob Jenkins' "A small noncryptographic PRNG" which can be found at
+<https://burtleburtle.net/bob/rand/smallprng.html>.
 */
 
 use math
@@ -13,15 +14,17 @@ var rng.b
 var rng.c
 var rng.d
 
-to rotl32 do
-    2dup <<
-    dip [ 32 swap - >> ] |
+to 64bits [ 0xFFFFFFFFFFFFFFFFn & ]
+
+to rot64 do
+    dip 64bits 2dup << 64bits
+    unrot 64n swap - >> |
 end
 
 /* >>
 word> random.seed
-description> Seeds the random number generator using the number on top of the stack.
-sed> n --
+description> Seeds the random number generator using the bigint on top of the stack.
+sed> b --
 */
 to random.seed do 
     4058668781 is rng.a
@@ -37,15 +40,20 @@ description> Returns a random floating point number in the range [0, 1).
 sed> -- n
 */
 to random.01 do
-    :rng.a :rng.b 23 rotl32 - 0 | temp put
-    :rng.b :rng.c 16 rotl32 ^ is rng.a
-    :rng.c :rng.d 11 rotl32 + 0 | is rng.b
-    :rng.d temp copy + 0 | is rng.c
-    :rng.a temp take + 0 | is rng.d
-    :rng.d 4294967296 /
+    :rng.a
+    :rng.b tuck
+    7 rot64 - 64bits swap
+    :rng.c tuck
+    13 rot64 ^  is rng.a
+    :rng.d tuck
+    37 rot64 + 64bits is rng.b
+    over + 64bits is rng.c
+    :rng.a + 64bits
+    dup is rng.d
+    :rng.d unbig 0xFFFFFFFFFFFFFFFF /
 end
 
-time random.seed
+time big random.seed
 
 /* cSpell:ignore fbelow ibelow */
 
