@@ -1100,6 +1100,7 @@ to big [ nested window swap .BigInt() ]
 word> unbig
 description> Reverse of [[big]], it coerces a bigint back to a number.
 sed> b -- n
+*/
 to unbig [ nested window swap .Number() ]
 
 to sort.test [ stack ]
