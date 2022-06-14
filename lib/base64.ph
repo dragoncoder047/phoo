@@ -32,11 +32,12 @@ to b16.encode do
 end
 
 to b16.decode do
+    dup len 2 mod 0 != iff $ "base16 string cannot have odd length" die
     $ "" swap
     do
         dup while
         2 split swap
-        16 $>num chr ++
+        16 $>num chr swap dip ++
         again
     end
     nip
