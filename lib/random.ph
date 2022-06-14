@@ -9,10 +9,11 @@ Bob Jenkins' "A small noncryptographic PRNG" which can be found at
 
 use math
 
-var rng.a
-var rng.b
-var rng.c
-var rng.d
+0n dup 2dup
+var, rng.a
+var, rng.b
+var, rng.c
+var, rng.d
 
 to 64bits [ 0xFFFFFFFFFFFFFFFFn & ]
 
@@ -44,13 +45,12 @@ to random.01 do
     :rng.b tuck
     7n rot64 - 64bits swap
     :rng.c tuck
-    13n rot64 ^  is rng.a
+    13n rot64 ^ is rng.a
     :rng.d tuck
     37n rot64 + 64bits is rng.b
     over + 64bits is rng.c
-    :rng.a + 64bits
-    dup is rng.d
-    :rng.d unbig 0xFFFFFFFFFFFFFFFF /
+    :rng.a + 64bits dup is rng.d
+    unbig 0xFFFFFFFFFFFFFFFF /
 end
 
 time big random.seed
