@@ -32,7 +32,7 @@ end
 /* >>
 word> notification.send
 description> sends a notification using the provided title t and options object o, returning the `Notification` object.
-As a shortcut, o can be a string, in which it is interpreted as the `body` of the notification.
+As a shortcut, o can be a string, in which case it is interpreted as the `body` of the notification.
 
 The available option for o are described [here](https://developer.mozilla.org/en-US/docs/Web/API/Notification/Notification#parameters).
 sed> o t -- n
@@ -44,8 +44,8 @@ to notification.send do
     notifications.can? permissions.assert
     over $ "string" isa? if do
         dip do
-            {} tuck
-            swap .body=
+            {} dup
+            rot .body=
         end
     end
     2 pack
