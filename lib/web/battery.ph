@@ -1,3 +1,3 @@
 to battery do
-    navigator .getBattery@ await
+    window .navigator .getBattery@ await
 end
