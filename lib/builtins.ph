@@ -1353,3 +1353,12 @@ to dir do
     end
     temp take
 end
+
+/* >>
+word> __name__
+description> Gets the name of the current thread running. Implementation-dependent.
+sed> -- s
+*/
+to __name__ do
+    self .name
+end
