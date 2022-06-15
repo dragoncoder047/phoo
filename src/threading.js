@@ -48,6 +48,11 @@ export class Thread {
          */
         this.module = module;
         /**
+         * The name of this thread. Initialized as the name of the module.
+         * @type {string}
+         */
+        this.name = module.name;
+        /**
          * Stack that working values are pushed and popped from during execution.
          * @type {Array}
          * @default []
