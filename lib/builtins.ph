@@ -745,10 +745,10 @@ to break [ 0 times.count replace ]
 
 /* >>
 word> printable
-description> given a character c, returns true or false whether it is in the printable region of ASCII (i.e. greater than 31).
+description> given a character c, returns true or false whether it is in the printable non-whitespace region of ASCII (i.e. greater than 32).
 sed> c -- t
 */
-to printable? [ ord 31 > ]
+to printable? [ ord 32 > ]
 
 /* >>
 word> trim
