@@ -48,7 +48,7 @@ description> Waits for the event to fire on the object o, then pushes the event 
 **Warning**: if the event never fires, your code will hang.
 sed> o --
 */
-to after do
+to waitfor do
     promise nip temp put
     swap
     ]'[ name
