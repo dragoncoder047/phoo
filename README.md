@@ -4,6 +4,30 @@
 
 <!-- cSpell:ignore phoo -->
 
+```forth
+$ "000000000000000000000000000000000001" var, world
+110 var, rule
+to tick do
+    $ ""
+    :world witheach do
+        i^ 1- :world swap peek swap
+        i^ 1+ :world len mod :world swap peek
+        ++ ++ 2 $>num bit :rule & 2 num>$ ++
+    end
+    is world
+end
+to printworld do
+    $ ""
+    :world witheach do
+        $ "1" = iff do $ "[[;;white]&nbsp;]" ++ end
+        else do $ "&nbsp;" ++ end
+    end
+    echo
+end
+to main do printworld tick 100 wait again end
+main
+```
+
 **Not thoroughly tested, some features don't work**
 
 Phoo is a stack-based programming language inspired by [Quackery][], bearing resemblance to both [Forth][] and [Ruby][] at the same time, and with elements of [Python][], [Lua][], and possibly some other esoteric languages that I can't remember. And it's (mostly) bootstrapped.
