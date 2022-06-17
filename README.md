@@ -5,16 +5,15 @@
 <!-- cSpell:ignore phoo -->
 
 ```forth
-$ "000000000000000000000000000000000001" var, world
+$ "0000000000000000000000000000000000001" var, world
 110 var, rule
 to tick do
-    $ ""
-    :world witheach do
-        i^ 1- :world swap peek swap
-        i^ 1+ :world len mod :world swap peek
-        ++ ++ 2 $>num bit :rule & 2 num>$ ++
-    end
-    is world
+    :world ' [ $ "" ] .split() ' do
+        :world i^ 1- peek swap ++
+        :world i^ 1+ :world len mod peek ++
+        2 $>num bit :rule & 0 = iff $ "0" else $ "1"
+    end map
+    ' ++ fold is world
 end
 to printworld do
     $ ""
@@ -24,7 +23,7 @@ to printworld do
     end
     echo
 end
-to main do printworld tick 100 wait again end
+to main do printworld tick 10 wait again end
 main
 ```
 
