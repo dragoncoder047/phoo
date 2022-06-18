@@ -41,7 +41,7 @@ The Phoo interpreter-compiler environment plus its (for the time being) minimali
 [Python]: https://www.python.org/
 [Lua]: https://www.lua.org/
 
-The documentation (which is minimal for the time being) can be found at <https://phoo-lang.github.io/phoo/docs/index.html>.
+The documentation (which is minimal for the time being) can be found at <https://phoo-lang.github.io/docs/index.html>.
 
 ## Installation and usage
 
