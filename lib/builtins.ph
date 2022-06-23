@@ -723,6 +723,28 @@ to j^ do
 end
 
 /* >>
+word> range
+description> returns an array a containing all the integers from 0 up to n-1.
+sed> n -- a
+*/
+to range do
+    [] swap times do
+        i^ concat
+    end
+end
+
+/* >>
+word> nrange
+description> returns an array a containing all the integers from n up to m-1.
+sed> n m -- a
+*/
+to nrange do
+    over - range
+    ' [ 2 pick + ] map
+    nip
+end
+
+/* >>
 word> step
 description> adds n to the current [[times]] loop's iteration counter. 
 sed> n --
@@ -916,7 +938,7 @@ to witheach [ ]'[ makewith run ]
 /* >>
 word> fold
 description>
-    takes a function and an array and reduces the array by calling the function with pairs of the items from the array:
+    takes a function and an array and reduces the array by calling the function with pairs of the items from the array: (supposing `k` is the function)
 
         ' [ 1   2   3   4   5   6   7   8   9   0 ] ' k fold
             |   |   |   |   |   |   |   |   |   |
