@@ -24,10 +24,11 @@ end
 
 /* >>
 word> random.seed
-description> Seeds the random number generator using the bigint on top of the stack.
-sed> b --
+description> Seeds the random number generator using the value on top of the stack, which must be coercible to BigInt.
+sed> s --
 */
-to random.seed do 
+to random.seed do
+    big
     4058668781n is rng.a
     dup is rng.b
     dup is rng.c
@@ -53,7 +54,7 @@ to random.01 do
     unbig 0xFFFFFFFFFFFFFFFF /
 end
 
-time big random.seed
+time random.seed
 
 /* cSpell:ignore fbelow ibelow */
 
