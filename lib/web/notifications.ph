@@ -35,6 +35,7 @@ description> sends a notification using the provided title t and options object 
 As a shortcut, o can be a string, in which case it is interpreted as the `body` of the notification.
 
 The available option for o are described [here](https://developer.mozilla.org/en-US/docs/Web/API/Notification/Notification#parameters).
+TODO: #12 add support for `actions` using service worker.
 sed> o t -- n
 o> options object
 t> title for notification
@@ -48,7 +49,7 @@ to notification.send do
             rot .body=
         end
     end
-    2 pack
+    swap 2 pack
     window .Notification new
 end
 
