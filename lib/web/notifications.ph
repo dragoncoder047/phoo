@@ -52,12 +52,3 @@ to notification.send do
     swap 2 pack
     window .Notification new
 end
-
-/* >>
-word> notification.hide
-description> dismisses the currently active notification
-sed> --
-*/
-to notification.hide do
-    window .Notification .hide@ drop
-end
