@@ -23,7 +23,7 @@ to printworld do
     end
     echo
 end
-' [ printworld tick ] functionize nested 30 concat window swap .setInterval() drop
+' [ printworld tick ] functionize nested 30 concat window swap .setInterval()
 ```
 
 **Not thoroughly tested, some features don't work**
