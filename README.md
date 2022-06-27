@@ -23,8 +23,7 @@ to printworld do
     end
     echo
 end
-to main do printworld tick 10 wait again end
-main
+' [ printworld tick ] functionize nested 30 concat window swap .setInterval() drop
 ```
 
 **Not thoroughly tested, some features don't work**
