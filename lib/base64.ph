@@ -24,21 +24,20 @@ description> Encode the string using base16 (i.e. hexadecimal).
 sed> s -- s
 */
 to b16.encode do
-    $ "" swap
-    witheach do
-        ord 16 num>$ upper
-        ++
-    end
+    ' [ $ "" ] .split()
+    ' [ ord 16 num>$ upper ] map
+    ' ++ fold
 end
 
+/* >>
+word> b16.decode
+description> Decode the string using base16 (i.e. hexadecimal).
+sed> s -- s
+*/
 to b16.decode do
     dup len 2 mod 0 != iff $ "base16 string cannot have odd length" die
-    $ "" swap
-    do
-        dup while
-        2 split swap
-        16 $>num chr swap dip ++
-        again
-    end
-    nip
+    ' [ $ ".."rg ] .matchAll()
+    nested window .Array swap .from()
+    ' [ 16 $>num chr ] map
+    ' ++ fold
 end
