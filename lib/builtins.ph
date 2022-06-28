@@ -65,7 +65,7 @@ macro> const
 description> precomputes a value. *(#6 - doesn't work)*
 sed> -- v
 */
-macro const do
+/* macro const do
     dip do
         dup len 0 = iff
             $ 'const: need something before to precompile' die
@@ -73,27 +73,27 @@ macro const do
         nested
         concat
     end
-end
+end */
 
 /* >>
 macro> now!
 description> runs code during compilation. *(#6 - doesn't work)*
 sed> --
 */
-macro now! do
+/* macro now! do
     dip [ dup take run ]
-end
+end */
 
 /* >>
 macro> //
 description> line comment *(#6 - doesn't work)*
 sed> --
 */
-macro // do
+/* macro // do
     dup $ '' = not while
     behead
     dup [ 10 chr ] const = dip [ [ 13 chr ] const = ] or until
-end
+end */
 
 /* >>
 word> dup
