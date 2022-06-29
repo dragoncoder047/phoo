@@ -7,8 +7,6 @@ to array-from do
     nested window .Array swap .from()
 end
 
-var zip.zipping
-
 /* >>
 word> zip
 description> given an array of arrays `[a, b, ...]`, returns the zipped arrays `[[a0, b0, ...], [a1, b1, ...], [a2, b2, ...]...]`.
@@ -16,16 +14,17 @@ sed> zi -- zo
 */
 to zip do
     array-from
-    dup is zip.zipping
+    dup to-do put
     ' len map ' max fold range
     ' do
         temp put
-        :zip.zipping ' do
+        to-do copy ' do
             temp copy 2dup swap found? iff peek
             else [ 2drop undefined ]
         end map
         temp release
     end map
+    to-do release
 end
 
 /* >>
