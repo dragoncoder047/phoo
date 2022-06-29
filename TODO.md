@@ -1,4 +1,4 @@
-* [ ] DOCUMENTATION!!!
+* [X] DOCUMENTATION!!!
 * [ ] Finish core
     * [ ] ~~`local`~~ `@inline`
         * [ ] Have `to` automatically under-the-hood create a new scope and meta-def to actually do the defining
@@ -8,20 +8,20 @@
     * Renaming
         * [X] `[`/`]` -> `do`/`end`?
         * [X] `def` -> `to`
-        * [ ] `say` -> `echo`
+        * [X] `say` -> `echo`
     * [X] Fix bug in `execute`: record return stack depth and return when it gets back to that, not when it gets to 0
     * [X] Have separate `thread` and have that manage threads (each have own work and return stacks, but shared ~~namespaces~~ modules)
-    * [ ] Namespacing:
+    * [X] Namespacing:
         * [ ] ~~Instead of having tree of nested Phoo interpreters, have a `sys.modules` map &agrave; la Python~~
-        * [ ] Namespace stack for modules, classes, etc.
-* [ ] Web app
+        * [X] Namespace stack for modules, classes, etc.
+* [X] Web app
 * [ ] Modules:
     * [X] Big-math (logic emu)
     * [ ] p5.js
     * [ ] tone.js
     * [ ] jquery (DOM)
 * Ideas:
-    * [ ] Use literalizer `$foo` to make variables and `->` (using `]'[`) to set them
+    * [X] Use literalizer `$foo` to make variables and `->` (using `]'[`) to set them *(done a little differently)*
     * [X] Getter: `.prop`, setter: `.prop=`, caller `.prop()`, no-arg caller `.prop@`
     * [ ] Create different type of block (maybe using `{}` instead of using `[]`) that records its depth when entering and cleans up stack when an error is propagating
         * [ ] maybe just have `{}` make an 'anonymous function'-ish thing?
