@@ -1,9 +1,9 @@
 /* >>
-word> realArray
+word> array-from
 description> make the object on the stack into an array using `:::js Array.from`.
 sed> o -- a
 */
-to realArray do
+to array-from do
     nested window .Array swap .from()
 end
 
@@ -15,7 +15,7 @@ description> given an array of arrays `[a, b, ...]`, returns the zipped arrays `
 sed> zi -- zo
 */
 to zip do
-    realArray
+    array-from
     dup is zip.zipping
     ' len map ' max fold range
     ' do
@@ -46,7 +46,7 @@ sed> a -- a
 */
 to killdups do
     nested window .Set new
-    realArray
+    array-from
 end
 
 /*
@@ -55,7 +55,7 @@ description> reduces an array of items `[a, b, c, ...]` into an array of `[item,
 sed> ia -- ca
 */
 to bag do
-    realArray
+    array-from
     dup killdups
     ' [ nested 0 concat ] map
     temp put
