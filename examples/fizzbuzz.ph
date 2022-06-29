@@ -1,11 +1,11 @@
 to fizzbuzz do /* a n -- */
     temp put
-    $ "" swap
-    witheach do
+    ' do
         unpack swap
-        temp copy swap mod 0 = iff ++
+        temp copy swap mod 0 = iff noop
         else drop
-    end
+    end map
+    ' ++ fold
     dup len 0 != iff do
         temp release
         echo
