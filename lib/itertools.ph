@@ -39,6 +39,16 @@ to enumerate do
     zip
 end
 
+/* >>
+word> killdups
+description> Remove all the duplicates in the array a, and return an new array.
+sed> a -- a
+*/
+to killdups do
+    nested window .Set new
+    realArray
+end
+
 /*
 word> bag
 description> reduces an array of items `[a, b, c, ...]` into an array of `[item, count]`.
@@ -46,14 +56,16 @@ sed> ia -- ca
 */
 to bag do
     realArray
-    {} nested swap concat
-    [] temp put
-    ' do
-        dup temp copy put
-        2dup get
-        dup $ "undefined" isa? iff [ drop 0 ] else noop
-        1+ unrot set
-    end foldr
+    dup killdups
+    ' [ nested 0 concat ] map
+    temp put
+    witheach do
+        temp copy witheach do
+            2dup 0 peek =
+            over 1 peek +
+            swap replace
+        end
+        drop
+    end
     temp take
-    killdups
 end
