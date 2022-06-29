@@ -16,11 +16,11 @@ to tick do
     ' ++ fold is world
 end
 to printworld do
-    $ ""
-    :world witheach do
-        $ "1" = iff do $ "[[;;white]&nbsp;]" ++ end
-        else do $ "&nbsp;" ++ end
-    end
+    :world ' do
+        $ "1" = iff $ "[[;;white]&nbsp;]"
+        else $ "&nbsp;"
+    end map
+    ' ++ fold
     echo
 end
 ' [ printworld tick ] functionize nested 30 concat window swap .setInterval()
