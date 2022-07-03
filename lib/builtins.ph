@@ -1160,11 +1160,12 @@ sed> a -- s
 to sort$ [ sortwith $> ]
 
 to try.hist [ stack ]
+to try.msg [ stack ]
 
 /* >>
 word> try
-lookahead> block except
-description> runs block, and if it threw an error, runs except with the error on the stack. If block ran fine, skips except.
+lookahead> block
+description> runs block, and if it threw an error, silences the error and puts it on the `try.msg` stack.
 sed> --
 */
 to try do
@@ -1183,7 +1184,8 @@ to try do
     ]'[
     ]sandbox[
 
-    dup dup if do
+    dup iff do
+        try.msg put
         try.prt copy
         do
             dup len while
@@ -1199,9 +1201,61 @@ to try do
         end
         true
     end
+    else drop
     try.hist release
+end
+
+/* >>
+word> except
+lookahead> block
+description> If there is an error on the `try.msg` stack, takes it and runs the block. If there is none, skips it.
+sed> --
+*/
+to except do
+    try.msg len 1 > iff [ try.msg take dup ]
+    else false
     1 ]cjump[
 end
+
+/* >>
+word> exceptt
+lookahead> block block
+description> Like [[except]], but it runs or skips two blocks instead of one.
+sed> --
+*/
+to exceptt do
+    try.msg len 1 > iff [ try.msg take dup ]
+    else false
+    2 ]cjump[
+end
+
+/* >>
+plain>
+#### How to use `:::phoo try` and `:::phoo except`
+`:::phoo try` forms the error-suppressing part, and `:::phoo except` detects the error and runs the cleanup code.
+`:::phoo try` and `:::phoo except` were designed after Python, and compare heavily:
+
+```python
+try:
+    doSomethingThatMayFail()
+finally:
+    alwaysDoThis()
+except Exception as e:
+    cleanUpError(e)
+else:
+    noErrorOccurred()
+```
+Phoo code translates one-for-one into this:
+
+```phoo
+try doSomethingThatMayFail
+alwaysDoThis
+exceptt cleanUpError
+else noErrorOccurred
+```
+
+Notice that there is no `:::phoo finally` word; the process is simply to "hold off" handling of the error until the `alwaysDoThis` code is run.
+*/
 
 /* >>
 word> nestdepth
