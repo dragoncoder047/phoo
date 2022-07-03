@@ -14,10 +14,11 @@ use _builtins
 /* >>
 word> #pragma
 lookahead> flag value
-description> sets the settings flag specified.
+description> sets the control parameter flag specified to the specific value.
 sed> --
 example>
-    #pragma strictMode false
+    #pragma strictMode false // disables strict mode.
+    #pragma maxDepth 32 // sets the maximum recursion depth to 32 nested arrays.
 */
 to #pragma do
     ]'[ name
