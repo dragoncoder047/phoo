@@ -1211,7 +1211,7 @@ description> If there is an error on the `try.msg` stack, takes it and runs the 
 sed> --
 */
 to except do
-    try.msg len 1 > iff [ try.msg take dup ]
+    try.msg len 1 > iff [ try.msg take true ]
     else false
     1 ]cjump[
 end
@@ -1223,7 +1223,7 @@ description> Like [[except]], but it runs or skips two blocks instead of one.
 sed> --
 */
 to exceptt do
-    try.msg len 1 > iff [ try.msg take dup ]
+    try.msg len 1 > iff [ try.msg take true ]
     else false
     2 ]cjump[
 end
