@@ -1199,6 +1199,7 @@ to try do
             end
             drop
         end
+        drop
     end
     else drop
     try.hist release
