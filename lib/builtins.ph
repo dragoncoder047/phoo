@@ -1160,7 +1160,7 @@ sed> a -- s
 to sort$ [ sortwith $> ]
 
 to try.hist [ stack ]
-to try.msg [ stack ]
+to try.msg [ stack false ]
 
 /* >>
 word> try
@@ -1184,8 +1184,9 @@ to try do
     ]'[
     ]sandbox[
 
-    dup iff do
-        try.msg put
+    dup try.msg put
+
+    iff do
         try.prt copy
         do
             dup len while
@@ -1201,19 +1202,20 @@ to try do
         end
         drop
     end
-    else drop
+    else [ try.msg release ]
     try.hist release
 end
 
 /* >>
 word> except
 lookahead> block
-description> If there is an error on the `try.msg` stack, takes it and runs the block. If there is none, skips it.
+description> If there is an error on the `try.msg` stack, takes it and runs the block. If there is none, skips block.
 sed> --
 */
 to except do
-    try.msg len 1 > iff [ try.msg take true ]
-    else false
+    try.msg take dup
+    iff true
+    else [ false false try.msg put ]
     1 ]cjump[
 end
 
@@ -1224,8 +1226,9 @@ description> Like [[except]], but it runs or skips two blocks instead of one.
 sed> --
 */
 to exceptt do
-    try.msg len 1 > iff [ try.msg take true ]
-    else false
+    try.msg take dup
+    iff true
+    else [ false false try.msg put ]
     2 ]cjump[
 end
 

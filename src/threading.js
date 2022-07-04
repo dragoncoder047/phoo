@@ -244,7 +244,7 @@ export class Thread {
         }
         var code = source.slice();
         var origLength = this.workStack.length;
-        var word, module, m, a = [];
+        var word, m, a = [];
         try {
             while (code.length > 0) {
                 // https://stackoverflow.com/questions/10272773/split-string-on-the-first-white-space-occurrence
@@ -346,7 +346,7 @@ export class Thread {
      */
     getScope(depth = 0) {
         if (depth >= this.scopeStack.length) return this.module;
-        return this.scopeStack[this.scopeStack.length - 1 - depth]
+        return this.scopeStack[this.scopeStack.length - 1 - depth];
     }
 }
 
