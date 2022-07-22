@@ -1,7 +1,7 @@
 /* >>
 plain>
 
-This module is contains the words necessary to implement the builtin functionality of Phoo, that are defined in Phoo code.
+This module contains the words necessary to implement the builtin functionality of Phoo, that are defined in Phoo code.
 
 The words that this module depends upon can be found on the page for [_builtins](_builtins.html) (note the underscore).
 */
@@ -1160,7 +1160,7 @@ sed> a -- s
 to sort$ [ sortwith $> ]
 
 to try.hist [ stack ]
-to try.msg [ stack false ]
+to try.msg [ stack ]
 
 /* >>
 word> try
@@ -1184,9 +1184,8 @@ to try do
     ]'[
     ]sandbox[
 
-    dup try.msg put
-
-    iff do
+    dup if do
+        try.msg put
         try.prt copy
         do
             dup len while
@@ -1202,7 +1201,6 @@ to try do
         end
         drop
     end
-    else [ try.msg release ]
     try.hist release
 end
 
@@ -1213,9 +1211,8 @@ description> If there is an error on the `try.msg` stack, takes it and runs the 
 sed> --
 */
 to except do
-    try.msg take dup
-    iff true
-    else [ false false try.msg put ]
+    try.msg len 1 > iff [ try.msg take true ]
+    else false
     1 ]cjump[
 end
 
@@ -1226,9 +1223,8 @@ description> Like [[except]], but it runs or skips two blocks instead of one.
 sed> --
 */
 to exceptt do
-    try.msg take dup
-    iff true
-    else [ false false try.msg put ]
+    try.msg len 1 > iff [ try.msg take true ]
+    else false
     2 ]cjump[
 end
 
