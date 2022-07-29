@@ -1184,7 +1184,7 @@ to try do
     ]'[
     ]sandbox[
 
-    dup if do
+    dup iff do
         try.msg put
         try.prt copy
         do
@@ -1201,6 +1201,7 @@ to try do
         end
         drop
     end
+    else drop
     try.hist release
 end
 
@@ -1253,7 +1254,7 @@ exceptt cleanUpError
 else noErrorOccurred
 ```
 
-Notice that there is no `:::phoo finally` word; the process is simply to "hold off" handling of the error until the `alwaysDoThis` code is run.
+Notice that there is no `:::phoo finally` word; the process is simply to delay handling of the error until the `alwaysDoThis` code is run.
 */
 
 /* >>
