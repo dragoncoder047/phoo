@@ -3,9 +3,8 @@ plain>
 
 This wraps the [Notification API](https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API).
 
-Note that not all features are implemented: you can include an `actions` property in the notification
-options and those buttons will indeed be shown to the user, but as of right now your Phoo code will
-not be able to respond to their choice of action.
+Note that not all features are implemented: for example, you can't use the `actions` property to show buttons to the user.
+That requires the use of a service worker, and I haven't quite figured that out yet.
 
 */
 
