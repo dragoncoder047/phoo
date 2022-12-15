@@ -1183,9 +1183,9 @@ to try do
     ]'[
     ]sandbox[
     
- dup repr $ "it[DEBUG]Result of ]sandbox[: "ei repr ++ echo
+ dup repr $ "it[DEBUG]Result of ]sandbox[: "ei swap ++ echo
 
-    dup iff do
+    dup undefined != dup echo iff do
         try.err put
         try.prt copy
         do
@@ -1234,7 +1234,7 @@ end
 plain>
 #### How to use `:::phoo try` and `:::phoo except`
 `:::phoo try` forms the error-suppressing part, and `:::phoo except` detects the error and runs the cleanup code.
-`:::phoo try` and `:::phoo except` were designed after Python, and compare heavily:
+`:::phoo try` and `:::phoo except`/`:::phoo exceptt` were designed after Python, and compare heavily:
 
 ```python
 try:
