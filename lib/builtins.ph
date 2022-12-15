@@ -1182,6 +1182,8 @@ to try do
 
     ]'[
     ]sandbox[
+    
+ /* */   dup repr $ "it[DEBUG]Result of ]sandbox[: " repr ++ echo /* */
 
     dup iff do
         try.err put
