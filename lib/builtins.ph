@@ -180,9 +180,8 @@ sed> *a n -- a
 */
 to pack do
     [] swap times do
-        swap nested concat
+        dip nested concat
     end
-    reverse
 end
 
 /* >>
@@ -197,7 +196,7 @@ to dip.hold [ stack ]
 /* >>
 word> dip
 lookahead> op
-description> dips the top item out of the array, runs the block, and puts the item back.
+description> takes the top item off the main stack, runs the block, and puts the item back.
 sed> a -- a
 */
 to dip [ dip.hold put ]'[ run dip.hold take ]
@@ -1160,12 +1159,12 @@ sed> a -- s
 to sort$ [ sortwith $> ]
 
 to try.hist [ stack ]
-to try.msg [ stack ]
+to try.err [ stack ]
 
 /* >>
 word> try
 lookahead> block
-description> runs block, and if it threw an error, silences the error and puts it on the `try.msg` stack.
+description> runs block, and if it threw an error, silences the error and puts it on the `try.err` stack.
 sed> --
 */
 to try do
@@ -1185,7 +1184,7 @@ to try do
     ]sandbox[
 
     dup iff do
-        try.msg put
+        try.err put
         try.prt copy
         do
             dup len while
@@ -1208,11 +1207,11 @@ end
 /* >>
 word> except
 lookahead> block
-description> If there is an error on the `try.msg` stack, takes it and runs the block. If there is none, skips block.
+description> If there is an error on the `try.err` stack, takes it and runs the block. If there is none, skips block.
 sed> --
 */
 to except do
-    try.msg len 1 > iff [ try.msg take true ]
+    try.err len 1 > iff [ try.err take true ]
     else false
     1 ]cjump[
 end
@@ -1224,7 +1223,7 @@ description> Like [[except]], but it runs or skips two blocks instead of one.
 sed> --
 */
 to exceptt do
-    try.msg len 1 > iff [ try.msg take true ]
+    try.err len 1 > iff [ try.err take true ]
     else false
     2 ]cjump[
 end
