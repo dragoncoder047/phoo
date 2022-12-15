@@ -1183,7 +1183,7 @@ to try do
     ]'[
     ]sandbox[
     
- /* */   dup repr $ "it[DEBUG]Result of ]sandbox[: " repr ++ echo /* */
+ dup repr $ "it[DEBUG]Result of ]sandbox[: "ei repr ++ echo
 
     dup iff do
         try.err put
