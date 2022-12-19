@@ -221,7 +221,7 @@ export class Thread {
             var result = regex.exec(word);
             if (result) {
                 this.push(result);
-                await this.run(code);
+                await this._runCompiled(code);
                 return { succeeded: true, result: this.pop() };
             }
         }
@@ -261,7 +261,7 @@ export class Thread {
                             break;
                         case 'array':
                             console.debug('Got Phoo Macro', word);
-                            await this.executeOneItem(m);
+                            await this._runCompiled(m);
                             break;
                         default:
                             throw new TypeMismatchError(`Unexpected ${type(m)} as macro.`);
@@ -307,6 +307,14 @@ export class Thread {
      */
     async run(code) {
         var compiled = await this.compile(code);
+        this._runCompiled(compiled);
+        return this.workStack;
+    }
+    
+    /**
+     * @private
+     */
+    async _runCompiled(compiled) {
         const origDepth = this.returnStack.length;
         this.retPush(this.state);
         this.state = { pc: 0, arr: compiled };
@@ -316,7 +324,6 @@ export class Thread {
             while (this.returnStack.length > origDepth) this.retPop();
             throw e;
         }
-        return this.workStack;
     }
 
     /**
