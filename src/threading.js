@@ -74,7 +74,7 @@ export class Thread {
          * Current execution state.
          * @type {IPhooReturnStackEntry}
          */
-        this.state = { arr: [], pc: NaN };
+        this.state = undefined;
         /**
          * The maximum length of {@linkcode Thread.returnStack}
          * before a {@linkcode StackOverflowError} error is thrown.
@@ -308,7 +308,7 @@ export class Thread {
     async run(code) {
         var compiled = await this.compile(code);
         const origDepth = this.returnStack.length;
-        this.retPush(this.state);
+        if (this.state) this.retPush(this.state);
         this.state = { pc: 0, arr: compiled };
         try {
             while (this.returnStack.length > origDepth) await this.tick();
