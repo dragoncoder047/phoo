@@ -159,13 +159,7 @@ export class Thread {
     }
 
     get state() {
-        var entry = this.returnStack.at(-1);
-        try {
-            throw new Error(JSON.stringify(entry));
-        } catch (error) {
-            alert(error.stack);
-        }
-        return entry;
+        return this.returnStack.at(-1);
     }
 
     /**
@@ -295,10 +289,9 @@ export class Thread {
         try {
             if (this.state.pc >= this.state.arr.length)
                 this.retPop();
-            else {
+            else 
                 await this.executeOneItem(this.state.arr[this.state.pc]);
-                this.state.pc++;
-            }
+            if (this.state) this.state.pc++;
         } catch (e) {
             if (e instanceof PhooError) throw e;
             throw PhooError.wrap(e, this.returnStack);
