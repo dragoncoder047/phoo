@@ -161,9 +161,9 @@ export class Thread {
     get state() {
         var e = this.returnStack.at(-1);
         try {
-            throw new Error();
+            throw new Error("showStack");
         } catch (error) {
-            alert(e.stack);
+            alert(error.stack);
         }
         return e;
     }
