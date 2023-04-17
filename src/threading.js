@@ -162,7 +162,7 @@ export class Thread {
         return this.returnStack.at(-1);
     }
 
-    get previousState() {
+    get prevState() {
         return this.returnStack.at(-2);
     }
 
