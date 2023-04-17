@@ -162,6 +162,10 @@ export class Thread {
         return this.returnStack.at(-1);
     }
 
+    get previousState() {
+        return this.returnStack.at(-2);
+    }
+
     /**
      * Push a new scope onto the scope stack.
      */
