@@ -159,13 +159,13 @@ export class Thread {
     }
 
     get state() {
-        var e = this.returnStack.at(-1);
+        var entry = this.returnStack.at(-1);
         try {
-            throw new Error("showStack");
+            throw new Error(JSON.stringify(entry));
         } catch (error) {
             alert(error.stack);
         }
-        return e;
+        return entry;
     }
 
     /**
