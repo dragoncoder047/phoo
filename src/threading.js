@@ -283,8 +283,8 @@ export class Thread {
         catch (e) {
             throw PhooSyntaxError.wrap(e, this.returnStack);
         }
-        if (this.workStack.length !== origLength)
-            throw new BadNestingError('One or more unmatched brackets');
+        // if (this.workStack.length !== origLength)
+        //     throw new BadNestingError('One or more unmatched brackets');
         return a;
     }
 
