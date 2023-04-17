@@ -261,6 +261,7 @@ export class Thread {
                     this.push(code);
                     switch (type(m)) {
                         case 'function':
+                            console.debug('Got Macro Function', m.name, word);
                             await m.call(this);
                             break;
                         case 'array':
