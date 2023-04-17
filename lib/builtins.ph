@@ -1183,7 +1183,7 @@ to try do
     ]'[
     ]sandbox[
     
- dup repr $ "it[DEBUG]Result of ]sandbox[: "ei swap ++ echo
+ dup repr $ "Result of ]sandbox[: " swap ++ DEBUG
 
     dup undefined != dup echo iff do
         try.err put
