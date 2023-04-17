@@ -216,7 +216,7 @@ export class Thread {
      * the match result, runs the corresponding code, and pushes the
      * top value on the stack to the compiled array.
      * @param {string} word The word to be converted.
-     * @returns {Promise<{succeeded: boolean, result: any}>}
+     * @returns {Promise<{succeeded: boolean, result: any?}>}
      */
     async compileLiteral(word) {
         for (var [regex, code] of this.module.literalizers.map) {

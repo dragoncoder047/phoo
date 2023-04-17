@@ -171,7 +171,7 @@ export function addFunctionAsWord(ns, inputTypes, name, func) {
         func = name;
         name = func.name;
     }
-    function wordFunction() {
+    function afawFunction() {
         this.expect(...inputTypes);
         var args = [];
         for (var i = 0; i < inputTypes.length; i++)
