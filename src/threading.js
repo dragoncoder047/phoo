@@ -160,7 +160,11 @@ export class Thread {
 
     get state() {
         var e = this.returnStack.at(-1);
-        alert(e);
+        try {
+            throw new Error();
+        } catch (error) {
+            alert(e.stack);
+        }
         return e;
     }
 
