@@ -159,7 +159,9 @@ export class Thread {
     }
 
     get state() {
-        return this.returnStack[this.returnStack.length - 1];
+        var e = this.returnStack.at(-1);
+        alert(e);
+        return e;
     }
 
     /**
