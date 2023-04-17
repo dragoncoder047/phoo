@@ -55,17 +55,18 @@ declare module 'threading.js' {
         constructor(opts: IThreadOptions);
         async executeOneItem(item: IPhooRunnable);
         async compileLiteral(word: string, a: IPhooRunnable[]): boolean;
-        async compile(source: string | any[] | IPhooRunnable[], hasLockAlready?: boolean): IPhooRunnable[];
+        async compile(source: string | any[] | IPhooRunnable[]): IPhooRunnable[];
         expect(...types: (string | RegExp | number)[]);
         pop(depth: number): any;
         peek(depth: number): any;
         push(item: any);
         retPop(): IReturnStackEntry;
         retPush(item: IReturnStackEntry);
+        get state(): IReturnStackEntry;
         enterScope();
         exitScope();
-        async execute(c: IPhooRunnable, hasLockAlready?: boolean): any[];
-        async run(source: string | any[] | IPhooRunnable[], hasLockAlready?: boolean): any[];
+        async execute(c: IPhooRunnable): any[];
+        async run(source: string | any[] | IPhooRunnable[]): any[];
         getScope(idx: number): Scope;
         lookup(word: string, macro?: boolean): IPhooDefinition;
     }

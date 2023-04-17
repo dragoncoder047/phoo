@@ -71,11 +71,6 @@ export class Thread {
          */
         this.scopeStack = [];
         /**
-         * Current execution state.
-         * @type {IPhooReturnStackEntry}
-         */
-        this.state = undefined;
-        /**
          * The maximum length of {@linkcode Thread.returnStack}
          * before a {@linkcode StackOverflowError} error is thrown.
          * @type {number}
@@ -162,6 +157,11 @@ export class Thread {
         if (this.returnStack.length > this.maxDepth)
             throw new StackOverflowError('Maximum return stack length exceeded');
     }
+
+    get state() {
+        return this.returnStack[this.returnStack.length - 1];
+    }
+
     /**
      * Push a new scope onto the scope stack.
      */
@@ -197,12 +197,10 @@ export class Thread {
             await item.call(this);
         }
         else if (type(item) === 'array') {
-            var newState = {
+            this.retPush({
                 pc: -1,
                 arr: item,
-            };
-            this.retPush(this.state);
-            this.state = newState;
+            });
         }
         else
             this.push(item);
@@ -290,7 +288,7 @@ export class Thread {
     async tick() {
         try {
             if (this.state.pc >= this.state.arr.length)
-                this.state = this.retPop();
+                this.retPop();
             else
                 await this.executeOneItem(this.state.arr[this.state.pc]);
             this.state.pc++;
@@ -308,8 +306,7 @@ export class Thread {
     async run(code) {
         var compiled = await this.compile(code);
         const origDepth = this.returnStack.length;
-        if (this.state) this.retPush(this.state);
-        this.state = { pc: 0, arr: compiled };
+        this.retPush({ pc: 0, arr: compiled });
         try {
             while (this.returnStack.length > origDepth) await this.tick();
         } catch (e) {
