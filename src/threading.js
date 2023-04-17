@@ -253,7 +253,7 @@ export class Thread {
             while (code.length > 0) {
                 // https://stackoverflow.com/questions/10272773/split-string-on-the-first-white-space-occurrence
                 [word, code] = code.trim().split(/(?<=^\S+)\s/);
-                //console.debug('word:', word)
+                // console.debug('word:', word)
                 code = code || '';
                 m = this.lookup(word, true);
                 if (m !== undefined) {
