@@ -196,8 +196,10 @@ export class Thread {
         if (type(item) === 'symbol')
             item = this.lookup(name(item));
         if (type(item) === 'function') {
-            console.debug('executing function', item[WORD_NAME_SYMBOL]);
-            console.debug('top stack item is a:', type(this.peek()));
+            if (item[WORD_NAME_SYMBOL] == 'take') {
+                console.debug('executing function', item[WORD_NAME_SYMBOL]);
+                console.debug('top stack item is a:', type(this.peek()));
+            }
             await item.call(this);
         }
         else if (type(item) === 'array') {
