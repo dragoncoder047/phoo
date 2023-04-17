@@ -295,9 +295,10 @@ export class Thread {
         try {
             if (this.state.pc >= this.state.arr.length)
                 this.retPop();
-            else
+            else {
                 await this.executeOneItem(this.state.arr[this.state.pc]);
-            this.state.pc++;
+                this.state.pc++;
+            }
         } catch (e) {
             if (e instanceof PhooError) throw e;
             throw PhooError.wrap(e, this.returnStack);
