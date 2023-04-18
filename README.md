@@ -2,7 +2,7 @@
 
 <!-- cSpell:ignore phoo -->
 
-It's supposed to look like this.
+A programming language that's supposed to look like this:
 
 ```forth
 $ "0000000000000000000000000000000000001" var, world
