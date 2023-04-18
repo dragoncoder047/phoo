@@ -15,7 +15,8 @@ jobs:
       - name: build
         run: |
           cd docs
-          ./docsgen.py
+          python3 docsgen.py
+          cd ..
       - name: commit changes # copied from ad-m/github-push-action
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
