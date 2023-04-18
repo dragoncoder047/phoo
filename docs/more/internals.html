@@ -109,5 +109,5 @@ main()
 <p>There are some edge cases, however. If a word is <em>aliased</em> to mean another word, the definition retrieved will be a <code class="language-js highlight">Symbol</code>. This case is detected and the word-lookup procedure is repeated until the retrieved definition isn&rsquo;t a Symbol.</p>
 <p>A Phoo thread also has a third, &ldquo;shadow&rdquo;, stack it manages during execution, called the <strong>scope stack</strong>. This stack isn&rsquo;t used much because it is only brought into play manually. When it is used, however, it adds a little more complexity to the lookup procedure. When there are scopes on the scope stack, the top scope is searched first for a local definition, and if it is not found, the next one under that, and so on up to the global scope. Only if it is not found anywhere is the word-not-found procedure run.</p>
 <hr />
-<p><a href="/docs/index.html">back to index</a></p>
-<p class="shadowed">docs@8c2f044</p></body></html>
+<p><a href="/phoo/docs/index.html">back to index</a></p>
+<p class="shadowed">docs@04547c7</p></body></html>
