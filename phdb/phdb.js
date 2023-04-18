@@ -1,4 +1,4 @@
-import stringify from '/app/stringify.js'; // see https://github.com/phoo-lang/phoo-lang.github.io/blob/main/app/stringify.js
+import stringify from '/phoo/tryit/app/stringify.js';
 
 function debugger_colorize(text, color) {
     return `<span style="--color: ${color}">${text}</span>`;
