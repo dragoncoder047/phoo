@@ -1,8 +1,8 @@
 # Phoo
 
-## Please note the new URL: [https://**phoo-lang**.github.io/](https://phoo-lang.github.io/)
-
 <!-- cSpell:ignore phoo -->
+
+It's supposed to look like this.
 
 ```forth
 $ "0000000000000000000000000000000000001" var, world
@@ -26,13 +26,11 @@ end
 ' [ printworld tick ] functionize nested 30 concat window swap .setInterval()
 ```
 
-**Not thoroughly tested, some features don't work**
+**Not thoroughly tested, some features don't work, the shell is broken.**
 
-Phoo is a stack-based programming language inspired by [Quackery][], bearing resemblance to both [Forth][] and [Ruby][] at the same time, and with elements of [Python][], [Lua][], and possibly some other esoteric languages that I can't remember. And it's (mostly) bootstrapped.
+Phoo is a stack-based programming language inspired by [Quackery][], bearing resemblance to both [Forth][] and [Ruby][] at the same time, and with elements of [Python][], [Lua][], and possibly some other esoteric languages that I can't remember.
 
-Being written in Javascript, Phoo is easy to embed. Phoo is able to leverage (most) all of the power of the Javascript environment it is run in, and is a simple and concise scripting language suitable for many applications.
-
-The Phoo interpreter-compiler environment plus its (for the time being) minimalist standard library are distributed as a web app which can be found at <https://phoo-lang.github.io/>.
+The Phoo interpreter-compiler environment plus its (for the time being) minimalist standard library can be explored at this web app: <https://dragoncoder047.github.io/phoo/tryit/tryit.html>. Currently this doesn't work the way it should, and I have no idea as to why. Use at your own risk - it may crash your browser from time to time.
 
 [Quackery]: https://github.com/GordonCharlton/Quackery
 [Forth]: https://www.forth.com/forth/
@@ -40,7 +38,7 @@ The Phoo interpreter-compiler environment plus its (for the time being) minimali
 [Python]: https://www.python.org/
 [Lua]: https://www.lua.org/
 
-The documentation (which is minimal for the time being) can be found at <https://phoo-lang.github.io/docs/index.html>.
+The documentation (which is minimal for the time being) can be found at <https://dragoncoder047.github.io/phoo/docs/index.html>.
 
 ## Installation and usage
 
