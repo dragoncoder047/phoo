@@ -1,14 +1,14 @@
-<!DOCTYPE html><html><head><title>The Internals of Phoo (Javascript) :: Phoo docs</title><link rel="icon" href="/P.png" type="image/png" />
+<!DOCTYPE html><html><head><title>The Internals of Phoo (Javascript) :: Phoo docs</title><link rel="icon" href="/phoo/tryit/P.png" type="image/png" />
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.css" type="text/css" />
 <link href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/copy-tex.css" rel="stylesheet" type="text/css" />
-<link href="https://phoo-lang.github.io/ext/prism/prism.css" rel="stylesheet" type="text/css" />
+<link href="/phoo/tryit/ext/prism/prism.css" rel="stylesheet" type="text/css" />
 <script src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/copy-tex.js"></script>
-<script src="/ext/prism/prism.js" data-autoloader-path="https://www.jsdelivr.com/prismjs@v1.x/components/"></script>
-<script src="/prism-phoo.js"></script>
-<script src="/docs/docs.js"></script>
-<link href="/docs/docs.css" rel="stylesheet" type="text/css" />
+<script src="/phoo/tryit/ext/prism/prism.js" data-autoloader-path="https://www.jsdelivr.com/prismjs@v1.x/components/"></script>
+<script src="/phoo/prism-phoo.js"></script>
+<script src="/phoo/docs/docs.js"></script>
+<link href="/phoo/docs/docs.css" rel="stylesheet" type="text/css" />
 </head><body class="line-numbers"><h1 id="the-internals-of-phoo-javascript">The Internals of Phoo (Javascript)</h1>
 <!-- cSpell:ignore phoo -->
 <div class="toc">
@@ -110,4 +110,4 @@ main()
 <p>A Phoo thread also has a third, &ldquo;shadow&rdquo;, stack it manages during execution, called the <strong>scope stack</strong>. This stack isn&rsquo;t used much because it is only brought into play manually. When it is used, however, it adds a little more complexity to the lookup procedure. When there are scopes on the scope stack, the top scope is searched first for a local definition, and if it is not found, the next one under that, and so on up to the global scope. Only if it is not found anywhere is the word-not-found procedure run.</p>
 <hr />
 <p><a href="/docs/index.html">back to index</a></p>
-<p class="shadowed">docs@d227ea1</p></body></html>
+<p class="shadowed">docs@cf653d1</p></body></html>
