@@ -114,7 +114,7 @@ for file in docFiles:
         out_md += '\n\n**TODO**'
     if cmt == 'HIDDEN_SENTINEL':
         continue
-    out_md += f'\n\n---\n\n[back to index](/docs/index.html)\n\ndocs@{environ["GITHUB_SHA"][:7]}\n{{.shadowed}}'
+    out_md += f'\n\n---\n\n[back to index](/phoo/docs/index.html)\n\ndocs@{environ["GITHUB_SHA"][:7]}\n{{.shadowed}}'
     mkdP.reset()
     html = mkdP.convert(out_md)
     with open(f'module/{fp}', 'w') as htf:
