@@ -1,0 +1,106 @@
+<!DOCTYPE html><html><head><title>Extra Words in the Shell :: Phoo docs</title><link rel="icon" href="/P.png" type="image/png" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.css" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/copy-tex.css" rel="stylesheet" type="text/css" />
+<link href="https://phoo-lang.github.io/ext/prism/prism.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/copy-tex.js"></script>
+<script src="/ext/prism/prism.js" data-autoloader-path="https://www.jsdelivr.com/prismjs@v1.x/components/"></script>
+<script src="/prism-phoo.js"></script>
+<script src="/docs/docs.js"></script>
+<link href="/docs/docs.css" rel="stylesheet" type="text/css" />
+</head><body class="line-numbers"><h1 id="extra-words-in-the-shell">Extra Words in the Shell</h1>
+<p>The <a href="/">online Phoo shell</a> contains a few more words than are included in the &ldquo;standard&rdquo; library. Phoo was designed to be run in more places than just the online shell, and so the shell-specific words are separated.</p>
+<h3 id="wait"><code>wait</code> ( <code>n</code> &rarr; )</h3>
+<p>Pauses execution for <code>n</code> milliseconds.</p>
+<h3 id="echo"><code>echo</code> ( <code>s</code> &rarr; )</h3>
+<p>Echoes the string <code>s</code> to the console, on its own line.</p>
+<h3 id="echo-error"><code>echo-error</code> ( <code>s</code> &rarr; )</h3>
+<p>Same as <a href="#echo"><code>echo</code></a>, but uses red text (as an error).</p>
+<h3 id="echo-raw"><code>echo-raw</code> ( <code>s</code> &rarr; )</h3>
+<p>Echoes the string <code>s</code> to the console, as a string of raw HTML (so that CSS is applied to the text).</p>
+<h3 id="alert"><code>alert</code> ( <code>s</code> &rarr; )</h3>
+<p>Shows the string to the user in a pop-up Javascript <code class="language-js highlight">alert()</code> box.</p>
+<h3 id="confirm"><code>confirm</code> ( <code>s</code> &rarr; <code>b</code> )</h3>
+<p>Shows the string to the user in a pop-up Javascript <code class="language-js highlight">confirm()</code> box, and returns <code class="language-js highlight">true</code> or <code class="language-js highlight">false</code> depending on whether the user pressed <code>OK</code> or <code>Cancel</code>.</p>
+<h3 id="prompt"><code>prompt</code> ( <code>s</code> &rarr; <code>a</code> )</h3>
+<p>Shows the string to the user in a pop-up Javascript <code class="language-js highlight">prompt()</code> box, and returns the string they entered.</p>
+<h3 id="input"><code>input</code> ( <code>s</code> &rarr; <code>a</code> )</h3>
+<p>Prinst the string to the console, and allows the user to type an answer. Returns the string they entered.</p>
+<h3 id="nl"><code>nl</code> ( &rarr; )</h3>
+<p>Prints a newline.</p>
+<h3 id="sp"><code>sp</code> ( &rarr; )</h3>
+<p>Prints a space, without advancing the cursor&rsquo;s vertical position.</p>
+<h3 id="cc"><code>cc</code> ( &rarr; )</h3>
+<p>Clears the console.</p>
+<h3 id="empty"><code>empty</code> ( <code>*</code> &rarr; )</h3>
+<p>Removes <strong>all</strong> of the items from the stack.</p>
+<h3 id="load_script"><code>load_script</code> ( <code>url</code> &rarr; )</h3>
+<p>Adds the Javascript library at <code>url</code> to the page, and waits until it loads fully.</p>
+<h3 id="add_repo"><code>add_repo</code> ( <code>url</code> &rarr; )</h3>
+<p>Adds the URL to the list of base paths that <code class="language-phoo highlight">use</code> will search in when importing a module.</p>
+<h3 id="echostack"><code>echostack</code> ( &rarr; )</h3>
+<p>Prints out the stack without altering it. This is called automatically after every input in the shell is finished running.</p>
+<h3 id="JQ()"><code>JQ()</code> ( <code>s</code> &rarr; <code>$</code> )</h3>
+<p>Takes the selector, HTML string, or element and turns it into a jQuery object.</p>
+<h3 id="shell.load-font"><code>shell.load-font</code> ( <code>n</code> &rarr; )</h3>
+<p>Takes the font name <code>n</code> and loads a CSS stylesheet to include that font from <a href="https://fonts.google.com/">Google Fonts</a>.</p>
+<h2 id="shell-recognized-pragmas">Shell Recognized <code>#pragma</code>s</h2>
+<p>The <code>#pragma</code> word can be used to control the behavior and appearance of the shell as well as that of Phoo.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Pragma Name</th>
+<th style="text-align: center;">Type</th>
+<th style="text-align: center;">Default</th>
+<th style="text-align: left;">Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><code>autocomplete</code></td>
+<td style="text-align: center;"><code>boolean</code></td>
+<td style="text-align: center;"><code>true</code></td>
+<td style="text-align: left;">Enables or disables the autocomplete functionality provided by the shell.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>shell.font</code></td>
+<td style="text-align: center;"><code>string</code></td>
+<td style="text-align: center;"><code>"IBM Mono"</code></td>
+<td style="text-align: left;">Changes the font used by the shell. Monospaced ones are best, but proportional-width ones work too, they just look a little wonky.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>shell.size</code></td>
+<td style="text-align: center;"><code>number</code></td>
+<td style="text-align: center;"><code>1</code></td>
+<td style="text-align: left;">Scales up or down the shell font by that factor compared to 12px.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>shell.pretty</code></td>
+<td style="text-align: center;"><code>boolean</code></td>
+<td style="text-align: center;"><code>false</code></td>
+<td style="text-align: left;">Enables or disables prettyprinting of the stack.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>shell.indent</code></td>
+<td style="text-align: center;"><code>string</code></td>
+<td style="text-align: center;"><code>"  "</code> (two spaces)</td>
+<td style="text-align: left;">Changes the indent string used by pretty-printing, if enabled.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>shell.reprd</code></td>
+<td style="text-align: center;"><code>number</code></td>
+<td style="text-align: center;"><code>5</code></td>
+<td style="text-align: left;">Sets the maximum depth at which the recursive representation (&ldquo;repr&rdquo;) function wil bail and replace the too-deep value with <code>...</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>shell.light-mode</code></td>
+<td style="text-align: center;"><code>boolean</code></td>
+<td style="text-align: center;"><code>false</code></td>
+<td style="text-align: left;">If <code>true</code>, sets the background to white and the text to black.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><a href="/docs/index.html">back to index</a></p>
+<p class="shadowed">docs@d227ea1</p></body></html>

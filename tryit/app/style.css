@@ -1,0 +1,42 @@
+@font-face {
+    font-family: "IBM Mono";
+    src: url("/ext/Web437_IBM_CGA.woff") format('woff');
+}
+
+body {
+    --background: black;
+    font-size: calc(var(--size, 1)*12px);
+    font-family: var(--font);
+    --color: #aaa;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+[data-reverse-color] {
+    --background: white;
+    --color: black;
+}
+
+.terminal,
+.cmd,
+.terminal .terminal-output div div,
+.cmd .prompt {
+    font-size: calc(var(--size, 1)*12px);
+    line-height: calc(var(--size, 1)*14px + 1px);
+}
+
+.terminal .terminal-output div.raw {
+    font-size: calc(var(--size, 1)*12px);
+    white-space: pre;
+}
+
+.terminal * {
+    font-family: var(--font);
+}
+
+@media (prefers-reduced-motion) {
+    :root {
+        --animation: terminal-none;
+    }
+}

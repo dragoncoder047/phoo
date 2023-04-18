@@ -1,0 +1,23 @@
+<!DOCTYPE html><html><head><title>home :: Phoo docs</title><link rel="icon" href="/P.png" type="image/png" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.css" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/copy-tex.css" rel="stylesheet" type="text/css" />
+<link href="https://phoo-lang.github.io/ext/prism/prism.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/copy-tex.js"></script>
+<script src="/ext/prism/prism.js" data-autoloader-path="https://www.jsdelivr.com/prismjs@v1.x/components/"></script>
+<script src="/prism-phoo.js"></script>
+<script src="/docs/docs.js"></script>
+<link href="/docs/docs.css" rel="stylesheet" type="text/css" />
+</head><body class="line-numbers"><h1>Phoo documentation index</h1><p>Welcome to the Phoo documentation!</p>
+<p>These pages contain the description for all the modules included in the Phoo standard distribution.</p>
+<h2 id="how-to-read-and-use-this-documentation">How to read (and use) this documentation</h2>
+<p>For each word, the heading shows the word&rsquo;s <em>signature</em>, including lookaheads that the word expects to be written after it as well as the SED (stack-effect diagram) of the values the word expects to be on the stack before it, and leaves on the stack after it.</p>
+<p>For example:</p>
+<blockquote>
+<h3 id="foo-bar-aitem-description-bitem-description-citem-description"><code>foo</code> <em class="shadowed"><code>bar</code></em> ( <code>a</code><em class="dpar">item description</em> &rarr; <code>b</code><em class="dpar">item description</em> <code>c</code><em class="dpar">item description</em> )</h3>
+</blockquote>
+<p>This means that the word <code>foo</code> expects one item after it (<code>bar</code>) which will be consumed in a lookahead operation, and also expect one item on the stack (<code>a</code>), and will leave two (<code>b</code> and <code>c</code>).</p>
+<p>Usually the parameters are mentioned in the description, but there are more specific descriptions of the parameters in the SED. You can hover over or click on the parameter, and additional information will appear. (Try it with the one above.)</p>
+<p>Aside from the builtins modules, which are imported automatically, write <code>use &lt;module&gt;</code> in your Phoo code to import the module. (This code is listed at the very top of every module page.)</p>
+<p>Please note this doumentation is under active development and may change at any time.</p><h2>All modules</h2><ul><li><a href="module/_builtins.html">_builtins</a></li><li><a href="module/mathinteger.html">math/integer</a></li><li><a href="module/mathfloatingpoint.html">math/floatingpoint</a></li><li><a href="module/lorem.html">lorem</a></li><li><a href="module/builtins.html">builtins</a></li><li><a href="module/events.html">events</a></li><li><a href="module/itertools.html">itertools</a></li><li><a href="module/random.html">random</a></li><li><a href="module/base64.html">base64</a></li><li><a href="module/math.html">math</a></li><li><a href="module/webhtml.html">web/html</a></li><li><a href="module/webspeech.html">web/speech</a></li><li><a href="module/webnotifications.html">web/notifications</a></li><li><a href="module/webpermissions.html">web/permissions</a></li><li><a href="module/webgeolocation.html">web/geolocation</a></li><li><a href="module/webfetch.html">web/fetch</a></li><li><a href="module/webclip.html">web/clip</a></li><li><a href="module/webvibration.html">web/vibration</a></li><li><a href="module/webbattery.html">web/battery</a></li></ul><h2>Miscellaneous pages</h2><ul><li><a href="more/tutorial.html">Phoo Tutorial</a></li><li><a href="more/shell-words.html">Extra Words in the Shell</a></li><li><a href="more/internals.html">The Internals of Phoo (Javascript)</a></li></ul></body></html>

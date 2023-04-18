@@ -1,0 +1,38 @@
+<!DOCTYPE html><html><head><title>web/html :: Phoo docs</title><link rel="icon" href="/P.png" type="image/png" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.css" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/copy-tex.css" rel="stylesheet" type="text/css" />
+<link href="https://phoo-lang.github.io/ext/prism/prism.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/copy-tex.js"></script>
+<script src="/ext/prism/prism.js" data-autoloader-path="https://www.jsdelivr.com/prismjs@v1.x/components/"></script>
+<script src="/prism-phoo.js"></script>
+<script src="/docs/docs.js"></script>
+<link href="/docs/docs.css" rel="stylesheet" type="text/css" />
+</head><body><h1 id="use-webhtml"><code>use web/html</code></h1>
+<h3 id="maketag"><code>maketag</code>  ( <code>t</code><em class="dpar">tag name</em> &rarr; <code>e</code><em class="dpar">element object</em> )</h3>
+<p>Given a string tag name, creates a new HTML tag.</p>
+<h3 id="popup"><code>popup</code>  ( <code>d</code><em class="dpar">dimensions array</em> &rarr; <code>w</code><em class="dpar">window object</em> )</h3>
+<p>Creates a popup window, with the dimensions and placement specified in
+the dimensions array <code>d</code>. In order, the elements of <code>d</code> are top, left, width, and height.
+The rest are ignored.</p>
+<h3 id="tag%2eput"><code>tag.put</code>  ( <code>x</code><em class="dpar">item to append</em> <code>e</code><em class="dpar">element to append to</em> &rarr;  )</h3>
+<p>Appends a string of text or another HTML node to the element.</p>
+<p><strong>See Also:</strong> <a href="#pop%2eput"><code>pop.put</code></a></p>
+<h3 id="pop%2eput"><code>pop.put</code>  ( <code>x</code><em class="dpar">item to append</em> <code>w</code><em class="dpar">window object</em> &rarr;  )</h3>
+<p>Appends a string of text or another HTML node to the popup&rsquo;s <code>&lt;body&gt;</code> tag.</p>
+<p><strong>See Also:</strong> <a href="#tag%2eput"><code>tag.put</code></a></p>
+<h3 id="tag%2eclear"><code>tag.clear</code>  ( <code>e</code> &rarr;  )</h3>
+<p>Empties the contents of the element.</p>
+<p><strong>See Also:</strong> <a href="#pop%2eclear"><code>pop.clear</code></a></p>
+<h3 id="pop%2eclear"><code>pop.clear</code>  ( <code>w</code> &rarr;  )</h3>
+<p>Empties the entire popup window.</p>
+<p><strong>See Also:</strong> <a href="#tag%2eclear"><code>tag.clear</code></a></p>
+<h3 id="tag%2efind"><code>tag.find</code>  ( <code>e</code> <code>s</code> &rarr; <code>c</code> )</h3>
+<p>Searches for the first child element of <code>e</code> that matches the selector <code>s</code> and returns it.</p>
+<p><strong>See Also:</strong> <a href="#tag%2eclear"><code>tag.clear</code></a></p>
+<h3 id="tag%2estyle"><code>tag.style</code>  ( <code>v</code><em class="dpar">style value</em> <code>e</code><em class="dpar">element to style</em> <code>s</code><em class="dpar">style name</em> &rarr;  )</h3>
+<p>Applies the CSS style pair <code>`s</code>: <code>v</code>;<code>to the element</code>e`.</p>
+<hr />
+<p><a href="/docs/index.html">back to index</a></p>
+<p class="shadowed">docs@d227ea1</p></body></html>

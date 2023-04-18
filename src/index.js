@@ -199,7 +199,7 @@ export function naiveCompile(string) {
  * @param {string} [bphp] Path to builtins Phoo code (because ES6 modules can't resolve non-JS files)
  * @returns {Promise<void>} When initialization is complete.
  */
-export async function initBuiltins(t, bphp = './lib/builtins.ph') {
+export async function initBuiltins(t, bphp = '/phoo/lib/builtins.ph') {
     t.module.copyFrom(builtinsModule);
     var resp = await fetch(bphp);
     if (!resp.ok)

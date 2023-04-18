@@ -1,0 +1,29 @@
+<!DOCTYPE html><html><head><title>web/notifications :: Phoo docs</title><link rel="icon" href="/P.png" type="image/png" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.css" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/copy-tex.css" rel="stylesheet" type="text/css" />
+<link href="https://phoo-lang.github.io/ext/prism/prism.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/copy-tex.js"></script>
+<script src="/ext/prism/prism.js" data-autoloader-path="https://www.jsdelivr.com/prismjs@v1.x/components/"></script>
+<script src="/prism-phoo.js"></script>
+<script src="/docs/docs.js"></script>
+<link href="/docs/docs.css" rel="stylesheet" type="text/css" />
+</head><body><h1 id="use-webnotifications"><code>use web/notifications</code></h1>
+<p><strong>Dependencies:</strong> <a href="the.html"><code>the</code></a>, <a href="of.html"><code>of</code></a>, <a href="webpermissions.html"><code>web/permissions</code></a></p>
+<p>This wraps the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API">Notification API</a>.</p>
+<p>Note that not all features are implemented: for example, you can&rsquo;t use the <code>actions</code> property to show buttons to the user.
+That requires the use of a service worker, and I haven&rsquo;t quite figured that out yet.</p>
+<h3 id="notifications%2ecan%3f"><code>notifications.can?</code>  (  &rarr; <code>t</code> )</h3>
+<p>Prompts the user for permission to send notifications,
+and then returns true, false, or undefined depending on whether they granted, denied,
+or just closed the box. Note this will just return false immediately if you didn&rsquo;t call this
+as a result of an user gesture.</p>
+<h3 id="notification%2esend"><code>notification.send</code>  ( <code>o</code><em class="dpar">options object</em> <code>t</code><em class="dpar">title for notification</em> &rarr; <code>n</code><em class="dpar">notification object</em> )</h3>
+<p>Sends a notification using the provided title <code>t</code> and options object <code>o</code>, returning the <code>Notification</code> object.
+As a shortcut, <code>o</code> can be a string, in which case it is interpreted as the <code>body</code> of the notification.</p>
+<p>The available option for <code>o</code> are described <a href="https://developer.mozilla.org/en-US/docs/Web/API/Notification/Notification#parameters">here</a>.
+TODO: #12 add support for <code>actions</code> using service worker.</p>
+<hr />
+<p><a href="/docs/index.html">back to index</a></p>
+<p class="shadowed">docs@d227ea1</p></body></html>

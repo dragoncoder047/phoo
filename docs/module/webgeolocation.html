@@ -1,0 +1,39 @@
+<!DOCTYPE html><html><head><title>web/geolocation :: Phoo docs</title><link rel="icon" href="/P.png" type="image/png" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.css" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/copy-tex.css" rel="stylesheet" type="text/css" />
+<link href="https://phoo-lang.github.io/ext/prism/prism.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/copy-tex.js"></script>
+<script src="/ext/prism/prism.js" data-autoloader-path="https://www.jsdelivr.com/prismjs@v1.x/components/"></script>
+<script src="/prism-phoo.js"></script>
+<script src="/docs/docs.js"></script>
+<link href="/docs/docs.css" rel="stylesheet" type="text/css" />
+</head><body><h1 id="use-webgeolocation"><code>use web/geolocation</code></h1>
+<p><strong>Dependencies:</strong> <a href="webgeolocation.html"><code>web/geolocation</code></a></p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API">https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API</a></p>
+<h3 id="geolocation%2ecan%3f"><code>geolocation.can?</code>  (  &rarr; <code>t</code> )</h3>
+<p>Returns true if the user&rsquo;s device has a GPS unit, that is, whether getting the
+geolocation is even possible. Note that this will strill return true if the user denied permission
+to access their location.</p>
+<h3 id="geolocation%2egetpos"><code>geolocation.getpos</code>  (  &rarr; <code>p</code> )</h3>
+<p>Returns a <a href="https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPosition"><code>GeolocationPosition</code></a>
+object with the user&rsquo;s position, or throws an error if the user denied permission or GPS is not available.</p>
+<h2 id="example-which-prints-your-location">Example, which prints your location:</h2>
+<pre><code class="language-phoo">use web/geolocation
+
+geolocation.can? iff do
+    geolocation.getpos
+    .coords
+    dup
+    $ &quot;Your position: &quot; echo
+    .longitude dup 0 &gt; iff $ &quot;degrees N&quot; else $ &quot;degrees S&quot; ++ echo
+    .latitude dup 0 &gt; iff $ &quot;degrees E&quot; else $ &quot;degrees W&quot; ++ echo
+end
+else do
+    $ &quot;Position not available.&quot; echo
+end
+</code></pre>
+<hr />
+<p><a href="/docs/index.html">back to index</a></p>
+<p class="shadowed">docs@d227ea1</p></body></html>

@@ -1,0 +1,63 @@
+body {
+    color: #ddd;
+    background: #222;
+    font-family: serif;
+}
+
+h1,
+h3 {
+    color: #b0a;
+}
+
+h2,
+h4,
+h5,
+h6 {
+    color: #c40;
+}
+
+code+.dpar {
+    padding-left: 10px;
+    display: none;
+    opacity: 75%;
+    font-size: 75%;
+}
+
+code:hover+.dpar,
+code:focus+.dpar {
+    display: inline-block;
+}
+
+.shadowed {
+    opacity: 50%;
+}
+
+a {
+    color: #67a;
+}
+
+a:visited {
+    color: #0ca;
+}
+
+details,
+.admonition {
+    border: 2px solid var(--yay);
+    border-radius: 5px;
+    padding: 1em;
+    --yay: #444;
+}
+
+.warning {
+    --yay: #ba4;
+}
+
+.danger,
+.error {
+    --yay: #f00;
+}
+
+.info,
+.note {
+    --yay: #1af;
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html><html><head><title>math/floatingpoint :: Phoo docs</title><link rel="icon" href="/P.png" type="image/png" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.css" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/copy-tex.css" rel="stylesheet" type="text/css" />
+<link href="https://phoo-lang.github.io/ext/prism/prism.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/copy-tex.js"></script>
+<script src="/ext/prism/prism.js" data-autoloader-path="https://www.jsdelivr.com/prismjs@v1.x/components/"></script>
+<script src="/prism-phoo.js"></script>
+<script src="/docs/docs.js"></script>
+<link href="/docs/docs.css" rel="stylesheet" type="text/css" />
+</head><body><h1 id="use-mathfloatingpoint"><code>use math/floatingpoint</code></h1>
+<h3 id="gamma"><code>gamma</code>  ( <code>n</code> &rarr; <code>Γ(n)</code> )</h3>
+<p>This is the <a href="https://en.wikipedia.org/wiki/Gamma_function">gamma function</a>
+or at least an approximation to it. For positive integer <code>n</code>, this is simply (<code>n</code>-1)!.</p>
+<p>It uses regular Javascript numbers to be able to support non-integer values, so after 200
+it overflows and returns <code>Infinity</code>.</p>
+<p>For a true factorial function, you can do this:</p>
+<pre><code class="language-phoo">to ! do 1n swap times do i big 1+ * end end
+</code></pre>
+<h3 id="loggamma"><code>loggamma</code>  ( <code>n</code> &rarr; <code>ln(Γ(n))</code> )</h3>
+<p>Natural logarithm of the gamma function.</p>
+<p><strong>See Also:</strong> <a href="#gamma"><code>gamma</code></a></p>
+<h3 id="lambertW"><code>lambertW</code>  ( <code>n</code> &rarr; <code>W(n)</code> )</h3>
+<p><a href="https://en.wikipedia.org/wiki/Lambert_W_function">Lambert <em>W</em> function</a>.</p>
+<h3 id="erf"><code>erf</code>  ( <code>x</code> &rarr; <code>erf(x)</code> )</h3>
+<p>The <a href="https://en.wikipedia.org/wiki/Error_function">Gauss error function</a>.</p>
+<h3 id="erfc"><code>erfc</code>  ( <code>x</code> &rarr; <code>erfc(x)</code> )</h3>
+<p>The complimentary error function, equal to 1-erf(<code>x</code>).</p>
+<p><strong>See Also:</strong> <a href="#erf"><code>erf</code></a></p>
+<h3 id="besselJ"><code>besselJ</code>  ( <code>n</code> <code>x</code> &rarr; <code>J_n(x)</code> )</h3>
+<p>The <a href="https://en.wikipedia.org/wiki/Bessel_function#Bessel_functions_of_the_first_kind:_J%CE%B1">Bessel function of the first kind</a>.</p>
+<h3 id="minkowski%3f"><code>minkowski?</code>  ( <code>x</code> &rarr; <code>?(x)</code> )</h3>
+<p>The <a href="https://en.wikipedia.org/wiki/Minkowski%27s_question-mark_function">Minkowski question mark function</a>.</p>
+<hr />
+<p><a href="/docs/index.html">back to index</a></p>
+<p class="shadowed">docs@d227ea1</p></body></html>
