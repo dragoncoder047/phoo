@@ -132,7 +132,7 @@ for file in miscFiles:
     print('processing', file)
     mkdP.reset()
     with open(file) as mf:
-        html = mkdP.convert(mf.read() + f'\n\n---\n\n[back to index](/docs/index.html)\n\ndocs@{environ["GITHUB_SHA"][:7]}\n{{.shadowed}}')
+        html = mkdP.convert(mf.read() + f'\n\n---\n\n[back to index](/phoo/docs/index.html)\n\ndocs@{environ["GITHUB_SHA"][:7]}\n{{.shadowed}}')
     title = FIRST_HEADING_REGEX.search(html)
     if title:
         title = title.group(2)
