@@ -1,5 +1,13 @@
 # Phoo
 
+> **Note**
+> 
+> While I am sad to do this, Phoo is now archived.
+> 
+> I haven't been able to work on this much at all lately, and I still can't figure out the bugs, so I am abandoning Phoo.
+> 
+> If you are interested, you can always fork Phoo. If youur changes are something important (like fixing a bug!) you can let me know on [my username repository](https://github.com/dragoncoder047/dragoncoder047/discussions) and I'll happily unarchive this repository and have a look at your pull request. Until then, this repository will be archived.
+
 <!-- cSpell:ignore phoo -->
 
 A programming language that's supposed to look like this:
